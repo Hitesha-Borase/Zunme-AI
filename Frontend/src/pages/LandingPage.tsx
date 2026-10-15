@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { NavLink, useSearchParams } from 'react-router-dom';
 import {
   Sparkles,
   MessageSquare,
@@ -58,11 +58,20 @@ interface FaqItem {
 
 export const LandingPage: React.FC = () => {
   const { user } = useApp();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState<boolean>(false);
   const [activeShowcaseTab, setActiveShowcaseTab] = useState<'chat' | 'search' | 'studio' | 'library'>('chat');
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
   const [copiedSnippet, setCopiedSnippet] = useState(false);
+
+  useEffect(() => {
+    if (searchParams.get('login') === 'true') {
+      setShowLoginModal(true);
+      searchParams.delete('login');
+      setSearchParams(searchParams, { replace: true });
+    }
+  }, [searchParams, setSearchParams]);
 
   const toggleFaq = (index: number) => {
     setOpenFaqIndex(openFaqIndex === index ? null : index);

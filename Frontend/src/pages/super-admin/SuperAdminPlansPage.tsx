@@ -168,7 +168,7 @@ export const SuperAdminPlansPage: React.FC = () => {
 
             <form onSubmit={handleSavePlan} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
               <div>
-                <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#CBD5E1', marginBottom: '6px' }}>
+                <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#111625', marginBottom: '6px' }}>
                   Plan Name
                 </label>
                 <input
@@ -182,7 +182,7 @@ export const SuperAdminPlansPage: React.FC = () => {
 
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
                 <div>
-                  <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#CBD5E1', marginBottom: '6px' }}>
+                  <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#111625', marginBottom: '6px' }}>
                     Verified Price (USD)
                   </label>
                   <input
@@ -195,7 +195,7 @@ export const SuperAdminPlansPage: React.FC = () => {
                 </div>
 
                 <div>
-                  <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#CBD5E1', marginBottom: '6px' }}>
+                  <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#111625', marginBottom: '6px' }}>
                     Billing Cadence
                   </label>
                   <input
@@ -209,7 +209,7 @@ export const SuperAdminPlansPage: React.FC = () => {
               </div>
 
               <div>
-                <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#CBD5E1', marginBottom: '6px' }}>
+                <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#111625', marginBottom: '6px' }}>
                   Description
                 </label>
                 <textarea
@@ -221,7 +221,7 @@ export const SuperAdminPlansPage: React.FC = () => {
               </div>
 
               <div>
-                <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#CBD5E1', marginBottom: '6px' }}>
+                <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#111625', marginBottom: '6px' }}>
                   Features & Limits
                 </label>
                 <div style={{ display: 'flex', gap: '8px', marginBottom: '10px' }}>
@@ -253,7 +253,9 @@ export const SuperAdminPlansPage: React.FC = () => {
                         justifyContent: 'space-between',
                         padding: '6px 10px',
                         borderRadius: '6px',
-                        background: 'rgba(255,255,255,0.03)',
+                        background: '#FAFBFD',
+                        border: '1px solid #E8ECF5',
+                        color: '#111625',
                         fontSize: '12px'
                       }}
                     >

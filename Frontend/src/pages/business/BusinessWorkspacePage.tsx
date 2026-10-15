@@ -275,7 +275,7 @@ export const BusinessWorkspacePage: React.FC = () => {
           <form onSubmit={handleSaveBrandProfile} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
               <div>
-                <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#CBD5E1', marginBottom: '6px' }}>
+                <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#111625', marginBottom: '6px' }}>
                   Brand / Organization Name
                 </label>
                 <input
@@ -288,7 +288,7 @@ export const BusinessWorkspacePage: React.FC = () => {
               </div>
 
               <div>
-                <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#CBD5E1', marginBottom: '6px' }}>
+                <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#111625', marginBottom: '6px' }}>
                   Brand Tagline
                 </label>
                 <input
@@ -301,7 +301,7 @@ export const BusinessWorkspacePage: React.FC = () => {
             </div>
 
             <div>
-              <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#CBD5E1', marginBottom: '6px' }}>
+              <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#111625', marginBottom: '6px' }}>
                 Tone of Voice & Personality
               </label>
               <input
@@ -313,7 +313,7 @@ export const BusinessWorkspacePage: React.FC = () => {
             </div>
 
             <div>
-              <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#CBD5E1', marginBottom: '6px' }}>
+              <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#111625', marginBottom: '6px' }}>
                 Primary Target Audience
               </label>
               <textarea
@@ -325,7 +325,7 @@ export const BusinessWorkspacePage: React.FC = () => {
             </div>
 
             <div>
-              <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#CBD5E1', marginBottom: '6px' }}>
+              <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#111625', marginBottom: '6px' }}>
                 Core Values & Positioning Pillars
               </label>
               <textarea
@@ -337,7 +337,7 @@ export const BusinessWorkspacePage: React.FC = () => {
             </div>
 
             <div>
-              <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#CBD5E1', marginBottom: '6px' }}>
+              <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#111625', marginBottom: '6px' }}>
                 Mission Statement
               </label>
               <textarea

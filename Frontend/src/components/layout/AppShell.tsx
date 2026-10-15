@@ -75,6 +75,11 @@ export const AppShell: React.FC = () => {
     setMobileMenuOpen(false);
   };
 
+  const handleLogout = () => {
+    logout();
+    navigate('/?login=true');
+  };
+
   return (
     <div className="app-shell">
       {/* Mobile Backdrop */}
@@ -291,7 +296,7 @@ export const AppShell: React.FC = () => {
               </div>
               <button
                 className="btn-ghost"
-                onClick={logout}
+                onClick={handleLogout}
                 title="Sign Out"
                 aria-label="Sign out"
                 style={{ padding: '6px' }}

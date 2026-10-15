@@ -323,7 +323,7 @@ export const SEOWorkspacePage: React.FC = () => {
 
             <form onSubmit={handleGenerateSeoDraft} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
               <div>
-                <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#CBD5E1', marginBottom: '6px' }}>
+                <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#111625', marginBottom: '6px' }}>
                   Target Keyword
                 </label>
                 <input
@@ -337,7 +337,7 @@ export const SEOWorkspacePage: React.FC = () => {
               </div>
 
               <div>
-                <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#CBD5E1', marginBottom: '6px' }}>
+                <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#111625', marginBottom: '6px' }}>
                   Target Audience
                 </label>
                 <input
@@ -350,7 +350,7 @@ export const SEOWorkspacePage: React.FC = () => {
 
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
                 <div>
-                  <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#CBD5E1', marginBottom: '6px' }}>
+                  <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#111625', marginBottom: '6px' }}>
                     Content Type
                   </label>
                   <select className="input-field" value={seoContentType} onChange={(e) => setSeoContentType(e.target.value)}>
@@ -361,7 +361,7 @@ export const SEOWorkspacePage: React.FC = () => {
                 </div>
 
                 <div>
-                  <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#CBD5E1', marginBottom: '6px' }}>
+                  <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#111625', marginBottom: '6px' }}>
                     Voice & Tone
                   </label>
                   <select className="input-field" value={seoTone} onChange={(e) => setSeoTone(e.target.value)}>
@@ -408,14 +408,14 @@ export const SEOWorkspacePage: React.FC = () => {
                   flex: 1,
                   padding: '16px',
                   borderRadius: '10px',
-                  background: 'rgba(255, 255, 255, 0.02)',
-                  border: '1px solid rgba(255, 255, 255, 0.05)',
+                  background: '#FAFBFD',
+                  border: '1px solid #E8ECF5',
                   overflowY: 'auto',
                   maxHeight: '400px',
                   whiteSpace: 'pre-wrap',
                   fontSize: '13px',
                   lineHeight: '1.6',
-                  color: '#E2E8F0'
+                  color: '#111625'
                 }}
               >
                 {generatedSeoDraft}

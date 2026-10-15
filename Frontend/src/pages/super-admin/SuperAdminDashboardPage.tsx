@@ -152,7 +152,7 @@ export const SuperAdminDashboardPage: React.FC = () => {
                 { month: 'Oct', count: '1,424', height: '90%', active: true }
               ].map((bar) => (
                 <div key={bar.month} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', height: '100%', justifyContent: 'flex-end', gap: '8px' }}>
-                  <span style={{ fontSize: '11px', fontWeight: '700', color: bar.active ? '#DDD6FE' : '#94A3B8' }}>{bar.count}</span>
+                  <span style={{ fontSize: '11px', fontWeight: '700', color: bar.active ? '#6E56CF' : '#8C97B0' }}>{bar.count}</span>
                   <div
                     style={{
                       width: '100%',
@@ -160,14 +160,14 @@ export const SuperAdminDashboardPage: React.FC = () => {
                       height: bar.height,
                       borderRadius: '6px 6px 0 0',
                       background: bar.active
-                        ? 'linear-gradient(180deg, #A78BFA 0%, #7C3AED 100%)'
-                        : 'rgba(255, 255, 255, 0.08)',
-                      border: bar.active ? '1px solid rgba(196, 181, 253, 0.4)' : '1px solid rgba(255, 255, 255, 0.05)',
-                      boxShadow: bar.active ? '0 0 16px rgba(124, 58, 237, 0.35)' : 'none',
+                        ? 'linear-gradient(180deg, #A78BFA 0%, #6E56CF 100%)'
+                        : '#E8ECF5',
+                      border: bar.active ? '1px solid rgba(110, 86, 207, 0.4)' : '1px solid #E2E8F0',
+                      boxShadow: bar.active ? '0 0 16px rgba(110, 86, 207, 0.25)' : 'none',
                       transition: 'height 0.4s ease'
                     }}
                   />
-                  <span style={{ fontSize: '11px', color: '#64748B' }}>{bar.month}</span>
+                  <span style={{ fontSize: '11px', color: '#5F6B85' }}>{bar.month}</span>
                 </div>
               ))}
             </div>

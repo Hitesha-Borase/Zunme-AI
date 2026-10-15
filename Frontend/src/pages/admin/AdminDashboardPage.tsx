@@ -144,12 +144,12 @@ export const AdminDashboardPage: React.FC = () => {
                       height: bar.h,
                       borderRadius: '6px 6px 0 0',
                       background: bar.active
-                        ? 'linear-gradient(180deg, #A78BFA 0%, #635BFF 100%)'
-                        : 'rgba(255, 255, 255, 0.08)',
-                      border: bar.active ? '1px solid rgba(196, 181, 253, 0.4)' : '1px solid rgba(255, 255, 255, 0.05)'
+                        ? 'linear-gradient(180deg, #A78BFA 0%, #6E56CF 100%)'
+                        : '#E8ECF5',
+                      border: bar.active ? '1px solid rgba(110, 86, 207, 0.4)' : '1px solid #E2E8F0'
                     }}
                   />
-                  <span style={{ fontSize: '11px', color: '#64748B' }}>{bar.day}</span>
+                  <span style={{ fontSize: '11px', color: '#5F6B85' }}>{bar.day}</span>
                 </div>
               ))}
             </div>
@@ -245,15 +245,16 @@ export const AdminDashboardPage: React.FC = () => {
                 justifyContent: 'space-between',
                 padding: '10px 14px',
                 borderRadius: '8px',
-                background: 'rgba(255,255,255,0.02)',
+                background: '#FAFBFD',
+                border: '1px solid #E8ECF5',
                 fontSize: '12px'
               }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                 <span className={`status-chip ${act.badge}`}>{act.action}</span>
-                <span style={{ color: '#CBD5E1' }}>{act.desc}</span>
+                <span style={{ color: '#111625' }}>{act.desc}</span>
               </div>
-              <span style={{ color: '#64748B', fontSize: '11px' }}>{act.time}</span>
+              <span style={{ color: '#5F6B85', fontSize: '11px' }}>{act.time}</span>
             </div>
           ))}
         </div>

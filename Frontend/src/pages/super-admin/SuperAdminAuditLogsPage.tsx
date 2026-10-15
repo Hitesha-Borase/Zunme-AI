@@ -239,7 +239,7 @@ export const SuperAdminAuditLogsPage: React.FC = () => {
                 <label style={{ display: 'block', fontSize: '11px', fontWeight: '700', color: '#111625', textTransform: 'uppercase', marginBottom: '6px' }}>
                   Resource Affected & Mutation Details
                 </label>
-                <div style={{ padding: '12px', background: 'rgba(255,255,255,0.03)', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.08)', color: '#CBD5E1' }}>
+                <div style={{ padding: '12px', background: '#FAFBFD', borderRadius: '8px', border: '1px solid #E8ECF5', color: '#111625' }}>
                   {selectedLog.resource}
                 </div>
               </div>
