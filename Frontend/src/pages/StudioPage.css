@@ -1,5 +1,5 @@
 .studio-page {
-  padding: 32px 24px;
+  padding: 36px 24px;
   max-width: 960px;
   width: 100%;
   margin: 0 auto;
@@ -10,15 +10,15 @@
 }
 
 .studio-title {
-  font-size: 24px;
-  font-weight: 700;
-  color: var(--color-text-primary);
-  letter-spacing: -0.02em;
+  font-size: 26px;
+  font-weight: 800;
+  color: #FFFFFF;
+  letter-spacing: -0.025em;
   margin-bottom: 6px;
 }
 
 .studio-desc {
-  font-size: 14px;
+  font-size: 14.5px;
   color: var(--color-text-secondary);
 }
 
@@ -28,19 +28,22 @@
   gap: 28px;
 }
 
-/* Category Toggle */
+/* Category Toggle - Apple Glass Segmented Control */
 .category-toggle-tabs {
   display: flex;
-  background-color: var(--color-surface-secondary);
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   padding: 4px;
   border-radius: var(--radius-lg);
-  border: 1px solid var(--color-border);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   margin-bottom: 24px;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .category-tab-btn {
   flex: 1;
-  padding: 8px 16px;
+  padding: 9px 16px;
   font-size: 13.5px;
   font-weight: 500;
   border-radius: var(--radius-md);
@@ -50,26 +53,29 @@
 }
 
 .category-tab-btn.active {
-  background-color: #FFFFFF;
-  color: var(--color-primary);
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.3) 0%, rgba(99, 91, 255, 0.2) 100%);
+  color: #DDD6FE;
   font-weight: 600;
-  box-shadow: var(--shadow-xs);
+  border: 1px solid rgba(139, 92, 246, 0.35);
+  box-shadow: 0 4px 14px rgba(124, 58, 237, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
-/* Form Container Card */
+/* Form Container Card with Apple Glass */
 .studio-form-card {
-  background-color: #FFFFFF;
-  border: 1px solid var(--color-border);
+  background: rgba(18, 22, 34, 0.72);
+  backdrop-filter: blur(24px) saturate(190%);
+  -webkit-backdrop-filter: blur(24px) saturate(190%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: var(--radius-xl);
-  padding: 24px;
-  box-shadow: var(--shadow-xs);
+  padding: 28px;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.45), inset 0 1px 1px 0 rgba(255, 255, 255, 0.12);
 }
 
 .form-grid-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  margin-bottom: 16px;
+  gap: 18px;
+  margin-bottom: 18px;
 }
 
 /* Tone & Length Chips */
@@ -81,8 +87,9 @@
 
 .pill-option-btn {
   padding: 6px 14px;
-  background-color: var(--color-surface-secondary);
-  border: 1px solid var(--color-border);
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--radius-full);
   font-size: 12.5px;
   color: var(--color-text-secondary);
@@ -91,19 +98,22 @@
 }
 
 .pill-option-btn.selected {
-  background-color: var(--color-primary-light);
-  border-color: var(--color-primary);
-  color: var(--color-primary);
+  background: rgba(124, 58, 237, 0.25);
+  border-color: rgba(139, 92, 246, 0.45);
+  color: #DDD6FE;
   font-weight: 600;
+  box-shadow: 0 0 14px rgba(124, 58, 237, 0.3);
 }
 
-/* Output Result Pane */
+/* Output Result Pane with Apple Glass */
 .studio-output-card {
-  background-color: #FFFFFF;
-  border: 1px solid var(--color-border);
+  background: rgba(18, 22, 34, 0.72);
+  backdrop-filter: blur(24px) saturate(190%);
+  -webkit-backdrop-filter: blur(24px) saturate(190%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-sm);
-  padding: 24px;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.45), inset 0 1px 1px 0 rgba(255, 255, 255, 0.12);
+  padding: 28px;
   animation: fadeIn 200ms ease-out;
 }
 
@@ -111,9 +121,9 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 16px;
-  padding-bottom: 14px;
-  border-bottom: 1px solid var(--color-border-subtle);
+  margin-bottom: 18px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   flex-wrap: wrap;
   gap: 12px;
 }
@@ -124,16 +134,21 @@
   gap: 10px;
 }
 
+.output-title-area h3 {
+  color: #FFFFFF;
+}
+
 .output-text-content {
   font-size: 14.5px;
   line-height: 1.7;
-  color: var(--color-text-primary);
+  color: #E2E8F0;
   white-space: pre-wrap;
-  background-color: #FBFBFC;
-  padding: 20px;
+  background: rgba(10, 13, 20, 0.6);
+  padding: 22px;
   border-radius: var(--radius-md);
-  border: 1px solid var(--color-border-subtle);
-  margin-bottom: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  margin-bottom: 20px;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 @media (max-width: 768px) {

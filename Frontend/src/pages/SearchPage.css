@@ -1,5 +1,5 @@
 .search-page {
-  padding: 32px 24px;
+  padding: 36px 24px;
   max-width: 920px;
   width: 100%;
   margin: 0 auto;
@@ -10,35 +10,38 @@
 }
 
 .search-page-title {
-  font-size: 24px;
-  font-weight: 700;
-  color: var(--color-text-primary);
-  letter-spacing: -0.02em;
+  font-size: 26px;
+  font-weight: 800;
+  color: #FFFFFF;
+  letter-spacing: -0.025em;
   margin-bottom: 6px;
 }
 
 .search-page-desc {
-  font-size: 14px;
+  font-size: 14.5px;
   color: var(--color-text-secondary);
 }
 
-/* Search Bar */
+/* Apple Frosted Glass Search Bar */
 .search-form-box {
-  background-color: #FFFFFF;
-  border: 1px solid var(--color-border);
+  background: rgba(18, 22, 34, 0.75);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: var(--radius-xl);
-  padding: 8px 12px 8px 16px;
-  box-shadow: var(--shadow-sm);
+  padding: 8px 12px 8px 18px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 1px 0 rgba(255, 255, 255, 0.15);
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 20px;
-  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  gap: 14px;
+  margin-bottom: 22px;
+  transition: all var(--transition-fast);
 }
 
 .search-form-box:focus-within {
-  border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px var(--color-primary-ring);
+  border-color: rgba(139, 92, 246, 0.5);
+  box-shadow: 0 0 0 3px var(--color-primary-ring), 0 8px 32px rgba(0, 0, 0, 0.5);
+  background: rgba(22, 28, 44, 0.85);
 }
 
 .search-input-field {
@@ -46,8 +49,12 @@
   border: none;
   outline: none;
   font-size: 15px;
-  color: var(--color-text-primary);
+  color: #FFFFFF;
   background: transparent;
+}
+
+.search-input-field::placeholder {
+  color: var(--color-text-tertiary);
 }
 
 /* Query Chips */
@@ -56,21 +63,22 @@
   align-items: center;
   gap: 8px;
   flex-wrap: wrap;
-  margin-bottom: 32px;
+  margin-bottom: 34px;
 }
 
 .chips-label {
   font-size: 12px;
   font-weight: 600;
-  color: var(--color-text-tertiary);
+  color: var(--color-text-muted);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
 }
 
 .query-chip {
-  padding: 4px 12px;
-  background-color: var(--color-surface-secondary);
-  border: 1px solid var(--color-border);
+  padding: 5px 14px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--radius-full);
   font-size: 12.5px;
   color: var(--color-text-secondary);
@@ -79,30 +87,34 @@
 }
 
 .query-chip:hover {
-  background-color: var(--color-primary-light);
-  border-color: rgba(99, 91, 255, 0.3);
-  color: var(--color-primary);
+  background: rgba(124, 58, 237, 0.2);
+  border-color: rgba(139, 92, 246, 0.4);
+  color: #DDD6FE;
+  box-shadow: 0 0 16px rgba(124, 58, 237, 0.25);
+  transform: translateY(-1px);
 }
 
 /* Search Loading Animation */
 .search-loading-card {
-  background-color: #FFFFFF;
-  border: 1px solid var(--color-border);
+  background: rgba(18, 22, 34, 0.7);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: var(--radius-lg);
-  padding: 36px;
+  padding: 40px;
   text-align: center;
-  box-shadow: var(--shadow-xs);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
   margin-bottom: 24px;
 }
 
 .search-spinner {
-  width: 36px;
-  height: 36px;
-  border: 3px solid var(--color-surface-secondary);
-  border-top-color: var(--color-primary);
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(255, 255, 255, 0.08);
+  border-top-color: #A78BFA;
   border-radius: 50%;
   animation: spin 800ms linear infinite;
   margin: 0 auto 16px;
+  box-shadow: 0 0 16px rgba(124, 58, 237, 0.4);
 }
 
 @keyframes spin {
@@ -113,30 +125,35 @@
 .research-results-container {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 26px;
 }
 
+/* Apple Frosted Glass Summary Card */
 .summary-card {
-  background-color: #FFFFFF;
-  border: 1px solid var(--color-border);
+  background: rgba(18, 22, 34, 0.72);
+  backdrop-filter: blur(24px) saturate(190%);
+  -webkit-backdrop-filter: blur(24px) saturate(190%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: var(--radius-lg);
-  padding: 24px;
-  box-shadow: var(--shadow-xs);
+  padding: 26px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45), inset 0 1px 1px 0 rgba(255, 255, 255, 0.12);
 }
 
 .summary-top {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 14px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid var(--color-border-subtle);
+  margin-bottom: 16px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 .summary-title {
-  font-size: 16px;
+  font-size: 16.5px;
   font-weight: 700;
-  color: var(--color-text-primary);
+  color: #FFFFFF;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -144,9 +161,9 @@
 
 .summary-body {
   font-size: 14.5px;
-  line-height: 1.65;
-  color: var(--color-text-primary);
-  margin-bottom: 18px;
+  line-height: 1.7;
+  color: #E2E8F0;
+  margin-bottom: 20px;
 }
 
 /* Source Cards */
@@ -154,36 +171,39 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 14px;
+  margin-bottom: 16px;
 }
 
 .sources-title {
-  font-size: 15px;
+  font-size: 15.5px;
   font-weight: 700;
-  color: var(--color-text-primary);
+  color: #FFFFFF;
 }
 
 .sources-grid {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
 }
 
 .source-card {
-  background-color: #FFFFFF;
-  border: 1px solid var(--color-border);
+  background: rgba(17, 21, 33, 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.09);
   border-radius: var(--radius-md);
-  padding: 16px;
-  box-shadow: var(--shadow-xs);
+  padding: 18px 20px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35), inset 0 1px 0 0 rgba(255, 255, 255, 0.06);
   transition: all var(--transition-fast);
   text-decoration: none;
   display: block;
 }
 
 .source-card:hover {
-  border-color: var(--color-primary);
-  box-shadow: var(--shadow-sm);
-  transform: translateY(-1px);
+  background: rgba(25, 31, 48, 0.8);
+  border-color: rgba(139, 92, 246, 0.4);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.5), 0 0 20px rgba(124, 58, 237, 0.2);
+  transform: translateY(-2px);
 }
 
 .source-meta-row {
@@ -196,18 +216,18 @@
 .source-domain {
   font-size: 12px;
   font-weight: 600;
-  color: var(--color-primary);
+  color: #A78BFA;
 }
 
 .source-date {
   font-size: 11.5px;
-  color: var(--color-text-tertiary);
+  color: var(--color-text-muted);
 }
 
 .source-headline {
-  font-size: 14px;
+  font-size: 14.5px;
   font-weight: 600;
-  color: var(--color-text-primary);
+  color: #FFFFFF;
   margin-bottom: 6px;
   display: flex;
   align-items: center;
@@ -217,7 +237,7 @@
 .source-snippet {
   font-size: 13px;
   color: var(--color-text-secondary);
-  line-height: 1.5;
+  line-height: 1.55;
 }
 
 @media (max-width: 768px) {
