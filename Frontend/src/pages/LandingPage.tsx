@@ -347,22 +347,6 @@ export const LandingPage: React.FC = () => {
             Search the web, create compelling content, and organize your work with AI-powered tools in one connected workspace.
           </p>
 
-          {/* Hero CTA Group */}
-          <div className="hero-cta-group">
-            <NavLink to="/register" className="btn btn-primary btn-lg hero-cta-btn">
-              <span>Get Started</span>
-              <ArrowRight size={18} />
-            </NavLink>
-            <button
-              type="button"
-              onClick={() => setShowLoginModal(true)}
-              className="btn btn-secondary btn-lg hero-secondary-btn"
-            >
-              <span>Sign In / Login</span>
-              <ArrowRight size={16} />
-            </button>
-          </div>
-
           {/* Micro trust indicators */}
           <div className="hero-micro-signals">
             <div className="signal-item">
@@ -1157,21 +1141,6 @@ export const LandingPage: React.FC = () => {
               Explore AI-powered tools for searching, creating, and organizing your work.
             </p>
 
-            {/* CTA Buttons */}
-            <div className="cta-buttons-row">
-              <NavLink to="/register" className="btn btn-primary btn-lg cta-primary-btn">
-                <span>Get Started</span>
-                <ArrowRight size={17} />
-              </NavLink>
-              <button
-                type="button"
-                onClick={() => setShowLoginModal(true)}
-                className="btn btn-outline btn-lg cta-secondary-btn"
-              >
-                Sign In / Workspaces
-              </button>
-            </div>
-
             <div className="cta-subtext">
               <span>Free Starter access · No credit card required · Instant setup</span>
             </div>
@@ -1205,16 +1174,52 @@ export const LandingPage: React.FC = () => {
                 <h4>Product</h4>
                 <ul>
                   <li>
-                    <NavLink to="/app/chat">AI Assistant</NavLink>
+                    <a
+                      href="#showcase"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setActiveShowcaseTab('chat');
+                        document.getElementById('showcase')?.scrollIntoView({ behavior: 'smooth' });
+                      }}
+                    >
+                      AI Assistant
+                    </a>
                   </li>
                   <li>
-                    <NavLink to="/app/search">Live Web Search</NavLink>
+                    <a
+                      href="#showcase"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setActiveShowcaseTab('search');
+                        document.getElementById('showcase')?.scrollIntoView({ behavior: 'smooth' });
+                      }}
+                    >
+                      Live Web Search
+                    </a>
                   </li>
                   <li>
-                    <NavLink to="/app/studio">Content Studio</NavLink>
+                    <a
+                      href="#showcase"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setActiveShowcaseTab('studio');
+                        document.getElementById('showcase')?.scrollIntoView({ behavior: 'smooth' });
+                      }}
+                    >
+                      Content Studio
+                    </a>
                   </li>
                   <li>
-                    <NavLink to="/app/library">Personal Library</NavLink>
+                    <a
+                      href="#showcase"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setActiveShowcaseTab('library');
+                        document.getElementById('showcase')?.scrollIntoView({ behavior: 'smooth' });
+                      }}
+                    >
+                      Personal Library
+                    </a>
                   </li>
                   <li>
                     <a href="#pricing">Plans &amp; Pricing</a>
