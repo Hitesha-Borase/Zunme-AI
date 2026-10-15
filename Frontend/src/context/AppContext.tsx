@@ -1,6 +1,7 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 import {
   User,
+  UserRole,
   Conversation,
   ChatMessage,
   SearchResult,
@@ -11,7 +12,16 @@ import {
   ContentCategory,
   ContentFormat,
   ContentTone,
-  ContentLength
+  ContentLength,
+  AuditLogEntry,
+  PricingPlan,
+  WarehouseAsset,
+  CreatorSubmission,
+  SEOKeyword,
+  BusinessProject,
+  BrandProfileData,
+  CalendarEvent,
+  PlatformIntegration
 } from '../types';
 
 interface AppContextType {
@@ -22,6 +32,7 @@ interface AppContextType {
   logout: () => void;
   updateProfile: (fullName: string) => void;
   toggleRole: () => void;
+  setRole: (role: UserRole) => void;
 
   // Conversations & Chat
   conversations: Conversation[];
@@ -59,9 +70,39 @@ interface AppContextType {
   toasts: ToastMessage[];
   showToast: (text: string, type?: ToastMessage['type']) => void;
 
-  // Admin
+  // Admin & Super Admin
   adminUsers: AdminUser[];
   toggleUserStatus: (id: string) => void;
+  auditLogs: AuditLogEntry[];
+  addAuditLog: (entry: Omit<AuditLogEntry, 'id' | 'timestamp'>) => void;
+  pricingPlans: PricingPlan[];
+  updatePricingPlan: (id: string, updates: Partial<PricingPlan>) => void;
+
+  // AI Warehouse
+  warehouseAssets: WarehouseAsset[];
+  toggleAssetSaved: (id: string) => void;
+
+  // Creator Studio
+  creatorSubmissions: CreatorSubmission[];
+  addCreatorSubmission: (sub: Omit<CreatorSubmission, 'id' | 'submittedAt' | 'downloads'>) => void;
+  updateCreatorSubmissionStatus: (id: string, status: CreatorSubmission['status']) => void;
+
+  // SEO Workspace
+  seoKeywords: SEOKeyword[];
+  addSeoKeyword: (kw: Omit<SEOKeyword, 'id'>) => void;
+  deleteSeoKeyword: (id: string) => void;
+
+  // Business Workspace
+  businessProjects: BusinessProject[];
+  addBusinessProject: (proj: Omit<BusinessProject, 'id'>) => void;
+  brandProfile: BrandProfileData;
+  updateBrandProfile: (data: Partial<BrandProfileData>) => void;
+  calendarEvents: CalendarEvent[];
+  addCalendarEvent: (event: Omit<CalendarEvent, 'id'>) => void;
+
+  // Integrations
+  integrations: PlatformIntegration[];
+  toggleIntegrationStatus: (id: string) => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);

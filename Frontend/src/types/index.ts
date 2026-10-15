@@ -1,4 +1,4 @@
-export type UserRole = 'USER' | 'ADMIN';
+export type UserRole = 'USER' | 'ADMIN' | 'SUPER_ADMIN';
 
 export interface User {
   id: string;
@@ -96,3 +96,106 @@ export interface AdminUser {
   conversationsCount: number;
   savedItemsCount: number;
 }
+
+export interface AuditLogEntry {
+  id: string;
+  actor: string;
+  role: string;
+  action: string;
+  resource: string;
+  ipAddress: string;
+  timestamp: string;
+  status: 'SUCCESS' | 'WARNING' | 'FAILED';
+}
+
+export interface PricingPlan {
+  id: string;
+  name: string;
+  price: string;
+  billingPeriod: string;
+  description: string;
+  features: string[];
+  badge?: string;
+  isCurrent?: boolean;
+  activeSubscribers: number;
+}
+
+export interface WarehouseAsset {
+  id: string;
+  title: string;
+  description: string;
+  category: 'Prompts' | 'Templates' | 'Workflows' | 'Copy Packs' | 'Scripts';
+  creatorName: string;
+  creatorAvatar?: string;
+  isVerifiedCreator?: boolean;
+  tags: string[];
+  licensing: 'Standard Community' | 'Commercial Pro' | 'Open Source';
+  downloads: number;
+  likes: number;
+  format: string;
+  rating: number;
+  createdAt: string;
+  isSaved?: boolean;
+}
+
+export interface CreatorSubmission {
+  id: string;
+  title: string;
+  type: string;
+  category: string;
+  status: 'APPROVED' | 'IN_REVIEW' | 'CHANGES_REQUESTED' | 'DRAFT';
+  submittedAt: string;
+  downloads: number;
+  feedback?: string;
+}
+
+export interface SEOKeyword {
+  id: string;
+  keyword: string;
+  searchVolume: string;
+  difficulty: 'Easy' | 'Moderate' | 'Hard' | 'Very Hard';
+  difficultyScore: number;
+  cpc: string;
+  intent: 'Informational' | 'Commercial' | 'Transactional' | 'Navigational';
+  status: 'Identified' | 'Targeted' | 'In Content' | 'Ranking';
+}
+
+export interface BusinessProject {
+  id: string;
+  name: string;
+  category: 'Marketing Campaign' | 'Product Launch' | 'Brand Rebrand' | 'SEO Revamp';
+  status: 'IN_PROGRESS' | 'PLANNED' | 'COMPLETED' | 'ON_HOLD';
+  dueDate: string;
+  progress: number;
+  description: string;
+  tasksCount: number;
+}
+
+export interface BrandProfileData {
+  brandName: string;
+  tagline: string;
+  voiceTone: string;
+  targetAudience: string;
+  coreValues: string;
+  missionStatement: string;
+}
+
+export interface CalendarEvent {
+  id: string;
+  title: string;
+  platform: 'Blog' | 'LinkedIn' | 'Twitter / X' | 'Newsletter' | 'Instagram';
+  date: string;
+  status: 'Scheduled' | 'Draft' | 'Published';
+  format: string;
+}
+
+export interface PlatformIntegration {
+  id: string;
+  name: string;
+  category: 'Search API' | 'LLM Engine' | 'CRM' | 'Storage' | 'Analytics';
+  status: 'CONNECTED' | 'DISCONNECTED' | 'MAINTENANCE';
+  connectedAt?: string;
+  latency?: string;
+  description: string;
+}
+

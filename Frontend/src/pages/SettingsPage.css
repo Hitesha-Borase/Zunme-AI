@@ -1,5 +1,5 @@
 .settings-page {
-  padding: 32px 24px;
+  padding: 36px 24px;
   max-width: 800px;
   width: 100%;
   margin: 0 auto;
@@ -10,69 +10,74 @@
 }
 
 .settings-title {
-  font-size: 24px;
-  font-weight: 700;
-  color: var(--color-text-primary);
-  letter-spacing: -0.02em;
+  font-size: 26px;
+  font-weight: 800;
+  color: #FFFFFF;
+  letter-spacing: -0.025em;
   margin-bottom: 6px;
 }
 
 .settings-desc {
-  font-size: 14px;
+  font-size: 14.5px;
   color: var(--color-text-secondary);
 }
 
+/* Apple Frosted Glass Settings Card */
 .settings-card {
-  background-color: #FFFFFF;
-  border: 1px solid var(--color-border);
+  background: rgba(18, 22, 34, 0.72);
+  backdrop-filter: blur(24px) saturate(190%);
+  -webkit-backdrop-filter: blur(24px) saturate(190%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: var(--radius-xl);
-  padding: 24px;
-  box-shadow: var(--shadow-xs);
-  margin-bottom: 24px;
+  padding: 28px;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.45), inset 0 1px 1px 0 rgba(255, 255, 255, 0.12);
+  margin-bottom: 26px;
 }
 
 .settings-card-title {
-  font-size: 16px;
+  font-size: 16.5px;
   font-weight: 700;
-  color: var(--color-text-primary);
+  color: #FFFFFF;
   margin-bottom: 4px;
 }
 
 .settings-card-subtitle {
   font-size: 13px;
   color: var(--color-text-secondary);
-  margin-bottom: 20px;
+  margin-bottom: 22px;
 }
 
 .settings-avatar-row {
   display: flex;
   align-items: center;
   gap: 16px;
-  margin-bottom: 20px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid var(--color-border-subtle);
+  margin-bottom: 22px;
+  padding-bottom: 22px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .large-avatar-circle {
-  width: 56px;
-  height: 56px;
+  width: 58px;
+  height: 58px;
   border-radius: 50%;
-  background-color: var(--color-primary);
+  background: linear-gradient(135deg, #7C3AED 0%, #635BFF 100%);
   color: #FFFFFF;
   font-size: 20px;
   font-weight: 700;
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 0 20px rgba(124, 58, 237, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.3);
 }
 
 .danger-zone-card {
-  border-color: var(--color-error-border);
-  background-color: #FFFDFD;
+  border-color: rgba(244, 63, 94, 0.25);
+  background: rgba(30, 16, 24, 0.65);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.45), 0 0 24px rgba(244, 63, 94, 0.1);
 }
 
 .danger-zone-card .settings-card-title {
-  color: var(--color-error);
+  color: #FB7185;
 }
 
 @media (max-width: 640px) {

@@ -3,15 +3,27 @@
   height: 100vh;
   width: 100vw;
   overflow: hidden;
-  background-color: var(--color-bg);
+  background-color: #0A0D18;
+  background-image: 
+    linear-gradient(rgba(139, 92, 246, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(139, 92, 246, 0.05) 1px, transparent 1px),
+    radial-gradient(circle 800px at 20% -10%, rgba(124, 58, 237, 0.28) 0%, transparent 70%),
+    radial-gradient(circle 600px at 85% 10%, rgba(99, 102, 241, 0.22) 0%, transparent 65%),
+    radial-gradient(circle 700px at 50% 90%, rgba(124, 58, 237, 0.18) 0%, transparent 70%),
+    linear-gradient(180deg, #0C0F1D 0%, #111528 50%, #090B14 100%);
+  background-size: 44px 44px, 44px 44px, 100% 100%, 100% 100%, 100% 100%, 100% 100%;
+  background-attachment: fixed;
 }
 
-/* Sidebar */
+/* Apple Frosted Glass Sidebar */
 .app-sidebar {
   width: var(--sidebar-width);
   height: 100%;
-  background-color: var(--color-surface-card);
-  border-right: 1px solid var(--color-border);
+  background: rgba(11, 14, 23, 0.75);
+  backdrop-filter: blur(28px) saturate(190%);
+  -webkit-backdrop-filter: blur(28px) saturate(190%);
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: inset -1px 0 0 0 rgba(255, 255, 255, 0.04), 10px 0 30px rgba(0, 0, 0, 0.35);
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
@@ -20,11 +32,11 @@
 }
 
 .sidebar-brand-section {
-  padding: 16px;
+  padding: 16px 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid var(--color-border-subtle);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .brand-link {
@@ -40,7 +52,7 @@
 .brand-icon-box {
   width: 32px;
   height: 32px;
-  background-color: var(--color-primary);
+  background: linear-gradient(135deg, #7C3AED 0%, #635BFF 100%);
   color: #FFFFFF;
   border-radius: var(--radius-md);
   display: flex;
@@ -48,18 +60,19 @@
   justify-content: center;
   font-weight: 800;
   font-size: 16px;
+  box-shadow: 0 0 16px rgba(124, 58, 237, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.3);
 }
 
 .sidebar-new-chat-box {
-  padding: 12px 16px 8px;
+  padding: 14px 16px 8px;
 }
 
 .btn-new-chat {
   width: 100%;
   padding: 10px 14px;
-  background-color: var(--color-primary-light);
-  color: var(--color-primary);
-  border: 1px solid rgba(99, 91, 255, 0.2);
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.22) 0%, rgba(99, 91, 255, 0.12) 100%);
+  color: #C4B5FD;
+  border: 1px solid rgba(139, 92, 246, 0.35);
   border-radius: var(--radius-md);
   display: flex;
   align-items: center;
@@ -67,13 +80,16 @@
   gap: 8px;
   font-weight: 600;
   font-size: 13.5px;
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.1), 0 4px 14px -2px rgba(124, 58, 237, 0.25);
   transition: all var(--transition-fast);
 }
 
 .btn-new-chat:hover {
-  background-color: var(--color-primary);
+  background: linear-gradient(135deg, #7C3AED 0%, #635BFF 100%);
   color: #FFFFFF;
-  box-shadow: var(--shadow-sm);
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 20px rgba(124, 58, 237, 0.6);
+  transform: translateY(-1px);
 }
 
 .sidebar-nav-list {
@@ -87,32 +103,36 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 8px 12px;
+  padding: 9px 12px;
   font-size: 13.5px;
   font-weight: 500;
   color: var(--color-text-secondary);
   border-radius: var(--radius-md);
+  border: 1px solid transparent;
   transition: all var(--transition-fast);
 }
 
 .sidebar-nav-item:hover {
-  background-color: var(--color-surface-secondary);
+  background: rgba(255, 255, 255, 0.05);
   color: var(--color-text-primary);
+  border-color: rgba(255, 255, 255, 0.06);
 }
 
 .sidebar-nav-item.active {
-  background-color: var(--color-primary-light);
-  color: var(--color-primary);
+  background: rgba(124, 58, 237, 0.18);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  color: #DDD6FE;
   font-weight: 600;
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.08), 0 0 16px rgba(124, 58, 237, 0.15);
 }
 
 .sidebar-section-divider {
-  padding: 12px 16px 6px;
+  padding: 14px 16px 6px;
   font-size: 11px;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--color-text-tertiary);
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -131,11 +151,12 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 7px 10px;
+  padding: 8px 10px;
   font-size: 12.5px;
   color: var(--color-text-secondary);
   border-radius: var(--radius-sm);
-  transition: background-color var(--transition-fast);
+  border: 1px solid transparent;
+  transition: all var(--transition-fast);
   cursor: pointer;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -143,13 +164,15 @@
 }
 
 .history-item:hover {
-  background-color: var(--color-surface-secondary);
+  background: rgba(255, 255, 255, 0.05);
   color: var(--color-text-primary);
+  border-color: rgba(255, 255, 255, 0.06);
 }
 
 .history-item.active {
-  background-color: var(--color-surface-secondary);
-  color: var(--color-primary);
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #C4B5FD;
   font-weight: 500;
 }
 
@@ -162,7 +185,7 @@
 
 .history-delete-btn {
   opacity: 0;
-  color: var(--color-text-tertiary);
+  color: var(--color-text-muted);
   padding: 2px;
   border-radius: 4px;
   transition: opacity var(--transition-fast), color var(--transition-fast);
@@ -177,9 +200,9 @@
 }
 
 .sidebar-footer {
-  padding: 12px 16px;
-  border-top: 1px solid var(--color-border);
-  background-color: #FFFFFF;
+  padding: 14px 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(11, 14, 23, 0.5);
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -189,22 +212,26 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 8px;
+  padding: 8px 10px;
   border-radius: var(--radius-md);
-  background-color: var(--color-surface-secondary);
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.06);
 }
 
 .user-avatar-circle {
   width: 32px;
   height: 32px;
   border-radius: var(--radius-full);
-  background-color: var(--color-primary);
+  background: linear-gradient(135deg, #7C3AED 0%, #635BFF 100%);
   color: #FFFFFF;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 600;
+  font-weight: 700;
   font-size: 13px;
+  box-shadow: 0 0 10px rgba(124, 58, 237, 0.4);
 }
 
 .user-meta-info {
@@ -237,19 +264,23 @@
   flex-direction: column;
   height: 100%;
   overflow: hidden;
-  background-color: var(--color-bg);
+  background: transparent;
 }
 
+/* Apple Frosted Glass Topbar */
 .app-topbar {
   height: var(--header-height);
-  border-bottom: 1px solid var(--color-border);
-  background-color: #FFFFFF;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(11, 14, 23, 0.65);
+  backdrop-filter: blur(24px) saturate(190%);
+  -webkit-backdrop-filter: blur(24px) saturate(190%);
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 24px;
   flex-shrink: 0;
   z-index: 50;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
 }
 
 .topbar-left {
@@ -262,6 +293,7 @@
   font-size: 17px;
   font-weight: 600;
   color: var(--color-text-primary);
+  letter-spacing: -0.01em;
 }
 
 .topbar-right {
@@ -287,7 +319,7 @@
     bottom: 0;
     width: 280px;
     transform: translateX(-100%);
-    box-shadow: var(--shadow-xl);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
   }
 
   .app-sidebar.open {
@@ -297,7 +329,8 @@
   .sidebar-backdrop {
     position: fixed;
     inset: 0;
-    background-color: rgba(17, 24, 39, 0.4);
+    background-color: rgba(5, 7, 12, 0.7);
+    backdrop-filter: blur(12px);
     z-index: 99;
   }
 

@@ -59,6 +59,7 @@ export const LandingPage: React.FC = () => {
 
       {/* Hero Section */}
       <section className="hero-section">
+        <div className="hero-ambient-spotlight" aria-hidden="true" />
         <div className="landing-container">
           <div className="hero-badge">
             <Sparkles size={14} />
@@ -99,32 +100,32 @@ export const LandingPage: React.FC = () => {
             <div className="showcase-content">
               <div className="grid" style={{ gridTemplateColumns: '220px 1fr', gap: '20px', textAlign: 'left' }}>
                 {/* Mock Mini Sidebar */}
-                <div style={{ backgroundColor: '#FFFFFF', padding: '16px', borderRadius: '8px', border: '1px solid #E5E7EB' }}>
-                  <div style={{ fontSize: '12px', fontWeight: '700', color: '#635BFF', marginBottom: '12px' }}>
+                <div style={{ backgroundColor: 'rgba(255, 255, 255, 0.04)', padding: '16px', borderRadius: '12px', border: '1px solid rgba(255, 255, 255, 0.08)', backdropFilter: 'blur(16px)' }}>
+                  <div style={{ fontSize: '12px', fontWeight: '800', color: '#A78BFA', marginBottom: '14px', letterSpacing: '0.04em' }}>
                     ZUNME AI
                   </div>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '12px' }}>
-                    <div style={{ padding: '6px 8px', borderRadius: '6px', backgroundColor: '#F0EEFF', color: '#635BFF', fontWeight: '600' }}>
+                    <div style={{ padding: '7px 10px', borderRadius: '8px', backgroundColor: 'rgba(124, 58, 237, 0.25)', color: '#DDD6FE', fontWeight: '600', border: '1px solid rgba(139, 92, 246, 0.35)' }}>
                       💬 AI Assistant
                     </div>
-                    <div style={{ padding: '6px 8px', color: '#4B5563' }}>🔍 Web Search</div>
-                    <div style={{ padding: '6px 8px', color: '#4B5563' }}>✍️ Content Studio</div>
-                    <div style={{ padding: '6px 8px', color: '#4B5563' }}>📚 My Library</div>
+                    <div style={{ padding: '7px 10px', color: '#94A3B8' }}>🔍 Web Search</div>
+                    <div style={{ padding: '7px 10px', color: '#94A3B8' }}>✍️ Content Studio</div>
+                    <div style={{ padding: '7px 10px', color: '#94A3B8' }}>📚 My Library</div>
                   </div>
                 </div>
 
                 {/* Mock Mini Canvas */}
-                <div style={{ backgroundColor: '#FFFFFF', padding: '20px', borderRadius: '8px', border: '1px solid #E5E7EB' }}>
+                <div style={{ backgroundColor: 'rgba(255, 255, 255, 0.03)', padding: '20px', borderRadius: '12px', border: '1px solid rgba(255, 255, 255, 0.08)', backdropFilter: 'blur(16px)' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '14px' }}>
                     <div className="badge badge-success">Live Engine Connected</div>
-                    <span style={{ fontSize: '12px', color: '#6B7280' }}>Verified Sources: 3 Active</span>
+                    <span style={{ fontSize: '12px', color: '#64748B' }}>Verified Sources: 3 Active</span>
                   </div>
-                  <div style={{ backgroundColor: '#F9FAFB', padding: '12px', borderRadius: '6px', fontSize: '13px', marginBottom: '10px' }}>
-                    <strong>User:</strong> How do top creators streamline content ideation and live research?
+                  <div style={{ backgroundColor: 'rgba(255, 255, 255, 0.05)', padding: '12px 14px', borderRadius: '8px', fontSize: '13px', marginBottom: '12px', border: '1px solid rgba(255, 255, 255, 0.06)' }}>
+                    <strong style={{ color: '#DDD6FE' }}>User:</strong> How do top creators streamline content ideation and live research?
                   </div>
-                  <div style={{ backgroundColor: '#FFFFFF', border: '1px solid #E5E7EB', padding: '14px', borderRadius: '6px', fontSize: '13px', lineHeight: '1.5' }}>
-                    <strong>Zunme AI:</strong> Top creators use unified workflows: grounding topics with real-time web citations, generating structured drafts, and archiving proven hooks into their personal library...
-                    <div style={{ marginTop: '10px', display: 'flex', gap: '8px' }}>
+                  <div style={{ backgroundColor: 'rgba(17, 21, 33, 0.75)', border: '1px solid rgba(255, 255, 255, 0.1)', padding: '16px', borderRadius: '10px', fontSize: '13px', lineHeight: '1.6', color: '#E2E8F0', boxShadow: 'inset 0 1px 1px rgba(255, 255, 255, 0.1)' }}>
+                    <strong style={{ color: '#A78BFA' }}>Zunme AI:</strong> Top creators use unified workflows: grounding topics with real-time web citations, generating structured drafts, and archiving proven hooks into their personal library...
+                    <div style={{ marginTop: '12px', display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                       <span className="badge badge-primary">Citation [1] Cleantech Review</span>
                       <span className="badge badge-neutral">Save to Library</span>
                     </div>
