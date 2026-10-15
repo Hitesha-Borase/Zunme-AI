@@ -8,10 +8,17 @@ import {
   FileText,
   Layers,
   Send,
-  RefreshCw
+  RefreshCw,
+  Image as ImageIcon,
+  Video,
+  FileEdit
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { ContentCategory, ContentFormat, ContentTone, ContentLength } from '../types';
+import { ImageStudio } from '../components/studio/ImageStudio';
+import { VideoScriptStudio } from '../components/studio/VideoScriptStudio';
+import { DocumentCanvas } from '../components/studio/DocumentCanvas';
+import '../components/studio/StudioStyles.css';
 import './StudioPage.css';
 
 const TONES: ContentTone[] = [
@@ -37,6 +44,9 @@ export const StudioPage: React.FC = () => {
     showToast
   } = useApp();
 
+  const [activeStudioMode, setActiveStudioMode] = useState<'text' | 'image' | 'video' | 'canvas'>('text');
+
+  // Text Studio Form State
   const [category, setCategory] = useState<ContentCategory>('MARKETING');
   const [format, setFormat] = useState<ContentFormat>('EMAIL_NEWSLETTER');
   const [instructions, setInstructions] = useState(
@@ -79,195 +89,250 @@ export const StudioPage: React.FC = () => {
 
   return (
     <div className="studio-page">
+      {/* Studio Header */}
       <div className="studio-header-area">
-        <h1 className="studio-title">Content Studio</h1>
+        <h1 className="studio-title">Multi-Modal Content Studio</h1>
         <p className="studio-desc">
-          Generate structured, high-converting text content for articles, newsletters, ad campaigns, and social media.
+          Generate structured text articles, high-fidelity AI diffusion visuals, scene-by-scene video scripts, and rich canvas documents.
         </p>
       </div>
 
-      <div className="studio-layout-grid">
-        {/* Form Card */}
-        <div className="studio-form-card">
-          {/* Category Tabs */}
-          <div className="category-toggle-tabs">
-            <button
-              type="button"
-              className={`category-tab-btn ${category === 'TEXT' ? 'active' : ''}`}
-              onClick={() => {
-                setCategory('TEXT');
-                setFormat('BLOG_OUTLINE');
-              }}
-            >
-              Text & Articles
-            </button>
-            <button
-              type="button"
-              className={`category-tab-btn ${category === 'MARKETING' ? 'active' : ''}`}
-              onClick={() => {
-                setCategory('MARKETING');
-                setFormat('EMAIL_NEWSLETTER');
-              }}
-            >
-              Marketing & Social Copy
-            </button>
-          </div>
+      {/* Studio Mode Navigation */}
+      <div className="studio-tab-bar" style={{ marginBottom: '24px' }}>
+        <button
+          className={`studio-nav-pill ${activeStudioMode === 'text' ? 'active' : ''}`}
+          onClick={() => setActiveStudioMode('text')}
+        >
+          <PenTool size={15} />
+          <span>Text &amp; Copy Engine</span>
+        </button>
 
-          <form onSubmit={handleGenerate}>
-            {/* Format Selection */}
-            <div className="form-group">
-              <label className="form-label" htmlFor="format-select">
-                Content Format
-              </label>
-              <select
-                id="format-select"
-                className="input-field"
-                value={format}
-                onChange={(e) => setFormat(e.target.value as ContentFormat)}
-                disabled={isGeneratingContent}
+        <button
+          className={`studio-nav-pill ${activeStudioMode === 'image' ? 'active' : ''}`}
+          onClick={() => setActiveStudioMode('image')}
+        >
+          <ImageIcon size={15} />
+          <span>AI Image Diffusion</span>
+        </button>
+
+        <button
+          className={`studio-nav-pill ${activeStudioMode === 'video' ? 'active' : ''}`}
+          onClick={() => setActiveStudioMode('video')}
+        >
+          <Video size={15} />
+          <span>Video Script Engine</span>
+        </button>
+
+        <button
+          className={`studio-nav-pill ${activeStudioMode === 'canvas' ? 'active' : ''}`}
+          onClick={() => setActiveStudioMode('canvas')}
+        >
+          <FileEdit size={15} />
+          <span>Rich Document Canvas</span>
+        </button>
+      </div>
+
+      {/* Sub-Views */}
+      {activeStudioMode === 'image' && <ImageStudio />}
+      {activeStudioMode === 'video' && <VideoScriptStudio />}
+      {activeStudioMode === 'canvas' && <DocumentCanvas />}
+
+      {activeStudioMode === 'text' && (
+        <div className="studio-layout-grid">
+          {/* Form Card */}
+          <div className="studio-form-card">
+            {/* Category Tabs */}
+            <div className="category-toggle-tabs">
+              <button
+                type="button"
+                className={`category-tab-btn ${category === 'TEXT' ? 'active' : ''}`}
+                onClick={() => {
+                  setCategory('TEXT');
+                  setFormat('BLOG_OUTLINE');
+                }}
               >
-                {category === 'TEXT' ? (
-                  <>
-                    <option value="BLOG_OUTLINE">Blog Post Outline</option>
-                    <option value="ARTICLE_SECTION">Deep-Dive Article Section</option>
-                    <option value="VIDEO_SCRIPT">Video Script Outline</option>
-                  </>
-                ) : (
-                  <>
-                    <option value="EMAIL_NEWSLETTER">Email Newsletter Sequence</option>
-                    <option value="SOCIAL_CAPTION">Viral Social Media Post (X / LinkedIn)</option>
-                    <option value="PRODUCT_AD">Product Ad & Sales Copy</option>
-                  </>
-                )}
-              </select>
+                Text &amp; Articles
+              </button>
+              <button
+                type="button"
+                className={`category-tab-btn ${category === 'MARKETING' ? 'active' : ''}`}
+                onClick={() => {
+                  setCategory('MARKETING');
+                  setFormat('EMAIL_NEWSLETTER');
+                }}
+              >
+                Marketing &amp; Campaigns
+              </button>
             </div>
 
-            {/* Topic & Instructions */}
-            <div className="form-group">
-              <label className="form-label" htmlFor="instructions-text">
-                Topic & Specific Instructions
-              </label>
-              <textarea
-                id="instructions-text"
-                className="input-field"
-                rows={3}
-                placeholder="Describe your subject, key selling points, target audience, and any required call to action..."
-                value={instructions}
-                onChange={(e) => setInstructions(e.target.value)}
-                disabled={isGeneratingContent}
-                required
-              />
-            </div>
-
-            {/* Tone & Length Row */}
-            <div className="form-grid-row">
+            <form onSubmit={handleGenerate} className="studio-form">
+              {/* Format Selection */}
               <div className="form-group">
-                <label className="form-label">Tone of Voice</label>
-                <div className="pill-selector-group">
-                  {TONES.map((t) => (
-                    <button
-                      key={t}
-                      type="button"
-                      className={`pill-option-btn ${tone === t ? 'selected' : ''}`}
-                      onClick={() => setTone(t)}
-                    >
-                      {t}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <div className="form-group">
-                <label className="form-label">Target Length</label>
-                <div className="pill-selector-group">
-                  {LENGTHS.map((l) => (
-                    <button
-                      key={l}
-                      type="button"
-                      className={`pill-option-btn ${length === l ? 'selected' : ''}`}
-                      onClick={() => setLength(l)}
-                    >
-                      {l}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Submit Button */}
-            <button
-              type="submit"
-              className="btn btn-primary w-full"
-              disabled={!instructions.trim() || isGeneratingContent}
-              style={{ padding: '12px', fontSize: '14.5px' }}
-            >
-              {isGeneratingContent ? (
-                <span>Drafting Content...</span>
-              ) : (
-                <>
-                  <Sparkles size={16} />
-                  <span>Generate Content</span>
-                </>
-              )}
-            </button>
-          </form>
-        </div>
-
-        {/* Output Preview Card */}
-        {generatedContent && (
-          <div className="studio-output-card">
-            <div className="output-header-bar">
-              <div className="output-title-area">
-                <FileText size={18} color="var(--color-primary)" />
-                <h3 style={{ fontSize: '16px', fontWeight: '700' }}>
-                  {generatedContent.title}
-                </h3>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <span className="badge badge-primary">{generatedContent.tone}</span>
-                <span className="badge badge-neutral">~{generatedContent.wordCount} words</span>
-              </div>
-            </div>
-
-            <div className="output-text-content">
-              {generatedContent.content}
-            </div>
-
-            <div className="flex items-center justify-between flex-wrap gap-3">
-              <div className="flex items-center gap-2">
-                <button className="btn btn-outline btn-sm" onClick={handleCopy}>
-                  {copied ? (
+                <label className="form-label">Content Format</label>
+                <select
+                  value={format}
+                  onChange={(e) => setFormat(e.target.value as ContentFormat)}
+                  className="input-field"
+                >
+                  {category === 'TEXT' ? (
                     <>
-                      <Check size={14} color="var(--color-success)" />
-                      <span style={{ color: 'var(--color-success)' }}>Copied</span>
+                      <option value="BLOG_OUTLINE">Blog Article Outline</option>
+                      <option value="ARTICLE_SECTION">Pillar Article Section</option>
+                      <option value="VIDEO_SCRIPT">YouTube Script Outline</option>
                     </>
                   ) : (
                     <>
-                      <Copy size={14} />
-                      <span>Copy to Clipboard</span>
+                      <option value="EMAIL_NEWSLETTER">Email Newsletter / Sequence</option>
+                      <option value="SOCIAL_CAPTION">Viral Social Media Hook &amp; Caption</option>
+                      <option value="PRODUCT_AD">High-Converting Direct Response Ad</option>
                     </>
                   )}
-                </button>
-
-                <button className="btn btn-primary btn-sm" onClick={handleSaveToLibrary}>
-                  <Bookmark size={14} />
-                  <span>Save to Library</span>
-                </button>
+                </select>
               </div>
 
+              {/* Instructions Prompt */}
+              <div className="form-group">
+                <label className="form-label">Topic &amp; Specific Directives</label>
+                <textarea
+                  value={instructions}
+                  onChange={(e) => setInstructions(e.target.value)}
+                  rows={5}
+                  placeholder="Describe your subject, key selling points, target avatar, and required CTA..."
+                  className="input-field studio-textarea"
+                  required
+                />
+              </div>
+
+              {/* Tone & Length in 2 Columns */}
+              <div className="studio-meta-grid">
+                <div className="form-group">
+                  <label className="form-label">Brand Voice &amp; Tone</label>
+                  <select
+                    value={tone}
+                    onChange={(e) => setTone(e.target.value as ContentTone)}
+                    className="input-field"
+                  >
+                    {TONES.map((t) => (
+                      <option key={t} value={t}>
+                        {t}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="form-group">
+                  <label className="form-label">Target Output Length</label>
+                  <select
+                    value={length}
+                    onChange={(e) => setLength(e.target.value as ContentLength)}
+                    className="input-field"
+                  >
+                    {LENGTHS.map((l) => (
+                      <option key={l} value={l}>
+                        {l}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              {/* Submit Button */}
               <button
-                className="btn btn-ghost btn-sm"
-                onClick={handleGenerate}
-                disabled={isGeneratingContent}
+                type="submit"
+                disabled={isGeneratingContent || !instructions.trim()}
+                className="btn btn-primary btn-block studio-submit-btn"
               >
-                <RefreshCw size={14} />
-                <span>Regenerate Variant</span>
+                {isGeneratingContent ? (
+                  <>
+                    <RefreshCw size={17} className="spinner" />
+                    <span>Synthesizing Copy...</span>
+                  </>
+                ) : (
+                  <>
+                    <Sparkles size={17} />
+                    <span>Generate Structured Copy</span>
+                  </>
+                )}
               </button>
+            </form>
+          </div>
+
+          {/* Output Display Card */}
+          <div className="studio-output-card">
+            <div className="output-card-header">
+              <div className="output-header-left">
+                <FileText size={18} className="output-header-icon" />
+                <span className="output-header-title">
+                  {generatedContent ? generatedContent.title : 'Generated Content Preview'}
+                </span>
+              </div>
+
+              {generatedContent && (
+                <div className="output-actions">
+                  <button
+                    type="button"
+                    onClick={handleCopy}
+                    className="btn btn-outline btn-sm action-btn"
+                    title="Copy content"
+                  >
+                    {copied ? <Check size={14} className="text-success" /> : <Copy size={14} />}
+                    <span>{copied ? 'Copied' : 'Copy'}</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleSaveToLibrary}
+                    className="btn btn-primary btn-sm action-btn"
+                    title="Save to Library"
+                  >
+                    <Bookmark size={14} />
+                    <span>Save to Library</span>
+                  </button>
+                </div>
+              )}
+            </div>
+
+            <div className="output-card-body">
+              {isGeneratingContent ? (
+                <div className="output-placeholder-state">
+                  <div className="generating-pulse-box">
+                    <RefreshCw size={28} className="spinner text-primary" />
+                  </div>
+                  <p className="placeholder-title">Synthesizing High-Impact Draft...</p>
+                  <p className="placeholder-sub">
+                    Structuring hook, core narrative points, tone calibration, and closing call-to-action.
+                  </p>
+                </div>
+              ) : generatedContent ? (
+                <div className="generated-content-flow">
+                  <div className="content-metadata-bar">
+                    <span className="meta-badge">{generatedContent.category}</span>
+                    <span className="meta-badge">{generatedContent.format.replace('_', ' ')}</span>
+                    <span className="meta-badge">{generatedContent.tone}</span>
+                    <span className="meta-badge">{generatedContent.wordCount} words</span>
+                  </div>
+                  <div className="content-render-area">
+                    {generatedContent.content.split('\n\n').map((para, idx) => (
+                      <p key={idx} className="content-paragraph">
+                        {para}
+                      </p>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <div className="output-placeholder-state">
+                  <div className="empty-icon-wrap">
+                    <Layers size={28} />
+                  </div>
+                  <p className="placeholder-title">No Content Generated Yet</p>
+                  <p className="placeholder-sub">
+                    Choose a format on the left, enter your topic parameters, and generate production-ready drafts in seconds.
+                  </p>
+                </div>
+              )}
             </div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -13,7 +13,8 @@ import {
   Briefcase,
   SearchCheck,
   Palette,
-  ArrowRight
+  ArrowRight,
+  Video
 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import {
@@ -23,6 +24,10 @@ import {
   ContentLength
 } from '../../types';
 import '../../styles/dashboard.css';
+import { ImageStudio } from '../../components/studio/ImageStudio';
+import { VideoScriptStudio } from '../../components/studio/VideoScriptStudio';
+import { DocumentCanvas } from '../../components/studio/DocumentCanvas';
+import '../../components/studio/StudioStyles.css';
 
 interface ToolTemplate {
   id: string;
@@ -104,6 +109,7 @@ export const UserContentBuildersPage: React.FC = () => {
     showToast
   } = useApp();
 
+  const [activeStudioTab, setActiveStudioTab] = useState<'templates' | 'images' | 'video' | 'canvas'>('templates');
   const [searchQuery, setSearchQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState<'ALL' | 'TEXT' | 'MARKETING'>('ALL');
   const [selectedTemplate, setSelectedTemplate] = useState<ToolTemplate>(TEMPLATES_CATALOG[0]);
@@ -186,8 +192,49 @@ export const UserContentBuildersPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Catalog Search & Category Filters */}
-      <div className="glass-panel" style={{ padding: 'var(--space-4)' }}>
+      {/* Studio Mode Navigation */}
+      <div className="studio-tab-bar">
+        <button
+          className={`studio-nav-pill ${activeStudioTab === 'templates' ? 'active' : ''}`}
+          onClick={() => setActiveStudioTab('templates')}
+        >
+          <PenTool size={15} />
+          <span>Templates Catalog (1,000+)</span>
+        </button>
+
+        <button
+          className={`studio-nav-pill ${activeStudioTab === 'images' ? 'active' : ''}`}
+          onClick={() => setActiveStudioTab('images')}
+        >
+          <Sparkles size={15} />
+          <span>AI Image Studio</span>
+        </button>
+
+        <button
+          className={`studio-nav-pill ${activeStudioTab === 'video' ? 'active' : ''}`}
+          onClick={() => setActiveStudioTab('video')}
+        >
+          <Video size={15} />
+          <span>Video Script Engine</span>
+        </button>
+
+        <button
+          className={`studio-nav-pill ${activeStudioTab === 'canvas' ? 'active' : ''}`}
+          onClick={() => setActiveStudioTab('canvas')}
+        >
+          <FileText size={15} />
+          <span>Rich Document Canvas</span>
+        </button>
+      </div>
+
+      {activeStudioTab === 'images' && <ImageStudio />}
+      {activeStudioTab === 'video' && <VideoScriptStudio />}
+      {activeStudioTab === 'canvas' && <DocumentCanvas />}
+
+      {activeStudioTab === 'templates' && (
+        <>
+          {/* Catalog Search & Category Filters */}
+          <div className="glass-panel" style={{ padding: 'var(--space-4)' }}>
         <div className="filter-toolbar" style={{ margin: 0 }}>
           <div className="search-box-wrap">
             <Search size={16} />
@@ -409,6 +456,8 @@ export const UserContentBuildersPage: React.FC = () => {
           )}
         </div>
       </div>
+        </>
+      )}
     </div>
   );
 };
