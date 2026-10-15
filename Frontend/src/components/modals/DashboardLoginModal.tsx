@@ -13,7 +13,8 @@ import {
   ArrowRight,
   X,
   ExternalLink,
-  Layers
+  Layers,
+  Share2
 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import { UserRole } from '../../types';
@@ -135,6 +136,15 @@ export const DashboardLoginModal: React.FC<DashboardLoginModalProps> = ({ isOpen
       roleLabel: 'Business',
       icon: <Briefcase size={18} />,
       accentColor: '#14B8A6'
+    },
+    {
+      id: 'social',
+      name: 'Social & Content Scheduler',
+      path: '/social',
+      role: 'USER',
+      roleLabel: 'Social',
+      icon: <Share2 size={18} />,
+      accentColor: '#6E56CF'
     },
     {
       id: 'ads',

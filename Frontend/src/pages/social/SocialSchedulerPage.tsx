@@ -1,0 +1,1130 @@
+import React, { useState } from 'react';
+import {
+  Calendar as CalendarIcon,
+  Share2,
+  Clock,
+  Send,
+  CheckCircle2,
+  AlertCircle,
+  TrendingUp,
+  BarChart2,
+  Plus,
+  Trash2,
+  Edit3,
+  Eye,
+  RefreshCw,
+  Sparkles,
+  Upload,
+  Image as ImageIcon,
+  Check,
+  X,
+  ChevronLeft,
+  ChevronRight,
+  Filter,
+  Layers,
+  ArrowUpRight,
+  Zap,
+  Globe,
+  MessageCircle,
+  ThumbsUp,
+  ExternalLink
+} from 'lucide-react';
+import { useApp } from '../../context/AppContext';
+import '../../styles/dashboard.css';
+
+type SocialPlatform = 'twitter' | 'linkedin' | 'instagram' | 'youtube' | 'tiktok';
+type TabType = 'calendar' | 'queue' | 'composer' | 'accounts' | 'analytics';
+
+interface ScheduledPost {
+  id: string;
+  title: string;
+  content: string;
+  platforms: SocialPlatform[];
+  scheduledDate: string; // YYYY-MM-DD
+  scheduledTime: string; // HH:mm
+  status: 'SCHEDULED' | 'PUBLISHED' | 'DRAFT';
+  hasMedia: boolean;
+  mediaType?: 'image' | 'video';
+  optimalScore?: number;
+  engagementStats?: {
+    impressions: number;
+    likes: number;
+    shares: number;
+  };
+}
+
+interface ConnectedAccount {
+  id: SocialPlatform;
+  name: string;
+  handle: string;
+  platformName: string;
+  avatarBg: string;
+  accentColor: string;
+  status: 'CONNECTED' | 'DISCONNECTED' | 'NEEDS_REAUTH';
+  followers: string;
+  monthlyReach: string;
+  lastSynced: string;
+}
+
+export const SocialSchedulerPage: React.FC = () => {
+  const { showToast } = useApp();
+
+  const [activeTab, setActiveTab] = useState<TabType>('calendar');
+  const [platformFilter, setPlatformFilter] = useState<string>('ALL');
+
+  // Month navigation state
+  const [currentMonth, setCurrentMonth] = useState('October 2026');
+
+  // Modal State for Composer
+  const [isComposerOpen, setIsComposerOpen] = useState(false);
+  const [previewPlatform, setPreviewPlatform] = useState<SocialPlatform>('twitter');
+
+  // Composer Form State
+  const [composeTitle, setComposeTitle] = useState('');
+  const [composeContent, setComposeContent] = useState('');
+  const [selectedPlatforms, setSelectedPlatforms] = useState<SocialPlatform[]>(['twitter', 'linkedin']);
+  const [scheduledDate, setScheduledDate] = useState('2026-10-18');
+  const [scheduledTime, setScheduledTime] = useState('09:30');
+  const [hasMediaAttachment, setHasMediaAttachment] = useState(false);
+  const [isAiOptimizing, setIsAiOptimizing] = useState(false);
+
+  // Initial Scheduled Posts
+  const [posts, setPosts] = useState<ScheduledPost[]>([
+    {
+      id: 'post-1',
+      title: 'Zunme AI Workspace Launch Breakdown',
+      content: '🚀 Excited to unveil Zunme AI: the unified workspace uniting verified web research, conversational reasoning, and rapid copy creation in one sleek environment. Experience the new benchmark for creator velocity.',
+      platforms: ['twitter', 'linkedin'],
+      scheduledDate: '2026-10-16',
+      scheduledTime: '09:00',
+      status: 'SCHEDULED',
+      hasMedia: true,
+      mediaType: 'image',
+      optimalScore: 98
+    },
+    {
+      id: 'post-2',
+      title: '5 AI Prompt Frameworks for B2B Growth',
+      content: 'Most creators use AI prompts backwards. Here are the 5 core structural frameworks our top power users rely on to generate 10x higher quality executive output: 🧵👇',
+      platforms: ['twitter'],
+      scheduledDate: '2026-10-17',
+      scheduledTime: '14:30',
+      status: 'SCHEDULED',
+      hasMedia: false,
+      optimalScore: 94
+    },
+    {
+      id: 'post-3',
+      title: 'Instagram Visual Guide: Brand Positioning',
+      content: 'Modern brand architecture is about clarity, contrast, and consistency. Swipe through our 7-step playbook for positioning your product in crowded markets. #ProductDesign #AI #Creators',
+      platforms: ['instagram'],
+      scheduledDate: '2026-10-19',
+      scheduledTime: '18:15',
+      status: 'SCHEDULED',
+      hasMedia: true,
+      mediaType: 'image',
+      optimalScore: 91
+    },
+    {
+      id: 'post-4',
+      title: 'Executive Walkthrough: Live Citation Engine',
+      content: 'Full video walkthrough of our real-time Tavily search grounding engine. Never hallucinate facts again when drafting research memos.',
+      platforms: ['youtube', 'linkedin'],
+      scheduledDate: '2026-10-21',
+      scheduledTime: '11:00',
+      status: 'SCHEDULED',
+      hasMedia: true,
+      mediaType: 'video',
+      optimalScore: 96
+    },
+    {
+      id: 'post-5',
+      title: 'Creator Economy 2026 Trends Report',
+      content: 'We surveyed 1,200 digital entrepreneurs. Here are the 3 major shifts in AI content workflows happening right now.',
+      platforms: ['linkedin', 'twitter'],
+      scheduledDate: '2026-10-14',
+      scheduledTime: '10:00',
+      status: 'PUBLISHED',
+      hasMedia: true,
+      mediaType: 'image',
+      engagementStats: {
+        impressions: 24500,
+        likes: 1340,
+        shares: 312
+      }
+    }
+  ]);
+
+  // Connected Accounts
+  const [accounts, setAccounts] = useState<ConnectedAccount[]>([
+    {
+      id: 'twitter',
+      name: 'X (Twitter)',
+      platformName: 'X / Twitter',
+      handle: '@zunme_ai',
+      avatarBg: '#0F1419',
+      accentColor: '#1DA1F2',
+      status: 'CONNECTED',
+      followers: '18.4K',
+      monthlyReach: '142.5K',
+      lastSynced: '10 mins ago'
+    },
+    {
+      id: 'linkedin',
+      name: 'LinkedIn Company',
+      platformName: 'LinkedIn',
+      handle: 'Zunme AI Technologies',
+      avatarBg: '#0A66C2',
+      accentColor: '#0A66C2',
+      status: 'CONNECTED',
+      followers: '12.8K',
+      monthlyReach: '89.2K',
+      lastSynced: '1 hour ago'
+    },
+    {
+      id: 'instagram',
+      name: 'Instagram Creator',
+      platformName: 'Instagram',
+      handle: '@zunme.workspace',
+      avatarBg: '#E1306C',
+      accentColor: '#E1306C',
+      status: 'CONNECTED',
+      followers: '34.1K',
+      monthlyReach: '210.8K',
+      lastSynced: '25 mins ago'
+    },
+    {
+      id: 'youtube',
+      name: 'YouTube Channel',
+      platformName: 'YouTube',
+      handle: 'Zunme AI Official',
+      avatarBg: '#FF0000',
+      accentColor: '#FF0000',
+      status: 'CONNECTED',
+      followers: '6.9K',
+      monthlyReach: '48.0K',
+      lastSynced: '3 hours ago'
+    },
+    {
+      id: 'tiktok',
+      name: 'TikTok Business',
+      platformName: 'TikTok',
+      handle: '@zunme_official',
+      avatarBg: '#000000',
+      accentColor: '#FE2C55',
+      status: 'DISCONNECTED',
+      followers: '--',
+      monthlyReach: '--',
+      lastSynced: 'Not connected'
+    }
+  ]);
+
+  // Platform styling helpers
+  const getPlatformIcon = (platform: SocialPlatform, size: number = 14) => {
+    switch (platform) {
+      case 'twitter':
+        return <Globe size={size} />;
+      case 'linkedin':
+        return <Share2 size={size} />;
+      case 'instagram':
+        return <ImageIcon size={size} />;
+      case 'youtube':
+        return <ExternalLink size={size} />;
+      case 'tiktok':
+        return <Zap size={size} />;
+      default:
+        return <Share2 size={size} />;
+    }
+  };
+
+  const getPlatformLabel = (platform: SocialPlatform) => {
+    switch (platform) {
+      case 'twitter': return 'X (Twitter)';
+      case 'linkedin': return 'LinkedIn';
+      case 'instagram': return 'Instagram';
+      case 'youtube': return 'YouTube';
+      case 'tiktok': return 'TikTok';
+    }
+  };
+
+  const getPlatformBadgeColor = (platform: SocialPlatform) => {
+    switch (platform) {
+      case 'twitter': return '#0284C7';
+      case 'linkedin': return '#0A66C2';
+      case 'instagram': return '#E11D48';
+      case 'youtube': return '#DC2626';
+      case 'tiktok': return '#111625';
+    }
+  };
+
+  // Toggle platform selection in composer
+  const togglePlatform = (p: SocialPlatform) => {
+    if (selectedPlatforms.includes(p)) {
+      if (selectedPlatforms.length === 1) {
+        showToast('At least one target platform must remain selected', 'warning');
+        return;
+      }
+      setSelectedPlatforms(selectedPlatforms.filter((item) => item !== p));
+    } else {
+      setSelectedPlatforms([...selectedPlatforms, p]);
+    }
+  };
+
+  // AI Repurposing Optimization
+  const handleAiRepurpose = () => {
+    if (!composeContent.trim()) {
+      showToast('Please enter some content before running AI optimization', 'info');
+      return;
+    }
+    setIsAiOptimizing(true);
+    setTimeout(() => {
+      setIsAiOptimizing(false);
+      setComposeContent((prev) => `${prev.trim()}\n\n💡 Pro tip: Verified research briefs accelerate creative throughput by 4.2x. What is your go-to AI workflow?`);
+      showToast('AI synthesized platform hooks and tailored caption styling', 'success');
+    }, 900);
+  };
+
+  // Submit Schedule
+  const handleCreatePost = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!composeContent.trim()) {
+      showToast('Post content is required', 'error');
+      return;
+    }
+
+    const newPost: ScheduledPost = {
+      id: `post-${Date.now()}`,
+      title: composeTitle.trim() || composeContent.slice(0, 36) + '...',
+      content: composeContent,
+      platforms: selectedPlatforms,
+      scheduledDate,
+      scheduledTime,
+      status: 'SCHEDULED',
+      hasMedia: hasMediaAttachment,
+      mediaType: hasMediaAttachment ? 'image' : undefined,
+      optimalScore: 95
+    };
+
+    setPosts([newPost, ...posts]);
+    setIsComposerOpen(false);
+    setComposeTitle('');
+    setComposeContent('');
+    setHasMediaAttachment(false);
+    showToast(`Post scheduled across ${selectedPlatforms.length} channels for ${scheduledDate} at ${scheduledTime}`, 'success');
+  };
+
+  // Publish Now Immediate Override
+  const handlePublishNow = (id: string) => {
+    setPosts(
+      posts.map((p) =>
+        p.id === id
+          ? {
+              ...p,
+              status: 'PUBLISHED',
+              engagementStats: { impressions: 140, likes: 18, shares: 4 }
+            }
+          : p
+      )
+    );
+    showToast('Post successfully broadcast to live social API endpoints!', 'success');
+  };
+
+  // Delete Post
+  const handleDeletePost = (id: string) => {
+    setPosts(posts.filter((p) => p.id !== id));
+    showToast('Scheduled post removed from queue', 'info');
+  };
+
+  // Toggle Account Connection
+  const handleToggleAccount = (id: SocialPlatform) => {
+    setAccounts(
+      accounts.map((acc) => {
+        if (acc.id === id) {
+          const isConn = acc.status === 'CONNECTED';
+          return {
+            ...acc,
+            status: isConn ? 'DISCONNECTED' : 'CONNECTED',
+            followers: isConn ? '--' : '15.2K',
+            monthlyReach: isConn ? '--' : '72.0K',
+            lastSynced: isConn ? 'Disconnected' : 'Just now'
+          };
+        }
+        return acc;
+      })
+    );
+    const target = accounts.find((a) => a.id === id);
+    showToast(`${target?.name} ${target?.status === 'CONNECTED' ? 'disconnected' : 'connected successfully'}`, 'info');
+  };
+
+  // Filter posts
+  const filteredPosts = posts.filter((p) => {
+    if (platformFilter === 'ALL') return true;
+    return p.platforms.includes(platformFilter as SocialPlatform);
+  });
+
+  const queuedPosts = filteredPosts.filter((p) => p.status === 'SCHEDULED');
+  const publishedPosts = filteredPosts.filter((p) => p.status === 'PUBLISHED');
+
+  // Calendar days generation for October 2026
+  const calendarDays = Array.from({ length: 31 }, (_, i) => {
+    const dayNum = i + 1;
+    const dateStr = `2026-10-${dayNum < 10 ? '0' + dayNum : dayNum}`;
+    const dayPosts = posts.filter((p) => p.scheduledDate === dateStr);
+    return { dayNum, dateStr, dayPosts };
+  });
+
+  return (
+    <div className="dashboard-page-container">
+      {/* Page Header */}
+      <div className="dashboard-header">
+        <div className="dashboard-title-group">
+          <h1>
+            <Share2 size={26} color="#6E56CF" />
+            Social Integrations & Content Scheduler
+          </h1>
+          <p className="dashboard-subtitle">
+            Plan, compose, and automate multi-channel social publishing across X, LinkedIn, Instagram, and YouTube from one unified command center.
+          </p>
+        </div>
+
+        <div className="dashboard-header-actions">
+          <button
+            className="btn btn-secondary btn-sm"
+            onClick={() => setActiveTab('accounts')}
+          >
+            <Globe size={14} />
+            <span>Connected Channels ({accounts.filter((a) => a.status === 'CONNECTED').length})</span>
+          </button>
+          <button
+            className="btn btn-primary btn-sm"
+            onClick={() => setIsComposerOpen(true)}
+          >
+            <Plus size={14} />
+            <span>Compose & Schedule</span>
+          </button>
+        </div>
+      </div>
+
+      {/* Top Level Navigation Tabs */}
+      <div className="tabs-nav-bar">
+        <button
+          className={`tab-item-btn ${activeTab === 'calendar' ? 'active' : ''}`}
+          onClick={() => setActiveTab('calendar')}
+        >
+          <CalendarIcon size={15} />
+          <span>Content Calendar</span>
+          <span className="tab-counter-badge">{posts.length}</span>
+        </button>
+
+        <button
+          className={`tab-item-btn ${activeTab === 'queue' ? 'active' : ''}`}
+          onClick={() => setActiveTab('queue')}
+        >
+          <Clock size={15} />
+          <span>Publishing Queue</span>
+          <span className="tab-counter-badge">{queuedPosts.length}</span>
+        </button>
+
+        <button
+          className={`tab-item-btn ${activeTab === 'composer' ? 'active' : ''}`}
+          onClick={() => {
+            setIsComposerOpen(true);
+            setActiveTab('calendar');
+          }}
+        >
+          <Edit3 size={15} />
+          <span>New Cross-Post</span>
+        </button>
+
+        <button
+          className={`tab-item-btn ${activeTab === 'accounts' ? 'active' : ''}`}
+          onClick={() => setActiveTab('accounts')}
+        >
+          <Globe size={15} />
+          <span>Connected Channels</span>
+        </button>
+
+        <button
+          className={`tab-item-btn ${activeTab === 'analytics' ? 'active' : ''}`}
+          onClick={() => setActiveTab('analytics')}
+        >
+          <BarChart2 size={15} />
+          <span>Channel Analytics</span>
+        </button>
+      </div>
+
+      {/* Tab: Calendar View */}
+      {activeTab === 'calendar' && (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-5)' }}>
+          {/* Calendar Toolbar */}
+          <div className="glass-panel" style={{ padding: '16px 20px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '14px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <h2 style={{ fontSize: '18px', fontWeight: '800', color: '#111625', margin: 0 }}>
+                  {currentMonth}
+                </h2>
+                <div style={{ display: 'flex', gap: '4px' }}>
+                  <button className="btn btn-outline btn-sm" style={{ padding: '4px 8px' }} onClick={() => showToast('Previous month loaded', 'info')}>
+                    <ChevronLeft size={14} />
+                  </button>
+                  <button className="btn btn-outline btn-sm" style={{ padding: '4px 8px' }} onClick={() => showToast('Next month loaded', 'info')}>
+                    <ChevronRight size={14} />
+                  </button>
+                </div>
+              </div>
+
+              {/* Platform Filter Buttons */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+                <span style={{ fontSize: '12px', fontWeight: '700', color: '#5F6B85', marginRight: '4px' }}>
+                  Filter Channel:
+                </span>
+                {['ALL', 'twitter', 'linkedin', 'instagram', 'youtube'].map((p) => (
+                  <button
+                    key={p}
+                    onClick={() => setPlatformFilter(p)}
+                    className={`btn btn-sm ${platformFilter === p ? 'btn-primary' : 'btn-outline'}`}
+                    style={{ fontSize: '11px', padding: '4px 10px', textTransform: 'capitalize' }}
+                  >
+                    {p === 'ALL' ? 'All Channels' : p}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Monthly Calendar Grid */}
+          <div className="glass-panel" style={{ padding: '20px' }}>
+            {/* Weekday headers */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '8px', marginBottom: '10px', textAlign: 'center' }}>
+              {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((d) => (
+                <div key={d} style={{ fontSize: '12px', fontWeight: '800', color: '#8C97B0', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                  {d}
+                </div>
+              ))}
+            </div>
+
+            {/* Calendar Days */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '8px' }}>
+              {/* Leading blanks for Thursday start (Oct 1, 2026 is Thursday -> 4 blank cells) */}
+              {Array.from({ length: 4 }).map((_, i) => (
+                <div key={`blank-${i}`} style={{ minHeight: '105px', background: '#FAFBFD', borderRadius: '10px', opacity: 0.3 }} />
+              ))}
+
+              {calendarDays.map((cell) => {
+                const isToday = cell.dayNum === 15;
+                return (
+                  <div
+                    key={cell.dateStr}
+                    onClick={() => {
+                      setScheduledDate(cell.dateStr);
+                      setIsComposerOpen(true);
+                    }}
+                    style={{
+                      minHeight: '115px',
+                      background: isToday ? '#F5EFFF' : '#FFFFFF',
+                      border: isToday ? '2px solid #6E56CF' : '1px solid #E8ECF5',
+                      borderRadius: '12px',
+                      padding: '8px',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: '6px',
+                      cursor: 'pointer',
+                      transition: 'all 0.18s ease'
+                    }}
+                  >
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span
+                        style={{
+                          fontSize: '12px',
+                          fontWeight: isToday ? '900' : '700',
+                          color: isToday ? '#6E56CF' : '#111625',
+                          width: '22px',
+                          height: '22px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          borderRadius: '50%',
+                          background: isToday ? '#EFEBFC' : 'transparent'
+                        }}
+                      >
+                        {cell.dayNum}
+                      </span>
+                      {cell.dayPosts.length > 0 && (
+                        <span style={{ fontSize: '10px', fontWeight: '800', color: '#6E56CF', background: '#EFEBFC', padding: '1px 6px', borderRadius: '10px' }}>
+                          {cell.dayPosts.length}
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Posts inside day */}
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', overflowY: 'auto', maxHeight: '78px' }}>
+                      {cell.dayPosts.map((post) => (
+                        <div
+                          key={post.id}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            showToast(`Post: "${post.title}" scheduled for ${post.scheduledTime}`, 'info');
+                          }}
+                          style={{
+                            padding: '4px 6px',
+                            borderRadius: '6px',
+                            background: post.status === 'PUBLISHED' ? '#E8F8F0' : '#F6F8FD',
+                            borderLeft: `3px solid ${post.status === 'PUBLISHED' ? '#059669' : '#6E56CF'}`,
+                            fontSize: '11px',
+                            color: '#111625',
+                            whiteSpace: 'nowrap',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '4px'
+                          }}
+                          title={post.title}
+                        >
+                          <span style={{ fontSize: '10px', fontWeight: '700', color: '#5F6B85' }}>
+                            {post.scheduledTime}
+                          </span>
+                          <span style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                            {post.title}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Tab: Publishing Queue */}
+      {activeTab === 'queue' && (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-5)' }}>
+          {/* Queue Statistics */}
+          <div className="cards-grid-4">
+            <div className="glass-panel">
+              <div style={{ fontSize: '12px', fontWeight: '700', color: '#6E56CF', textTransform: 'uppercase', marginBottom: '8px' }}>
+                Pending Queue
+              </div>
+              <div style={{ fontSize: '28px', fontWeight: '900', color: '#111625' }}>
+                {queuedPosts.length} Posts
+              </div>
+              <div style={{ fontSize: '12px', color: '#5F6B85', marginTop: '4px' }}>
+                Ready for automated distribution
+              </div>
+            </div>
+
+            <div className="glass-panel">
+              <div style={{ fontSize: '12px', fontWeight: '700', color: '#059669', textTransform: 'uppercase', marginBottom: '8px' }}>
+                Published This Month
+              </div>
+              <div style={{ fontSize: '28px', fontWeight: '900', color: '#111625' }}>
+                28 Broadcasts
+              </div>
+              <div style={{ fontSize: '12px', color: '#5F6B85', marginTop: '4px' }}>
+                100% successful API delivery
+              </div>
+            </div>
+
+            <div className="glass-panel">
+              <div style={{ fontSize: '12px', fontWeight: '700', color: '#0284C7', textTransform: 'uppercase', marginBottom: '8px' }}>
+                Next Broadcast
+              </div>
+              <div style={{ fontSize: '20px', fontWeight: '900', color: '#111625' }}>
+                Tomorrow 09:00 AM
+              </div>
+              <div style={{ fontSize: '12px', color: '#5F6B85', marginTop: '4px' }}>
+                X &amp; LinkedIn synchronized
+              </div>
+            </div>
+
+            <div className="glass-panel">
+              <div style={{ fontSize: '12px', fontWeight: '700', color: '#D97706', textTransform: 'uppercase', marginBottom: '8px' }}>
+                Optimal Time Sync
+              </div>
+              <div style={{ fontSize: '28px', fontWeight: '900', color: '#111625' }}>
+                96% Score
+              </div>
+              <div style={{ fontSize: '12px', color: '#5F6B85', marginTop: '4px' }}>
+                Peak audience engagement timing
+              </div>
+            </div>
+          </div>
+
+          {/* Queue List Cards */}
+          <div className="glass-panel">
+            <div className="panel-header">
+              <div className="panel-title">
+                <Clock size={18} color="#6E56CF" />
+                Upcoming Scheduled Broadcasts
+              </div>
+              <span className="badge badge-primary">{queuedPosts.length} In Pipeline</span>
+            </div>
+
+            {queuedPosts.length === 0 ? (
+              <div style={{ textAlign: 'center', padding: '48px 20px', color: '#5F6B85' }}>
+                <Clock size={36} color="#8C97B0" style={{ margin: '0 auto 12px' }} />
+                <h3 style={{ fontSize: '16px', fontWeight: '700', color: '#111625', marginBottom: '4px' }}>
+                  No posts currently in queue
+                </h3>
+                <p style={{ fontSize: '13px', marginBottom: '16px' }}>
+                  Compose your first cross-platform post to populate your automated publishing schedule.
+                </p>
+                <button className="btn btn-primary btn-sm" onClick={() => setIsComposerOpen(true)}>
+                  <Plus size={14} /> Compose New Post
+                </button>
+              </div>
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                {queuedPosts.map((post) => (
+                  <div
+                    key={post.id}
+                    style={{
+                      padding: '16px',
+                      background: '#FAFBFD',
+                      border: '1px solid #E8ECF5',
+                      borderRadius: '14px',
+                      display: 'flex',
+                      alignItems: 'flex-start',
+                      justifyContent: 'space-between',
+                      flexWrap: 'wrap',
+                      gap: '16px'
+                    }}
+                  >
+                    <div style={{ flex: 1, minWidth: '280px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px', flexWrap: 'wrap' }}>
+                        <span style={{ fontSize: '12px', fontWeight: '800', color: '#6E56CF', background: '#EFEBFC', padding: '2px 8px', borderRadius: '6px' }}>
+                          {post.scheduledDate} at {post.scheduledTime}
+                        </span>
+
+                        {post.platforms.map((plt) => (
+                          <span
+                            key={plt}
+                            style={{
+                              fontSize: '11px',
+                              fontWeight: '700',
+                              color: getPlatformBadgeColor(plt),
+                              background: '#FFFFFF',
+                              border: `1px solid ${getPlatformBadgeColor(plt)}30`,
+                              padding: '2px 8px',
+                              borderRadius: '6px',
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '4px'
+                            }}
+                          >
+                            {getPlatformIcon(plt, 12)}
+                            <span>{getPlatformLabel(plt)}</span>
+                          </span>
+                        ))}
+
+                        {post.hasMedia && (
+                          <span style={{ fontSize: '11px', color: '#5F6B85', background: '#E8ECF5', padding: '2px 8px', borderRadius: '6px' }}>
+                            Media Attached ({post.mediaType})
+                          </span>
+                        )}
+                      </div>
+
+                      <h4 style={{ fontSize: '14.5px', fontWeight: '800', color: '#111625', marginBottom: '6px' }}>
+                        {post.title}
+                      </h4>
+                      <p style={{ fontSize: '13px', color: '#5F6B85', lineHeight: '1.5', whiteSpace: 'pre-wrap' }}>
+                        {post.content}
+                      </p>
+                    </div>
+
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <button
+                        className="btn btn-sm btn-primary"
+                        onClick={() => handlePublishNow(post.id)}
+                        title="Publish immediately to all selected channels"
+                      >
+                        <Send size={13} />
+                        <span>Publish Now</span>
+                      </button>
+                      <button
+                        className="btn btn-sm btn-outline"
+                        onClick={() => showToast('Post editor drawer opened', 'info')}
+                        title="Edit post parameters"
+                      >
+                        <Edit3 size={13} />
+                      </button>
+                      <button
+                        className="btn btn-sm btn-outline"
+                        style={{ color: '#E11D48', borderColor: '#FEECEB' }}
+                        onClick={() => handleDeletePost(post.id)}
+                        title="Cancel scheduled broadcast"
+                      >
+                        <Trash2 size={13} />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Tab: Connected Channels */}
+      {activeTab === 'accounts' && (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-5)' }}>
+          <div className="glass-panel">
+            <div className="panel-header">
+              <div>
+                <div className="panel-title">
+                  <Globe size={18} color="#6E56CF" />
+                  Social Platform Integrations
+                </div>
+                <div className="panel-subtitle">Authorize social media channels to allow direct automated publishing via OAuth API bridges</div>
+              </div>
+              <button
+                className="btn btn-primary btn-sm"
+                onClick={() => showToast('OAuth channel integration wizard initialized', 'info')}
+              >
+                <Plus size={14} /> Add Channel
+              </button>
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '16px' }}>
+              {accounts.map((acc) => (
+                <div
+                  key={acc.id}
+                  style={{
+                    padding: '20px',
+                    borderRadius: '16px',
+                    background: '#FAFBFD',
+                    border: '1px solid #E8ECF5',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                    gap: '16px'
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                      <div
+                        style={{
+                          width: '42px',
+                          height: '42px',
+                          borderRadius: '12px',
+                          background: acc.avatarBg,
+                          color: '#FFFFFF',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center'
+                        }}
+                      >
+                        {getPlatformIcon(acc.id, 20)}
+                      </div>
+                      <div>
+                        <h4 style={{ fontSize: '15px', fontWeight: '800', color: '#111625', margin: 0 }}>
+                          {acc.name}
+                        </h4>
+                        <span style={{ fontSize: '12px', color: '#5F6B85' }}>
+                          {acc.handle}
+                        </span>
+                      </div>
+                    </div>
+
+                    <span className={`badge ${acc.status === 'CONNECTED' ? 'badge-success' : 'badge-neutral'}`}>
+                      {acc.status}
+                    </span>
+                  </div>
+
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', padding: '12px', background: '#FFFFFF', borderRadius: '10px', border: '1px solid #E8ECF5' }}>
+                    <div>
+                      <span style={{ fontSize: '11px', color: '#8C97B0', display: 'block' }}>Audience Reach</span>
+                      <strong style={{ fontSize: '15px', color: '#111625' }}>{acc.followers}</strong>
+                    </div>
+                    <div>
+                      <span style={{ fontSize: '11px', color: '#8C97B0', display: 'block' }}>30d Monthly Reach</span>
+                      <strong style={{ fontSize: '15px', color: '#111625' }}>{acc.monthlyReach}</strong>
+                    </div>
+                  </div>
+
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <span style={{ fontSize: '11px', color: '#8C97B0' }}>
+                      Sync: {acc.lastSynced}
+                    </span>
+                    <button
+                      className={`btn btn-sm ${acc.status === 'CONNECTED' ? 'btn-outline' : 'btn-primary'}`}
+                      onClick={() => handleToggleAccount(acc.id)}
+                    >
+                      {acc.status === 'CONNECTED' ? 'Disconnect' : 'Connect Channel'}
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Tab: Analytics View */}
+      {activeTab === 'analytics' && (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-5)' }}>
+          {/* Top Aggregate KPI Cards */}
+          <div className="cards-grid-4">
+            <div className="glass-panel">
+              <span style={{ fontSize: '12px', fontWeight: '700', color: '#6E56CF', textTransform: 'uppercase' }}>
+                Total Impressions
+              </span>
+              <div style={{ fontSize: '28px', fontWeight: '900', color: '#111625', marginTop: '6px' }}>
+                482,500
+              </div>
+              <div style={{ fontSize: '12px', color: '#059669', display: 'flex', alignItems: 'center', gap: '4px', marginTop: '4px' }}>
+                <TrendingUp size={13} />
+                <span>+24.6% vs last 30 days</span>
+              </div>
+            </div>
+
+            <div className="glass-panel">
+              <span style={{ fontSize: '12px', fontWeight: '700', color: '#059669', textTransform: 'uppercase' }}>
+                Engagement Rate
+              </span>
+              <div style={{ fontSize: '28px', fontWeight: '900', color: '#111625', marginTop: '6px' }}>
+                5.4%
+              </div>
+              <div style={{ fontSize: '12px', color: '#059669', display: 'flex', alignItems: 'center', gap: '4px', marginTop: '4px' }}>
+                <TrendingUp size={13} />
+                <span>Above industry avg (3.1%)</span>
+              </div>
+            </div>
+
+            <div className="glass-panel">
+              <span style={{ fontSize: '12px', fontWeight: '700', color: '#0284C7', textTransform: 'uppercase' }}>
+                Link Inquiries / Clicks
+              </span>
+              <div style={{ fontSize: '28px', fontWeight: '900', color: '#111625', marginTop: '6px' }}>
+                14,280
+              </div>
+              <div style={{ fontSize: '12px', color: '#059669', display: 'flex', alignItems: 'center', gap: '4px', marginTop: '4px' }}>
+                <TrendingUp size={13} />
+                <span>High conversion intent</span>
+              </div>
+            </div>
+
+            <div className="glass-panel">
+              <span style={{ fontSize: '12px', fontWeight: '700', color: '#D97706', textTransform: 'uppercase' }}>
+                Follower Growth
+              </span>
+              <div style={{ fontSize: '28px', fontWeight: '900', color: '#111625', marginTop: '6px' }}>
+                +3,190
+              </div>
+              <div style={{ fontSize: '12px', color: '#059669', display: 'flex', alignItems: 'center', gap: '4px', marginTop: '4px' }}>
+                <TrendingUp size={13} />
+                <span>Across 4 active channels</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Performance by Platform Breakdown */}
+          <div className="glass-panel">
+            <div className="panel-header">
+              <div className="panel-title">
+                <BarChart2 size={18} color="#6E56CF" />
+                Cross-Platform Distribution Breakdown
+              </div>
+              <span className="badge badge-primary">Oct 2026 Cycle</span>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              {[
+                { name: 'X (Twitter)', share: 44, reach: '212,300 views', color: '#0284C7' },
+                { name: 'LinkedIn Company', share: 32, reach: '154,400 views', color: '#0A66C2' },
+                { name: 'Instagram Creator', share: 18, reach: '86,850 views', color: '#E11D48' },
+                { name: 'YouTube Video Shorts', share: 6, reach: '28,950 views', color: '#DC2626' }
+              ].map((item) => (
+                <div key={item.name} style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px' }}>
+                    <span style={{ fontWeight: '700', color: '#111625' }}>{item.name}</span>
+                    <span style={{ color: '#5F6B85' }}>{item.reach} ({item.share}%)</span>
+                  </div>
+                  <div style={{ width: '100%', height: '8px', borderRadius: '4px', background: '#E8ECF5', overflow: 'hidden' }}>
+                    <div style={{ width: `${item.share}%`, height: '100%', background: item.color, borderRadius: '4px' }} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* COMPOSER MODAL (Full Multi-Channel Studio) */}
+      {isComposerOpen && (
+        <div className="dashboard-modal-backdrop" onClick={() => setIsComposerOpen(false)}>
+          <div
+            className="dashboard-modal-container"
+            onClick={(e) => e.stopPropagation()}
+            style={{ maxWidth: '820px' }}
+          >
+            {/* Modal Header */}
+            <div className="panel-header" style={{ padding: '18px 24px', borderBottom: '1px solid #E8ECF5', margin: 0 }}>
+              <div className="panel-title" style={{ fontSize: '17px' }}>
+                <Edit3 size={20} color="#6E56CF" />
+                Multi-Channel Post Composer
+              </div>
+              <button
+                type="button"
+                className="btn-ghost"
+                onClick={() => setIsComposerOpen(false)}
+                style={{ padding: '4px' }}
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            <form onSubmit={handleCreatePost} style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '18px' }}>
+              {/* Target Platforms Checkboxes */}
+              <div>
+                <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#111625', marginBottom: '8px' }}>
+                  Select Channels for Synchronized Broadcast:
+                </label>
+                <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+                  {(['twitter', 'linkedin', 'instagram', 'youtube'] as SocialPlatform[]).map((plt) => {
+                    const isSelected = selectedPlatforms.includes(plt);
+                    return (
+                      <button
+                        type="button"
+                        key={plt}
+                        onClick={() => togglePlatform(plt)}
+                        style={{
+                          padding: '8px 14px',
+                          borderRadius: '10px',
+                          background: isSelected ? '#EFEBFC' : '#FAFBFD',
+                          border: isSelected ? '2px solid #6E56CF' : '1px solid #E8ECF5',
+                          color: isSelected ? '#6E56CF' : '#5F6B85',
+                          fontWeight: '700',
+                          fontSize: '12px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '6px',
+                          cursor: 'pointer'
+                        }}
+                      >
+                        {getPlatformIcon(plt, 14)}
+                        <span>{getPlatformLabel(plt)}</span>
+                        {isSelected && <Check size={14} color="#6E56CF" />}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Title / Campaign Tag */}
+              <div>
+                <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#111625', marginBottom: '6px' }}>
+                  Internal Campaign Title (Optional)
+                </label>
+                <input
+                  type="text"
+                  className="input-field"
+                  placeholder="e.g. Zunme AI Product Launch Sequence #1"
+                  value={composeTitle}
+                  onChange={(e) => setComposeTitle(e.target.value)}
+                />
+              </div>
+
+              {/* Main Text Content */}
+              <div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                  <label style={{ fontSize: '12px', fontWeight: '700', color: '#111625' }}>
+                    Post Copy &amp; Hashtags
+                  </label>
+                  <button
+                    type="button"
+                    className="btn btn-sm btn-outline"
+                    onClick={handleAiRepurpose}
+                    disabled={isAiOptimizing}
+                    style={{ fontSize: '11px', padding: '3px 8px', gap: '4px' }}
+                  >
+                    <Sparkles size={12} color="#6E56CF" />
+                    <span>{isAiOptimizing ? 'Synthesizing...' : 'AI Enhance Copy'}</span>
+                  </button>
+                </div>
+                <textarea
+                  className="input-field"
+                  rows={5}
+                  placeholder="Write your cross-platform announcement, insights, or hook..."
+                  value={composeContent}
+                  onChange={(e) => setComposeContent(e.target.value)}
+                  required
+                />
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: '#8C97B0', marginTop: '4px' }}>
+                  <span>Characters: {composeContent.length}</span>
+                  <span>Twitter Cap: 280 • LinkedIn Cap: 3,000 • Instagram: 2,200</span>
+                </div>
+              </div>
+
+              {/* Media Attachment Simulation */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '14px', padding: '12px 16px', background: '#FAFBFD', borderRadius: '10px', border: '1px solid #E8ECF5' }}>
+                <input
+                  type="checkbox"
+                  id="mediaCheck"
+                  checked={hasMediaAttachment}
+                  onChange={(e) => setHasMediaAttachment(e.target.checked)}
+                  style={{ width: '18px', height: '18px', accentColor: '#6E56CF' }}
+                />
+                <label htmlFor="mediaCheck" style={{ fontSize: '13px', fontWeight: '600', color: '#111625', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <ImageIcon size={16} color="#6E56CF" />
+                  <span>Attach High-Res Visual / Creative Asset (1200x675)</span>
+                </label>
+              </div>
+
+              {/* Schedule Timing & Optimal Recommendation */}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
+                <div>
+                  <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#111625', marginBottom: '6px' }}>
+                    Publish Date
+                  </label>
+                  <input
+                    type="date"
+                    className="input-field"
+                    value={scheduledDate}
+                    onChange={(e) => setScheduledDate(e.target.value)}
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#111625', marginBottom: '6px' }}>
+                    Publish Time (Local Timezone)
+                  </label>
+                  <input
+                    type="time"
+                    className="input-field"
+                    value={scheduledTime}
+                    onChange={(e) => setScheduledTime(e.target.value)}
+                    required
+                  />
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '10px', borderTop: '1px solid #E8ECF5', paddingTop: '16px' }}>
+                <span style={{ fontSize: '12px', color: '#059669', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                  <CheckCircle2 size={14} />
+                  <span>AI Audience Optimal Score: 98/100</span>
+                </span>
+
+                <div style={{ display: 'flex', gap: '10px' }}>
+                  <button type="button" className="btn btn-outline btn-sm" onClick={() => setIsComposerOpen(false)}>
+                    Cancel
+                  </button>
+                  <button type="submit" className="btn btn-primary btn-sm">
+                    <CalendarIcon size={14} />
+                    <span>Confirm &amp; Schedule Broadcast</span>
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default SocialSchedulerPage;

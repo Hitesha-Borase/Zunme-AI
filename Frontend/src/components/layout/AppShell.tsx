@@ -17,6 +17,7 @@ import {
   SearchCheck,
   Briefcase,
   Megaphone,
+  Share2,
   Plus,
   Menu,
   X,
@@ -59,7 +60,8 @@ export const AppShell: React.FC = () => {
     if (path.includes('/creator')) return 'Creator Studio';
     if (path.includes('/seo')) return 'SEO Professional Workspace';
     if (path.includes('/business')) return 'Small Business & Team Workspace';
-    if (path.includes('/ads')) return 'Zunme Ads Platform (Future Module)';
+    if (path.includes('/social')) return 'Social Integrations & Content Scheduler';
+    if (path.includes('/ads')) return 'Zunme Ads Platform & Creator Monetization';
     return 'Zunme AI Workspace';
   };
 
@@ -227,6 +229,16 @@ export const AppShell: React.FC = () => {
             >
               <Briefcase size={15} color="#34D399" />
               <span>Business Workspace</span>
+            </NavLink>
+
+            <NavLink
+              to="/social"
+              className={({ isActive }) => `sidebar-nav-item ${isActive ? 'active' : ''}`}
+              onClick={() => setMobileMenuOpen(false)}
+              style={{ fontSize: '12px', padding: '7px 10px' }}
+            >
+              <Share2 size={15} color="#6E56CF" />
+              <span>Social &amp; Scheduler</span>
             </NavLink>
 
             <NavLink

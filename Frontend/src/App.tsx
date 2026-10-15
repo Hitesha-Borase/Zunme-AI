@@ -30,6 +30,7 @@ import { CreatorStudioPage } from './pages/creator/CreatorStudioPage';
 import { SEOWorkspacePage } from './pages/seo/SEOWorkspacePage';
 import { BusinessWorkspacePage } from './pages/business/BusinessWorkspacePage';
 import { ZunmeAdsPage } from './pages/ads/ZunmeAdsPage';
+import { SocialSchedulerPage } from './pages/social/SocialSchedulerPage';
 
 // Admin Operations Pages
 import { AdminDashboardPage } from './pages/admin/AdminDashboardPage';
@@ -96,6 +97,10 @@ export const App: React.FC = () => {
 
           <Route path="/ads" element={<AppShell />}>
             <Route index element={<ZunmeAdsPage />} />
+          </Route>
+
+          <Route path="/social" element={<AppShell />}>
+            <Route index element={<SocialSchedulerPage />} />
           </Route>
 
           {/* Admin Operations Console */}
