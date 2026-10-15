@@ -14,7 +14,29 @@ import {
   SearchCheck,
   Palette,
   ArrowRight,
-  Video
+  Video,
+  Music,
+  Award,
+  Building2,
+  Mail,
+  Tv,
+  Heart,
+  Users,
+  Image as ImageIcon,
+  Building,
+  Target,
+  Flame,
+  GraduationCap,
+  FlaskConical,
+  DollarSign,
+  MessageCircle,
+  Star,
+  Edit3,
+  Bot,
+  LayoutGrid,
+  Zap,
+  TrendingUp,
+  SlidersHorizontal
 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import {
@@ -29,76 +51,12 @@ import { VideoScriptStudio } from '../../components/studio/VideoScriptStudio';
 import { DocumentCanvas } from '../../components/studio/DocumentCanvas';
 import '../../components/studio/StudioStyles.css';
 
-interface ToolTemplate {
-  id: string;
-  name: string;
-  category: ContentCategory;
-  format: ContentFormat;
-  icon: string;
-  badge?: string;
-  description: string;
-  promptPlaceholder: string;
-}
-
-const TEMPLATES_CATALOG: ToolTemplate[] = [
-  {
-    id: 'tpl_1',
-    name: 'Long-Form Blog Post Outline',
-    category: 'TEXT',
-    format: 'BLOG_OUTLINE',
-    icon: '📝',
-    badge: 'Popular',
-    description: 'Structured comprehensive 4-phase article outline with high-retention hooks and key takeaways.',
-    promptPlaceholder: 'e.g., Breakthroughs in battery technology and clean energy storage in 2026...'
-  },
-  {
-    id: 'tpl_2',
-    name: 'High-Converting Email Newsletter',
-    category: 'MARKETING',
-    format: 'EMAIL_NEWSLETTER',
-    icon: '📬',
-    badge: 'High Impact',
-    description: 'Persuasive product announcement or community newsletter with curiosity-driven subject lines.',
-    promptPlaceholder: 'e.g., Announcing the beta launch of our modular titanium water bottle...'
-  },
-  {
-    id: 'tpl_3',
-    name: 'Viral Social Media Hooks & Captions',
-    category: 'MARKETING',
-    format: 'SOCIAL_CAPTION',
-    icon: '🚀',
-    badge: 'Trending',
-    description: 'Attention-grabbing short-form hooks, formatted body paragraphs, and hashtag tags for X and LinkedIn.',
-    promptPlaceholder: 'e.g., Why solopreneurs are replacing 5 separate research tools with one AI workspace...'
-  },
-  {
-    id: 'tpl_4',
-    name: 'Direct-Response Product Ad Copy',
-    category: 'MARKETING',
-    format: 'PRODUCT_AD',
-    icon: '🎯',
-    description: 'Multi-angle ad copy targeting core audience pain points, primary benefits, and clear CTA.',
-    promptPlaceholder: 'e.g., AI productivity tool saving 10 hours a week on research and drafting...'
-  },
-  {
-    id: 'tpl_5',
-    name: 'YouTube Retention Script Outline',
-    category: 'TEXT',
-    format: 'VIDEO_SCRIPT',
-    icon: '🎬',
-    description: 'Hook-Story-Offer video blueprint with timestamp pacing, b-roll prompts, and call to action.',
-    promptPlaceholder: 'e.g., Top 5 mistakes new creators make when building their content engine...'
-  },
-  {
-    id: 'tpl_6',
-    name: 'SEO In-Depth Pillar Section',
-    category: 'TEXT',
-    format: 'ARTICLE_SECTION',
-    icon: '🔍',
-    description: 'Semantically rich article section designed for search engine answer boxes and topical authority.',
-    promptPlaceholder: 'e.g., How does real-time citation verification prevent LLM hallucinations?'
-  }
-];
+import {
+  CLIENT_TEMPLATE_CATEGORIES,
+  TEMPLATES_CATALOG,
+  ToolTemplate,
+  CategoryCardDef
+} from './toolsCatalogData';
 
 export const UserContentBuildersPage: React.FC = () => {
   const {
@@ -111,8 +69,9 @@ export const UserContentBuildersPage: React.FC = () => {
 
   const [activeStudioTab, setActiveStudioTab] = useState<'templates' | 'images' | 'video' | 'canvas'>('templates');
   const [searchQuery, setSearchQuery] = useState('');
-  const [activeCategory, setActiveCategory] = useState<'ALL' | 'TEXT' | 'MARKETING'>('ALL');
+  const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [selectedTemplate, setSelectedTemplate] = useState<ToolTemplate>(TEMPLATES_CATALOG[0]);
+  const [visibleLimit, setVisibleLimit] = useState<number>(36);
 
   // Form State
   const [instructions, setInstructions] = useState('');
@@ -120,18 +79,40 @@ export const UserContentBuildersPage: React.FC = () => {
   const [length, setLength] = useState<ContentLength>('Medium (~500 words)');
   const [copied, setCopied] = useState(false);
 
+  // Filter templates by selected category and search text
   const filteredTemplates = TEMPLATES_CATALOG.filter((t) => {
-    const matchesCat = activeCategory === 'ALL' || t.category === activeCategory;
+    const matchesCategory =
+      selectedCategory === 'All' ||
+      t.templateCategory.toLowerCase() === selectedCategory.toLowerCase();
+
     const matchesSearch =
       t.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      t.description.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesCat && matchesSearch;
+      t.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      t.templateCategory.toLowerCase().includes(searchQuery.toLowerCase());
+
+    return matchesCategory && matchesSearch;
   });
+
+  const displayedTemplates =
+    selectedCategory === 'All' && !searchQuery
+      ? filteredTemplates.slice(0, visibleLimit)
+      : filteredTemplates;
+
+  const handleCategorySelect = (catId: string) => {
+    setSelectedCategory(catId);
+    setVisibleLimit(36);
+    setSearchQuery('');
+  };
 
   const handleSelectTemplate = (tpl: ToolTemplate) => {
     setSelectedTemplate(tpl);
     if (!instructions) {
       setInstructions('');
+    }
+    // Smooth scroll down to generator panel
+    const generatorElem = document.getElementById('generator-workspace-pane');
+    if (generatorElem) {
+      generatorElem.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
@@ -166,8 +147,13 @@ export const UserContentBuildersPage: React.FC = () => {
       contentType: generatedContent.category,
       content: generatedContent.content,
       previewText: generatedContent.content.slice(0, 140) + '...',
-      tags: [selectedTemplate.format.replace('_', ' '), tone]
+      tags: [selectedTemplate.format.replace('_', ' '), selectedTemplate.templateCategory, tone]
     });
+  };
+
+  const handleOpenInCanvas = () => {
+    setActiveStudioTab('canvas');
+    showToast('Switched to Rich Document Canvas', 'info');
   };
 
   return (
@@ -177,17 +163,17 @@ export const UserContentBuildersPage: React.FC = () => {
         <div className="dashboard-title-group">
           <h1>
             <PenTool size={26} color="#A78BFA" />
-            AI Content Builders
+            AI Content Builders &amp; Templates
           </h1>
           <p className="dashboard-subtitle">
-            Catalog of 1,000+ structured generation blueprints for long-form writing, viral social hooks, email campaigns, and SEO briefs.
+            Search 1,000+ structured generation blueprints or click any category icon below to generate production-ready copy, scripts, and business frameworks.
           </p>
         </div>
 
         <div className="dashboard-header-actions">
-          <div className="badge badge-primary">
-            <Sparkles size={12} style={{ display: 'inline', marginRight: '4px' }} />
-            Consistent Input & Output Architecture
+          <div className="badge badge-primary" style={{ padding: '8px 14px', fontSize: '13px' }}>
+            <Sparkles size={14} style={{ display: 'inline', marginRight: '6px' }} />
+            19 Core Creative &amp; Business Categories
           </div>
         </div>
       </div>
@@ -199,7 +185,7 @@ export const UserContentBuildersPage: React.FC = () => {
           onClick={() => setActiveStudioTab('templates')}
         >
           <PenTool size={15} />
-          <span>Templates Catalog (1,000+)</span>
+          <span>Templates Catalog (19 Categories)</span>
         </button>
 
         <button
@@ -233,229 +219,352 @@ export const UserContentBuildersPage: React.FC = () => {
 
       {activeStudioTab === 'templates' && (
         <>
-          {/* Catalog Search & Category Filters */}
-          <div className="glass-panel" style={{ padding: 'var(--space-4)' }}>
-        <div className="filter-toolbar" style={{ margin: 0 }}>
-          <div className="search-box-wrap">
-            <Search size={16} />
-            <input
-              type="text"
-              className="input-field"
-              placeholder="Search 1,000+ templates & blueprints..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-          </div>
-
-          <div className="filter-pills-row">
-            {(['ALL', 'TEXT', 'MARKETING'] as const).map((cat) => (
-              <button
-                key={cat}
-                className={`filter-pill ${activeCategory === cat ? 'active' : ''}`}
-                onClick={() => setActiveCategory(cat)}
-              >
-                {cat === 'ALL' ? 'All Builders (1,000+)' : cat === 'TEXT' ? 'Articles & Writing' : 'Marketing & Social'}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Template Selector Grid */}
-      <div className="cards-grid-3">
-        {filteredTemplates.map((tpl) => (
-          <div
-            key={tpl.id}
-            onClick={() => handleSelectTemplate(tpl)}
-            className="glass-panel"
-            style={{
-              cursor: 'pointer',
-              borderColor: selectedTemplate.id === tpl.id ? '#6E56CF' : undefined,
-              background: selectedTemplate.id === tpl.id ? '#F5EFFF' : '#FFFFFF',
-              boxShadow: selectedTemplate.id === tpl.id ? '0 8px 24px rgba(110, 86, 207, 0.15)' : undefined,
-              transition: 'all 0.18s ease'
-            }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
-              <span style={{ fontSize: '24px' }}>{tpl.icon}</span>
-              {tpl.badge && <span className="badge badge-primary">{tpl.badge}</span>}
-            </div>
-
-            <h3 style={{ fontSize: '15px', fontWeight: '800', color: '#111625', marginBottom: '6px' }}>
-              {tpl.name}
-            </h3>
-            <p style={{ fontSize: '12px', color: '#5F6B85', lineHeight: '1.4' }}>
-              {tpl.description}
-            </p>
-          </div>
-        ))}
-      </div>
-
-      {/* Consistent Input & Output Workspace Pane */}
-      <div className="cards-grid-2">
-        {/* Input Configuration Card */}
-        <div className="glass-panel">
-          <div className="panel-header">
-            <div className="panel-title">
-              <Sparkles size={18} color="#6E56CF" />
-              Generator: {selectedTemplate.name}
-            </div>
-            <span className="badge badge-neutral">{selectedTemplate.category}</span>
-          </div>
-
-          <form onSubmit={handleGenerate} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-            <div>
-              <label style={{ display: 'block', fontSize: '13px', fontWeight: '700', color: '#111625', marginBottom: '6px' }}>
-                Topic & Specific Instructions
-              </label>
-              <textarea
-                className="input-field"
-                rows={5}
-                placeholder={selectedTemplate.promptPlaceholder}
-                value={instructions}
-                onChange={(e) => setInstructions(e.target.value)}
-                required
-              />
-            </div>
-
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+          {/* ============================================================ */}
+          {/* CLIENT SPECIFICATION: Search for templates or click on icon   */}
+          {/* ============================================================ */}
+          <div className="glass-panel" style={{ padding: 'var(--space-5)', marginBottom: 'var(--space-5)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px', flexWrap: 'wrap', gap: '12px' }}>
               <div>
-                <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#111625', marginBottom: '6px' }}>
-                  Tone of Voice
-                </label>
-                <select
-                  className="input-field"
-                  value={tone}
-                  onChange={(e) => setTone(e.target.value as ContentTone)}
-                >
-                  <option value="Professional">Professional</option>
-                  <option value="Conversational">Conversational</option>
-                  <option value="Persuasive">Persuasive</option>
-                  <option value="Bold & Direct">Bold & Direct</option>
-                  <option value="Creative">Creative</option>
-                </select>
+                <h2 style={{ fontSize: '16px', fontWeight: '800', color: '#111625', margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <SearchCheck size={18} color="#6E56CF" />
+                  Search for templates or click on icon:
+                </h2>
+                <p style={{ fontSize: '13px', color: '#5F6B85', margin: '4px 0 0 0' }}>
+                  Filter directly by industry or search by topic, role, or content format.
+                </p>
               </div>
 
-              <div>
-                <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#111625', marginBottom: '6px' }}>
-                  Target Length
-                </label>
-                <select
+              {/* Live Search Input */}
+              <div className="search-box-wrap" style={{ minWidth: '320px', margin: 0 }}>
+                <Search size={16} />
+                <input
+                  type="text"
                   className="input-field"
-                  value={length}
-                  onChange={(e) => setLength(e.target.value as ContentLength)}
-                >
-                  <option value="Short (~150 words)">Short (~150 words)</option>
-                  <option value="Medium (~500 words)">Medium (~500 words)</option>
-                  <option value="Detailed (~1,000 words)">Detailed (~1,000 words)</option>
-                </select>
+                  placeholder="Type to search blueprints (e.g. Sales, Podcast, Email)..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
               </div>
             </div>
 
-            <button
-              type="submit"
-              className="btn btn-primary"
-              disabled={isGeneratingContent}
-              style={{ marginTop: '8px' }}
+            {/* Exact 19 PDF Category Icons Grid / Carousel */}
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fill, minmax(130px, 1fr))',
+                gap: '8px',
+                maxHeight: '260px',
+                overflowY: 'auto',
+                padding: '4px',
+                scrollbarWidth: 'thin'
+              }}
             >
-              {isGeneratingContent ? (
-                <>
-                  <RefreshCw size={16} className="animate-spin" />
-                  <span>Generating Structured Copy...</span>
-                </>
-              ) : (
-                <>
-                  <Sparkles size={16} />
-                  <span>Generate Content &rarr;</span>
-                </>
-              )}
-            </button>
-          </form>
-        </div>
-
-        {/* Output Canvas */}
-        <div className="glass-panel" style={{ display: 'flex', flexDirection: 'column' }}>
-          <div className="panel-header">
-            <div className="panel-title">
-              <FileText size={18} color="#059669" />
-              Generated Output Canvas
+              {CLIENT_TEMPLATE_CATEGORIES.map((cat) => {
+                const isSelected = selectedCategory.toLowerCase() === cat.id.toLowerCase();
+                return (
+                  <button
+                    key={cat.id}
+                    onClick={() => handleCategorySelect(cat.id)}
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      textAlign: 'center',
+                      padding: '10px 8px',
+                      borderRadius: '12px',
+                      border: isSelected ? '2px solid #6E56CF' : '1px solid #E8ECF5',
+                      background: isSelected ? '#F5EFFF' : '#FFFFFF',
+                      boxShadow: isSelected ? '0 4px 14px rgba(110,86,207,0.18)' : '0 1px 3px rgba(0,0,0,0.02)',
+                      cursor: 'pointer',
+                      transition: 'all 0.18s ease',
+                      gap: '4px'
+                    }}
+                  >
+                    <span style={{ fontSize: '20px', lineHeight: '1.2' }}>{cat.emoji}</span>
+                    <span
+                      style={{
+                        fontSize: '11px',
+                        fontWeight: isSelected ? '800' : '600',
+                        color: isSelected ? '#6E56CF' : '#111625',
+                        whiteSpace: 'nowrap',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        maxWidth: '115px'
+                      }}
+                      title={cat.name}
+                    >
+                      {cat.name}
+                    </span>
+                  </button>
+                );
+              })}
             </div>
-            {generatedContent && (
-              <div style={{ display: 'flex', gap: '8px' }}>
-                <button className="btn btn-outline btn-sm" onClick={handleCopy}>
-                  {copied ? <Check size={13} color="#059669" /> : <Copy size={13} />}
-                  <span>{copied ? 'Copied' : 'Copy'}</span>
+
+            {/* Filter Status Bar */}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '14px', paddingTop: '12px', borderTop: '1px solid #F0F3FA' }}>
+              <div style={{ fontSize: '13px', color: '#5F6B85' }}>
+                Showing <strong>{filteredTemplates.length}</strong> blueprints in{' '}
+                <strong style={{ color: '#6E56CF' }}>{selectedCategory === 'All' ? 'All Categories' : selectedCategory}</strong>
+                {searchQuery && <span> matching "{searchQuery}"</span>}
+              </div>
+
+              {(selectedCategory !== 'All' || searchQuery) && (
+                <button
+                  className="btn-ghost"
+                  onClick={() => {
+                    setSelectedCategory('All');
+                    setSearchQuery('');
+                  }}
+                  style={{ fontSize: '12px', color: '#6E56CF', padding: '4px 8px' }}
+                >
+                  Clear Filters
                 </button>
-                <button className="btn btn-secondary btn-sm" onClick={handleSave}>
-                  <Bookmark size={13} />
-                  <span>Save</span>
+              )}
+            </div>
+          </div>
+
+          {/* Template Selector Grid */}
+          <div style={{ marginBottom: 'var(--space-6)' }}>
+            <div className="cards-grid-3">
+              {displayedTemplates.map((tpl) => (
+                <div
+                  key={tpl.id}
+                  onClick={() => handleSelectTemplate(tpl)}
+                  className="glass-panel"
+                  style={{
+                    cursor: 'pointer',
+                    borderColor: selectedTemplate.id === tpl.id ? '#6E56CF' : undefined,
+                    background: selectedTemplate.id === tpl.id ? '#FAF7FF' : '#FFFFFF',
+                    boxShadow: selectedTemplate.id === tpl.id ? '0 8px 24px rgba(110, 86, 207, 0.16)' : undefined,
+                    transition: 'all 0.18s ease',
+                    position: 'relative'
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <span style={{ fontSize: '24px' }}>{tpl.icon}</span>
+                      <span className="badge badge-neutral" style={{ fontSize: '10px', fontWeight: '700' }}>
+                        {tpl.templateCategory}
+                      </span>
+                    </div>
+                    {tpl.badge && <span className="badge badge-primary">{tpl.badge}</span>}
+                  </div>
+
+                  <h3 style={{ fontSize: '15px', fontWeight: '800', color: '#111625', marginBottom: '6px' }}>
+                    {tpl.name}
+                  </h3>
+                  <p style={{ fontSize: '12px', color: '#5F6B85', lineHeight: '1.4', marginBottom: '12px' }}>
+                    {tpl.description}
+                  </p>
+
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 'auto', paddingTop: '8px', borderTop: '1px solid #F0F3FA' }}>
+                    <span style={{ fontSize: '11px', fontWeight: '600', color: '#8B5CF6' }}>
+                      {tpl.format.replace('_', ' ')}
+                    </span>
+                    <button
+                      className="btn btn-outline btn-sm"
+                      style={{
+                        padding: '4px 10px',
+                        fontSize: '11px',
+                        borderColor: selectedTemplate.id === tpl.id ? '#6E56CF' : undefined,
+                        color: selectedTemplate.id === tpl.id ? '#6E56CF' : undefined
+                      }}
+                    >
+                      {selectedTemplate.id === tpl.id ? 'Selected' : 'Use Blueprint →'}
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {selectedCategory === 'All' && !searchQuery && filteredTemplates.length > visibleLimit && (
+              <div style={{ textAlign: 'center', marginTop: '24px' }}>
+                <button
+                  className="btn btn-outline"
+                  onClick={() => setVisibleLimit((prev) => prev + 36)}
+                  style={{ padding: '10px 28px', fontSize: '13px', fontWeight: '700', borderRadius: '12px', background: '#FFFFFF' }}
+                >
+                  Load More Blueprints ({filteredTemplates.length - visibleLimit} remaining) &darr;
                 </button>
               </div>
             )}
           </div>
 
-          {generatedContent ? (
-            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', color: '#5F6B85', borderBottom: '1px solid #E8ECF5', paddingBottom: '8px' }}>
-                <span>Format: <strong>{generatedContent.format}</strong></span>
-                <span>Word Count: <strong>{generatedContent.wordCount} words</strong></span>
+          {/* ============================================================ */}
+          {/* GENERATOR WORKSPACE PANE                                    */}
+          {/* ============================================================ */}
+          <div id="generator-workspace-pane" className="cards-grid-2">
+            {/* Input Configuration Card */}
+            <div className="glass-panel">
+              <div className="panel-header">
+                <div className="panel-title">
+                  <Sparkles size={18} color="#6E56CF" />
+                  Blueprint Generator: {selectedTemplate.name}
+                </div>
+                <span className="badge badge-primary">{selectedTemplate.templateCategory}</span>
               </div>
 
-              <div
-                style={{
-                  flex: 1,
-                  padding: '16px',
-                  borderRadius: '10px',
-                  background: '#FAFBFD',
-                  border: '1px solid #E8ECF5',
-                  overflowY: 'auto',
-                  maxHeight: '380px',
-                  whiteSpace: 'pre-wrap',
-                  fontSize: '13px',
-                  lineHeight: '1.6',
-                  color: '#272F3E'
-                }}
-              >
-                {generatedContent.content}
-              </div>
+              <form onSubmit={handleGenerate} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                <div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
+                    <label style={{ fontSize: '13px', fontWeight: '700', color: '#111625' }}>
+                      Topic, Context &amp; Instructions
+                    </label>
+                    <span style={{ fontSize: '11px', color: '#5F6B85' }}>Be as specific as possible</span>
+                  </div>
+                  <textarea
+                    className="input-field"
+                    rows={5}
+                    placeholder={selectedTemplate.promptPlaceholder}
+                    value={instructions}
+                    onChange={(e) => setInstructions(e.target.value)}
+                    required
+                  />
+                </div>
+
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#111625', marginBottom: '6px' }}>
+                      Tone of Voice
+                    </label>
+                    <select
+                      className="input-field"
+                      value={tone}
+                      onChange={(e) => setTone(e.target.value as ContentTone)}
+                    >
+                      <option value="Professional">Professional</option>
+                      <option value="Conversational">Conversational</option>
+                      <option value="Persuasive">Persuasive</option>
+                      <option value="Bold & Direct">Bold & Direct</option>
+                      <option value="Creative">Creative</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#111625', marginBottom: '6px' }}>
+                      Target Length
+                    </label>
+                    <select
+                      className="input-field"
+                      value={length}
+                      onChange={(e) => setLength(e.target.value as ContentLength)}
+                    >
+                      <option value="Short (~150 words)">Short (~150 words)</option>
+                      <option value="Medium (~500 words)">Medium (~500 words)</option>
+                      <option value="Detailed (~1,000 words)">Detailed (~1,000 words)</option>
+                    </select>
+                  </div>
+                </div>
+
+                <button
+                  type="submit"
+                  className="btn btn-primary"
+                  disabled={isGeneratingContent}
+                  style={{ marginTop: '8px' }}
+                >
+                  {isGeneratingContent ? (
+                    <>
+                      <RefreshCw size={16} className="animate-spin" />
+                      <span>Generating Structured Copy with Zunme AI...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Sparkles size={16} />
+                      <span>Generate Content &rarr;</span>
+                    </>
+                  )}
+                </button>
+              </form>
             </div>
-          ) : (
-            <div
-              style={{
-                flex: 1,
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                textAlign: 'center',
-                color: '#5F6B85',
-                padding: '48px 24px'
-              }}
-            >
-              <div
-                style={{
-                  width: '48px',
-                  height: '48px',
-                  borderRadius: '12px',
-                  background: '#EFEBFC',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  marginBottom: '12px'
-                }}
-              >
-                <Sparkles size={22} color="#6E56CF" />
+
+            {/* Output Canvas */}
+            <div className="glass-panel" style={{ display: 'flex', flexDirection: 'column' }}>
+              <div className="panel-header">
+                <div className="panel-title">
+                  <FileText size={18} color="#059669" />
+                  Generated Output Canvas
+                </div>
+                {generatedContent && (
+                  <div style={{ display: 'flex', gap: '8px' }}>
+                    <button className="btn btn-outline btn-sm" onClick={handleCopy}>
+                      {copied ? <Check size={13} color="#059669" /> : <Copy size={13} />}
+                      <span>{copied ? 'Copied' : 'Copy'}</span>
+                    </button>
+                    <button className="btn btn-secondary btn-sm" onClick={handleSave}>
+                      <Bookmark size={13} />
+                      <span>Save</span>
+                    </button>
+                    <button className="btn btn-primary btn-sm" onClick={handleOpenInCanvas} title="Edit in rich canvas">
+                      <Edit3 size={13} />
+                      <span>Canvas</span>
+                    </button>
+                  </div>
+                )}
               </div>
-              <h4 style={{ fontSize: '15px', fontWeight: '700', color: '#111625', marginBottom: '6px' }}>
-                Ready to Draft
-              </h4>
-              <p style={{ fontSize: '13px', maxWidth: '320px' }}>
-                Select a builder above, enter your topic or target context, and click Generate Content.
-              </p>
+
+              {generatedContent ? (
+                <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', color: '#5F6B85', borderBottom: '1px solid #E8ECF5', paddingBottom: '8px' }}>
+                    <span>Format: <strong>{generatedContent.format}</strong></span>
+                    <span>Word Count: <strong>{generatedContent.wordCount} words</strong></span>
+                  </div>
+
+                  <div
+                    style={{
+                      flex: 1,
+                      padding: '16px',
+                      borderRadius: '10px',
+                      background: '#FAFBFD',
+                      border: '1px solid #E8ECF5',
+                      overflowY: 'auto',
+                      maxHeight: '380px',
+                      whiteSpace: 'pre-wrap',
+                      fontSize: '13px',
+                      lineHeight: '1.6',
+                      color: '#272F3E'
+                    }}
+                  >
+                    {generatedContent.content}
+                  </div>
+                </div>
+              ) : (
+                <div
+                  style={{
+                    flex: 1,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    textAlign: 'center',
+                    color: '#5F6B85',
+                    padding: '48px 24px'
+                  }}
+                >
+                  <div
+                    style={{
+                      width: '48px',
+                      height: '48px',
+                      borderRadius: '12px',
+                      background: '#EFEBFC',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      marginBottom: '12px'
+                    }}
+                  >
+                    <Sparkles size={22} color="#6E56CF" />
+                  </div>
+                  <h4 style={{ fontSize: '15px', fontWeight: '700', color: '#111625', marginBottom: '6px' }}>
+                    Ready to Draft
+                  </h4>
+                  <p style={{ fontSize: '13px', maxWidth: '320px' }}>
+                    Select any blueprint from the 19 categories above, enter your topic or target context, and click Generate Content.
+                  </p>
+                </div>
+              )}
             </div>
-          )}
-        </div>
-      </div>
+          </div>
         </>
       )}
     </div>

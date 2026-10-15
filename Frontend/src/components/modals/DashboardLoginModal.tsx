@@ -67,7 +67,7 @@ export const DashboardLoginModal: React.FC<DashboardLoginModalProps> = ({ isOpen
   const dashboardButtons: DashboardButton[] = [
     {
       id: 'super-admin',
-      name: 'Super Admin Dashboard',
+      name: 'Super Admin Governance',
       path: '/super-admin',
       role: 'SUPER_ADMIN',
       roleLabel: 'Super Admin',
@@ -88,54 +88,18 @@ export const DashboardLoginModal: React.FC<DashboardLoginModalProps> = ({ isOpen
       name: 'User AI Workspace',
       path: '/app',
       role: 'USER',
-      roleLabel: 'User',
+      roleLabel: 'Core User',
       icon: <Sparkles size={18} />,
       accentColor: '#0EA5E9'
     },
     {
-      id: 'builders',
-      name: 'AI Content Builders',
-      path: '/app/builders',
-      role: 'USER',
-      roleLabel: 'Builders',
-      icon: <PenTool size={18} />,
-      accentColor: '#EC4899'
-    },
-    {
-      id: 'warehouse',
-      name: 'AI Content Warehouse',
-      path: '/warehouse',
-      role: 'USER',
-      roleLabel: 'Warehouse',
-      icon: <Database size={18} />,
-      accentColor: '#10B981'
-    },
-    {
-      id: 'seo',
-      name: 'AI SEO Marketing',
-      path: '/seo',
-      role: 'USER',
-      roleLabel: 'SEO',
-      icon: <TrendingUp size={18} />,
-      accentColor: '#F59E0B'
-    },
-    {
-      id: 'creator',
-      name: 'Creator Studio',
-      path: '/creator',
-      role: 'USER',
-      roleLabel: 'Creator',
-      icon: <Wand2 size={18} />,
-      accentColor: '#F43F5E'
-    },
-    {
       id: 'business',
-      name: 'Business & Brand Hub',
+      name: 'Business & CRM Hub',
       path: '/business',
       role: 'USER',
       roleLabel: 'Business',
       icon: <Briefcase size={18} />,
-      accentColor: '#14B8A6'
+      accentColor: '#10B981'
     },
     {
       id: 'social',
@@ -151,7 +115,7 @@ export const DashboardLoginModal: React.FC<DashboardLoginModalProps> = ({ isOpen
       name: 'Zunme Ads Platform',
       path: '/ads',
       role: 'USER',
-      roleLabel: 'Ads',
+      roleLabel: 'Ads Platform',
       icon: <Megaphone size={18} />,
       accentColor: '#A855F7'
     }

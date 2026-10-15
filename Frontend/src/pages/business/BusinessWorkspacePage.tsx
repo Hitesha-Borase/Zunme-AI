@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { NavLink, useSearchParams } from 'react-router-dom';
 import {
   Briefcase,
   Users,
@@ -52,9 +52,29 @@ export const BusinessWorkspacePage: React.FC = () => {
     showToast
   } = useApp();
 
-  const [activeTab, setActiveTab] = useState<
-    'Overview' | 'Brand Profile' | 'Projects' | 'Content Calendar' | 'Marketing Content' | 'nErgy CRM Deep Sync' | 'Team & Access' | 'Settings'
-  >('Overview');
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  type BusinessTabType = 'Overview' | 'Brand Profile' | 'Projects' | 'Content Calendar' | 'Marketing Content' | 'nErgy CRM Deep Sync' | 'Team & Access' | 'Settings';
+
+  const [activeTab, setActiveTabState] = useState<BusinessTabType>(() => {
+    const tabParam = searchParams.get('tab');
+    if (tabParam && ['Overview', 'Brand Profile', 'Projects', 'Content Calendar', 'Marketing Content', 'nErgy CRM Deep Sync', 'Team & Access', 'Settings'].includes(tabParam)) {
+      return tabParam as BusinessTabType;
+    }
+    return 'Overview';
+  });
+
+  const setActiveTab = (tab: BusinessTabType) => {
+    setActiveTabState(tab);
+    setSearchParams({ tab });
+  };
+
+  useEffect(() => {
+    const tabParam = searchParams.get('tab');
+    if (tabParam && ['Overview', 'Brand Profile', 'Projects', 'Content Calendar', 'Marketing Content', 'nErgy CRM Deep Sync', 'Team & Access', 'Settings'].includes(tabParam)) {
+      setActiveTabState(tabParam as BusinessTabType);
+    }
+  }, [searchParams]);
 
   // Brand Profile State
   const [bName, setBName] = useState(brandProfile.brandName);

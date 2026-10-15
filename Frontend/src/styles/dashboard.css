@@ -229,6 +229,53 @@
   box-shadow: 0 4px 14px rgba(110, 86, 207, 0.35);
 }
 
+/* Horizontal Tab Navigation Bar (Used in Ads, Social, & Specialist Dashboards) */
+.tabs-nav-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 6px;
+  background: #FFFFFF;
+  border: 1px solid #E8ECF5;
+  border-radius: var(--radius-xl);
+  box-shadow: 0 2px 8px rgba(30, 20, 60, 0.03);
+  margin-bottom: var(--space-5);
+  scrollbar-width: none;
+}
+
+.tabs-nav-bar::-webkit-scrollbar {
+  display: none;
+}
+
+.tab-item-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: var(--radius-lg);
+  font-size: 13px;
+  font-weight: 600;
+  color: #5F6B85;
+  background: transparent;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.tab-item-btn:hover {
+  background: #F4F6FC;
+  color: #111625;
+}
+
+.tab-item-btn.active {
+  background: #6E56CF;
+  color: #FFFFFF;
+  border-color: #6E56CF;
+  box-shadow: 0 4px 12px rgba(110, 86, 207, 0.25);
+}
+
 /* Tables in Crisp White Surface */
 .table-responsive {
   width: 100%;

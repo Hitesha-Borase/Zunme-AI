@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import {
   Megaphone,
   TrendingUp,
@@ -71,10 +72,29 @@ interface CreatorPayout {
 
 export const ZunmeAdsPage: React.FC = () => {
   const { showToast } = useApp();
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  const [activeTab, setActiveTab] = useState<
-    'Overview' | 'Campaigns' | 'Create Campaign' | 'Keyword Bidding' | 'Ad Placements' | 'Creator Monetization' | 'Billing & Budget'
-  >('Overview');
+  type TabType = 'Overview' | 'Campaigns' | 'Create Campaign' | 'Keyword Bidding' | 'Ad Placements' | 'Creator Monetization' | 'Billing & Budget';
+
+  const [activeTab, setActiveTabState] = useState<TabType>(() => {
+    const tabParam = searchParams.get('tab');
+    if (tabParam && ['Overview', 'Campaigns', 'Create Campaign', 'Keyword Bidding', 'Ad Placements', 'Creator Monetization', 'Billing & Budget'].includes(tabParam)) {
+      return tabParam as TabType;
+    }
+    return 'Overview';
+  });
+
+  const setActiveTab = (tab: TabType) => {
+    setActiveTabState(tab);
+    setSearchParams({ tab });
+  };
+
+  useEffect(() => {
+    const tabParam = searchParams.get('tab');
+    if (tabParam && ['Overview', 'Campaigns', 'Create Campaign', 'Keyword Bidding', 'Ad Placements', 'Creator Monetization', 'Billing & Budget'].includes(tabParam)) {
+      setActiveTabState(tabParam as TabType);
+    }
+  }, [searchParams]);
 
   // Ad Wallet Balance
   const [walletBalance, setWalletBalance] = useState<number>(450.0);

@@ -23,7 +23,16 @@ import {
   X,
   LogOut,
   Trash2,
-  ChevronDown
+  ChevronDown,
+  ArrowLeft,
+  BarChart2,
+  Target,
+  DollarSign,
+  Eye,
+  Award,
+  Users,
+  Calendar,
+  LayoutDashboard
 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import './AppShell.css';
@@ -41,7 +50,6 @@ export const AppShell: React.FC = () => {
   } = useApp();
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [specializedOpen, setSpecializedOpen] = useState(true);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -95,163 +103,424 @@ export const AppShell: React.FC = () => {
 
       {/* Sidebar */}
       <aside className={`app-sidebar ${mobileMenuOpen ? 'open' : ''}`}>
-        <div className="sidebar-brand-section">
-          <NavLink to="/" className="brand-link" onClick={() => setMobileMenuOpen(false)}>
-            <div className="brand-icon-box">Z</div>
-            <span>Zunme AI</span>
-          </NavLink>
-          <button
-            className="btn-ghost hide-on-desktop"
-            onClick={() => setMobileMenuOpen(false)}
-            aria-label="Close menu"
-          >
-            <X size={18} />
-          </button>
-        </div>
+        {location.pathname.startsWith('/ads') ? (
+          /* ============================================================ */
+          /* ZUNME ADS PLATFORM DEDICATED SIDEBAR                         */
+          /* ============================================================ */
+          <>
+            <div className="sidebar-brand-section">
+              <NavLink to="/ads" className="brand-link" onClick={() => setMobileMenuOpen(false)}>
+                <div className="brand-icon-box" style={{ background: 'linear-gradient(135deg, #A855F7 0%, #6E56CF 100%)' }}>
+                  <Megaphone size={16} color="#FFFFFF" />
+                </div>
+                <div>
+                  <div style={{ fontSize: '15px', fontWeight: '800', color: '#111625', lineHeight: '1.2' }}>Zunme Ads</div>
+                  <div style={{ fontSize: '9px', fontWeight: '800', color: '#8B5CF6', letterSpacing: '0.06em' }}>ADS PLATFORM</div>
+                </div>
+              </NavLink>
+              <button
+                className="btn-ghost hide-on-desktop"
+                onClick={() => setMobileMenuOpen(false)}
+                aria-label="Close menu"
+              >
+                <X size={18} />
+              </button>
+            </div>
 
-        {/* New Chat Primary Button */}
-        <div className="sidebar-new-chat-box">
-          <button className="btn-new-chat" onClick={handleNewChatClick}>
-            <Plus size={16} />
-            <span>New Chat</span>
-          </button>
-        </div>
+            <div className="sidebar-new-chat-box">
+              <NavLink
+                to="/ads?tab=Create Campaign"
+                className="btn-new-chat"
+                style={{ background: '#6E56CF', color: '#FFFFFF', textDecoration: 'none' }}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <Plus size={16} />
+                <span>New Campaign</span>
+              </NavLink>
+            </div>
 
-        {/* Core Navigation Links: Exactly following General User Spec */}
-        <nav className="sidebar-nav-list" aria-label="Main Navigation">
-          <NavLink
-            to="/app"
-            end
-            className={({ isActive }) => `sidebar-nav-item ${isActive ? 'active' : ''}`}
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            <Home size={17} />
-            <span>Home</span>
-          </NavLink>
+            <nav className="sidebar-nav-list" aria-label="Ads Navigation">
+              <NavLink
+                to="/ads"
+                end
+                className={() => `sidebar-nav-item ${location.pathname === '/ads' && (!location.search || location.search.includes('Overview')) ? 'active' : ''}`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <LayoutDashboard size={17} />
+                <span>Ads Overview</span>
+              </NavLink>
 
-          <NavLink
-            to="/app/chat"
-            className={({ isActive }) => `sidebar-nav-item ${isActive ? 'active' : ''}`}
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            <MessageSquare size={17} />
-            <span>Ask Zunme</span>
-          </NavLink>
+              <NavLink
+                to="/ads?tab=Campaigns"
+                className={() => `sidebar-nav-item ${location.search.includes('Campaigns') ? 'active' : ''}`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <Target size={17} />
+                <span>All Campaigns</span>
+              </NavLink>
 
-          <NavLink
-            to="/app/search"
-            className={({ isActive }) => `sidebar-nav-item ${isActive ? 'active' : ''}`}
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            <Search size={17} />
-            <span>Web Search</span>
-          </NavLink>
+              <NavLink
+                to="/ads?tab=Create Campaign"
+                className={() => `sidebar-nav-item ${location.search.includes('Create') ? 'active' : ''}`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <Plus size={17} />
+                <span>Create Campaign</span>
+              </NavLink>
 
-          <NavLink
-            to="/app/builders"
-            className={({ isActive }) => `sidebar-nav-item ${isActive ? 'active' : ''}`}
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            <PenTool size={17} />
-            <span>AI Content Builders</span>
-          </NavLink>
+              <NavLink
+                to="/ads?tab=Keyword Bidding"
+                className={() => `sidebar-nav-item ${location.search.includes('Bidding') ? 'active' : ''}`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <DollarSign size={17} />
+                <span>Keyword Bidding</span>
+              </NavLink>
 
-          <NavLink
-            to="/warehouse"
-            className={({ isActive }) => `sidebar-nav-item ${isActive ? 'active' : ''}`}
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            <Package size={17} />
-            <span>AI Warehouse</span>
-          </NavLink>
+              <NavLink
+                to="/ads?tab=Ad Placements"
+                className={() => `sidebar-nav-item ${location.search.includes('Placements') ? 'active' : ''}`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <Eye size={17} />
+                <span>Ad Placements</span>
+              </NavLink>
 
-          <NavLink
-            to="/app/library"
-            className={({ isActive }) => `sidebar-nav-item ${isActive ? 'active' : ''}`}
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            <Bookmark size={17} />
-            <span>My Library</span>
-          </NavLink>
+              <NavLink
+                to="/ads?tab=Creator Monetization"
+                className={() => `sidebar-nav-item ${location.search.includes('Monetization') ? 'active' : ''}`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <Award size={17} />
+                <span>Creator Monetization</span>
+              </NavLink>
 
-          <NavLink
-            to="/app/history"
-            className={({ isActive }) => `sidebar-nav-item ${isActive ? 'active' : ''}`}
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            <Clock size={17} />
-            <span>History</span>
-          </NavLink>
+              <NavLink
+                to="/ads?tab=Billing & Budget"
+                className={() => `sidebar-nav-item ${location.search.includes('Billing') ? 'active' : ''}`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <CreditCard size={17} />
+                <span>Billing & Wallet</span>
+              </NavLink>
+            </nav>
 
-          <NavLink
-            to="/app/usage"
-            className={({ isActive }) => `sidebar-nav-item ${isActive ? 'active' : ''}`}
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            <CreditCard size={17} />
-            <span>Usage & Plan</span>
-          </NavLink>
-        </nav>
+            <div className="sidebar-section-divider">
+              <span>RETURN TO WORKSPACE</span>
+            </div>
+            <div style={{ padding: '0 var(--space-3)' }}>
+              <NavLink
+                to="/app"
+                className="sidebar-nav-item"
+                onClick={() => setMobileMenuOpen(false)}
+                style={{ color: '#6E56CF', fontWeight: '700' }}
+              >
+                <ArrowLeft size={16} />
+                <span>Exit to AI Workspace</span>
+              </NavLink>
+            </div>
+          </>
+        ) : location.pathname.startsWith('/business') ? (
+          /* ============================================================ */
+          /* BUSINESS & CRM WORKSPACE DEDICATED SIDEBAR                   */
+          /* ============================================================ */
+          <>
+            <div className="sidebar-brand-section">
+              <NavLink to="/business" className="brand-link" onClick={() => setMobileMenuOpen(false)}>
+                <div className="brand-icon-box" style={{ background: 'linear-gradient(135deg, #10B981 0%, #059669 100%)' }}>
+                  <Briefcase size={16} color="#FFFFFF" />
+                </div>
+                <div>
+                  <div style={{ fontSize: '15px', fontWeight: '800', color: '#111625', lineHeight: '1.2' }}>Zunme Business</div>
+                  <div style={{ fontSize: '9px', fontWeight: '800', color: '#059669', letterSpacing: '0.06em' }}>BUSINESS & CRM</div>
+                </div>
+              </NavLink>
+              <button
+                className="btn-ghost hide-on-desktop"
+                onClick={() => setMobileMenuOpen(false)}
+                aria-label="Close menu"
+              >
+                <X size={18} />
+              </button>
+            </div>
 
-        {/* Capability-Based Specialist Workspaces (Shown when available) */}
-        <div className="sidebar-section-divider" style={{ cursor: 'pointer' }} onClick={() => setSpecializedOpen(!specializedOpen)}>
-          <span>Specialized Workspaces</span>
-          <ChevronDown size={14} style={{ transform: specializedOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }} />
-        </div>
+            <div className="sidebar-new-chat-box">
+              <NavLink
+                to="/business?tab=nErgy CRM Deep Sync"
+                className="btn-new-chat"
+                style={{ background: '#059669', color: '#FFFFFF', textDecoration: 'none' }}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <Users size={16} />
+                <span>Deep CRM Sync</span>
+              </NavLink>
+            </div>
 
-        {specializedOpen && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '3px', paddingLeft: '4px' }}>
-            <NavLink
-              to="/creator"
-              className={({ isActive }) => `sidebar-nav-item ${isActive ? 'active' : ''}`}
-              onClick={() => setMobileMenuOpen(false)}
-              style={{ fontSize: '12px', padding: '7px 10px' }}
-            >
-              <Sparkles size={15} color="#A78BFA" />
-              <span>Creator Studio</span>
-            </NavLink>
+            <nav className="sidebar-nav-list" aria-label="Business Navigation">
+              <NavLink
+                to="/business"
+                end
+                className={() => `sidebar-nav-item ${location.pathname === '/business' && (!location.search || location.search.includes('Overview')) ? 'active' : ''}`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <LayoutDashboard size={17} />
+                <span>Business Overview</span>
+              </NavLink>
 
-            <NavLink
-              to="/seo"
-              className={({ isActive }) => `sidebar-nav-item ${isActive ? 'active' : ''}`}
-              onClick={() => setMobileMenuOpen(false)}
-              style={{ fontSize: '12px', padding: '7px 10px' }}
-            >
-              <SearchCheck size={15} color="#38BDF8" />
-              <span>SEO Workspace</span>
-            </NavLink>
+              <NavLink
+                to="/business?tab=Brand Profile"
+                className={() => `sidebar-nav-item ${location.search.includes('Brand') ? 'active' : ''}`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <Award size={17} />
+                <span>Brand Profile</span>
+              </NavLink>
 
-            <NavLink
-              to="/business"
-              className={({ isActive }) => `sidebar-nav-item ${isActive ? 'active' : ''}`}
-              onClick={() => setMobileMenuOpen(false)}
-              style={{ fontSize: '12px', padding: '7px 10px' }}
-            >
-              <Briefcase size={15} color="#34D399" />
-              <span>Business Workspace</span>
-            </NavLink>
+              <NavLink
+                to="/business?tab=Projects"
+                className={() => `sidebar-nav-item ${location.search.includes('Projects') ? 'active' : ''}`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <Briefcase size={17} />
+                <span>Projects & Goals</span>
+              </NavLink>
 
-            <NavLink
-              to="/social"
-              className={({ isActive }) => `sidebar-nav-item ${isActive ? 'active' : ''}`}
-              onClick={() => setMobileMenuOpen(false)}
-              style={{ fontSize: '12px', padding: '7px 10px' }}
-            >
-              <Share2 size={15} color="#6E56CF" />
-              <span>Social &amp; Scheduler</span>
-            </NavLink>
+              <NavLink
+                to="/business?tab=Content Calendar"
+                className={() => `sidebar-nav-item ${location.search.includes('Calendar') ? 'active' : ''}`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <Calendar size={17} />
+                <span>Content Calendar</span>
+              </NavLink>
 
-            <NavLink
-              to="/ads"
-              className={({ isActive }) => `sidebar-nav-item ${isActive ? 'active' : ''}`}
-              onClick={() => setMobileMenuOpen(false)}
-              style={{ fontSize: '12px', padding: '7px 10px' }}
-            >
-              <Megaphone size={15} color="#FBBF24" />
-              <span>Zunme Ads</span>
-              <span className="badge badge-warning" style={{ fontSize: '9px', padding: '1px 4px', marginLeft: 'auto' }}>Soon</span>
-            </NavLink>
-          </div>
+              <NavLink
+                to="/business?tab=Marketing Content"
+                className={() => `sidebar-nav-item ${location.search.includes('Marketing') ? 'active' : ''}`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <PenTool size={17} />
+                <span>Marketing Content</span>
+              </NavLink>
+
+              <NavLink
+                to="/business?tab=nErgy CRM Deep Sync"
+                className={() => `sidebar-nav-item ${location.search.includes('CRM') ? 'active' : ''}`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <Users size={17} />
+                <span>nErgy CRM Deep Sync</span>
+              </NavLink>
+
+              <NavLink
+                to="/business?tab=Team & Access"
+                className={() => `sidebar-nav-item ${location.search.includes('Team') ? 'active' : ''}`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <Users size={17} />
+                <span>Team & Access</span>
+              </NavLink>
+            </nav>
+
+            <div className="sidebar-section-divider">
+              <span>RETURN TO WORKSPACE</span>
+            </div>
+            <div style={{ padding: '0 var(--space-3)' }}>
+              <NavLink
+                to="/app"
+                className="sidebar-nav-item"
+                onClick={() => setMobileMenuOpen(false)}
+                style={{ color: '#059669', fontWeight: '700' }}
+              >
+                <ArrowLeft size={16} />
+                <span>Exit to AI Workspace</span>
+              </NavLink>
+            </div>
+          </>
+        ) : location.pathname.startsWith('/social') ? (
+          /* ============================================================ */
+          /* SOCIAL INTEGRATIONS & CONTENT SCHEDULER SIDEBAR              */
+          /* ============================================================ */
+          <>
+            <div className="sidebar-brand-section">
+              <NavLink to="/social" className="brand-link" onClick={() => setMobileMenuOpen(false)}>
+                <div className="brand-icon-box" style={{ background: 'linear-gradient(135deg, #6E56CF 0%, #4338CA 100%)' }}>
+                  <Share2 size={16} color="#FFFFFF" />
+                </div>
+                <div>
+                  <div style={{ fontSize: '15px', fontWeight: '800', color: '#111625', lineHeight: '1.2' }}>Zunme Social</div>
+                  <div style={{ fontSize: '9px', fontWeight: '800', color: '#6E56CF', letterSpacing: '0.06em' }}>CONTENT SCHEDULER</div>
+                </div>
+              </NavLink>
+              <button
+                className="btn-ghost hide-on-desktop"
+                onClick={() => setMobileMenuOpen(false)}
+                aria-label="Close menu"
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            <div className="sidebar-new-chat-box">
+              <NavLink
+                to="/social"
+                className="btn-new-chat"
+                style={{ background: '#6E56CF', color: '#FFFFFF', textDecoration: 'none' }}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <Plus size={16} />
+                <span>Schedule Post</span>
+              </NavLink>
+            </div>
+
+            <nav className="sidebar-nav-list" aria-label="Social Navigation">
+              <NavLink
+                to="/social"
+                end
+                className={({ isActive }) => `sidebar-nav-item ${isActive ? 'active' : ''}`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <Calendar size={17} />
+                <span>Calendar & Scheduler</span>
+              </NavLink>
+
+              <NavLink
+                to="/social"
+                className="sidebar-nav-item"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <Clock size={17} />
+                <span>Publishing Queue</span>
+              </NavLink>
+
+              <NavLink
+                to="/social"
+                className="sidebar-nav-item"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <Share2 size={17} />
+                <span>Connected Channels</span>
+              </NavLink>
+            </nav>
+
+            <div className="sidebar-section-divider">
+              <span>RETURN TO WORKSPACE</span>
+            </div>
+            <div style={{ padding: '0 var(--space-3)' }}>
+              <NavLink
+                to="/app"
+                className="sidebar-nav-item"
+                onClick={() => setMobileMenuOpen(false)}
+                style={{ color: '#6E56CF', fontWeight: '700' }}
+              >
+                <ArrowLeft size={16} />
+                <span>Exit to AI Workspace</span>
+              </NavLink>
+            </div>
+          </>
+        ) : (
+          /* ============================================================ */
+          /* GENERAL USER AI WORKSPACE SIDEBAR                            */
+          /* ============================================================ */
+          <>
+            <div className="sidebar-brand-section">
+              <NavLink to="/" className="brand-link" onClick={() => setMobileMenuOpen(false)}>
+                <div className="brand-icon-box">Z</div>
+                <span>Zunme AI</span>
+              </NavLink>
+              <button
+                className="btn-ghost hide-on-desktop"
+                onClick={() => setMobileMenuOpen(false)}
+                aria-label="Close menu"
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            {/* New Chat Primary Button */}
+            <div className="sidebar-new-chat-box">
+              <button className="btn-new-chat" onClick={handleNewChatClick}>
+                <Plus size={16} />
+                <span>New Chat</span>
+              </button>
+            </div>
+
+            {/* Core Navigation Links */}
+            <nav className="sidebar-nav-list" aria-label="Main Navigation">
+              <NavLink
+                to="/app"
+                end
+                className={({ isActive }) => `sidebar-nav-item ${isActive ? 'active' : ''}`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <Home size={17} />
+                <span>Home</span>
+              </NavLink>
+
+              <NavLink
+                to="/app/chat"
+                className={({ isActive }) => `sidebar-nav-item ${isActive ? 'active' : ''}`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <MessageSquare size={17} />
+                <span>Ask Zunme</span>
+              </NavLink>
+
+              <NavLink
+                to="/app/search"
+                className={({ isActive }) => `sidebar-nav-item ${isActive ? 'active' : ''}`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <Search size={17} />
+                <span>Web Search</span>
+              </NavLink>
+
+              <NavLink
+                to="/app/builders"
+                className={({ isActive }) => `sidebar-nav-item ${isActive ? 'active' : ''}`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <PenTool size={17} />
+                <span>AI Content Builders</span>
+              </NavLink>
+
+              <NavLink
+                to="/warehouse"
+                className={({ isActive }) => `sidebar-nav-item ${isActive ? 'active' : ''}`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <Package size={17} />
+                <span>AI Warehouse</span>
+              </NavLink>
+
+              <NavLink
+                to="/app/library"
+                className={({ isActive }) => `sidebar-nav-item ${isActive ? 'active' : ''}`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <Bookmark size={17} />
+                <span>My Library</span>
+              </NavLink>
+
+              <NavLink
+                to="/app/history"
+                className={({ isActive }) => `sidebar-nav-item ${isActive ? 'active' : ''}`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <Clock size={17} />
+                <span>History</span>
+              </NavLink>
+
+              <NavLink
+                to="/app/usage"
+                className={({ isActive }) => `sidebar-nav-item ${isActive ? 'active' : ''}`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <CreditCard size={17} />
+                <span>Usage & Plan</span>
+              </NavLink>
+            </nav>
+          </>
         )}
 
         {/* Sidebar Footer */}
