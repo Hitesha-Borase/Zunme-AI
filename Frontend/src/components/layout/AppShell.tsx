@@ -11,8 +11,6 @@ import {
   CreditCard,
   Settings,
   LifeBuoy,
-  ShieldCheck,
-  ShieldAlert,
   Sparkles,
   SearchCheck,
   Briefcase,
@@ -41,7 +39,6 @@ export const AppShell: React.FC = () => {
   const {
     user,
     logout,
-    toggleRole,
     conversations,
     activeConversationId,
     selectConversation,
@@ -543,28 +540,6 @@ export const AppShell: React.FC = () => {
             <span>Help & Support</span>
           </NavLink>
 
-          {(user?.role === 'ADMIN' || user?.role === 'SUPER_ADMIN') && (
-            <NavLink
-              to="/admin"
-              className={({ isActive }) => `sidebar-nav-item ${isActive ? 'active' : ''}`}
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              <ShieldCheck size={17} color="#A78BFA" />
-              <span>Admin Hub</span>
-            </NavLink>
-          )}
-
-          {user?.role === 'SUPER_ADMIN' && (
-            <NavLink
-              to="/super-admin"
-              className={({ isActive }) => `sidebar-nav-item ${isActive ? 'active' : ''}`}
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              <ShieldAlert size={17} color="#EF4444" />
-              <span>Super Admin</span>
-            </NavLink>
-          )}
-
           {/* User mini card */}
           {user ? (
             <div className="user-mini-card">
@@ -610,29 +585,12 @@ export const AppShell: React.FC = () => {
           </div>
 
           <div className="topbar-right">
-            {/* Role Switcher button for verification */}
-            <button
+            <span
               className="btn btn-outline btn-sm hide-on-mobile"
-              onClick={toggleRole}
-              title="Click to cycle role between USER, ADMIN, and SUPER_ADMIN for testing"
+              style={{ cursor: 'default', pointerEvents: 'none', userSelect: 'none' }}
             >
               Active Role: <strong>{user?.role || 'USER'}</strong>
-            </button>
-
-            {/* Quick Link to Admin / Super Admin if authorized */}
-            {(user?.role === 'ADMIN' || user?.role === 'SUPER_ADMIN') && (
-              <NavLink to="/admin" className="btn btn-secondary btn-sm hide-on-mobile">
-                <ShieldCheck size={14} />
-                <span>Admin</span>
-              </NavLink>
-            )}
-
-            {user?.role === 'SUPER_ADMIN' && (
-              <NavLink to="/super-admin" className="btn btn-sm" style={{ background: 'rgba(239, 68, 68, 0.2)', color: '#F87171', border: '1px solid rgba(239, 68, 68, 0.4)' }}>
-                <ShieldAlert size={14} />
-                <span>Super Admin</span>
-              </NavLink>
-            )}
+            </span>
           </div>
         </header>
 
