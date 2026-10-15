@@ -24,7 +24,7 @@ export const SuperAdminShell: React.FC = () => {
 
   const handleLogout = () => {
     logout();
-    navigate('/login');
+    navigate('/?login=true');
   };
 
   const getPageTitle = () => {
@@ -167,15 +167,14 @@ export const SuperAdminShell: React.FC = () => {
           </div>
 
           <div className="topbar-right">
-            {/* Quick switcher to User Workspace & Admin */}
-            <button
+            <span
               className="btn btn-outline btn-sm hide-on-mobile"
-              onClick={toggleRole}
-              title="Toggle current user role"
+              style={{ cursor: 'default' }}
             >
               Role: <strong>{user?.role || 'SUPER_ADMIN'}</strong>
-            </button>
+            </span>
 
+            {/* Commented out as requested:
             <NavLink to="/admin" className="btn btn-secondary btn-sm hide-on-mobile">
               <span>Admin Operations</span>
             </NavLink>
@@ -184,6 +183,7 @@ export const SuperAdminShell: React.FC = () => {
               <ArrowLeft size={14} />
               <span>Workspace</span>
             </NavLink>
+            */}
           </div>
         </header>
 

@@ -94,10 +94,10 @@ export const AdminReportsPage: React.FC = () => {
           ].map((item, i) => (
             <div key={i} style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px' }}>
-                <span style={{ fontWeight: '600', color: '#E2E8F0' }}>{item.label}</span>
-                <span style={{ color: '#94A3B8' }}>{item.count} ({item.percent}%)</span>
+                <span style={{ fontWeight: '600', color: '#111625' }}>{item.label}</span>
+                <span style={{ color: '#5F6B85' }}>{item.count} ({item.percent}%)</span>
               </div>
-              <div style={{ width: '100%', height: '8px', borderRadius: '4px', background: 'rgba(255,255,255,0.06)', overflow: 'hidden' }}>
+              <div style={{ width: '100%', height: '8px', borderRadius: '4px', background: '#E8ECF5', overflow: 'hidden' }}>
                 <div style={{ width: `${item.percent}%`, height: '100%', background: item.color, borderRadius: '4px' }} />
               </div>
             </div>

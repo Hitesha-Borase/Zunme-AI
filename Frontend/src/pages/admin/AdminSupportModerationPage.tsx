@@ -223,7 +223,7 @@ export const AdminSupportModerationPage: React.FC = () => {
               </div>
 
               <form onSubmit={handleSendReply} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                <label style={{ fontSize: '12px', fontWeight: '700', color: '#CBD5E1' }}>
+                <label style={{ fontSize: '12px', fontWeight: '700', color: '#111625' }}>
                   Operational Reply
                 </label>
                 <textarea

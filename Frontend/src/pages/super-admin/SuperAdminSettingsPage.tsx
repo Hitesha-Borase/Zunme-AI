@@ -52,7 +52,7 @@ export const SuperAdminSettingsPage: React.FC = () => {
       <div className="dashboard-header">
         <div className="dashboard-title-group">
           <h1>
-            <Settings size={26} color="#A78BFA" />
+            <Settings size={26} color="#6E56CF" />
             Global Platform Configuration
           </h1>
           <p className="dashboard-subtitle">
@@ -125,7 +125,7 @@ export const SuperAdminSettingsPage: React.FC = () => {
         <div className="glass-panel">
           <div className="panel-header">
             <div className="panel-title">
-              <Sliders size={18} color="#A78BFA" />
+              <Sliders size={18} color="#6E56CF" />
               AI Model Inference & Search Grounding Policies
             </div>
             <span className="badge badge-primary">Engine Routing</span>
@@ -133,7 +133,7 @@ export const SuperAdminSettingsPage: React.FC = () => {
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px' }}>
             <div>
-              <label style={{ display: 'block', fontSize: '13px', fontWeight: '700', color: '#E2E8F0', marginBottom: '8px' }}>
+              <label style={{ display: 'block', fontSize: '13px', fontWeight: '700', color: '#111625', marginBottom: '8px' }}>
                 Primary LLM Routing Engine
               </label>
               <select
@@ -145,13 +145,13 @@ export const SuperAdminSettingsPage: React.FC = () => {
                 <option value="claude-3-5-sonnet">Anthropic Claude 3.5 Sonnet (Extended Context)</option>
                 <option value="gpt-4o-mini">OpenAI GPT-4o Mini (Cost-Optimized Fallback)</option>
               </select>
-              <span style={{ fontSize: '11px', color: '#64748B', marginTop: '4px', display: 'block' }}>
+              <span style={{ fontSize: '11px', color: '#5F6B85', marginTop: '4px', display: 'block' }}>
                 Determines which model pipeline handles general chat and content studio requests.
               </span>
             </div>
 
             <div>
-              <label style={{ display: 'block', fontSize: '13px', fontWeight: '700', color: '#E2E8F0', marginBottom: '8px' }}>
+              <label style={{ display: 'block', fontSize: '13px', fontWeight: '700', color: '#111625', marginBottom: '8px' }}>
                 Live Search Strict Citation Verification
               </label>
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginTop: '10px' }}>
@@ -160,13 +160,13 @@ export const SuperAdminSettingsPage: React.FC = () => {
                   id="strictSearch"
                   checked={searchVerificationStrict}
                   onChange={(e) => setSearchVerificationStrict(e.target.checked)}
-                  style={{ width: '18px', height: '18px', accentColor: '#7C3AED' }}
+                  style={{ width: '18px', height: '18px', accentColor: '#6E56CF' }}
                 />
-                <label htmlFor="strictSearch" style={{ fontSize: '13px', color: '#CBD5E1', cursor: 'pointer' }}>
+                <label htmlFor="strictSearch" style={{ fontSize: '13px', color: '#111625', cursor: 'pointer' }}>
                   Require 3+ verified source domains before rendering synthesis
                 </label>
               </div>
-              <span style={{ fontSize: '11px', color: '#64748B', marginTop: '4px', display: 'block' }}>
+              <span style={{ fontSize: '11px', color: '#5F6B85', marginTop: '4px', display: 'block' }}>
                 Prevents AI hallucination by enforcing structured citation extraction from Tavily API.
               </span>
             </div>
@@ -177,7 +177,7 @@ export const SuperAdminSettingsPage: React.FC = () => {
         <div className="glass-panel">
           <div className="panel-header">
             <div className="panel-title">
-              <Database size={18} color="#38BDF8" />
+              <Database size={18} color="#0284C7" />
               API Rate Limiting & User Quotas
             </div>
             <span className="badge badge-neutral">Platform Protection</span>
@@ -185,7 +185,7 @@ export const SuperAdminSettingsPage: React.FC = () => {
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px' }}>
             <div>
-              <label style={{ display: 'block', fontSize: '13px', fontWeight: '700', color: '#E2E8F0', marginBottom: '8px' }}>
+              <label style={{ display: 'block', fontSize: '13px', fontWeight: '700', color: '#111625', marginBottom: '8px' }}>
                 Max AI Chats Per Hour (Per Free User)
               </label>
               <input
@@ -196,13 +196,13 @@ export const SuperAdminSettingsPage: React.FC = () => {
                 min={10}
                 max={300}
               />
-              <span style={{ fontSize: '11px', color: '#64748B', marginTop: '4px', display: 'block' }}>
+              <span style={{ fontSize: '11px', color: '#5F6B85', marginTop: '4px', display: 'block' }}>
                 Enforced by server Redis rate limiter. Paid tier users receive unthrottled access.
               </span>
             </div>
 
             <div>
-              <label style={{ display: 'block', fontSize: '13px', fontWeight: '700', color: '#E2E8F0', marginBottom: '8px' }}>
+              <label style={{ display: 'block', fontSize: '13px', fontWeight: '700', color: '#111625', marginBottom: '8px' }}>
                 Max Web Searches Per Hour (Per Free User)
               </label>
               <input
@@ -213,13 +213,13 @@ export const SuperAdminSettingsPage: React.FC = () => {
                 min={5}
                 max={150}
               />
-              <span style={{ fontSize: '11px', color: '#64748B', marginTop: '4px', display: 'block' }}>
+              <span style={{ fontSize: '11px', color: '#5F6B85', marginTop: '4px', display: 'block' }}>
                 Protects third-party search provider credits against automated scraping.
               </span>
             </div>
 
             <div>
-              <label style={{ display: 'block', fontSize: '13px', fontWeight: '700', color: '#E2E8F0', marginBottom: '8px' }}>
+              <label style={{ display: 'block', fontSize: '13px', fontWeight: '700', color: '#111625', marginBottom: '8px' }}>
                 Auth Session Idle Timeout (Minutes)
               </label>
               <input
@@ -230,7 +230,7 @@ export const SuperAdminSettingsPage: React.FC = () => {
                 min={15}
                 max={1440}
               />
-              <span style={{ fontSize: '11px', color: '#64748B', marginTop: '4px', display: 'block' }}>
+              <span style={{ fontSize: '11px', color: '#5F6B85', marginTop: '4px', display: 'block' }}>
                 Forces re-authentication after specified inactivity window.
               </span>
             </div>
