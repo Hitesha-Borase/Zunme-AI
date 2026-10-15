@@ -276,6 +276,380 @@ const INITIAL_ADMIN_USERS: AdminUser[] = [
     joinedDate: 'Sep 15, 2026',
     conversationsCount: 64,
     savedItemsCount: 42
+  },
+  {
+    id: 'usr_5',
+    fullName: 'Chief Architect (Root)',
+    email: 'superadmin@zunme.ai',
+    role: 'SUPER_ADMIN',
+    status: 'ACTIVE',
+    joinedDate: 'Sep 01, 2026',
+    conversationsCount: 128,
+    savedItemsCount: 86
+  }
+];
+
+const INITIAL_AUDIT_LOGS: AuditLogEntry[] = [
+  {
+    id: 'log_1',
+    actor: 'SuperAdmin (Root)',
+    role: 'SUPER_ADMIN',
+    action: 'SYSTEM_SETTINGS_UPDATE',
+    resource: 'Platform Rate Limits & Model Routing',
+    ipAddress: '192.168.1.104',
+    timestamp: '2026-10-15T09:40:00Z',
+    status: 'SUCCESS'
+  },
+  {
+    id: 'log_2',
+    actor: 'Elena Rostova',
+    role: 'ADMIN',
+    action: 'USER_ACCOUNT_SUSPENDED',
+    resource: 'usr_3 (Marcus Vance)',
+    ipAddress: '10.0.4.22',
+    timestamp: '2026-10-15T08:15:00Z',
+    status: 'WARNING'
+  },
+  {
+    id: 'log_3',
+    actor: 'SuperAdmin (Root)',
+    role: 'SUPER_ADMIN',
+    action: 'SUBSCRIPTION_TIER_MODIFIED',
+    resource: 'Pro Creator Tier ($29/mo -> $29/mo)',
+    ipAddress: '192.168.1.104',
+    timestamp: '2026-10-14T16:22:00Z',
+    status: 'SUCCESS'
+  },
+  {
+    id: 'log_4',
+    actor: 'Elena Rostova',
+    role: 'ADMIN',
+    action: 'WAREHOUSE_ASSET_APPROVED',
+    resource: 'asset_1 (SaaS Landing Page Framework)',
+    ipAddress: '10.0.4.22',
+    timestamp: '2026-10-14T14:10:00Z',
+    status: 'SUCCESS'
+  },
+  {
+    id: 'log_5',
+    actor: 'AuthService Guard',
+    role: 'SYSTEM',
+    action: 'FAILED_API_KEY_ROTATION',
+    resource: 'OpenAI Secret Key Rotation (Timeout)',
+    ipAddress: '127.0.0.1',
+    timestamp: '2026-10-14T03:00:12Z',
+    status: 'FAILED'
+  }
+];
+
+const INITIAL_PRICING_PLANS: PricingPlan[] = [
+  {
+    id: 'plan_free',
+    name: 'Starter Workspace',
+    price: '$0',
+    billingPeriod: 'Forever Free',
+    description: 'Essential AI chat, web search with verified sources, and basic content studio tools.',
+    features: ['50 AI Chats per month', '25 Web Searches with citations', 'Standard Content Studio templates', '100MB Library cloud storage', 'Community Support'],
+    isCurrent: false,
+    activeSubscribers: 1120
+  },
+  {
+    id: 'plan_pro',
+    name: 'Pro Creator & Marketer',
+    price: '$29',
+    billingPeriod: 'per month',
+    description: 'For solopreneurs, creators, and professionals needing unlimited research and advanced studio workflows.',
+    features: ['Unlimited AI Conversations', 'Unlimited Real-time Web Searches', 'All 1,000+ AI Content Builders', 'AI Warehouse full access', '10GB Saved Library & exports', 'Priority response latency'],
+    badge: 'Verified & Popular',
+    isCurrent: true,
+    activeSubscribers: 384
+  },
+  {
+    id: 'plan_enterprise',
+    name: 'Business & Agency Suite',
+    price: '$99',
+    billingPeriod: 'per month',
+    description: 'Dedicated team workspace, SEO professional suite, brand voice profiles, and content calendar management.',
+    features: ['Everything in Pro Plan', 'Dedicated SEO Workspace & Keyword Tracking', 'Brand Profile Voice Customization', 'Integrated Content Calendar', 'Team seats & role-based permissions', 'Dedicated account manager'],
+    badge: 'Enterprise Grade',
+    isCurrent: false,
+    activeSubscribers: 42
+  }
+];
+
+const INITIAL_WAREHOUSE_ASSETS: WarehouseAsset[] = [
+  {
+    id: 'asset_1',
+    title: 'High-Converting SaaS Landing Page Framework',
+    description: 'Proven multi-section copy blueprint with value proposition, pain point hooks, and feature comparison matrix.',
+    category: 'Templates',
+    creatorName: 'Elena Rostova',
+    isVerifiedCreator: true,
+    tags: ['SaaS', 'Copywriting', 'Conversion'],
+    licensing: 'Commercial Pro',
+    downloads: 1420,
+    likes: 312,
+    format: 'Markdown / Structured Prompt',
+    rating: 4.9,
+    createdAt: '2026-10-10T12:00:00Z',
+    isSaved: true
+  },
+  {
+    id: 'asset_2',
+    title: 'Autonomous Competitor SEO Audit Prompt Chain',
+    description: 'Systematic prompt chain for extracting semantic keyword gaps, backlink opportunities, and SERP competitor weaknesses.',
+    category: 'Prompts',
+    creatorName: 'Marcus Vance',
+    isVerifiedCreator: false,
+    tags: ['SEO', 'Keyword Research', 'Auditing'],
+    licensing: 'Standard Community',
+    downloads: 840,
+    likes: 198,
+    format: 'Multi-step Prompt Chain',
+    rating: 4.8,
+    createdAt: '2026-10-08T15:30:00Z',
+    isSaved: false
+  },
+  {
+    id: 'asset_3',
+    title: 'YouTube Creator 10x Script Pipeline',
+    description: 'Hook-Story-Offer template engineered for YouTube long-form retention, timestamps, and thumbnail caption pairings.',
+    category: 'Scripts',
+    creatorName: 'Alex Johnson',
+    isVerifiedCreator: true,
+    tags: ['Video', 'YouTube', 'Retention'],
+    licensing: 'Commercial Pro',
+    downloads: 2150,
+    likes: 540,
+    format: 'Video Script Matrix',
+    rating: 5.0,
+    createdAt: '2026-10-05T09:00:00Z',
+    isSaved: true
+  },
+  {
+    id: 'asset_4',
+    title: 'Omnichannel B2B Cold Outreach Campaign Pack',
+    description: '7-stage personalized email sequence, LinkedIn connection messages, and follow-up templates for enterprise sales.',
+    category: 'Copy Packs',
+    creatorName: 'Sarah Connor',
+    isVerifiedCreator: true,
+    tags: ['Outreach', 'B2B Sales', 'Email Sequence'],
+    licensing: 'Commercial Pro',
+    downloads: 1670,
+    likes: 422,
+    format: 'Email Pack (.md)',
+    rating: 4.9,
+    createdAt: '2026-10-01T11:15:00Z',
+    isSaved: false
+  },
+  {
+    id: 'asset_5',
+    title: 'AI Newsletter Automated Editorial Workflow',
+    description: 'Curate, synthesize, and format weekly industry tech briefs with citation anchors and sponsor shoutouts.',
+    category: 'Workflows',
+    creatorName: 'Dev Team',
+    isVerifiedCreator: true,
+    tags: ['Newsletter', 'Workflow', 'Editorial'],
+    licensing: 'Open Source',
+    downloads: 980,
+    likes: 245,
+    format: 'SOP & Prompt Workflow',
+    rating: 4.7,
+    createdAt: '2026-09-28T14:40:00Z',
+    isSaved: false
+  }
+];
+
+const INITIAL_CREATOR_SUBMISSIONS: CreatorSubmission[] = [
+  {
+    id: 'sub_1',
+    title: 'Viral Hooks 2026 for Short-form Creators',
+    type: 'Prompt Pack',
+    category: 'Social Media',
+    status: 'APPROVED',
+    submittedAt: '2026-10-12T10:00:00Z',
+    downloads: 184,
+    feedback: 'Approved by Admin team for quality standards.'
+  },
+  {
+    id: 'sub_2',
+    title: 'Solopreneur Brand Voice Architecture Blueprint',
+    type: 'Template',
+    category: 'Branding',
+    status: 'IN_REVIEW',
+    submittedAt: '2026-10-14T18:20:00Z',
+    downloads: 0,
+    feedback: 'Under routine moderation review by Operations.'
+  },
+  {
+    id: 'sub_3',
+    title: 'Local SEO Schema Generator for Service Businesses',
+    type: 'Workflow',
+    category: 'SEO',
+    status: 'CHANGES_REQUESTED',
+    submittedAt: '2026-10-10T11:15:00Z',
+    downloads: 0,
+    feedback: 'Please clarify the JSON-LD formatting requirements for local business schemas.'
+  }
+];
+
+const INITIAL_SEO_KEYWORDS: SEOKeyword[] = [
+  {
+    id: 'kw_1',
+    keyword: 'ai productivity workspace for creators',
+    searchVolume: '14,800/mo',
+    difficulty: 'Moderate',
+    difficultyScore: 48,
+    cpc: '$3.40',
+    intent: 'Commercial',
+    status: 'Targeted'
+  },
+  {
+    id: 'kw_2',
+    keyword: 'best real time web search ai tool',
+    searchVolume: '22,400/mo',
+    difficulty: 'Hard',
+    difficultyScore: 72,
+    cpc: '$5.10',
+    intent: 'Commercial',
+    status: 'In Content'
+  },
+  {
+    id: 'kw_3',
+    keyword: 'how to generate high converting newsletter copy',
+    searchVolume: '8,200/mo',
+    difficulty: 'Easy',
+    difficultyScore: 28,
+    cpc: '$1.85',
+    intent: 'Informational',
+    status: 'Ranking'
+  },
+  {
+    id: 'kw_4',
+    keyword: 'ai marketing templates 2026',
+    searchVolume: '19,500/mo',
+    difficulty: 'Moderate',
+    difficultyScore: 54,
+    cpc: '$4.20',
+    intent: 'Transactional',
+    status: 'Identified'
+  }
+];
+
+const INITIAL_BUSINESS_PROJECTS: BusinessProject[] = [
+  {
+    id: 'proj_1',
+    name: 'Zunme AI Q4 Ecosystem Expansion',
+    category: 'Product Launch',
+    status: 'IN_PROGRESS',
+    dueDate: 'Nov 15, 2026',
+    progress: 68,
+    description: 'Rollout of specialized workspaces for Creators, SEO analysts, and SMB teams.',
+    tasksCount: 12
+  },
+  {
+    id: 'proj_2',
+    name: 'Omnichannel B2B Content Repurposing Engine',
+    category: 'Marketing Campaign',
+    status: 'PLANNED',
+    dueDate: 'Dec 01, 2026',
+    progress: 25,
+    description: 'Transforming long-form technical whitepapers into LinkedIn carousel posts and newsletters.',
+    tasksCount: 8
+  },
+  {
+    id: 'proj_3',
+    name: 'SEO Domain Authority Ramp-Up Campaign',
+    category: 'SEO Revamp',
+    status: 'IN_PROGRESS',
+    dueDate: 'Nov 30, 2026',
+    progress: 52,
+    description: 'Publishing 24 cornerstone research briefs targeting commercial intent keywords.',
+    tasksCount: 16
+  }
+];
+
+const INITIAL_BRAND_PROFILE: BrandProfileData = {
+  brandName: 'Zunme AI',
+  tagline: 'Your Unified AI Workspace for Ideas, Research & Creation',
+  voiceTone: 'Visionary, authoritative, precise, and empowering',
+  targetAudience: 'Creators, solopreneurs, digital marketers, agency teams, and tech-forward startups',
+  coreValues: 'Grounding in verified truth, extreme speed, aesthetic elegance, and creator ownership',
+  missionStatement: 'To eliminate the fragmentation of modern creative workflows by consolidating live research, synthesis, and asset storage into an intuitive ecosystem.'
+};
+
+const INITIAL_CALENDAR_EVENTS: CalendarEvent[] = [
+  {
+    id: 'cal_1',
+    title: 'Solid-State Battery 2026 Tech Breakdown',
+    platform: 'Newsletter',
+    date: '2026-10-18',
+    status: 'Scheduled',
+    format: 'Email Deep-dive'
+  },
+  {
+    id: 'cal_2',
+    title: 'Why Real-Time Search Beats Hallucinating LLMs',
+    platform: 'LinkedIn',
+    date: '2026-10-20',
+    status: 'Draft',
+    format: 'Thought Leadership Post'
+  },
+  {
+    id: 'cal_3',
+    title: '5 Steps to 10x Your Content Studio Output',
+    platform: 'Blog',
+    date: '2026-10-23',
+    status: 'Draft',
+    format: 'Long-form Pillar Guide'
+  }
+];
+
+const INITIAL_INTEGRATIONS: PlatformIntegration[] = [
+  {
+    id: 'int_1',
+    name: 'Tavily Live Web Search API',
+    category: 'Search API',
+    status: 'CONNECTED',
+    connectedAt: '2026-09-15',
+    latency: '180ms',
+    description: 'Primary verified search grounding engine with citation extraction.'
+  },
+  {
+    id: 'int_2',
+    name: 'OpenAI GPT-4o Engine Gateway',
+    category: 'LLM Engine',
+    status: 'CONNECTED',
+    connectedAt: '2026-09-12',
+    latency: '240ms',
+    description: 'State-of-the-art conversational and structured content completion.'
+  },
+  {
+    id: 'int_3',
+    name: 'nErgy Small Business CRM',
+    category: 'CRM',
+    status: 'MAINTENANCE',
+    connectedAt: '2026-10-01',
+    latency: '--',
+    description: 'Ecosystem CRM integration for customer lead capture and pipeline tracking.'
+  },
+  {
+    id: 'int_4',
+    name: 'AWS S3 Cloud Storage Gateway',
+    category: 'Storage',
+    status: 'CONNECTED',
+    connectedAt: '2026-09-20',
+    latency: '65ms',
+    description: 'Secure multi-region object storage for user library items and creator submissions.'
+  },
+  {
+    id: 'int_5',
+    name: 'Platform Telemetry & Audit Engine',
+    category: 'Analytics',
+    status: 'CONNECTED',
+    connectedAt: '2026-09-01',
+    latency: '35ms',
+    description: 'Real-time security auditing, actor tracking, and error logging.'
   }
 ];
 
@@ -300,8 +674,28 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   // Toast System
   const [toasts, setToasts] = useState<ToastMessage[]>([]);
 
-  // Admin Users
+  // Admin & Super Admin States
   const [adminUsers, setAdminUsers] = useState<AdminUser[]>(INITIAL_ADMIN_USERS);
+  const [auditLogs, setAuditLogs] = useState<AuditLogEntry[]>(INITIAL_AUDIT_LOGS);
+  const [pricingPlans, setPricingPlans] = useState<PricingPlan[]>(INITIAL_PRICING_PLANS);
+
+  // AI Warehouse State
+  const [warehouseAssets, setWarehouseAssets] = useState<WarehouseAsset[]>(INITIAL_WAREHOUSE_ASSETS);
+
+  // Creator Studio State
+  const [creatorSubmissions, setCreatorSubmissions] = useState<CreatorSubmission[]>(INITIAL_CREATOR_SUBMISSIONS);
+
+  // SEO Workspace State
+  const [seoKeywords, setSeoKeywords] = useState<SEOKeyword[]>(INITIAL_SEO_KEYWORDS);
+
+  // Business Workspace State
+  const [businessProjects, setBusinessProjects] = useState<BusinessProject[]>(INITIAL_BUSINESS_PROJECTS);
+  const [brandProfile, setBrandProfile] = useState<BrandProfileData>(INITIAL_BRAND_PROFILE);
+  const [calendarEvents, setCalendarEvents] = useState<CalendarEvent[]>(INITIAL_CALENDAR_EVENTS);
+
+  // Integrations State
+  const [integrations, setIntegrations] = useState<PlatformIntegration[]>(INITIAL_INTEGRATIONS);
+
 
   const showToast = (text: string, type: ToastMessage['type'] = 'success') => {
     const id = 'toast_' + Date.now();
@@ -350,9 +744,19 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const toggleRole = () => {
     if (user) {
-      const nextRole = user.role === 'ADMIN' ? 'USER' : 'ADMIN';
+      let nextRole: UserRole = 'USER';
+      if (user.role === 'USER') nextRole = 'ADMIN';
+      else if (user.role === 'ADMIN') nextRole = 'SUPER_ADMIN';
+      else nextRole = 'USER';
       setUser({ ...user, role: nextRole });
-      showToast(`Switched user role to ${nextRole} for testing`, 'info');
+      showToast(`Switched user role to ${nextRole} for verification`, 'info');
+    }
+  };
+
+  const setRole = (role: UserRole) => {
+    if (user) {
+      setUser({ ...user, role });
+      showToast(`Switched user role to ${role}`, 'info');
     }
   };
 
@@ -544,6 +948,104 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     );
   };
 
+  // Additional Super Admin & Specialist Handlers
+  const addAuditLog = (entry: Omit<AuditLogEntry, 'id' | 'timestamp'>) => {
+    const newLog: AuditLogEntry = {
+      ...entry,
+      id: 'log_' + Date.now(),
+      timestamp: new Date().toISOString()
+    };
+    setAuditLogs((prev) => [newLog, ...prev]);
+  };
+
+  const updatePricingPlan = (id: string, updates: Partial<PricingPlan>) => {
+    setPricingPlans((prev) =>
+      prev.map((plan) => (plan.id === id ? { ...plan, ...updates } : plan))
+    );
+    showToast('Pricing plan updated', 'success');
+  };
+
+  const toggleAssetSaved = (id: string) => {
+    setWarehouseAssets((prev) =>
+      prev.map((asset) => {
+        if (asset.id === id) {
+          const nextSaved = !asset.isSaved;
+          showToast(nextSaved ? `Added "${asset.title}" to your Saved Assets` : `Removed "${asset.title}"`, 'info');
+          return { ...asset, isSaved: nextSaved, likes: nextSaved ? asset.likes + 1 : asset.likes - 1 };
+        }
+        return asset;
+      })
+    );
+  };
+
+  const addCreatorSubmission = (sub: Omit<CreatorSubmission, 'id' | 'submittedAt' | 'downloads'>) => {
+    const newSub: CreatorSubmission = {
+      ...sub,
+      id: 'sub_' + Date.now(),
+      submittedAt: new Date().toISOString(),
+      downloads: 0
+    };
+    setCreatorSubmissions((prev) => [newSub, ...prev]);
+    showToast('Content submitted for review!', 'success');
+  };
+
+  const updateCreatorSubmissionStatus = (id: string, status: CreatorSubmission['status']) => {
+    setCreatorSubmissions((prev) =>
+      prev.map((s) => (s.id === id ? { ...s, status } : s))
+    );
+    showToast(`Submission status updated to ${status}`, 'info');
+  };
+
+  const addSeoKeyword = (kw: Omit<SEOKeyword, 'id'>) => {
+    const newKw: SEOKeyword = {
+      ...kw,
+      id: 'kw_' + Date.now()
+    };
+    setSeoKeywords((prev) => [newKw, ...prev]);
+    showToast(`Keyword "${kw.keyword}" added to tracking`, 'success');
+  };
+
+  const deleteSeoKeyword = (id: string) => {
+    setSeoKeywords((prev) => prev.filter((k) => k.id !== id));
+    showToast('Keyword removed', 'info');
+  };
+
+  const addBusinessProject = (proj: Omit<BusinessProject, 'id'>) => {
+    const newProj: BusinessProject = {
+      ...proj,
+      id: 'proj_' + Date.now()
+    };
+    setBusinessProjects((prev) => [newProj, ...prev]);
+    showToast(`Project "${proj.name}" created`, 'success');
+  };
+
+  const updateBrandProfile = (data: Partial<BrandProfileData>) => {
+    setBrandProfile((prev) => ({ ...prev, ...data }));
+    showToast('Brand profile details updated', 'success');
+  };
+
+  const addCalendarEvent = (event: Omit<CalendarEvent, 'id'>) => {
+    const newEv: CalendarEvent = {
+      ...event,
+      id: 'cal_' + Date.now()
+    };
+    setCalendarEvents((prev) => [...prev, newEv]);
+    showToast('Post scheduled to calendar', 'success');
+  };
+
+  const toggleIntegrationStatus = (id: string) => {
+    setIntegrations((prev) =>
+      prev.map((int) => {
+        if (int.id === id) {
+          const nextStatus = int.status === 'CONNECTED' ? 'DISCONNECTED' : 'CONNECTED';
+          showToast(`${int.name} is now ${nextStatus}`, 'info');
+          return { ...int, status: nextStatus };
+        }
+        return int;
+      })
+    );
+  };
+
   const activeMessages = messagesRecord[activeConversationId] || [];
 
   return (
@@ -555,6 +1057,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         logout,
         updateProfile,
         toggleRole,
+        setRole,
         conversations,
         activeConversationId,
         activeMessages,
@@ -576,7 +1079,27 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         toasts,
         showToast,
         adminUsers,
-        toggleUserStatus
+        toggleUserStatus,
+        auditLogs,
+        addAuditLog,
+        pricingPlans,
+        updatePricingPlan,
+        warehouseAssets,
+        toggleAssetSaved,
+        creatorSubmissions,
+        addCreatorSubmission,
+        updateCreatorSubmissionStatus,
+        seoKeywords,
+        addSeoKeyword,
+        deleteSeoKeyword,
+        businessProjects,
+        addBusinessProject,
+        brandProfile,
+        updateBrandProfile,
+        calendarEvents,
+        addCalendarEvent,
+        integrations,
+        toggleIntegrationStatus
       }}
     >
       {children}

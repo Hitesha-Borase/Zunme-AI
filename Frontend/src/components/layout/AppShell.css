@@ -97,6 +97,8 @@
   display: flex;
   flex-direction: column;
   gap: 3px;
+  overflow-y: auto;
+  max-height: calc(100vh - 360px);
 }
 
 .sidebar-nav-item {
