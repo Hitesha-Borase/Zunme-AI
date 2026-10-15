@@ -15,7 +15,10 @@ import {
   Lock,
   Layers,
   CheckCircle2,
-  ExternalLink
+  ExternalLink,
+  ChevronRight,
+  Shield,
+  Zap
 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import { UserRole } from '../../types';
@@ -27,9 +30,12 @@ interface DashboardCard {
   path: string;
   role: UserRole;
   roleTitle: string;
+  roleBadgeText: string;
+  roleIcon: React.ReactNode;
   category: 'GOVERNANCE' | 'CREATOR' | 'SPECIALIST';
   badge: string;
   accentColor: string;
+  accentColorRgb: string;
   icon: React.ReactNode;
   tagline: string;
   description: string;
@@ -79,13 +85,16 @@ export const DashboardLoginModal: React.FC<DashboardLoginModalProps> = ({ isOpen
       path: '/super-admin',
       role: 'SUPER_ADMIN',
       roleTitle: 'Super Admin',
+      roleBadgeText: 'Super Admin Access',
+      roleIcon: <Crown size={12} />,
       category: 'GOVERNANCE',
       badge: 'Executive Governance',
-      accentColor: '#8B5CF6',
-      icon: <Crown size={22} />,
-      tagline: 'Platform Governance, Audit Logs & Plan Pricing',
-      description: 'Master control panel with 5 strictly scoped governance modules: overview analytics, user role administration, platform settings, tier pricing management, and security audit logs.',
-      features: ['5 Governance Modules', 'System Audit Trail', 'Plan Pricing Editor', 'Platform Controls']
+      accentColor: '#A855F7',
+      accentColorRgb: '168, 85, 247',
+      icon: <Crown size={24} />,
+      tagline: 'Platform Governance, Audits & Plan Pricing',
+      description: 'Master control panel with 5 strictly scoped governance modules: executive analytics, user permissions, tier pricing management, system settings, and security audit logs.',
+      features: ['5 Executive Modules', 'System Audit Trail', 'Plan Pricing Editor', 'Platform Controls']
     },
     {
       id: 'admin',
@@ -93,13 +102,16 @@ export const DashboardLoginModal: React.FC<DashboardLoginModalProps> = ({ isOpen
       path: '/admin',
       role: 'ADMIN',
       roleTitle: 'Operations Admin',
+      roleBadgeText: 'Operations Admin Access',
+      roleIcon: <ShieldCheck size={12} />,
       category: 'GOVERNANCE',
       badge: 'Operations Console',
       accentColor: '#635BFF',
-      icon: <ShieldCheck size={22} />,
-      tagline: 'Operations, Moderation & Integrations',
-      description: 'Central operations console featuring 9 operational hubs: creator asset approvals, SEO marketing tools, user management, system reports, moderation queues, and real-time API integrations.',
-      features: ['9 Operational Hubs', 'Creator Asset Review', 'SEO Marketing Tools', 'API Status & Latency']
+      accentColorRgb: '99, 91, 255',
+      icon: <ShieldCheck size={24} />,
+      tagline: 'Staff Operations, Moderation & Integrations',
+      description: 'Daily operational hub with 9 dedicated consoles: creator submissions review, SEO keyword tools, user moderation, system reports, and live API connection monitoring.',
+      features: ['9 Operational Consoles', 'Creator Asset Review', 'SEO Marketing Tools', 'API Status & Latency']
     },
     {
       id: 'app',
@@ -107,12 +119,15 @@ export const DashboardLoginModal: React.FC<DashboardLoginModalProps> = ({ isOpen
       path: '/app',
       role: 'USER',
       roleTitle: 'Creator / Pro User',
+      roleBadgeText: 'Creator / Pro User',
+      roleIcon: <Sparkles size={12} />,
       category: 'CREATOR',
       badge: 'Core Workspace',
       accentColor: '#0EA5E9',
-      icon: <Sparkles size={22} />,
+      accentColorRgb: '14, 165, 233',
+      icon: <Sparkles size={24} />,
       tagline: 'AI Chat, Live Web Search & Content Studio',
-      description: 'Unified creative workspace combining multi-turn conversational AI, real-time web search with verified citations, structured drafting builders, and a persistent personal library.',
+      description: 'Unified creative workspace combining multi-turn conversational AI, real-time web search with verified citations, structured drafting builders, and persistent library storage.',
       features: ['Contextual AI Chat', 'Live Grounded Web Search', 'Content Studio Presets', 'Saved Library Storage']
     },
     {
@@ -121,13 +136,16 @@ export const DashboardLoginModal: React.FC<DashboardLoginModalProps> = ({ isOpen
       path: '/warehouse',
       role: 'USER',
       roleTitle: 'Creator / Pro User',
+      roleBadgeText: 'Prompt & Model Vault',
+      roleIcon: <Database size={12} />,
       category: 'SPECIALIST',
-      badge: 'Prompt & Model Vault',
+      badge: 'Resource Vault',
       accentColor: '#10B981',
-      icon: <Database size={22} />,
+      accentColorRgb: '16, 185, 129',
+      icon: <Database size={24} />,
       tagline: 'Prompt Archives, Workflows & Verified Assets',
       description: 'Curated repository for saving and discovering prompt packs, viral marketing workflows, editorial SOPs, and community assets submitted by verified creators.',
-      features: ['Prompt Engineering Packs', 'Marketing Workflows', 'Verified Creator Badges', '1-Click Library Bookmark']
+      features: ['Prompt Engineering Packs', 'Marketing Workflows', 'Verified Creator Badges', '1-Click Bookmark']
     },
     {
       id: 'creator',
@@ -135,10 +153,13 @@ export const DashboardLoginModal: React.FC<DashboardLoginModalProps> = ({ isOpen
       path: '/creator',
       role: 'USER',
       roleTitle: 'Creator / Pro User',
+      roleBadgeText: 'Creator Velocity Suite',
+      roleIcon: <Wand2 size={12} />,
       category: 'CREATOR',
       badge: 'Social & Media Velocity',
       accentColor: '#F43F5E',
-      icon: <Wand2 size={22} />,
+      accentColorRgb: '244, 63, 94',
+      icon: <Wand2 size={24} />,
       tagline: 'Viral Hook Generator & Script Formatter',
       description: 'Specialized suite for digital creators: generate high-converting video hooks, multi-slide carousels, sponsor pitch scripts, and submit winning prompts to the AI Warehouse.',
       features: ['Viral Hook Engine', 'Carousel Scribe', 'Asset Submission Portal', 'Platform Calibration']
@@ -149,10 +170,13 @@ export const DashboardLoginModal: React.FC<DashboardLoginModalProps> = ({ isOpen
       path: '/seo',
       role: 'USER',
       roleTitle: 'Creator / Pro User',
+      roleBadgeText: 'SEO & Search Growth',
+      roleIcon: <TrendingUp size={12} />,
       category: 'SPECIALIST',
       badge: 'Search & Rankings',
       accentColor: '#F59E0B',
-      icon: <TrendingUp size={22} />,
+      accentColorRgb: '245, 158, 11',
+      icon: <TrendingUp size={24} />,
       tagline: 'Keyword Tracking & SERP Metadata',
       description: 'High-intent keyword discovery, difficulty scoring, SERP intent categorization, and automated SEO title & meta description generator for digital marketing growth.',
       features: ['Live Keyword Tracker', 'Search Intent Classification', 'SERP Difficulty Metrics', 'Meta Tag Generator']
@@ -163,10 +187,13 @@ export const DashboardLoginModal: React.FC<DashboardLoginModalProps> = ({ isOpen
       path: '/business',
       role: 'USER',
       roleTitle: 'Creator / Pro User',
+      roleBadgeText: 'Agency & Brand Kit',
+      roleIcon: <Briefcase size={12} />,
       category: 'SPECIALIST',
       badge: 'Agencies & Brand Teams',
       accentColor: '#14B8A6',
-      icon: <Briefcase size={22} />,
+      accentColorRgb: '20, 184, 166',
+      icon: <Briefcase size={24} />,
       tagline: 'Brand Voice Kit, Schedule & CRM Sync',
       description: 'Manage consistent brand persona guidelines, organize scheduled multi-platform editorial campaigns, construct investor pitch blueprints, and sync with nErgy CRM.',
       features: ['Brand Persona Kit', 'Publishing Calendar', 'Pitch Deck Blueprints', 'nErgy CRM Status']
@@ -177,10 +204,13 @@ export const DashboardLoginModal: React.FC<DashboardLoginModalProps> = ({ isOpen
       path: '/ads',
       role: 'USER',
       roleTitle: 'Creator / Pro User',
+      roleBadgeText: 'Ad Monetization Engine',
+      roleIcon: <Megaphone size={12} />,
       category: 'SPECIALIST',
       badge: 'Upcoming Monetization',
-      accentColor: '#A855F7',
-      icon: <Megaphone size={22} />,
+      accentColor: '#C084FC',
+      accentColorRgb: '192, 132, 252',
+      icon: <Megaphone size={24} />,
       tagline: 'Self-Serve Ad Engine & Sponsor Placements',
       description: 'Architectural preview of the future self-serve advertising engine: sponsored query formats, publisher revenue-sharing rules, and core technical dependencies checklist.',
       features: ['Sponsored Query Specs', 'Ad Placement Formats', 'Dependency Checklist', 'Ecosystem Architecture']
@@ -212,22 +242,24 @@ export const DashboardLoginModal: React.FC<DashboardLoginModalProps> = ({ isOpen
   return (
     <div className="dashboard-modal-backdrop" onClick={onClose} role="dialog" aria-modal="true" aria-labelledby="modal-heading">
       <div className="dashboard-modal-container" onClick={(e) => e.stopPropagation()}>
-        {/* Glow Effects */}
+        {/* Ambient Lights */}
         <div className="modal-glow-top" aria-hidden="true" />
         <div className="modal-glow-bottom" aria-hidden="true" />
 
-        {/* Modal Header */}
+        {/* Modal Top Header */}
         <div className="dashboard-modal-header">
           <div className="modal-header-left">
             <div className="modal-header-pill">
-              <Layers size={13} />
+              <Zap size={13} className="text-amber-400" />
               <span>Instant Workspace Login</span>
+              <span className="pill-dot" />
+              <span>Click to Enter</span>
             </div>
             <h2 id="modal-heading" className="modal-title">
               Select Your <span className="modal-title-gradient">Dashboard &amp; Workspace</span>
             </h2>
             <p className="modal-subtitle">
-              Choose any dashboard below to log in directly. Your session and demo role will be initialized automatically.
+              Choose any dashboard below to log in directly. Your authentication session and demo role will be initialized automatically.
             </p>
           </div>
 
@@ -237,7 +269,7 @@ export const DashboardLoginModal: React.FC<DashboardLoginModalProps> = ({ isOpen
             onClick={onClose}
             aria-label="Close modal"
           >
-            <X size={18} />
+            <X size={20} />
           </button>
         </div>
 
@@ -270,7 +302,7 @@ export const DashboardLoginModal: React.FC<DashboardLoginModalProps> = ({ isOpen
               className={`tab-btn ${activeTab === 'SPECIALIST' ? 'active' : ''}`}
               onClick={() => setActiveTab('SPECIALIST')}
             >
-              Specialist Workspaces (4)
+              Specialist Hubs (4)
             </button>
           </div>
 
@@ -278,7 +310,7 @@ export const DashboardLoginModal: React.FC<DashboardLoginModalProps> = ({ isOpen
             <Search size={15} className="search-icon" />
             <input
               type="text"
-              placeholder="Search dashboards, tools, or roles..."
+              placeholder="Search by name, role, or feature..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="modal-search-input"
@@ -319,47 +351,92 @@ export const DashboardLoginModal: React.FC<DashboardLoginModalProps> = ({ isOpen
                 key={card.id}
                 className="dashboard-selection-card"
                 onClick={() => handleSelectDashboard(card)}
-                style={{ '--card-accent': card.accentColor } as React.CSSProperties}
+                style={{
+                  '--card-accent': card.accentColor,
+                  '--card-accent-rgb': card.accentColorRgb
+                } as React.CSSProperties}
               >
-                <div className="card-top-row">
-                  <div className="card-icon-wrapper" style={{ backgroundColor: `${card.accentColor}18`, color: card.accentColor }}>
-                    {card.icon}
+                {/* Card Header: Icon + Titles + Route & Badge */}
+                <div className="card-header-bar">
+                  <div className="card-identity-group">
+                    <div
+                      className="card-icon-wrapper"
+                      style={{
+                        backgroundColor: `rgba(${card.accentColorRgb}, 0.16)`,
+                        borderColor: `rgba(${card.accentColorRgb}, 0.4)`,
+                        color: card.accentColor
+                      }}
+                    >
+                      {card.icon}
+                    </div>
+
+                    <div className="card-name-column">
+                      <div className="card-title-row">
+                        <h3 className="card-title-text">{card.name}</h3>
+                        <span className="card-route-pill">{card.path}</span>
+                      </div>
+
+                      <div
+                        className="card-role-pill"
+                        style={{
+                          backgroundColor: `rgba(${card.accentColorRgb}, 0.12)`,
+                          borderColor: `rgba(${card.accentColorRgb}, 0.3)`,
+                          color: card.accentColor
+                        }}
+                      >
+                        {card.roleIcon}
+                        <span>{card.roleBadgeText}</span>
+                      </div>
+                    </div>
                   </div>
 
-                  <div className="card-badge-group">
-                    <span className="card-route-pill">{card.path}</span>
-                    <span className="card-tier-pill" style={{ borderColor: `${card.accentColor}40`, color: card.accentColor }}>
+                  <div className="card-top-right-meta">
+                    <span
+                      className="card-tier-pill"
+                      style={{
+                        borderColor: `rgba(${card.accentColorRgb}, 0.35)`,
+                        color: card.accentColor
+                      }}
+                    >
                       {card.badge}
                     </span>
                   </div>
                 </div>
 
-                <div className="card-body">
-                  <div className="card-title-wrap">
-                    <h3 className="card-title">{card.name}</h3>
-                    <div className="card-role-chip">
-                      <Lock size={11} />
-                      <span>Logs in as: <strong>{card.roleTitle}</strong></span>
-                    </div>
-                  </div>
+                {/* Card Tagline & Description */}
+                <div className="card-content-section">
+                  <p className="card-tagline-text">{card.tagline}</p>
+                  <p className="card-desc-text">{card.description}</p>
 
-                  <p className="card-tagline">{card.tagline}</p>
-                  <p className="card-description">{card.description}</p>
-
-                  <div className="card-features-list">
+                  {/* Feature Badges */}
+                  <div className="card-feature-chips">
                     {card.features.map((feat, idx) => (
-                      <span key={idx} className="card-feat-tag">
+                      <span key={idx} className="feat-chip">
                         <CheckCircle2 size={11} style={{ color: card.accentColor }} />
-                        {feat}
+                        <span>{feat}</span>
                       </span>
                     ))}
                   </div>
                 </div>
 
-                <div className="card-footer-action">
-                  <span className="action-text">Launch &amp; Sign In</span>
-                  <div className="action-arrow-circle" style={{ backgroundColor: card.accentColor }}>
-                    <ArrowRight size={14} />
+                {/* Card Bottom Action */}
+                <div className="card-action-bar">
+                  <div className="action-status-indicator">
+                    <span className="live-status-dot" style={{ backgroundColor: card.accentColor }} />
+                    <span className="action-status-label">Ready to launch</span>
+                  </div>
+
+                  <div className="action-cta-button">
+                    <span className="action-cta-text">Enter Workspace</span>
+                    <div
+                      className="action-cta-icon-circle"
+                      style={{
+                        backgroundColor: card.accentColor,
+                        boxShadow: `0 0 14px rgba(${card.accentColorRgb}, 0.5)`
+                      }}
+                    >
+                      <ArrowRight size={14} />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -367,11 +444,11 @@ export const DashboardLoginModal: React.FC<DashboardLoginModalProps> = ({ isOpen
           )}
         </div>
 
-        {/* Modal Footer Note */}
+        {/* Modal Bottom Footer */}
         <div className="dashboard-modal-footer">
           <div className="footer-tip">
             <span className="tip-dot" />
-            <span>Clicking any dashboard card will instantly log you in with mock permissions and open that workspace.</span>
+            <span>Click any dashboard card above to immediately authenticate with mock permissions and open that workspace.</span>
           </div>
 
           <div className="footer-links">
