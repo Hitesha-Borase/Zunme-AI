@@ -280,7 +280,7 @@ const INITIAL_ADMIN_USERS: AdminUser[] = [
 ];
 
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(DEFAULT_USER);
+  const [user, setUser] = useState<User | null>(null);
   const [conversations, setConversations] = useState<Conversation[]>(INITIAL_CONVERSATIONS);
   const [activeConversationId, setActiveConversationId] = useState<string>('conv_1');
   const [messagesRecord, setMessagesRecord] = useState<Record<string, ChatMessage[]>>(INITIAL_MESSAGES);
@@ -354,6 +354,142 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       setUser({ ...user, role: nextRole });
       showToast(`Switched user role to ${nextRole} for testing`, 'info');
     }
+  };
+
+  const setRole = (role: UserRole) => {
+    if (user) {
+      setUser({ ...user, role });
+      showToast(`Role updated to ${role}`, 'info');
+    }
+  };
+
+  // Audit Logs & Pricing
+  const [auditLogs, setAuditLogs] = useState<AuditLogEntry[]>([]);
+  const addAuditLog = (entry: Omit<AuditLogEntry, 'id' | 'timestamp'>) => {
+    setAuditLogs((prev) => [
+      {
+        ...entry,
+        id: 'log_' + Date.now(),
+        timestamp: new Date().toISOString()
+      },
+      ...prev
+    ]);
+  };
+
+  const [pricingPlans, setPricingPlans] = useState<PricingPlan[]>([
+    {
+      id: 'plan_starter',
+      name: 'Starter',
+      price: '$0',
+      billingPeriod: 'Free forever',
+      description: 'Essential AI capabilities for individual exploration and everyday productivity.',
+      features: [
+        'Conversational AI Chat',
+        'Real-time Web Search queries',
+        'Standard Content Studio access',
+        'Personal Library storage (up to 50 items)'
+      ],
+      activeSubscribers: 120
+    },
+    {
+      id: 'plan_pro',
+      name: 'Pro Creator',
+      price: '$24',
+      billingPeriod: '/month',
+      description: 'Advanced capabilities for content creators, writers, and power researchers.',
+      features: [
+        'Unlimited AI Chat conversations',
+        'Real-time Web Search with verified source citations',
+        'Full Content Studio formats & custom tones',
+        'Unlimited Saved Library storage',
+        'Priority response processing'
+      ],
+      badge: 'Popular',
+      activeSubscribers: 840
+    },
+    {
+      id: 'plan_enterprise',
+      name: 'Team & Studio',
+      price: '$69',
+      billingPeriod: '/month',
+      description: 'Comprehensive workspace for agencies, marketing teams, and growing brands.',
+      features: [
+        'Everything in Pro Creator',
+        'Multi-user collaborative workspace',
+        'Advanced SEO & content intelligence',
+        'Brand voice & persona templates',
+        'Dedicated support & API access'
+      ],
+      activeSubscribers: 210
+    }
+  ]);
+
+  const updatePricingPlan = (id: string, updates: Partial<PricingPlan>) => {
+    setPricingPlans((prev) => prev.map((p) => (p.id === id ? { ...p, ...updates } : p)));
+  };
+
+  // AI Warehouse & Creator Studio
+  const [warehouseAssets, setWarehouseAssets] = useState<WarehouseAsset[]>([]);
+  const toggleAssetSaved = (id: string) => {
+    setWarehouseAssets((prev) =>
+      prev.map((a) => (a.id === id ? { ...a, isSaved: !a.isSaved } : a))
+    );
+  };
+
+  const [creatorSubmissions, setCreatorSubmissions] = useState<CreatorSubmission[]>([]);
+  const addCreatorSubmission = (sub: Omit<CreatorSubmission, 'id' | 'submittedAt' | 'downloads'>) => {
+    setCreatorSubmissions((prev) => [
+      {
+        ...sub,
+        id: 'sub_' + Date.now(),
+        submittedAt: new Date().toISOString(),
+        downloads: 0
+      },
+      ...prev
+    ]);
+  };
+  const updateCreatorSubmissionStatus = (id: string, status: CreatorSubmission['status']) => {
+    setCreatorSubmissions((prev) => prev.map((s) => (s.id === id ? { ...s, status } : s)));
+  };
+
+  // SEO Workspace
+  const [seoKeywords, setSeoKeywords] = useState<SEOKeyword[]>([]);
+  const addSeoKeyword = (kw: Omit<SEOKeyword, 'id'>) => {
+    setSeoKeywords((prev) => [{ ...kw, id: 'kw_' + Date.now() }, ...prev]);
+  };
+  const deleteSeoKeyword = (id: string) => {
+    setSeoKeywords((prev) => prev.filter((k) => k.id !== id));
+  };
+
+  // Business Workspace
+  const [businessProjects, setBusinessProjects] = useState<BusinessProject[]>([]);
+  const addBusinessProject = (proj: Omit<BusinessProject, 'id'>) => {
+    setBusinessProjects((prev) => [{ ...proj, id: 'proj_' + Date.now() }, ...prev]);
+  };
+  const [brandProfile, setBrandProfile] = useState<BrandProfileData>({
+    brandName: 'Zunme AI',
+    tagline: 'Your AI Workspace for Ideas, Content & Discovery',
+    voiceTone: 'Professional yet approachable',
+    targetAudience: 'Creators, researchers, and entrepreneurs',
+    coreValues: 'Clarity, speed, attribution, and creativity',
+    missionStatement: 'Empowering modern knowledge workers with unified AI tools.'
+  });
+  const updateBrandProfile = (data: Partial<BrandProfileData>) => {
+    setBrandProfile((prev) => ({ ...prev, ...data }));
+  };
+  const [calendarEvents, setCalendarEvents] = useState<CalendarEvent[]>([]);
+  const addCalendarEvent = (event: Omit<CalendarEvent, 'id'>) => {
+    setCalendarEvents((prev) => [{ ...event, id: 'cal_' + Date.now() }, ...prev]);
+  };
+
+  // Integrations
+  const [integrations, setIntegrations] = useState<PlatformIntegration[]>([]);
+  const toggleIntegrationStatus = (id: string) => {
+    setIntegrations((prev) =>
+      prev.map((i) =>
+        i.id === id ? { ...i, status: i.status === 'CONNECTED' ? 'DISCONNECTED' : 'CONNECTED' } : i
+      )
+    );
   };
 
   // Chat Functions
@@ -576,7 +712,28 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         toasts,
         showToast,
         adminUsers,
-        toggleUserStatus
+        toggleUserStatus,
+        setRole,
+        auditLogs,
+        addAuditLog,
+        pricingPlans,
+        updatePricingPlan,
+        warehouseAssets,
+        toggleAssetSaved,
+        creatorSubmissions,
+        addCreatorSubmission,
+        updateCreatorSubmissionStatus,
+        seoKeywords,
+        addSeoKeyword,
+        deleteSeoKeyword,
+        businessProjects,
+        addBusinessProject,
+        brandProfile,
+        updateBrandProfile,
+        calendarEvents,
+        addCalendarEvent,
+        integrations,
+        toggleIntegrationStatus
       }}
     >
       {children}

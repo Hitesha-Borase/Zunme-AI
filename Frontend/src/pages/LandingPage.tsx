@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import {
   Sparkles,
@@ -10,124 +10,523 @@ import {
   CheckCircle2,
   Shield,
   Zap,
-  Layers
+  Layers,
+  Database,
+  Wand2,
+  TrendingUp,
+  Globe,
+  ChevronDown,
+  ChevronUp,
+  Menu,
+  X,
+  ExternalLink,
+  Copy,
+  Check,
+  Cpu,
+  FileText,
+  Star,
+  Compass,
+  ArrowUpRight
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import './LandingPage.css';
 
+interface CapabilityItem {
+  id: string;
+  name: string;
+  badge: string;
+  tagline: string;
+  icon: React.ReactNode;
+  highlights: string[];
+  accentColor: string;
+}
+
+interface StepItem {
+  number: string;
+  title: string;
+  action: string;
+  description: string;
+  icon: React.ReactNode;
+  accent: string;
+}
+
+interface FaqItem {
+  question: string;
+  answer: string;
+}
+
 export const LandingPage: React.FC = () => {
   const { user } = useApp();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [activeShowcaseTab, setActiveShowcaseTab] = useState<'chat' | 'search' | 'studio' | 'library'>('chat');
+  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
+  const [copiedSnippet, setCopiedSnippet] = useState(false);
+
+  const toggleFaq = (index: number) => {
+    setOpenFaqIndex(openFaqIndex === index ? null : index);
+  };
+
+  const handleCopyMock = () => {
+    setCopiedSnippet(true);
+    setTimeout(() => setCopiedSnippet(false), 2000);
+  };
+
+  const capabilities: CapabilityItem[] = [
+    {
+      id: 'chat',
+      name: 'AI Chat',
+      badge: 'Reasoning & Dialogue',
+      tagline: 'Get assistance with questions, ideas, and everyday tasks.',
+      icon: <MessageSquare size={22} />,
+      accentColor: '#A78BFA',
+      highlights: [
+        'Multi-turn contextual reasoning',
+        'Rich markdown & code syntax support',
+        'Instant brainstorming & ideation'
+      ]
+    },
+    {
+      id: 'search',
+      name: 'Web Search',
+      badge: 'Real-time Grounding',
+      tagline: 'Explore information from web sources where supported.',
+      icon: <Search size={22} />,
+      accentColor: '#38BDF8',
+      highlights: [
+        'Verified source URLs & citations',
+        'Current 2026 data synthesis',
+        'Direct publisher click-through'
+      ]
+    },
+    {
+      id: 'builders',
+      name: 'AI Content Builders',
+      badge: 'Structured Drafting',
+      tagline: 'Create and refine different types of content.',
+      icon: <PenTool size={22} />,
+      accentColor: '#C084FC',
+      highlights: [
+        'Format presets (Newsletters, Outlines, Ads)',
+        'Tone calibration & target audience dials',
+        'Predictable length and word count control'
+      ]
+    },
+    {
+      id: 'warehouse',
+      name: 'AI Warehouse',
+      badge: 'Resource Repository',
+      tagline: 'Discover and organize creative resources.',
+      icon: <Database size={22} />,
+      accentColor: '#818CF8',
+      highlights: [
+        'Reusable prompt engineering archives',
+        'Pre-built marketing & research workflows',
+        'Categorized asset tagging'
+      ]
+    },
+    {
+      id: 'creator',
+      name: 'Creator Tools',
+      badge: 'Workflow Velocity',
+      tagline: 'Support content creation and creator workflows.',
+      icon: <Wand2 size={22} />,
+      accentColor: '#F472B6',
+      highlights: [
+        'High-converting hook generation',
+        'Cross-platform framing & captioning',
+        'Rapid drafting and multi-angle iteration'
+      ]
+    },
+    {
+      id: 'seo',
+      name: 'SEO Workspace',
+      badge: 'Search Visibility',
+      tagline: 'Help plan and prepare SEO-focused content.',
+      icon: <TrendingUp size={22} />,
+      accentColor: '#34D399',
+      highlights: [
+        'Search intent architecture',
+        'Topic cluster and outline planning',
+        'Keyword density and readability guidance'
+      ]
+    }
+  ];
+
+  const workflowSteps: StepItem[] = [
+    {
+      number: '01',
+      title: 'Discover',
+      action: 'Query & Verify',
+      description: 'Search the web or converse with AI to gather verified facts, live citations, and competitive data points.',
+      icon: <Search size={20} />,
+      accent: '#38BDF8'
+    },
+    {
+      number: '02',
+      title: 'Create',
+      action: 'Draft & Refine',
+      description: 'Transform discovered research into polished copy, structured outlines, or scripts with custom tone and length.',
+      icon: <PenTool size={20} />,
+      accent: '#A78BFA'
+    },
+    {
+      number: '03',
+      title: 'Save',
+      action: 'Archive to Library',
+      description: 'Preserve high-performing drafts, prompts, and source citations directly in your searchable personal library.',
+      icon: <Bookmark size={20} />,
+      accent: '#818CF8'
+    },
+    {
+      number: '04',
+      title: 'Use',
+      action: 'Deploy & Publish',
+      description: 'Retrieve, copy, or export your saved assets seamlessly to deploy across your channels, newsletters, and projects.',
+      icon: <Sparkles size={20} />,
+      accent: '#34D399'
+    }
+  ];
+
+  const faqs: FaqItem[] = [
+    {
+      question: 'What is Zunme AI?',
+      answer:
+        'Zunme AI is a unified productivity workspace that brings together AI chat assistance, real-time web search with verified citations, structured content generation tools, and a centralized personal library into a single, cohesive dark interface.'
+    },
+    {
+      question: 'What can I do with the platform?',
+      answer:
+        'You can brainstorm complex ideas, ask technical or creative questions, ground your research in live web citations, generate high-converting newsletters and articles, and organize your winning prompts and drafts into an accessible personal library.'
+    },
+    {
+      question: 'How does web search work?',
+      answer:
+        'When you submit an inquiry to Web Search, Zunme AI retrieves fresh, relevant web data from authoritative domains, synthesizes a concise factual overview, and provides clickable source links with publisher details for transparent verification.'
+    },
+    {
+      question: 'How can I access available tools?',
+      answer:
+        'All core workspace tools—AI Chat, Web Search, Content Studio, and Personal Library—are directly available once you create a free account or sign in. You can switch between tools seamlessly without leaving the workspace.'
+    },
+    {
+      question: 'Where can I get help?',
+      answer:
+        'You can access our in-app documentation, explore step-by-step guides inside the workspace, or contact our support team directly via email at support@zunme.ai.'
+    }
+  ];
 
   return (
-    <div className="landing-page">
+    <div className="landing-page" id="top">
+      {/* Background Atmosphere Layers */}
+      <div className="cosmic-grid-overlay" aria-hidden="true" />
+      <div className="ambient-aurora-top" aria-hidden="true" />
+      <div className="ambient-aurora-accent" aria-hidden="true" />
+
       {/* Navigation Header */}
       <header className="landing-header">
         <div className="landing-container">
           <div className="header-content">
-            <NavLink to="/" className="brand-link">
-              <div className="brand-icon-box">Z</div>
-              <span>Zunme AI</span>
+            <NavLink to="/" className="brand-link" aria-label="Zunme AI Home">
+              <div className="brand-icon-box">
+                <span className="brand-glyph">Z</span>
+                <span className="brand-glow-ring" />
+              </div>
+              <div className="brand-text-wrap">
+                <span className="brand-name">Zunme AI</span>
+                <span className="brand-version-pill">Workspace</span>
+              </div>
             </NavLink>
 
-            <nav className="landing-nav-links" aria-label="Landing Navigation">
+            {/* Desktop Navigation */}
+            <nav className="landing-nav-links" aria-label="Main Navigation">
               <a href="#features">Features</a>
               <a href="#how-it-works">How It Works</a>
+              <a href="#showcase">Product</a>
               <a href="#pricing">Pricing</a>
-              <NavLink to="/app/chat">Workspace</NavLink>
+              <a href="#faq">FAQ</a>
             </nav>
 
-            <div className="flex items-center gap-3">
-              {user ? (
-                <NavLink to="/app/chat" className="btn btn-primary">
-                  <span>Open Workspace</span>
-                  <ArrowRight size={15} />
-                </NavLink>
-              ) : (
-                <>
-                  <NavLink to="/login" className="btn btn-outline btn-sm">
-                    Sign In
-                  </NavLink>
-                  <NavLink to="/register" className="btn btn-primary btn-sm">
-                    Get Started
-                  </NavLink>
-                </>
-              )}
+            {/* Header Right Actions */}
+            <div className="header-actions">
+              <NavLink to="/register" className="btn btn-ghost btn-sm">
+                Get Started
+              </NavLink>
+              <NavLink to="/login" className="btn btn-primary btn-sm btn-glow">
+                <span>Login</span>
+                <ArrowRight size={14} />
+              </NavLink>
+
+              {/* Mobile Menu Toggle Button */}
+              <button
+                type="button"
+                className="mobile-menu-btn"
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                aria-label={mobileMenuOpen ? 'Close Menu' : 'Open Menu'}
+                aria-expanded={mobileMenuOpen}
+              >
+                {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+              </button>
             </div>
           </div>
         </div>
+
+        {/* Mobile Navigation Drawer */}
+        {mobileMenuOpen && (
+          <div className="mobile-drawer" role="dialog" aria-modal="true">
+            <nav className="mobile-nav-links">
+              <a href="#features" onClick={() => setMobileMenuOpen(false)}>
+                Features
+              </a>
+              <a href="#how-it-works" onClick={() => setMobileMenuOpen(false)}>
+                How It Works
+              </a>
+              <a href="#showcase" onClick={() => setMobileMenuOpen(false)}>
+                Product Showcase
+              </a>
+              <a href="#pricing" onClick={() => setMobileMenuOpen(false)}>
+                Pricing
+              </a>
+              <a href="#faq" onClick={() => setMobileMenuOpen(false)}>
+                FAQ
+              </a>
+            </nav>
+            <div className="mobile-drawer-actions">
+              <NavLink
+                to="/login"
+                className="btn btn-primary btn-block"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <span>Login</span>
+                <ArrowRight size={15} />
+              </NavLink>
+              <NavLink
+                to="/register"
+                className="btn btn-outline btn-block"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Get Started Free
+              </NavLink>
+            </div>
+          </div>
+        )}
       </header>
 
       {/* Hero Section */}
-      <section className="hero-section">
+      <section className="hero-section" id="hero">
         <div className="hero-ambient-spotlight" aria-hidden="true" />
+        <div className="hero-cyan-spotlight" aria-hidden="true" />
+
         <div className="landing-container">
+          {/* Hero Top Pill */}
           <div className="hero-badge">
-            <Sparkles size={14} />
-            <span>Introducing Zunme AI v1.0 Workspace</span>
+            <span className="badge-sparkle-dot">
+              <Sparkles size={13} />
+            </span>
+            <span>Next-Generation Unified AI Platform</span>
+            <span className="badge-pill-light">2026</span>
           </div>
 
+          {/* Headline (exact required text) */}
           <h1 className="hero-title">
-            Your Unified AI Workspace for <span className="hero-title-highlight">Ideas, Research & Creation</span>
+            Your AI Workspace for{' '}
+            <span className="hero-title-highlight">Ideas, Content &amp; Discovery.</span>
           </h1>
 
+          {/* Supporting Text (exact required text) */}
           <p className="hero-description">
-            Discover verified information, converse with an intelligent assistant, draft high-converting content, and save your work into a centralized personal library.
+            Search the web, create compelling content, and organize your work with AI-powered tools in one connected workspace.
           </p>
 
+          {/* Hero CTA Group */}
           <div className="hero-cta-group">
-            <NavLink to="/register" className="btn btn-primary btn-lg">
-              <span>Start Creating Free</span>
-              <ArrowRight size={17} />
+            <NavLink to="/register" className="btn btn-primary btn-lg hero-cta-btn">
+              <span>Get Started</span>
+              <ArrowRight size={18} />
             </NavLink>
-            <a href="#features" className="btn btn-secondary btn-lg">
-              Explore Features
-            </a>
+            <NavLink to="/login" className="btn btn-secondary btn-lg hero-secondary-btn">
+              <span>Sign In / Login</span>
+              <ArrowRight size={16} />
+            </NavLink>
           </div>
 
-          {/* Interactive Showcase Preview */}
-          <div className="showcase-wrapper">
-            <div className="showcase-topbar">
-              <div className="window-dots">
-                <span className="dot dot-red"></span>
-                <span className="dot dot-yellow"></span>
-                <span className="dot dot-green"></span>
+          {/* Micro trust indicators */}
+          <div className="hero-micro-signals">
+            <div className="signal-item">
+              <CheckCircle2 size={14} className="signal-icon text-success" />
+              <span>Real-time web citations</span>
+            </div>
+            <span className="signal-divider">•</span>
+            <div className="signal-item">
+              <CheckCircle2 size={14} className="signal-icon text-success" />
+              <span>Contextual multi-turn chat</span>
+            </div>
+            <span className="signal-divider">•</span>
+            <div className="signal-item">
+              <CheckCircle2 size={14} className="signal-icon text-success" />
+              <span>Personal library repository</span>
+            </div>
+          </div>
+
+          {/* Hero 3D Perspective Workspace Preview with Floating Panels */}
+          <div className="hero-3d-stage">
+            <div className="hero-stage-glow" aria-hidden="true" />
+
+            {/* Floating UI Panel 1: Live Web Search (Top Left) */}
+            <div className="floating-card floating-card-left" aria-hidden="true">
+              <div className="floating-card-header">
+                <span className="radar-ping" />
+                <span className="floating-card-title">Live Web Grounding</span>
               </div>
-              <span className="badge badge-neutral" style={{ margin: '0 auto', fontSize: '11px' }}>
-                zunme.ai/app/workspace
-              </span>
+              <div className="floating-card-body">
+                <div className="floating-source-item">
+                  <div className="source-domain">reuters.com/tech</div>
+                  <div className="source-snippet">Automated citation verification &amp; source benchmarking...</div>
+                </div>
+                <div className="floating-card-badge">99.4% Verified</div>
+              </div>
             </div>
 
-            <div className="showcase-content">
-              <div className="grid" style={{ gridTemplateColumns: '220px 1fr', gap: '20px', textAlign: 'left' }}>
-                {/* Mock Mini Sidebar */}
-                <div style={{ backgroundColor: 'rgba(255, 255, 255, 0.04)', padding: '16px', borderRadius: '12px', border: '1px solid rgba(255, 255, 255, 0.08)', backdropFilter: 'blur(16px)' }}>
-                  <div style={{ fontSize: '12px', fontWeight: '800', color: '#A78BFA', marginBottom: '14px', letterSpacing: '0.04em' }}>
-                    ZUNME AI
+            {/* Floating UI Panel 2: Content Studio Status (Bottom Right) */}
+            <div className="floating-card floating-card-right" aria-hidden="true">
+              <div className="floating-card-header">
+                <PenTool size={13} className="text-violet" />
+                <span className="floating-card-title">Content Studio</span>
+                <span className="status-dot-active" />
+              </div>
+              <div className="floating-card-body">
+                <div className="floating-draft-title">Executive Brief Outline</div>
+                <div className="floating-metrics">
+                  <span className="badge badge-neutral">Tone: Bold</span>
+                  <span className="badge badge-primary">480 Words</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Central Workspace Showcase Window */}
+            <div className="showcase-window">
+              {/* Window Title Bar */}
+              <div className="showcase-topbar">
+                <div className="window-dots">
+                  <span className="dot dot-red" />
+                  <span className="dot dot-yellow" />
+                  <span className="dot dot-green" />
+                </div>
+                <div className="showcase-address-bar">
+                  <span className="address-lock">🔒</span>
+                  <span className="address-url">zunme.ai/app/workspace</span>
+                </div>
+                <div className="showcase-status-indicator">
+                  <span className="pulse-indicator" />
+                  <span className="status-text">Engine 2026 Online</span>
+                </div>
+              </div>
+
+              {/* Window Content Split */}
+              <div className="showcase-content-grid">
+                {/* Left Mini Sidebar */}
+                <div className="showcase-sidebar">
+                  <div className="sidebar-brand-mini">
+                    <span className="brand-dot" />
+                    <span>ZUNME AI</span>
                   </div>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '12px' }}>
-                    <div style={{ padding: '7px 10px', borderRadius: '8px', backgroundColor: 'rgba(124, 58, 237, 0.25)', color: '#DDD6FE', fontWeight: '600', border: '1px solid rgba(139, 92, 246, 0.35)' }}>
-                      💬 AI Assistant
+                  <div className="sidebar-nav-mini">
+                    <div className="sidebar-nav-item active">
+                      <MessageSquare size={13} />
+                      <span>AI Assistant</span>
                     </div>
-                    <div style={{ padding: '7px 10px', color: '#94A3B8' }}>🔍 Web Search</div>
-                    <div style={{ padding: '7px 10px', color: '#94A3B8' }}>✍️ Content Studio</div>
-                    <div style={{ padding: '7px 10px', color: '#94A3B8' }}>📚 My Library</div>
+                    <div className="sidebar-nav-item">
+                      <Search size={13} />
+                      <span>Live Search</span>
+                    </div>
+                    <div className="sidebar-nav-item">
+                      <PenTool size={13} />
+                      <span>Content Studio</span>
+                    </div>
+                    <div className="sidebar-nav-item">
+                      <Bookmark size={13} />
+                      <span>My Library</span>
+                    </div>
+                  </div>
+                  <div className="sidebar-footer-mini">
+                    <div className="storage-meter-label">Workspace Storage</div>
+                    <div className="storage-bar">
+                      <div className="storage-fill" style={{ width: '42%' }} />
+                    </div>
                   </div>
                 </div>
 
-                {/* Mock Mini Canvas */}
-                <div style={{ backgroundColor: 'rgba(255, 255, 255, 0.03)', padding: '20px', borderRadius: '12px', border: '1px solid rgba(255, 255, 255, 0.08)', backdropFilter: 'blur(16px)' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '14px' }}>
-                    <div className="badge badge-success">Live Engine Connected</div>
-                    <span style={{ fontSize: '12px', color: '#64748B' }}>Verified Sources: 3 Active</span>
+                {/* Right Main Interactive Canvas */}
+                <div className="showcase-canvas">
+                  {/* Top Canvas Bar */}
+                  <div className="canvas-header">
+                    <div className="canvas-breadcrumbs">
+                      <span>Research &amp; Creation</span>
+                      <span className="crumb-sep">/</span>
+                      <span className="crumb-active">Q3 Strategy &amp; Intelligence</span>
+                    </div>
+                    <div className="canvas-actions-mini">
+                      <span className="badge badge-success">3 Sources Cited</span>
+                      <span className="badge badge-neutral">Saved to Library</span>
+                    </div>
                   </div>
-                  <div style={{ backgroundColor: 'rgba(255, 255, 255, 0.05)', padding: '12px 14px', borderRadius: '8px', fontSize: '13px', marginBottom: '12px', border: '1px solid rgba(255, 255, 255, 0.06)' }}>
-                    <strong style={{ color: '#DDD6FE' }}>User:</strong> How do top creators streamline content ideation and live research?
-                  </div>
-                  <div style={{ backgroundColor: 'rgba(17, 21, 33, 0.75)', border: '1px solid rgba(255, 255, 255, 0.1)', padding: '16px', borderRadius: '10px', fontSize: '13px', lineHeight: '1.6', color: '#E2E8F0', boxShadow: 'inset 0 1px 1px rgba(255, 255, 255, 0.1)' }}>
-                    <strong style={{ color: '#A78BFA' }}>Zunme AI:</strong> Top creators use unified workflows: grounding topics with real-time web citations, generating structured drafts, and archiving proven hooks into their personal library...
-                    <div style={{ marginTop: '12px', display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                      <span className="badge badge-primary">Citation [1] Cleantech Review</span>
-                      <span className="badge badge-neutral">Save to Library</span>
+
+                  {/* Simulated Conversation Feed */}
+                  <div className="canvas-dialogue">
+                    {/* User Prompt */}
+                    <div className="chat-bubble-user">
+                      <div className="bubble-meta">
+                        <span className="user-avatar-tag">User</span>
+                        <span className="timestamp-tag">Just now</span>
+                      </div>
+                      <p className="bubble-text">
+                        Synthesize current 2026 trends in AI-assisted content workflows and draft a 3-point strategy for creators.
+                      </p>
+                    </div>
+
+                    {/* AI Assistant Response */}
+                    <div className="chat-bubble-assistant">
+                      <div className="bubble-meta">
+                        <div className="assistant-badge">
+                          <Sparkles size={12} />
+                          <span>Zunme AI Engine</span>
+                        </div>
+                        <span className="engine-speed">1.2s response</span>
+                      </div>
+                      <div className="assistant-text">
+                        <p>
+                          Here is the strategic synthesis based on real-time web citations and creator benchmarking:
+                        </p>
+                        <div className="summary-card-mini">
+                          <div className="summary-point">
+                            <strong>1. Grounded Ideation:</strong> Top operators link every generative prompt to live web citations to eliminate hallucination risk.
+                          </div>
+                          <div className="summary-point">
+                            <strong>2. Multi-Format Calibration:</strong> Single research queries are automatically repurposed into newsletters, briefs, and social threads.
+                          </div>
+                          <div className="summary-point">
+                            <strong>3. Centralized Knowledge Archiving:</strong> Winning drafts and prompts are preserved in a persistent personal library for team reuse.
+                          </div>
+                        </div>
+
+                        {/* Verified Citations Row */}
+                        <div className="citations-row">
+                          <div className="citation-chip">
+                            <span className="citation-num">[1]</span>
+                            <span className="citation-domain">techinsights-journal.com</span>
+                            <ArrowUpRight size={11} />
+                          </div>
+                          <div className="citation-chip">
+                            <span className="citation-num">[2]</span>
+                            <span className="citation-domain">clean-creator-index.org</span>
+                            <ArrowUpRight size={11} />
+                          </div>
+                          <div className="citation-chip">
+                            <span className="citation-num">[3]</span>
+                            <span className="citation-domain">saas-architecture-review.io</span>
+                            <ArrowUpRight size={11} />
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -137,128 +536,626 @@ export const LandingPage: React.FC = () => {
         </div>
       </section>
 
-      {/* Feature Pillars Section */}
-      <section id="features" className="pillars-section">
+      {/* Core Capabilities Section */}
+      <section id="features" className="capabilities-section">
         <div className="landing-container">
           <div className="section-header">
-            <div className="section-label">Core Capabilities</div>
-            <h2 className="section-title">Four Pillars. One Seamless Workflow.</h2>
+            <div className="section-badge">CORE CAPABILITIES</div>
+            <h2 className="section-title">Engineered for Complete Creative Momentum</h2>
             <p className="section-description">
-              Engineered to replace fragmented tabs and disjointed subscriptions with a single cohesive workspace.
+              Six dedicated AI capabilities organized into one seamless workspace. No tab hopping, no disconnected tools.
             </p>
           </div>
 
-          <div className="pillars-grid">
-            {/* Pillar 1 */}
-            <div className="pillar-card">
-              <div className="pillar-icon-box">
-                <MessageSquare size={22} />
-              </div>
-              <h3 className="pillar-title">AI Assistant</h3>
-              <p className="pillar-desc">
-                Context-aware multi-turn conversations with code syntax highlighting, rich markdown, and instant ideation.
-              </p>
-              <NavLink to="/app/chat" className="btn btn-outline btn-sm" style={{ marginTop: '16px' }}>
-                Open Chat →
-              </NavLink>
-            </div>
+          <div className="capabilities-grid">
+            {capabilities.map((cap) => (
+              <div key={cap.id} className="capability-card" style={{ '--card-accent': cap.accentColor } as React.CSSProperties}>
+                <div className="capability-card-top">
+                  <div className="capability-icon-box">{cap.icon}</div>
+                  <span className="capability-badge">{cap.badge}</span>
+                </div>
 
-            {/* Pillar 2 */}
-            <div className="pillar-card">
-              <div className="pillar-icon-box">
-                <Search size={22} />
-              </div>
-              <h3 className="pillar-title">Live Web Search</h3>
-              <p className="pillar-desc">
-                Retrieve verified 2026 facts, industry news, and data with explicit clickable source URLs and citations.
-              </p>
-              <NavLink to="/app/search" className="btn btn-outline btn-sm" style={{ marginTop: '16px' }}>
-                Search Web →
-              </NavLink>
-            </div>
+                <h3 className="capability-name">{cap.name}</h3>
+                <p className="capability-tagline">{cap.tagline}</p>
 
-            {/* Pillar 3 */}
-            <div className="pillar-card">
-              <div className="pillar-icon-box">
-                <PenTool size={22} />
-              </div>
-              <h3 className="pillar-title">Content Studio</h3>
-              <p className="pillar-desc">
-                Draft high-converting newsletters, blog outlines, social captions, and ads with tailored tone and length parameters.
-              </p>
-              <NavLink to="/app/studio" className="btn btn-outline btn-sm" style={{ marginTop: '16px' }}>
-                Create Copy →
-              </NavLink>
-            </div>
+                <ul className="capability-highlights">
+                  {cap.highlights.map((h, i) => (
+                    <li key={i} className="highlight-item">
+                      <Check size={14} className="highlight-check" />
+                      <span>{h}</span>
+                    </li>
+                  ))}
+                </ul>
 
-            {/* Pillar 4 */}
-            <div className="pillar-card">
-              <div className="pillar-icon-box">
-                <Bookmark size={22} />
+                <div className="capability-card-footer">
+                  <NavLink
+                    to={
+                      cap.id === 'chat'
+                        ? '/app/chat'
+                        : cap.id === 'search'
+                        ? '/app/search'
+                        : cap.id === 'builders'
+                        ? '/app/studio'
+                        : '/app/library'
+                    }
+                    className="capability-link"
+                  >
+                    <span>Launch in Workspace</span>
+                    <ArrowRight size={13} />
+                  </NavLink>
+                </div>
               </div>
-              <h3 className="pillar-title">Personal Library</h3>
-              <p className="pillar-desc">
-                Centralized knowledge repository. Star and store your best prompts, research summaries, and generated drafts.
-              </p>
-              <NavLink to="/app/library" className="btn btn-outline btn-sm" style={{ marginTop: '16px' }}>
-                View Library →
-              </NavLink>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* How It Works Section */}
+      <section id="how-it-works" className="how-it-works-section">
+        <div className="landing-container">
+          <div className="section-header">
+            <div className="section-badge">THE WORKFLOW</div>
+            <h2 className="section-title">Discover → Create → Save → Use</h2>
+            <p className="section-description">
+              A frictionless four-stage cycle engineered to turn initial curiosities into high-impact published assets.
+            </p>
+          </div>
+
+          <div className="steps-container">
+            <div className="steps-progress-line" aria-hidden="true" />
+            <div className="steps-grid">
+              {workflowSteps.map((step, idx) => (
+                <div key={step.number} className="step-card" style={{ '--step-accent': step.accent } as React.CSSProperties}>
+                  <div className="step-header">
+                    <span className="step-number-tag">{step.number}</span>
+                    <div className="step-icon-wrap">{step.icon}</div>
+                  </div>
+
+                  <div className="step-content">
+                    <div className="step-action-tag">{step.action}</div>
+                    <h3 className="step-title">{step.title}</h3>
+                    <p className="step-description">{step.description}</p>
+                  </div>
+
+                  {idx < workflowSteps.length - 1 && (
+                    <div className="step-connector-arrow" aria-hidden="true">
+                      <ArrowRight size={16} />
+                    </div>
+                  )}
+                </div>
+              ))}
             </div>
           </div>
         </div>
       </section>
 
-      {/* How It Works */}
-      <section id="how-it-works" className="workflow-section">
+      {/* Product Preview / Platform Showcase Section */}
+      <section id="showcase" className="showcase-section">
         <div className="landing-container">
           <div className="section-header">
-            <div className="section-label">Workflow</div>
-            <h2 className="section-title">From Question to Published Asset in 3 Steps</h2>
+            <div className="section-badge">PLATFORM SHOWCASE</div>
+            <h2 className="section-title">One Workspace. Unlimited Creative Velocity.</h2>
             <p className="section-description">
-              No complex setup. Start immediately and streamline your creative output.
+              Switch effortlessly between live web research, conversational reasoning, copy drafting, and knowledge archiving.
             </p>
           </div>
 
-          <div className="steps-grid">
-            <div className="step-card">
-              <div className="step-number">01</div>
-              <h3 className="step-title">Inquire or Research</h3>
-              <p className="step-desc">
-                Ask the AI workspace anything or submit a query to live web search to gather verified data points and competitive intelligence.
-              </p>
-            </div>
+          {/* Interactive Module Tabs */}
+          <div className="showcase-tabs-nav" role="tablist">
+            <button
+              type="button"
+              role="tab"
+              aria-selected={activeShowcaseTab === 'chat'}
+              className={`showcase-tab-btn ${activeShowcaseTab === 'chat' ? 'active' : ''}`}
+              onClick={() => setActiveShowcaseTab('chat')}
+            >
+              <MessageSquare size={16} />
+              <span>AI Conversation</span>
+            </button>
+            <button
+              type="button"
+              role="tab"
+              aria-selected={activeShowcaseTab === 'search'}
+              className={`showcase-tab-btn ${activeShowcaseTab === 'search' ? 'active' : ''}`}
+              onClick={() => setActiveShowcaseTab('search')}
+            >
+              <Search size={16} />
+              <span>Search Results</span>
+            </button>
+            <button
+              type="button"
+              role="tab"
+              aria-selected={activeShowcaseTab === 'studio'}
+              className={`showcase-tab-btn ${activeShowcaseTab === 'studio' ? 'active' : ''}`}
+              onClick={() => setActiveShowcaseTab('studio')}
+            >
+              <PenTool size={16} />
+              <span>Content Generation</span>
+            </button>
+            <button
+              type="button"
+              role="tab"
+              aria-selected={activeShowcaseTab === 'library'}
+              className={`showcase-tab-btn ${activeShowcaseTab === 'library' ? 'active' : ''}`}
+              onClick={() => setActiveShowcaseTab('library')}
+            >
+              <Bookmark size={16} />
+              <span>Saved Library</span>
+            </button>
+          </div>
 
-            <div className="step-card">
-              <div className="step-number">02</div>
-              <h3 className="step-title">Generate & Refine</h3>
-              <p className="step-desc">
-                Select your format in Content Studio, adjust your desired tone and length, and generate ready-to-use copy in seconds.
-              </p>
-            </div>
+          {/* Tab Showcase Viewport Card */}
+          <div className="showcase-viewport-card">
+            {activeShowcaseTab === 'chat' && (
+              <div className="viewport-panel chat-panel-preview">
+                <div className="panel-mock-header">
+                  <div className="flex items-center gap-2">
+                    <span className="pulse-indicator" />
+                    <strong>AI Assistant Conversation</strong>
+                    <span className="badge badge-neutral">Model: Claude 3.5 Sonnet / GPT-4o</span>
+                  </div>
+                  <button type="button" className="copy-action-btn" onClick={handleCopyMock}>
+                    {copiedSnippet ? <Check size={14} /> : <Copy size={14} />}
+                    <span>{copiedSnippet ? 'Copied' : 'Copy Dialogue'}</span>
+                  </button>
+                </div>
 
-            <div className="step-card">
-              <div className="step-number">03</div>
-              <h3 className="step-title">Save to Your Library</h3>
-              <p className="step-desc">
-                Save high-value research and finished drafts to your searchable library for future reference or direct team handoff.
-              </p>
-            </div>
+                <div className="preview-chat-body">
+                  <div className="preview-message user">
+                    <div className="msg-author">You</div>
+                    <div className="msg-content">
+                      Explain the architectural advantages of headless content platforms and provide a markdown table comparing monolithic vs. headless CMS.
+                    </div>
+                  </div>
+
+                  <div className="preview-message assistant">
+                    <div className="msg-author flex items-center gap-1.5">
+                      <Sparkles size={14} className="text-violet" />
+                      <span>Zunme AI Assistant</span>
+                    </div>
+                    <div className="msg-content">
+                      <p>
+                        Headless architectures decouple the presentation layer from the content repository, allowing teams to deliver omnichannel experiences via APIs with significantly reduced latency and enhanced security.
+                      </p>
+                      <div className="mock-table-wrap">
+                        <table className="mock-table">
+                          <thead>
+                            <tr>
+                              <th>Feature</th>
+                              <th>Traditional Monolith</th>
+                              <th>Decoupled / Headless</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>Frontend Agility</td>
+                              <td>Coupled to server templates</td>
+                              <td>Framework agnostic (React/Next/Vite)</td>
+                            </tr>
+                            <tr>
+                              <td>Global CDN Delivery</td>
+                              <td>Server-side page rendering</td>
+                              <td>Edge caching &amp; instant API response</td>
+                            </tr>
+                            <tr>
+                              <td>Developer Experience</td>
+                              <td>Monolithic repository lock-in</td>
+                              <td>Composable services &amp; modern tooling</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {activeShowcaseTab === 'search' && (
+              <div className="viewport-panel search-panel-preview">
+                <div className="panel-mock-header">
+                  <div className="mock-search-bar">
+                    <Search size={15} className="text-muted" />
+                    <span className="mock-search-query">
+                      Solid-state battery commercialization 2026 benchmarks &amp; energy density
+                    </span>
+                  </div>
+                  <span className="badge badge-success">3 Verified Sources</span>
+                </div>
+
+                <div className="preview-search-body">
+                  <div className="search-synthesis-box">
+                    <div className="synthesis-badge">
+                      <Sparkles size={13} />
+                      <span>Synthesized Intelligence Overview</span>
+                    </div>
+                    <p className="synthesis-text">
+                      Recent October 2026 field trials confirm commercial solid-electrolyte cells have reached 480 Wh/kg at ambient pressure with atomic-layer anti-dendrite barriers. Global automaker consortiums report 11-minute ultra-fast charging to 80% capacity with negligible degradation over 1,400 cycles.
+                    </p>
+                  </div>
+
+                  <div className="search-sources-grid">
+                    <div className="source-card-preview">
+                      <div className="source-meta">
+                        <span className="source-pill">1</span>
+                        <span className="source-domain-name">energystorage-review.org</span>
+                      </div>
+                      <h4 className="source-title">Global Energy Storage Review 2026: Commercial Milestones</h4>
+                      <p className="source-snippet">
+                        Validation trials across 12 international laboratories demonstrate continuous operation past 1,400 cycles with under 8% capacity decay.
+                      </p>
+                    </div>
+
+                    <div className="source-card-preview">
+                      <div className="source-meta">
+                        <span className="source-pill">2</span>
+                        <span className="source-domain-name">cleantech-index.com</span>
+                      </div>
+                      <h4 className="source-title">Silicon-Composite Cathodes &amp; Thermal Runaway Safety</h4>
+                      <p className="source-snippet">
+                        Safety inspections reveal zero thermal runaway triggers under mechanical puncture, clearing key regulatory hurdles for aerospace deployment.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {activeShowcaseTab === 'studio' && (
+              <div className="viewport-panel studio-panel-preview">
+                <div className="panel-mock-header">
+                  <div className="flex items-center gap-2">
+                    <PenTool size={15} className="text-violet" />
+                    <strong>Content Studio · Product Launch Email Sequence</strong>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="badge badge-primary">Tone: Conversational</span>
+                    <span className="badge badge-neutral">Length: Medium (~480 words)</span>
+                  </div>
+                </div>
+
+                <div className="preview-studio-body">
+                  <div className="studio-output-paper">
+                    <div className="paper-header">
+                      <span className="paper-subject">Subject: Say Goodbye to Single-Use Plastic Forever 🌿</span>
+                      <span className="paper-timestamp">Draft generated in 1.4s</span>
+                    </div>
+                    <div className="paper-content">
+                      <p>Hey [First Name],</p>
+                      <p>
+                        Every year, billions of disposable bottles end up in landfills. We thought it was time someone engineered a permanent solution.
+                      </p>
+                      <p>
+                        Introducing <strong>AeroFlask</strong> — the world&apos;s first modular hydration system forged from 100% aerospace titanium:
+                      </p>
+                      <ul>
+                        <li>⚡ Keeps drinks sub-zero cold for 36 continuous hours</li>
+                        <li>🔒 Magnetic rapid-lock lid with zero mechanical gaskets</li>
+                        <li>🌱 Lifetime warranty with 100% recyclable components</li>
+                      </ul>
+                      <p>
+                        For the next 48 hours, use code <strong>EARLYCREATOR</strong> to unlock 20% off your founding batch order.
+                      </p>
+                    </div>
+                    <div className="paper-footer">
+                      <button type="button" className="btn btn-primary btn-sm">
+                        <Bookmark size={13} />
+                        <span>Save to Library</span>
+                      </button>
+                      <button type="button" className="btn btn-outline btn-sm">
+                        <Copy size={13} />
+                        <span>Copy Draft</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {activeShowcaseTab === 'library' && (
+              <div className="viewport-panel library-panel-preview">
+                <div className="panel-mock-header">
+                  <div className="flex items-center gap-2">
+                    <Bookmark size={15} className="text-violet" />
+                    <strong>Personal Knowledge Library</strong>
+                    <span className="badge badge-neutral">3 Saved Assets</span>
+                  </div>
+                  <div className="library-filters-mini">
+                    <span className="filter-pill active">All</span>
+                    <span className="filter-pill">Research</span>
+                    <span className="filter-pill">Marketing</span>
+                    <span className="filter-pill">Text</span>
+                  </div>
+                </div>
+
+                <div className="preview-library-grid">
+                  <div className="lib-item-card">
+                    <div className="lib-item-header">
+                      <span className="badge badge-primary">RESEARCH</span>
+                      <span className="lib-date">Oct 14, 2026</span>
+                    </div>
+                    <h4 className="lib-item-title">Solid-State Battery Breakthroughs (2026 Research Brief)</h4>
+                    <p className="lib-item-snippet">
+                      Commercial production for silicon-composite cathode cells shows a 35% density jump over conventional lithium-ion cells...
+                    </p>
+                    <div className="lib-item-tags">
+                      <span className="tag">#CleanTech</span>
+                      <span className="tag">#Batteries</span>
+                      <span className="tag">#Hardware</span>
+                    </div>
+                  </div>
+
+                  <div className="lib-item-card">
+                    <div className="lib-item-header">
+                      <span className="badge badge-success">MARKETING</span>
+                      <span className="lib-date">Oct 13, 2026</span>
+                    </div>
+                    <h4 className="lib-item-title">Eco-Bottle Product Launch Newsletter Copy</h4>
+                    <p className="lib-item-snippet">
+                      Subject: Say Goodbye to Single-Use Plastic. Introducing AeroFlask, forged from aerospace titanium...
+                    </p>
+                    <div className="lib-item-tags">
+                      <span className="tag">#EmailCopy</span>
+                      <span className="tag">#Launch</span>
+                    </div>
+                  </div>
+
+                  <div className="lib-item-card">
+                    <div className="lib-item-header">
+                      <span className="badge badge-neutral">TEXT</span>
+                      <span className="lib-date">Oct 12, 2026</span>
+                    </div>
+                    <h4 className="lib-item-title">4-Step Go-to-Market Framework for Creators</h4>
+                    <p className="lib-item-snippet">
+                      Strategic blueprint detailing niche positioning, build-in-public distribution, and 60-second time-to-value onboarding...
+                    </p>
+                    <div className="lib-item-tags">
+                      <span className="tag">#Strategy</span>
+                      <span className="tag">#GTM</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </section>
 
-      {/* Final CTA Banner */}
-      <section className="final-cta-section">
+      {/* Plans & Pricing Section */}
+      <section id="pricing" className="pricing-section">
+        <div className="landing-container">
+          <div className="section-header">
+            <div className="section-badge">PLANS &amp; PRICING</div>
+            <h2 className="section-title">Transparent Access. Scale at Your Own Pace.</h2>
+            <p className="section-description">
+              Get started with essential AI capabilities, or unlock unlimited workflows with our professional plans.
+            </p>
+          </div>
+
+          <div className="pricing-grid">
+            {/* Starter Plan */}
+            <div className="pricing-card">
+              <div className="pricing-card-header">
+                <h3 className="plan-name">Starter</h3>
+                <p className="plan-description">
+                  Essential AI capabilities for individual exploration and everyday productivity.
+                </p>
+                <div className="plan-price-wrap">
+                  <span className="plan-price">$0</span>
+                  <span className="plan-period">Free forever</span>
+                </div>
+              </div>
+
+              <ul className="plan-features-list">
+                <li>
+                  <Check size={16} className="feature-check" />
+                  <span>Conversational AI Chat assistance</span>
+                </li>
+                <li>
+                  <Check size={16} className="feature-check" />
+                  <span>Real-time Web Search queries</span>
+                </li>
+                <li>
+                  <Check size={16} className="feature-check" />
+                  <span>Standard Content Studio format drafts</span>
+                </li>
+                <li>
+                  <Check size={16} className="feature-check" />
+                  <span>Personal Library storage (up to 50 items)</span>
+                </li>
+                <li>
+                  <Check size={16} className="feature-check" />
+                  <span>Standard response processing speed</span>
+                </li>
+              </ul>
+
+              <div className="pricing-card-footer">
+                <NavLink to="/register" className="btn btn-outline btn-block">
+                  Get Started Free
+                </NavLink>
+              </div>
+            </div>
+
+            {/* Pro Creator Plan (Featured) */}
+            <div className="pricing-card featured">
+              <div className="popular-badge">RECOMMENDED</div>
+              <div className="pricing-card-header">
+                <h3 className="plan-name">Pro Creator</h3>
+                <p className="plan-description">
+                  Advanced workspace capabilities for active creators, writers, and power researchers.
+                </p>
+                <div className="plan-price-wrap">
+                  <span className="plan-price">$24</span>
+                  <span className="plan-period">/ month</span>
+                </div>
+              </div>
+
+              <ul className="plan-features-list">
+                <li>
+                  <Check size={16} className="feature-check" />
+                  <span>
+                    <strong>Unlimited</strong> AI Chat multi-turn conversations
+                  </span>
+                </li>
+                <li>
+                  <Check size={16} className="feature-check" />
+                  <span>
+                    <strong>Live Web Search</strong> with verified source citations
+                  </span>
+                </li>
+                <li>
+                  <Check size={16} className="feature-check" />
+                  <span>
+                    <strong>Full Content Studio</strong> with custom tones &amp; lengths
+                  </span>
+                </li>
+                <li>
+                  <Check size={16} className="feature-check" />
+                  <span>
+                    <strong>Unlimited</strong> Saved Library storage &amp; tags
+                  </span>
+                </li>
+                <li>
+                  <Check size={16} className="feature-check" />
+                  <span>Priority engine latency &amp; queue processing</span>
+                </li>
+                <li>
+                  <Check size={16} className="feature-check" />
+                  <span>1-Click Markdown &amp; structured copy export</span>
+                </li>
+              </ul>
+
+              <div className="pricing-card-footer">
+                <NavLink to="/register" className="btn btn-primary btn-block btn-glow">
+                  <span>Start Pro Trial</span>
+                  <ArrowRight size={15} />
+                </NavLink>
+              </div>
+            </div>
+
+            {/* Team & Studio Plan */}
+            <div className="pricing-card">
+              <div className="pricing-card-header">
+                <h3 className="plan-name">Team &amp; Studio</h3>
+                <p className="plan-description">
+                  Comprehensive workspace for agencies, marketing teams, and growing creative brands.
+                </p>
+                <div className="plan-price-wrap">
+                  <span className="plan-price">$69</span>
+                  <span className="plan-period">/ month</span>
+                </div>
+              </div>
+
+              <ul className="plan-features-list">
+                <li>
+                  <Check size={16} className="feature-check" />
+                  <span>Everything included in Pro Creator</span>
+                </li>
+                <li>
+                  <Check size={16} className="feature-check" />
+                  <span>Collaborative shared team library</span>
+                </li>
+                <li>
+                  <Check size={16} className="feature-check" />
+                  <span>Advanced SEO planning &amp; topic clustering</span>
+                </li>
+                <li>
+                  <Check size={16} className="feature-check" />
+                  <span>Brand voice &amp; custom persona presets</span>
+                </li>
+                <li>
+                  <Check size={16} className="feature-check" />
+                  <span>Dedicated priority support &amp; onboarding</span>
+                </li>
+              </ul>
+
+              <div className="pricing-card-footer">
+                <NavLink to="/register" className="btn btn-outline btn-block">
+                  Get Started with Teams
+                </NavLink>
+              </div>
+            </div>
+          </div>
+
+          <div className="pricing-guarantee-note">
+            <Shield size={16} className="text-violet" />
+            <span>Encrypted &amp; private workspace. Cancel or upgrade your plan anytime from Settings.</span>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section id="faq" className="faq-section">
+        <div className="landing-container">
+          <div className="section-header">
+            <div className="section-badge">FREQUENTLY ASKED QUESTIONS</div>
+            <h2 className="section-title">Clear Answers to Common Questions</h2>
+            <p className="section-description">
+              Find out how Zunme AI unifies research, drafting, and knowledge archiving.
+            </p>
+          </div>
+
+          <div className="faq-accordion-list">
+            {faqs.map((faq, index) => {
+              const isOpen = openFaqIndex === index;
+              return (
+                <div key={index} className={`faq-accordion-item ${isOpen ? 'open' : ''}`}>
+                  <button
+                    type="button"
+                    className="faq-question-btn"
+                    onClick={() => toggleFaq(index)}
+                    aria-expanded={isOpen}
+                    aria-controls={`faq-answer-${index}`}
+                  >
+                    <span className="faq-question-text">{faq.question}</span>
+                    <span className="faq-chevron-box">
+                      {isOpen ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+                    </span>
+                  </button>
+
+                  {isOpen && (
+                    <div id={`faq-answer-${index}`} className="faq-answer-content">
+                      <p>{faq.answer}</p>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* Final CTA Section */}
+      <section className="final-cta-section" id="cta">
         <div className="landing-container">
           <div className="cta-box">
-            <h2 className="cta-title">Ready to Elevate Your AI Workflow?</h2>
+            <div className="cta-box-glow" aria-hidden="true" />
+            <div className="cta-badge">
+              <Sparkles size={14} />
+              <span>START CREATING TODAY</span>
+            </div>
+
+            {/* Headline (exact required text) */}
+            <h2 className="cta-title">Bring Your Ideas to Life with AI.</h2>
+
+            {/* Supporting text (exact required text) */}
             <p className="cta-desc">
-              Join creators, researchers, and entrepreneurs building smarter with Zunme AI.
+              Explore AI-powered tools for searching, creating, and organizing your work.
             </p>
-            <div className="flex justify-center gap-3">
-              <NavLink to="/register" className="btn btn-secondary btn-lg" style={{ backgroundColor: '#FFFFFF', color: '#635BFF', fontWeight: '700' }}>
-                Create Free Account
+
+            {/* CTA Buttons */}
+            <div className="cta-buttons-row">
+              <NavLink to="/register" className="btn btn-primary btn-lg cta-primary-btn">
+                <span>Get Started</span>
+                <ArrowRight size={17} />
               </NavLink>
+              <NavLink to="/login" className="btn btn-outline btn-lg cta-secondary-btn">
+                Sign In
+              </NavLink>
+            </div>
+
+            <div className="cta-subtext">
+              <span>Free Starter access · No credit card required · Instant setup</span>
             </div>
           </div>
         </div>
@@ -269,50 +1166,119 @@ export const LandingPage: React.FC = () => {
         <div className="landing-container">
           <div className="footer-top">
             <div className="footer-brand">
-              <div className="brand-link">
-                <div className="brand-icon-box">Z</div>
-                <span>Zunme AI</span>
-              </div>
-              <p>
-                The unified AI workspace for ideas, research, and high-impact content creation.
+              <NavLink to="/" className="brand-link">
+                <div className="brand-icon-box">
+                  <span className="brand-glyph">Z</span>
+                </div>
+                <span className="brand-name">Zunme AI</span>
+              </NavLink>
+              <p className="footer-brand-desc">
+                Your unified AI workspace for ideas, content &amp; discovery. Search the web, create compelling copy, and organize your work in one connected platform.
               </p>
+              <div className="footer-status-pill">
+                <span className="status-dot-active" />
+                <span>All Workspace Systems Operational</span>
+              </div>
             </div>
 
-            <div className="footer-links-group">
+            <div className="footer-links-grid">
+              {/* Product Links */}
               <div className="footer-col">
                 <h4>Product</h4>
                 <ul>
-                  <li><NavLink to="/app/chat">AI Assistant</NavLink></li>
-                  <li><NavLink to="/app/search">Web Search</NavLink></li>
-                  <li><NavLink to="/app/studio">Content Studio</NavLink></li>
-                  <li><NavLink to="/app/library">Personal Library</NavLink></li>
+                  <li>
+                    <NavLink to="/app/chat">AI Assistant</NavLink>
+                  </li>
+                  <li>
+                    <NavLink to="/app/search">Live Web Search</NavLink>
+                  </li>
+                  <li>
+                    <NavLink to="/app/studio">Content Studio</NavLink>
+                  </li>
+                  <li>
+                    <NavLink to="/app/library">Personal Library</NavLink>
+                  </li>
+                  <li>
+                    <a href="#pricing">Plans &amp; Pricing</a>
+                  </li>
                 </ul>
               </div>
 
+              {/* Capabilities Links */}
+              <div className="footer-col">
+                <h4>Capabilities</h4>
+                <ul>
+                  <li>
+                    <a href="#features">AI Chat</a>
+                  </li>
+                  <li>
+                    <a href="#features">Web Search</a>
+                  </li>
+                  <li>
+                    <a href="#features">AI Content Builders</a>
+                  </li>
+                  <li>
+                    <a href="#features">AI Warehouse</a>
+                  </li>
+                  <li>
+                    <a href="#features">Creator Tools</a>
+                  </li>
+                  <li>
+                    <a href="#features">SEO Workspace</a>
+                  </li>
+                </ul>
+              </div>
+
+              {/* Platform & Company */}
               <div className="footer-col">
                 <h4>Company</h4>
                 <ul>
-                  <li><a href="#about">About Zunme</a></li>
-                  <li><a href="#careers">Careers</a></li>
-                  <li><a href="#privacy">Privacy Policy</a></li>
-                  <li><a href="#terms">Terms of Service</a></li>
+                  <li>
+                    <a href="#hero">About Zunme AI</a>
+                  </li>
+                  <li>
+                    <a href="#how-it-works">How It Works</a>
+                  </li>
+                  <li>
+                    <a href="#faq">FAQ</a>
+                  </li>
+                  <li>
+                    <NavLink to="/login">Sign In</NavLink>
+                  </li>
+                  <li>
+                    <NavLink to="/register">Create Account</NavLink>
+                  </li>
                 </ul>
               </div>
 
+              {/* Legal & Support */}
               <div className="footer-col">
-                <h4>Connect</h4>
+                <h4>Trust &amp; Support</h4>
                 <ul>
-                  <li><a href="#twitter">X / Twitter</a></li>
-                  <li><a href="#linkedin">LinkedIn</a></li>
-                  <li><a href="#support">Support & Help</a></li>
+                  <li>
+                    <a href="#faq">Support Center</a>
+                  </li>
+                  <li>
+                    <a href="#hero">Privacy Policy</a>
+                  </li>
+                  <li>
+                    <a href="#hero">Terms of Service</a>
+                  </li>
+                  <li>
+                    <a href="#hero">Security Architecture</a>
+                  </li>
                 </ul>
               </div>
             </div>
           </div>
 
           <div className="footer-bottom">
-            <span>&copy; {new Date().getFullYear()} Zunme AI. All rights reserved.</span>
-            <span>Phase 1 Core MVP Specification</span>
+            <div className="footer-copyright">
+              <span>&copy; {new Date().getFullYear()} Zunme AI. All rights reserved.</span>
+            </div>
+            <div className="footer-footnote">
+              <span>Engineered for creators, researchers, and modern knowledge workers.</span>
+            </div>
           </div>
         </div>
       </footer>
