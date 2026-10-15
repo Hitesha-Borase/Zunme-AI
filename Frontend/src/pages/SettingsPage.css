@@ -1,3 +1,8 @@
+/* ==========================================================================
+   ZUNME AI — Settings Page (Reference Luxury Theme)
+   Aesthetics: Crisp White Cards, Warm Pastel Canvas & Royal Purple Accents
+   ========================================================================== */
+
 .settings-page {
   padding: 36px 24px;
   max-width: 800px;
@@ -12,38 +17,38 @@
 .settings-title {
   font-size: 26px;
   font-weight: 800;
-  color: #FFFFFF;
+  color: #111625;
   letter-spacing: -0.025em;
   margin-bottom: 6px;
 }
 
 .settings-desc {
   font-size: 14.5px;
-  color: var(--color-text-secondary);
+  color: #5F6B85;
 }
 
-/* Apple Frosted Glass Settings Card */
+/* Crisp White Settings Card */
 .settings-card {
-  background: rgba(18, 22, 34, 0.72);
-  backdrop-filter: blur(24px) saturate(190%);
-  -webkit-backdrop-filter: blur(24px) saturate(190%);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #FFFFFF;
+  border: 1px solid #E8ECF5;
   border-radius: var(--radius-xl);
   padding: 28px;
-  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.45), inset 0 1px 1px 0 rgba(255, 255, 255, 0.12);
+  box-shadow: 
+    0 4px 20px -2px rgba(30, 20, 60, 0.04),
+    0 1px 3px rgba(0, 0, 0, 0.02);
   margin-bottom: 26px;
 }
 
 .settings-card-title {
   font-size: 16.5px;
   font-weight: 700;
-  color: #FFFFFF;
+  color: #111625;
   margin-bottom: 4px;
 }
 
 .settings-card-subtitle {
   font-size: 13px;
-  color: var(--color-text-secondary);
+  color: #5F6B85;
   margin-bottom: 22px;
 }
 
@@ -53,31 +58,31 @@
   gap: 16px;
   margin-bottom: 22px;
   padding-bottom: 22px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid #F0F3FA;
 }
 
 .large-avatar-circle {
   width: 58px;
   height: 58px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #7C3AED 0%, #635BFF 100%);
+  background: var(--gradient-sunset);
   color: #FFFFFF;
   font-size: 20px;
-  font-weight: 700;
+  font-weight: 800;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 0 20px rgba(124, 58, 237, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 14px rgba(110, 86, 207, 0.35);
 }
 
 .danger-zone-card {
-  border-color: rgba(244, 63, 94, 0.25);
-  background: rgba(30, 16, 24, 0.65);
-  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.45), 0 0 24px rgba(244, 63, 94, 0.1);
+  border-color: rgba(225, 29, 72, 0.2);
+  background: #FFF8F8;
+  box-shadow: 0 4px 20px -2px rgba(225, 29, 72, 0.04);
 }
 
 .danger-zone-card .settings-card-title {
-  color: #FB7185;
+  color: #E11D48;
 }
 
 @media (max-width: 640px) {

@@ -115,26 +115,26 @@ export const SuperAdminPlansPage: React.FC = () => {
                 </button>
               </div>
 
-              <h3 style={{ fontSize: '20px', fontWeight: '800', color: '#F8FAFC', marginBottom: '6px' }}>
+              <h3 style={{ fontSize: '20px', fontWeight: '800', color: '#111625', marginBottom: '6px' }}>
                 {plan.name}
               </h3>
-              <p style={{ fontSize: '13px', color: '#94A3B8', marginBottom: '16px', minHeight: '38px', lineHeight: '1.4' }}>
+              <p style={{ fontSize: '13px', color: '#5F6B85', marginBottom: '16px', minHeight: '38px', lineHeight: '1.4' }}>
                 {plan.description}
               </p>
 
               <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px', marginBottom: '20px' }}>
-                <span style={{ fontSize: '32px', fontWeight: '900', color: '#F8FAFC' }}>{plan.price}</span>
-                <span style={{ fontSize: '13px', color: '#64748B' }}>/ {plan.billingPeriod}</span>
+                <span style={{ fontSize: '32px', fontWeight: '900', color: '#111625' }}>{plan.price}</span>
+                <span style={{ fontSize: '13px', color: '#5F6B85' }}>/ {plan.billingPeriod}</span>
               </div>
 
-              <div style={{ borderTop: '1px solid rgba(255, 255, 255, 0.06)', paddingTop: '16px', marginBottom: '20px' }}>
-                <div style={{ fontSize: '11px', fontWeight: '700', color: '#A78BFA', textTransform: 'uppercase', marginBottom: '12px' }}>
+              <div style={{ borderTop: '1px solid #E8ECF5', paddingTop: '16px', marginBottom: '20px' }}>
+                <div style={{ fontSize: '11px', fontWeight: '700', color: '#6E56CF', textTransform: 'uppercase', marginBottom: '12px' }}>
                   Included Entitlements
                 </div>
                 <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '10px' }}>
                   {plan.features.map((feat, i) => (
-                    <li key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', fontSize: '12px', color: '#CBD5E1' }}>
-                      <Check size={14} color="#34D399" style={{ flexShrink: 0, marginTop: '2px' }} />
+                    <li key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', fontSize: '12px', color: '#374151' }}>
+                      <Check size={14} color="#059669" style={{ flexShrink: 0, marginTop: '2px' }} />
                       <span>{feat}</span>
                     </li>
                   ))}
@@ -142,8 +142,8 @@ export const SuperAdminPlansPage: React.FC = () => {
               </div>
             </div>
 
-            <div style={{ paddingTop: '14px', borderTop: '1px solid rgba(255, 255, 255, 0.06)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <div style={{ fontSize: '12px', color: '#94A3B8' }}>
+            <div style={{ paddingTop: '14px', borderTop: '1px solid #E8ECF5', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div style={{ fontSize: '12px', color: '#5F6B85' }}>
                 <Users size={13} style={{ display: 'inline', marginRight: '4px' }} />
                 {plan.activeSubscribers} Users
               </div>

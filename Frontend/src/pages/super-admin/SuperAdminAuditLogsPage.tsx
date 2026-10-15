@@ -131,7 +131,7 @@ export const SuperAdminAuditLogsPage: React.FC = () => {
 
                     <td>
                       <div>
-                        <div style={{ fontWeight: '700', color: '#F8FAFC' }}>{log.actor}</div>
+                        <div style={{ fontWeight: '700', color: '#111625' }}>{log.actor}</div>
                         <span className="badge badge-neutral" style={{ fontSize: '10px' }}>
                           {log.role}
                         </span>
@@ -141,12 +141,12 @@ export const SuperAdminAuditLogsPage: React.FC = () => {
                     <td>
                       <code
                         style={{
-                          background: 'rgba(255, 255, 255, 0.04)',
+                          background: '#FAFBFD',
+                          color: '#6E56CF',
+                          border: '1px solid #E8ECF5',
                           padding: '3px 6px',
                           borderRadius: '4px',
-                          fontSize: '11px',
-                          color: '#E2E8F0',
-                          border: '1px solid rgba(255, 255, 255, 0.08)'
+                          fontSize: '11px'
                         }}
                       >
                         {log.action}
@@ -154,7 +154,7 @@ export const SuperAdminAuditLogsPage: React.FC = () => {
                     </td>
 
                     <td>
-                      <div style={{ maxWidth: '240px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', color: '#CBD5E1' }}>
+                      <div style={{ maxWidth: '240px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', color: '#5F6B85' }}>
                         {log.resource}
                       </div>
                     </td>
@@ -213,30 +213,30 @@ export const SuperAdminAuditLogsPage: React.FC = () => {
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', fontSize: '13px' }}>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-                <div style={{ padding: '12px', background: 'rgba(255,255,255,0.02)', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.06)' }}>
-                  <div style={{ fontSize: '11px', color: '#94A3B8' }}>Executing Actor</div>
-                  <div style={{ fontSize: '14px', fontWeight: '700', color: '#F8FAFC', marginTop: '2px' }}>{selectedLog.actor}</div>
-                  <div style={{ fontSize: '11px', color: '#A78BFA' }}>Role: {selectedLog.role}</div>
+                <div style={{ padding: '12px', background: '#FAFBFD', borderRadius: '8px', border: '1px solid #E8ECF5' }}>
+                  <div style={{ fontSize: '11px', color: '#5F6B85' }}>Executing Actor</div>
+                  <div style={{ fontSize: '14px', fontWeight: '700', color: '#111625', marginTop: '2px' }}>{selectedLog.actor}</div>
+                  <div style={{ fontSize: '11px', color: '#6E56CF' }}>Role: {selectedLog.role}</div>
                 </div>
 
-                <div style={{ padding: '12px', background: 'rgba(255,255,255,0.02)', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.06)' }}>
-                  <div style={{ fontSize: '11px', color: '#94A3B8' }}>Timestamp & IP</div>
-                  <div style={{ fontSize: '13px', fontWeight: '600', color: '#F8FAFC', marginTop: '2px' }}>{new Date(selectedLog.timestamp).toLocaleString()}</div>
-                  <div style={{ fontSize: '11px', color: '#64748B' }}>IP: {selectedLog.ipAddress}</div>
+                <div style={{ padding: '12px', background: '#FAFBFD', borderRadius: '8px', border: '1px solid #E8ECF5' }}>
+                  <div style={{ fontSize: '11px', color: '#5F6B85' }}>Timestamp & IP</div>
+                  <div style={{ fontSize: '13px', fontWeight: '600', color: '#111625', marginTop: '2px' }}>{new Date(selectedLog.timestamp).toLocaleString()}</div>
+                  <div style={{ fontSize: '11px', color: '#8C97B0' }}>IP: {selectedLog.ipAddress}</div>
                 </div>
               </div>
 
               <div>
-                <label style={{ display: 'block', fontSize: '11px', fontWeight: '700', color: '#94A3B8', textTransform: 'uppercase', marginBottom: '6px' }}>
+                <label style={{ display: 'block', fontSize: '11px', fontWeight: '700', color: '#111625', textTransform: 'uppercase', marginBottom: '6px' }}>
                   Action Type
                 </label>
-                <div style={{ padding: '10px 12px', background: 'rgba(255,255,255,0.03)', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.08)', fontFamily: 'monospace' }}>
+                <div style={{ padding: '10px 12px', background: '#FAFBFD', borderRadius: '8px', border: '1px solid #E8ECF5', fontFamily: 'monospace', color: '#111625' }}>
                   {selectedLog.action}
                 </div>
               </div>
 
               <div>
-                <label style={{ display: 'block', fontSize: '11px', fontWeight: '700', color: '#94A3B8', textTransform: 'uppercase', marginBottom: '6px' }}>
+                <label style={{ display: 'block', fontSize: '11px', fontWeight: '700', color: '#111625', textTransform: 'uppercase', marginBottom: '6px' }}>
                   Resource Affected & Mutation Details
                 </label>
                 <div style={{ padding: '12px', background: 'rgba(255,255,255,0.03)', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.08)', color: '#CBD5E1' }}>

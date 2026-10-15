@@ -46,10 +46,10 @@ export const ZunmeAdsPage: React.FC = () => {
           <AlertTriangle size={24} color="#FBBF24" />
         </div>
         <div>
-          <h3 style={{ fontSize: '16px', fontWeight: '800', color: '#F8FAFC', marginBottom: '4px' }}>
+          <h3 style={{ fontSize: '16px', fontWeight: '800', color: '#FFFFFF', marginBottom: '4px' }}>
             Ad Platform Infrastructure Dependency Status
           </h3>
-          <p style={{ fontSize: '13px', color: '#94A3B8', lineHeight: '1.5' }}>
+          <p style={{ fontSize: '13px', color: 'rgba(255, 255, 255, 0.9)', lineHeight: '1.5' }}>
             In accordance with architectural guidelines, simulated or fake transaction data is strictly prohibited. The Zunme Ads subsystem is scheduled for Phase 5 of the ecosystem roadmap. Below is the approved interface architecture with active dependency indicators.
           </p>
         </div>
@@ -101,18 +101,18 @@ export const ZunmeAdsPage: React.FC = () => {
                 justifyContent: 'space-between',
                 padding: '14px 18px',
                 borderRadius: '10px',
-                background: 'rgba(255, 255, 255, 0.02)',
-                border: '1px solid rgba(255, 255, 255, 0.05)',
+                background: '#FAFBFD',
+                border: '1px solid #E8ECF5',
                 fontSize: '13px'
               }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                 {item.ready ? (
-                  <CheckCircle2 size={16} color="#34D399" />
+                  <CheckCircle2 size={16} color="#059669" />
                 ) : (
-                  <Clock size={16} color="#FBBF24" />
+                  <Clock size={16} color="#D97706" />
                 )}
-                <span style={{ fontWeight: '600', color: item.ready ? '#F8FAFC' : '#CBD5E1' }}>
+                <span style={{ fontWeight: '600', color: item.ready ? '#111625' : '#5F6B85' }}>
                   {item.name}
                 </span>
               </div>
@@ -125,24 +125,24 @@ export const ZunmeAdsPage: React.FC = () => {
       </div>
 
       {/* Planned Wireframe Structure (Disabled Mode) */}
-      <div className="glass-panel" style={{ opacity: 0.6, pointerEvents: 'none' }}>
+      <div className="glass-panel" style={{ opacity: 0.7, pointerEvents: 'none' }}>
         <div className="panel-header">
           <div className="panel-title">Planned Campaign Management Canvas (Disabled Preview)</div>
           <span className="badge badge-neutral">Read Only</span>
         </div>
 
         <div className="cards-grid-3">
-          <div style={{ padding: '16px', borderRadius: '10px', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)' }}>
-            <div style={{ fontSize: '12px', color: '#94A3B8' }}>Impressions Delivered</div>
-            <div style={{ fontSize: '24px', fontWeight: '800', color: '#F8FAFC', marginTop: '4px' }}>--</div>
+          <div style={{ padding: '16px', borderRadius: '10px', background: '#FAFBFD', border: '1px solid #E8ECF5' }}>
+            <div style={{ fontSize: '12px', color: '#5F6B85' }}>Impressions Delivered</div>
+            <div style={{ fontSize: '24px', fontWeight: '800', color: '#111625', marginTop: '4px' }}>--</div>
           </div>
-          <div style={{ padding: '16px', borderRadius: '10px', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)' }}>
-            <div style={{ fontSize: '12px', color: '#94A3B8' }}>Average CTR</div>
-            <div style={{ fontSize: '24px', fontWeight: '800', color: '#F8FAFC', marginTop: '4px' }}>--</div>
+          <div style={{ padding: '16px', borderRadius: '10px', background: '#FAFBFD', border: '1px solid #E8ECF5' }}>
+            <div style={{ fontSize: '12px', color: '#5F6B85' }}>Average CTR</div>
+            <div style={{ fontSize: '24px', fontWeight: '800', color: '#111625', marginTop: '4px' }}>--</div>
           </div>
-          <div style={{ padding: '16px', borderRadius: '10px', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)' }}>
-            <div style={{ fontSize: '12px', color: '#94A3B8' }}>Active Ad Spend</div>
-            <div style={{ fontSize: '24px', fontWeight: '800', color: '#F8FAFC', marginTop: '4px' }}>$0.00</div>
+          <div style={{ padding: '16px', borderRadius: '10px', background: '#FAFBFD', border: '1px solid #E8ECF5' }}>
+            <div style={{ fontSize: '12px', color: '#5F6B85' }}>Active Ad Spend</div>
+            <div style={{ fontSize: '24px', fontWeight: '800', color: '#111625', marginTop: '4px' }}>$0.00</div>
           </div>
         </div>
       </div>

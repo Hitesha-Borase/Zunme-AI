@@ -223,9 +223,9 @@ export const UserContentBuildersPage: React.FC = () => {
             className="glass-panel"
             style={{
               cursor: 'pointer',
-              borderColor: selectedTemplate.id === tpl.id ? 'rgba(124, 58, 237, 0.6)' : undefined,
-              background: selectedTemplate.id === tpl.id ? 'rgba(124, 58, 237, 0.12)' : undefined,
-              boxShadow: selectedTemplate.id === tpl.id ? '0 0 20px rgba(124, 58, 237, 0.2)' : undefined,
+              borderColor: selectedTemplate.id === tpl.id ? '#6E56CF' : undefined,
+              background: selectedTemplate.id === tpl.id ? '#F5EFFF' : '#FFFFFF',
+              boxShadow: selectedTemplate.id === tpl.id ? '0 8px 24px rgba(110, 86, 207, 0.15)' : undefined,
               transition: 'all 0.18s ease'
             }}
           >
@@ -234,10 +234,10 @@ export const UserContentBuildersPage: React.FC = () => {
               {tpl.badge && <span className="badge badge-primary">{tpl.badge}</span>}
             </div>
 
-            <h3 style={{ fontSize: '15px', fontWeight: '800', color: '#F8FAFC', marginBottom: '6px' }}>
+            <h3 style={{ fontSize: '15px', fontWeight: '800', color: '#111625', marginBottom: '6px' }}>
               {tpl.name}
             </h3>
-            <p style={{ fontSize: '12px', color: '#94A3B8', lineHeight: '1.4' }}>
+            <p style={{ fontSize: '12px', color: '#5F6B85', lineHeight: '1.4' }}>
               {tpl.description}
             </p>
           </div>
@@ -250,7 +250,7 @@ export const UserContentBuildersPage: React.FC = () => {
         <div className="glass-panel">
           <div className="panel-header">
             <div className="panel-title">
-              <Sparkles size={18} color="#A78BFA" />
+              <Sparkles size={18} color="#6E56CF" />
               Generator: {selectedTemplate.name}
             </div>
             <span className="badge badge-neutral">{selectedTemplate.category}</span>
@@ -258,7 +258,7 @@ export const UserContentBuildersPage: React.FC = () => {
 
           <form onSubmit={handleGenerate} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             <div>
-              <label style={{ display: 'block', fontSize: '13px', fontWeight: '700', color: '#CBD5E1', marginBottom: '6px' }}>
+              <label style={{ display: 'block', fontSize: '13px', fontWeight: '700', color: '#111625', marginBottom: '6px' }}>
                 Topic & Specific Instructions
               </label>
               <textarea
@@ -273,7 +273,7 @@ export const UserContentBuildersPage: React.FC = () => {
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
               <div>
-                <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#CBD5E1', marginBottom: '6px' }}>
+                <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#111625', marginBottom: '6px' }}>
                   Tone of Voice
                 </label>
                 <select
@@ -290,7 +290,7 @@ export const UserContentBuildersPage: React.FC = () => {
               </div>
 
               <div>
-                <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#CBD5E1', marginBottom: '6px' }}>
+                <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#111625', marginBottom: '6px' }}>
                   Target Length
                 </label>
                 <select
@@ -330,13 +330,13 @@ export const UserContentBuildersPage: React.FC = () => {
         <div className="glass-panel" style={{ display: 'flex', flexDirection: 'column' }}>
           <div className="panel-header">
             <div className="panel-title">
-              <FileText size={18} color="#34D399" />
+              <FileText size={18} color="#059669" />
               Generated Output Canvas
             </div>
             {generatedContent && (
               <div style={{ display: 'flex', gap: '8px' }}>
                 <button className="btn btn-outline btn-sm" onClick={handleCopy}>
-                  {copied ? <Check size={13} color="#34D399" /> : <Copy size={13} />}
+                  {copied ? <Check size={13} color="#059669" /> : <Copy size={13} />}
                   <span>{copied ? 'Copied' : 'Copy'}</span>
                 </button>
                 <button className="btn btn-secondary btn-sm" onClick={handleSave}>
@@ -349,7 +349,7 @@ export const UserContentBuildersPage: React.FC = () => {
 
           {generatedContent ? (
             <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', color: '#94A3B8', borderBottom: '1px solid rgba(255,255,255,0.06)', paddingBottom: '8px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', color: '#5F6B85', borderBottom: '1px solid #E8ECF5', paddingBottom: '8px' }}>
                 <span>Format: <strong>{generatedContent.format}</strong></span>
                 <span>Word Count: <strong>{generatedContent.wordCount} words</strong></span>
               </div>
@@ -359,14 +359,14 @@ export const UserContentBuildersPage: React.FC = () => {
                   flex: 1,
                   padding: '16px',
                   borderRadius: '10px',
-                  background: 'rgba(255, 255, 255, 0.02)',
-                  border: '1px solid rgba(255, 255, 255, 0.05)',
+                  background: '#FAFBFD',
+                  border: '1px solid #E8ECF5',
                   overflowY: 'auto',
                   maxHeight: '380px',
                   whiteSpace: 'pre-wrap',
                   fontSize: '13px',
                   lineHeight: '1.6',
-                  color: '#E2E8F0'
+                  color: '#272F3E'
                 }}
               >
                 {generatedContent.content}
@@ -381,7 +381,7 @@ export const UserContentBuildersPage: React.FC = () => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 textAlign: 'center',
-                color: '#64748B',
+                color: '#5F6B85',
                 padding: '48px 24px'
               }}
             >
@@ -390,16 +390,16 @@ export const UserContentBuildersPage: React.FC = () => {
                   width: '48px',
                   height: '48px',
                   borderRadius: '12px',
-                  background: 'rgba(255, 255, 255, 0.03)',
+                  background: '#EFEBFC',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   marginBottom: '12px'
                 }}
               >
-                <Sparkles size={22} color="#A78BFA" />
+                <Sparkles size={22} color="#6E56CF" />
               </div>
-              <h4 style={{ fontSize: '15px', fontWeight: '700', color: '#CBD5E1', marginBottom: '6px' }}>
+              <h4 style={{ fontSize: '15px', fontWeight: '700', color: '#111625', marginBottom: '6px' }}>
                 Ready to Draft
               </h4>
               <p style={{ fontSize: '13px', maxWidth: '320px' }}>

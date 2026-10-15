@@ -125,13 +125,13 @@ export const AdminSupportModerationPage: React.FC = () => {
               {tickets.map((t) => (
                 <tr key={t.id}>
                   <td>
-                    <div style={{ fontWeight: '700', color: '#F8FAFC' }}>{t.userName}</div>
-                    <div style={{ fontSize: '11px', color: '#64748B' }}>{t.userEmail}</div>
+                    <div style={{ fontWeight: '700', color: '#111625' }}>{t.userName}</div>
+                    <div style={{ fontSize: '11px', color: '#5F6B85' }}>{t.userEmail}</div>
                   </td>
 
                   <td>
-                    <div style={{ fontWeight: '600', color: '#E2E8F0' }}>{t.subject}</div>
-                    <div style={{ fontSize: '11px', color: '#94A3B8', maxWidth: '300px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                    <div style={{ fontWeight: '600', color: '#111625' }}>{t.subject}</div>
+                    <div style={{ fontSize: '11px', color: '#5F6B85', maxWidth: '300px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                       {t.message}
                     </div>
                   </td>
@@ -210,15 +210,15 @@ export const AdminSupportModerationPage: React.FC = () => {
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
               <div>
-                <div style={{ fontSize: '16px', fontWeight: '800', color: '#F8FAFC' }}>
+                <div style={{ fontSize: '16px', fontWeight: '800', color: '#111625' }}>
                   {selectedTicket.subject}
                 </div>
-                <div style={{ fontSize: '12px', color: '#94A3B8', marginTop: '2px' }}>
+                <div style={{ fontSize: '12px', color: '#5F6B85', marginTop: '2px' }}>
                   From: {selectedTicket.userName} ({selectedTicket.userEmail}) • Priority: {selectedTicket.priority}
                 </div>
               </div>
 
-              <div style={{ padding: '14px', background: 'rgba(255,255,255,0.03)', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.06)', fontSize: '13px', lineHeight: '1.5', color: '#E2E8F0' }}>
+              <div style={{ padding: '14px', background: '#FAFBFD', borderRadius: '10px', border: '1px solid #E8ECF5', fontSize: '13px', lineHeight: '1.5', color: '#272F3E' }}>
                 {selectedTicket.message}
               </div>
 

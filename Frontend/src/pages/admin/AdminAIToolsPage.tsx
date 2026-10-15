@@ -172,17 +172,17 @@ export const AdminAIToolsPage: React.FC = () => {
                 </span>
               </div>
 
-              <h3 style={{ fontSize: '16px', fontWeight: '800', color: '#F8FAFC', marginBottom: '8px' }}>
+              <h3 style={{ fontSize: '16px', fontWeight: '800', color: '#111625', marginBottom: '8px' }}>
                 {tool.name}
               </h3>
-              <p style={{ fontSize: '12px', color: '#94A3B8', lineHeight: '1.4', marginBottom: '16px' }}>
+              <p style={{ fontSize: '12px', color: '#5F6B85', lineHeight: '1.4', marginBottom: '16px' }}>
                 {tool.description}
               </p>
             </div>
 
-            <div style={{ borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: '12px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <span style={{ fontSize: '12px', color: '#64748B' }}>
-                <strong>{tool.runsCount.toLocaleString()}</strong> runs logged
+            <div style={{ borderTop: '1px solid #E8ECF5', paddingTop: '12px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <span style={{ fontSize: '12px', color: '#5F6B85' }}>
+                <strong style={{ color: '#111625' }}>{tool.runsCount.toLocaleString()}</strong> runs logged
               </span>
 
               <button

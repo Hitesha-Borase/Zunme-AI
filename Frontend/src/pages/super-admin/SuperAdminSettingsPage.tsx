@@ -92,10 +92,10 @@ export const SuperAdminSettingsPage: React.FC = () => {
                 {maintenanceMode ? <AlertTriangle size={22} /> : <CheckCircle2 size={22} />}
               </div>
               <div>
-                <h3 style={{ fontSize: '16px', fontWeight: '800', color: '#F8FAFC' }}>
+                <h3 style={{ fontSize: '16px', fontWeight: '800', color: '#111625' }}>
                   {maintenanceMode ? 'Global Maintenance Mode is ACTIVE' : 'Platform System Status: Normal Operations'}
                 </h3>
-                <p style={{ fontSize: '13px', color: '#94A3B8', marginTop: '2px' }}>
+                <p style={{ fontSize: '13px', color: '#5F6B85', marginTop: '2px' }}>
                   {maintenanceMode
                     ? 'Non-admin users will see a maintenance screen. Super Admin bypass remains enabled.'
                     : 'All user workspaces, chat inference endpoints, and web search pipelines are available.'}
@@ -111,9 +111,9 @@ export const SuperAdminSettingsPage: React.FC = () => {
                 showToast(`Maintenance mode ${!maintenanceMode ? 'Enabled' : 'Disabled'}`, 'info');
               }}
               style={{
-                background: maintenanceMode ? 'rgba(239, 68, 68, 0.2)' : 'rgba(255, 255, 255, 0.06)',
-                borderColor: maintenanceMode ? '#EF4444' : 'rgba(255, 255, 255, 0.1)',
-                color: maintenanceMode ? '#FCA5A5' : '#F8FAFC'
+                background: maintenanceMode ? '#FEECEB' : '#FAFBFD',
+                borderColor: maintenanceMode ? '#EF4444' : '#E8ECF5',
+                color: maintenanceMode ? '#E11D48' : '#111625'
               }}
             >
               {maintenanceMode ? 'Disable Maintenance Mode' : 'Enable Maintenance Mode'}

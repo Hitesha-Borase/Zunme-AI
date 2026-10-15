@@ -117,8 +117,8 @@ export const UserHistoryPage: React.FC = () => {
                 justifyContent: 'space-between',
                 padding: '14px 18px',
                 borderRadius: '12px',
-                background: 'rgba(255, 255, 255, 0.02)',
-                border: '1px solid rgba(255, 255, 255, 0.05)',
+                background: '#FAFBFD',
+                border: '1px solid #E8ECF5',
                 cursor: 'pointer',
                 transition: 'all 0.15s ease'
               }}
@@ -130,11 +130,11 @@ export const UserHistoryPage: React.FC = () => {
                     width: '36px',
                     height: '36px',
                     borderRadius: '8px',
-                    background: 'rgba(124, 58, 237, 0.12)',
+                    background: '#EFEBFC',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    color: '#A78BFA',
+                    color: '#6E56CF',
                     flexShrink: 0
                   }}
                 >
@@ -151,7 +151,7 @@ export const UserHistoryPage: React.FC = () => {
                       className="input-field"
                       value={editTitle}
                       onChange={(e) => setEditTitle(e.target.value)}
-                      style={{ padding: '6px 10px', height: '34px', fontSize: '13px' }}
+                      style={{ padding: '6px 10px', height: '34px', fontSize: '13px', background: '#FFFFFF', color: '#111625' }}
                       autoFocus
                     />
                     <button
@@ -174,7 +174,7 @@ export const UserHistoryPage: React.FC = () => {
                   </div>
                 ) : (
                   <div style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-                    <span style={{ fontSize: '14px', fontWeight: '700', color: '#F8FAFC', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                    <span style={{ fontSize: '14px', fontWeight: '700', color: '#111625', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                       {conv.title}
                     </span>
                     <span style={{ fontSize: '11px', color: '#64748B' }}>

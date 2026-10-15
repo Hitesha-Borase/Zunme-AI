@@ -172,18 +172,18 @@ export const CreatorStudioPage: React.FC = () => {
                     style={{
                       padding: '12px',
                       borderRadius: '10px',
-                      background: 'rgba(255,255,255,0.02)',
-                      border: '1px solid rgba(255,255,255,0.05)',
+                      background: '#FAFBFD',
+                      border: '1px solid #E8ECF5',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'space-between'
                     }}
                   >
                     <div>
-                      <div style={{ fontWeight: '700', color: '#F8FAFC', fontSize: '13px' }}>
+                      <div style={{ fontWeight: '700', color: '#111625', fontSize: '13px' }}>
                         {sub.title}
                       </div>
-                      <div style={{ fontSize: '11px', color: '#94A3B8', marginTop: '2px' }}>
+                      <div style={{ fontSize: '11px', color: '#5F6B85', marginTop: '2px' }}>
                         {sub.type} • {sub.category}
                       </div>
                     </div>
@@ -223,16 +223,16 @@ export const CreatorStudioPage: React.FC = () => {
                   <ShieldCheck size={24} />
                 </div>
                 <div>
-                  <h4 style={{ fontSize: '15px', fontWeight: '800', color: '#F8FAFC' }}>
+                  <h4 style={{ fontSize: '15px', fontWeight: '800', color: '#111625' }}>
                     {user?.fullName || 'Alex Johnson'}
                   </h4>
-                  <div style={{ fontSize: '12px', color: '#94A3B8' }}>
+                  <div style={{ fontSize: '12px', color: '#5F6B85' }}>
                     Verified Community Creator • Instant Warehouse Publishing Rights
                   </div>
                 </div>
               </div>
 
-              <p style={{ fontSize: '13px', color: '#94A3B8', lineHeight: '1.4' }}>
+              <p style={{ fontSize: '13px', color: '#5F6B85', lineHeight: '1.4' }}>
                 Your submitted blueprints receive priority editorial review from the moderation queue and an official Verified Creator badge on asset cards.
               </p>
             </div>
@@ -365,7 +365,7 @@ export const CreatorStudioPage: React.FC = () => {
               <tbody>
                 {creatorSubmissions.map((sub) => (
                   <tr key={sub.id}>
-                    <td style={{ fontWeight: '700', color: '#F8FAFC' }}>{sub.title}</td>
+                    <td style={{ fontWeight: '700', color: '#111625' }}>{sub.title}</td>
                     <td>{sub.type} • {sub.category}</td>
                     <td>{new Date(sub.submittedAt).toLocaleDateString()}</td>
                     <td>
@@ -377,7 +377,7 @@ export const CreatorStudioPage: React.FC = () => {
                         {sub.status.replace('_', ' ')}
                       </span>
                     </td>
-                    <td style={{ color: '#CBD5E1', fontSize: '12px' }}>
+                    <td style={{ color: '#374151', fontSize: '12px' }}>
                       {sub.feedback || 'In queue for initial moderation review.'}
                     </td>
                   </tr>
@@ -399,8 +399,8 @@ export const CreatorStudioPage: React.FC = () => {
             approvedSubmissions.map((sub) => (
               <div key={sub.id} className="glass-panel">
                 <span className="badge badge-success" style={{ marginBottom: '10px' }}>Published</span>
-                <h3 style={{ fontSize: '16px', fontWeight: '800', color: '#F8FAFC', marginBottom: '6px' }}>{sub.title}</h3>
-                <p style={{ fontSize: '12px', color: '#94A3B8', marginBottom: '14px' }}>Category: {sub.category}</p>
+                <h3 style={{ fontSize: '16px', fontWeight: '800', color: '#111625', marginBottom: '6px' }}>{sub.title}</h3>
+                <p style={{ fontSize: '12px', color: '#5F6B85', marginBottom: '14px' }}>Category: {sub.category}</p>
                 <div style={{ fontSize: '12px', color: '#64748B' }}>Downloads: <strong>{sub.downloads}</strong></div>
               </div>
             ))
@@ -420,13 +420,13 @@ export const CreatorStudioPage: React.FC = () => {
                 {user?.fullName?.charAt(0) || 'A'}
               </div>
               <div>
-                <h3 style={{ fontSize: '18px', fontWeight: '800', color: '#F8FAFC' }}>{user?.fullName || 'Alex Johnson'}</h3>
-                <div style={{ color: '#34D399', display: 'flex', alignItems: 'center', gap: '4px', fontSize: '12px', marginTop: '2px' }}>
+                <h3 style={{ fontSize: '18px', fontWeight: '800', color: '#111625' }}>{user?.fullName || 'Alex Johnson'}</h3>
+                <div style={{ color: '#059669', display: 'flex', alignItems: 'center', gap: '4px', fontSize: '12px', marginTop: '2px' }}>
                   <ShieldCheck size={14} /> Verified Community Contributor
                 </div>
               </div>
             </div>
-            <p style={{ color: '#94A3B8', lineHeight: '1.5' }}>
+            <p style={{ color: '#5F6B85', lineHeight: '1.5' }}>
               Your profile is verified and active. You have published {approvedSubmissions.length} approved blueprints to the Zunme AI Warehouse.
             </p>
           </div>
@@ -465,10 +465,10 @@ export const CreatorStudioPage: React.FC = () => {
               <DollarSign size={24} />
             </div>
             <div>
-              <h3 style={{ fontSize: '16px', fontWeight: '800', color: '#F8FAFC', marginBottom: '4px' }}>
+              <h3 style={{ fontSize: '16px', fontWeight: '800', color: '#FFFFFF', marginBottom: '4px' }}>
                 Creator Monetization & Revenue Sharing — Scheduled Future Capability
               </h3>
-              <p style={{ fontSize: '13px', color: '#94A3B8', lineHeight: '1.5' }}>
+              <p style={{ fontSize: '13px', color: 'rgba(255, 255, 255, 0.9)', lineHeight: '1.5' }}>
                 All current creator uploads are distributed as free community assets under your chosen licensing terms. Creator marketplace monetization, tip jars, and revenue-sharing payouts will unlock in Phase 2 upon marketplace commerce integration.
               </p>
             </div>

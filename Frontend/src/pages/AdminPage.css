@@ -1,3 +1,8 @@
+/* ==========================================================================
+   ZUNME AI — Admin Page (Reference Luxury Theme)
+   Aesthetics: Crisp White Cards, Warm Pastel Canvas & Royal Purple Accents
+   ========================================================================== */
+
 .admin-page {
   padding: 36px 24px;
   max-width: 1100px;
@@ -23,11 +28,11 @@
 .admin-page-title {
   font-size: 26px;
   font-weight: 800;
-  color: #FFFFFF;
+  color: #111625;
   letter-spacing: -0.025em;
 }
 
-/* Operational Metrics Cards with Apple Glass */
+/* Operational Metrics Cards in Crisp White */
 .admin-metrics-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -35,20 +40,20 @@
   margin-bottom: 34px;
 }
 
-.metric-card {
-  background: rgba(18, 22, 34, 0.72);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: var(--radius-lg);
+.admin-metrics-grid .metric-card {
+  background: #FFFFFF;
+  border: 1px solid #E8ECF5;
+  border-radius: var(--radius-xl);
   padding: 22px;
-  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.1), 0 8px 24px rgba(0, 0, 0, 0.4);
-  transition: all var(--transition-fast);
+  box-shadow: 
+    0 4px 20px -2px rgba(30, 20, 60, 0.04),
+    0 1px 3px rgba(0, 0, 0, 0.02);
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.metric-card:hover {
-  border-color: rgba(139, 92, 246, 0.35);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5), 0 0 20px rgba(124, 58, 237, 0.2);
+.admin-metrics-grid .metric-card:hover {
+  border-color: rgba(110, 86, 207, 0.35);
+  box-shadow: 0 12px 30px -4px rgba(30, 20, 60, 0.08);
   transform: translateY(-2px);
 }
 
@@ -57,41 +62,44 @@
   align-items: center;
   justify-content: space-between;
   margin-bottom: 12px;
-  font-size: 12.5px;
-  font-weight: 500;
-  color: var(--color-text-secondary);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #5F6B85;
 }
 
 .metric-number-display {
   font-size: 28px;
-  font-weight: 800;
-  color: #FFFFFF;
+  font-weight: 900;
+  color: #111625;
   letter-spacing: -0.025em;
 }
 
 .metric-trend-note {
   font-size: 11.5px;
-  color: #34D399;
+  font-weight: 700;
+  color: #059669;
   margin-top: 6px;
   display: flex;
   align-items: center;
   gap: 5px;
 }
 
-/* User Directory Table Card with Apple Glass */
+/* User Directory Table Card in Crisp White */
 .admin-table-card {
-  background: rgba(18, 22, 34, 0.72);
-  backdrop-filter: blur(24px) saturate(190%);
-  -webkit-backdrop-filter: blur(24px) saturate(190%);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #FFFFFF;
+  border: 1px solid #E8ECF5;
   border-radius: var(--radius-xl);
-  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.45), inset 0 1px 1px 0 rgba(255, 255, 255, 0.12);
+  box-shadow: 
+    0 4px 20px -2px rgba(30, 20, 60, 0.04),
+    0 1px 3px rgba(0, 0, 0, 0.02);
   overflow: hidden;
 }
 
 .table-toolbar {
-  padding: 18px 22px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 18px 24px;
+  border-bottom: 1px solid #E8ECF5;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -100,12 +108,18 @@
 }
 
 .table-toolbar h2 {
-  color: #FFFFFF;
+  color: #111625;
+  font-size: 17px;
+  font-weight: 800;
 }
 
 .table-search-input {
   max-width: 320px;
   width: 100%;
+  background: #FFFFFF !important;
+  border: 1px solid #E2E6F2 !important;
+  color: #111625 !important;
+  border-radius: var(--radius-full) !important;
 }
 
 .responsive-table-wrapper {
@@ -121,26 +135,26 @@
 }
 
 .admin-data-table th {
-  background: rgba(255, 255, 255, 0.03);
-  padding: 12px 18px;
-  font-weight: 600;
-  font-size: 11.5px;
-  color: var(--color-text-muted);
+  background: #F0F3FA;
+  padding: 13px 20px;
+  font-weight: 700;
+  font-size: 11px;
+  color: #111625;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid #E8ECF5;
   white-space: nowrap;
 }
 
 .admin-data-table td {
-  padding: 15px 18px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  color: var(--color-text-primary);
+  padding: 15px 20px;
+  border-bottom: 1px solid #F0F3FA;
+  color: #374151;
   white-space: nowrap;
 }
 
 .admin-data-table tr:hover td {
-  background: rgba(255, 255, 255, 0.04);
+  background: #FAFBFD;
 }
 
 @media (max-width: 992px) {

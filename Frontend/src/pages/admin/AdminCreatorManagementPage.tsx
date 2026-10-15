@@ -81,7 +81,7 @@ export const AdminCreatorManagementPage: React.FC = () => {
               {filtered.map((sub) => (
                 <tr key={sub.id}>
                   <td>
-                    <div style={{ fontWeight: '700', color: '#F8FAFC' }}>{sub.title}</div>
+                    <div style={{ fontWeight: '700', color: '#111625' }}>{sub.title}</div>
                     {sub.feedback && (
                       <div style={{ fontSize: '11px', color: '#FBBF24', marginTop: '2px' }}>
                         Feedback: {sub.feedback}

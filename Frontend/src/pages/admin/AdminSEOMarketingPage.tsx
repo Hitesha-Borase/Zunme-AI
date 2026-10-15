@@ -92,7 +92,7 @@ export const AdminSEOMarketingPage: React.FC = () => {
             <tbody>
               {seoKeywords.map((kw) => (
                 <tr key={kw.id}>
-                  <td style={{ fontWeight: '700', color: '#F8FAFC' }}>{kw.keyword}</td>
+                  <td style={{ fontWeight: '700', color: '#111625' }}>{kw.keyword}</td>
                   <td>{kw.searchVolume}</td>
                   <td>
                     <span

@@ -157,12 +157,12 @@ export const AIWarehousePage: React.FC = () => {
                 </div>
 
                 <h3
-                  style={{ fontSize: '16px', fontWeight: '800', color: '#F8FAFC', marginBottom: '8px', cursor: 'pointer' }}
+                  style={{ fontSize: '16px', fontWeight: '800', color: '#111625', marginBottom: '8px', cursor: 'pointer' }}
                   onClick={() => setSelectedAsset(asset)}
                 >
                   {asset.title}
                 </h3>
-                <p style={{ fontSize: '12px', color: '#94A3B8', lineHeight: '1.4', marginBottom: '14px' }}>
+                <p style={{ fontSize: '12px', color: '#5F6B85', lineHeight: '1.4', marginBottom: '14px' }}>
                   {asset.description}
                 </p>
 
@@ -173,11 +173,12 @@ export const AIWarehousePage: React.FC = () => {
                       key={idx}
                       style={{
                         fontSize: '10px',
-                        padding: '2px 6px',
-                        borderRadius: '4px',
-                        background: 'rgba(255,255,255,0.03)',
-                        border: '1px solid rgba(255,255,255,0.06)',
-                        color: '#CBD5E1'
+                        padding: '2px 8px',
+                        borderRadius: 'var(--radius-full)',
+                        background: '#FAFBFD',
+                        border: '1px solid #E8ECF5',
+                        color: '#5F6B85',
+                        fontWeight: '600'
                       }}
                     >
                       #{t}
@@ -187,12 +188,12 @@ export const AIWarehousePage: React.FC = () => {
               </div>
 
               {/* Creator & Actions Footer */}
-              <div style={{ borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: '12px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <div style={{ borderTop: '1px solid #E8ECF5', paddingTop: '12px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <span style={{ fontSize: '12px', color: '#E2E8F0', fontWeight: '600' }}>{asset.creatorName}</span>
+                  <span style={{ fontSize: '12px', color: '#111625', fontWeight: '600' }}>{asset.creatorName}</span>
                   {asset.isVerifiedCreator && (
                     <span title="Verified Creator" style={{ display: 'inline-flex', alignItems: 'center' }}>
-                      <ShieldCheck size={13} color="#34D399" />
+                      <ShieldCheck size={13} color="#059669" />
                     </span>
                   )}
                 </div>
@@ -202,7 +203,7 @@ export const AIWarehousePage: React.FC = () => {
                     className="btn-ghost"
                     onClick={() => toggleAssetSaved(asset.id)}
                     title={asset.isSaved ? 'Remove from Saved' : 'Save to Library'}
-                    style={{ padding: '6px', color: asset.isSaved ? '#A78BFA' : '#94A3B8' }}
+                    style={{ padding: '6px', color: asset.isSaved ? '#6E56CF' : '#8C97B0' }}
                   >
                     {asset.isSaved ? <BookmarkCheck size={16} /> : <Bookmark size={16} />}
                   </button>
@@ -237,10 +238,10 @@ export const AIWarehousePage: React.FC = () => {
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
               <div>
-                <h2 style={{ fontSize: '20px', fontWeight: '900', color: '#F8FAFC', marginBottom: '6px' }}>
+                <h2 style={{ fontSize: '20px', fontWeight: '900', color: '#111625', marginBottom: '6px' }}>
                   {selectedAsset.title}
                 </h2>
-                <div style={{ fontSize: '12px', color: '#94A3B8', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <div style={{ fontSize: '12px', color: '#5F6B85', display: 'flex', alignItems: 'center', gap: '10px' }}>
                   <span>Created by <strong>{selectedAsset.creatorName}</strong></span>
                   <span>•</span>
                   <span>Rating: ⭐ {selectedAsset.rating}</span>
@@ -249,15 +250,15 @@ export const AIWarehousePage: React.FC = () => {
                 </div>
               </div>
 
-              <div style={{ padding: '14px', borderRadius: '10px', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', fontSize: '13px', lineHeight: '1.6', color: '#E2E8F0' }}>
+              <div style={{ padding: '14px', borderRadius: '10px', background: '#FAFBFD', border: '1px solid #E8ECF5', fontSize: '13px', lineHeight: '1.6', color: '#272F3E' }}>
                 {selectedAsset.description}
               </div>
 
               <div>
-                <div style={{ fontSize: '11px', fontWeight: '700', color: '#A78BFA', textTransform: 'uppercase', marginBottom: '6px' }}>
+                <div style={{ fontSize: '11px', fontWeight: '700', color: '#6E56CF', textTransform: 'uppercase', marginBottom: '6px' }}>
                   Licensing & Entitlement Rights
                 </div>
-                <p style={{ fontSize: '12px', color: '#94A3B8', lineHeight: '1.4' }}>
+                <p style={{ fontSize: '12px', color: '#5F6B85', lineHeight: '1.4' }}>
                   This asset is provided under <strong>{selectedAsset.licensing}</strong> terms. You have full rights to inspect, adapt, and run this blueprint within your personal and commercial Zunme AI workspaces.
                 </p>
               </div>

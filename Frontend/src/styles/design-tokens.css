@@ -1,56 +1,68 @@
 :root {
-  /* Brand Palette - Electric Violet & Cosmic Neon */
-  --color-primary: #7C3AED;
-  --color-primary-hover: #8B5CF6;
-  --color-primary-active: #6D28D9;
-  --color-primary-light: rgba(124, 58, 237, 0.22);
-  --color-primary-glow: 0 0 32px rgba(124, 58, 237, 0.6);
-  --color-primary-ring: rgba(139, 92, 246, 0.45);
+  /* Brand Palette - Reference Theme: Royal Electric Violet & Cosmic Sunset */
+  --color-primary: #6E56CF;
+  --color-primary-hover: #5B45E0;
+  --color-primary-active: #4F38C2;
+  --color-primary-light: #EFEBFC;
+  --color-primary-glow: 0 4px 18px rgba(110, 86, 207, 0.35);
+  --color-primary-ring: rgba(110, 86, 207, 0.3);
 
-  /* Rich Space Navy & Obsidian Backgrounds (Never dull flat black) */
-  --color-bg: #0B0E18;
-  --color-bg-alt: #0F1322;
-  --color-bg-surface: #141829;
+  /* Reference Signature Sunset Cosmic Gradient */
+  --gradient-sunset: linear-gradient(110deg, #1C1548 0%, #2E1B64 25%, #582488 50%, #903D9C 75%, #D86FA7 90%, #F5A6C4 100%);
+  --gradient-sunset-subtle: linear-gradient(135deg, rgba(28, 21, 72, 0.95) 0%, rgba(88, 36, 136, 0.9) 50%, rgba(216, 111, 167, 0.85) 100%);
+  --gradient-primary: linear-gradient(135deg, #6E56CF 0%, #7C3AED 100%);
 
-  /* Apple Frosted Glass Card Surfaces */
-  --color-surface-card: rgba(20, 25, 42, 0.72);
-  --color-surface-card-hover: rgba(28, 35, 58, 0.86);
-  --color-surface-secondary: rgba(255, 255, 255, 0.05);
-  --color-surface-hover: rgba(255, 255, 255, 0.09);
-  --color-surface-active: rgba(255, 255, 255, 0.14);
+  /* Reference Sidebar - Deep Midnight Violet Indigo */
+  --color-sidebar-bg: #1E1648;
+  --color-sidebar-surface: #261D5A;
+  --color-sidebar-hover: rgba(255, 255, 255, 0.08);
+  --color-sidebar-active: rgba(255, 255, 255, 0.14);
+  --color-sidebar-text: #A297C8;
+  --color-sidebar-text-muted: #7D71A8;
+  --color-sidebar-text-active: #FFFFFF;
+  --color-sidebar-badge: #D9538F;
 
-  /* Apple Frosted Glass Tokens */
-  --glass-bg: rgba(18, 23, 38, 0.76);
-  --glass-bg-elevated: rgba(24, 30, 50, 0.88);
-  --glass-blur: blur(28px) saturate(200%);
-  --glass-border: 1px solid rgba(255, 255, 255, 0.12);
-  --glass-border-highlight: 1px solid rgba(255, 255, 255, 0.22);
-  --glass-specular: inset 0 1px 1px 0 rgba(255, 255, 255, 0.18);
-  --glass-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.6), 0 0 28px rgba(124, 58, 237, 0.15);
+  /* Reference Clean Canvas & Card Backgrounds */
+  --color-bg: #FAF9FC;
+  --color-bg-alt: #F4F6FC;
+  --color-bg-surface: #FFFFFF;
+  --color-surface-card: #FFFFFF;
+  --color-surface-card-hover: #FAFBFD;
+  --color-surface-secondary: #F6F8FD;
+  --color-surface-hover: #F0F3FA;
+  --color-surface-active: #E8EDF8;
 
-  /* Typography Colors */
-  --color-text-primary: #FFFFFF;
-  --color-text-secondary: #A0AEC0;
-  --color-text-muted: #718096;
-  --color-text-tertiary: #4A5568;
-  --color-text-inverse: #0B0E18;
+  /* Frosted Glass Surface Tokens */
+  --glass-bg: rgba(255, 255, 255, 0.88);
+  --glass-bg-elevated: rgba(255, 255, 255, 0.95);
+  --glass-blur: blur(24px) saturate(180%);
+  --glass-border: 1px solid rgba(230, 235, 246, 0.85);
+  --glass-border-highlight: 1px solid rgba(110, 86, 207, 0.25);
+  --glass-shadow: 0 12px 36px -4px rgba(30, 20, 60, 0.06), 0 2px 6px rgba(0, 0, 0, 0.02);
 
-  /* Borders & Dividers */
-  --color-border: rgba(255, 255, 255, 0.1);
-  --color-border-subtle: rgba(255, 255, 255, 0.06);
-  --color-border-hover: rgba(167, 139, 250, 0.4);
-  --color-border-active: #8B5CF6;
+  /* Reference Typography Colors */
+  --color-text-primary: #111625;
+  --color-text-secondary: #5F6B85;
+  --color-text-muted: #8C97B0;
+  --color-text-tertiary: #B0B9CC;
+  --color-text-inverse: #FFFFFF;
 
-  /* Feedback Colors */
-  --color-success: #10B981;
-  --color-success-light: rgba(16, 185, 129, 0.16);
-  --color-success-border: rgba(16, 185, 129, 0.35);
-  --color-error: #F43F5E;
-  --color-error-light: rgba(244, 63, 94, 0.16);
-  --color-error-border: rgba(244, 63, 94, 0.35);
-  --color-warning: #F59E0B;
-  --color-warning-light: rgba(245, 158, 11, 0.16);
-  --color-warning-border: rgba(245, 158, 11, 0.35);
+  /* Reference Borders & Dividers */
+  --color-border: #E8ECF5;
+  --color-border-subtle: #F0F3F9;
+  --color-border-hover: rgba(110, 86, 207, 0.35);
+  --color-border-active: #6E56CF;
+
+  /* Reference Badges & Tag Colors */
+  --color-success: #059669;
+  --color-success-light: #E8F8F0;
+  --color-success-border: rgba(5, 150, 105, 0.25);
+  --color-warning: #D97706;
+  --color-warning-light: #FEF3E2;
+  --color-warning-border: rgba(217, 119, 6, 0.25);
+  --color-error: #E11D48;
+  --color-error-light: #FEECEB;
+  --color-error-border: rgba(225, 29, 72, 0.25);
 
   /* Typography */
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
@@ -68,26 +80,27 @@
   --space-12: 48px;
   --space-16: 64px;
 
-  /* Corner Radii */
-  --radius-xs: 4px;
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 14px;
-  --radius-xl: 20px;
+  /* Corner Radii - Reference Pill and Rounded Card Tokens */
+  --radius-xs: 6px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 22px;
+  --radius-2xl: 28px;
   --radius-full: 9999px;
 
-  /* Shadows with specular glow */
-  --shadow-xs: 0 1px 3px 0 rgba(0, 0, 0, 0.5);
-  --shadow-sm: 0 4px 12px 0 rgba(0, 0, 0, 0.5), inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
-  --shadow-md: 0 8px 24px -2px rgba(0, 0, 0, 0.6), inset 0 1px 0 0 rgba(255, 255, 255, 0.14);
-  --shadow-lg: 0 20px 40px -4px rgba(0, 0, 0, 0.7), inset 0 1px 0 0 rgba(255, 255, 255, 0.16);
-  --shadow-xl: 0 28px 56px -8px rgba(0, 0, 0, 0.8), inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
-  --shadow-primary: 0 6px 24px -2px rgba(124, 58, 237, 0.65), inset 0 1px 1px 0 rgba(255, 255, 255, 0.3);
+  /* Reference Clean Soft Shadows */
+  --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
+  --shadow-sm: 0 2px 8px 0 rgba(30, 20, 60, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+  --shadow-md: 0 6px 20px -2px rgba(30, 20, 60, 0.06), 0 1px 3px rgba(0, 0, 0, 0.02);
+  --shadow-lg: 0 16px 36px -4px rgba(30, 20, 60, 0.08), 0 2px 6px rgba(0, 0, 0, 0.02);
+  --shadow-xl: 0 24px 50px -8px rgba(30, 20, 60, 0.12), 0 4px 10px rgba(0, 0, 0, 0.03);
+  --shadow-primary: 0 4px 16px -2px rgba(110, 86, 207, 0.35);
 
   /* Layout sizing */
   --sidebar-width: 260px;
-  --header-height: 64px;
-  --max-content-width: 1200px;
+  --header-height: 68px;
+  --max-content-width: 1240px;
 
   /* Transitions */
   --transition-fast: 150ms cubic-bezier(0.16, 1, 0.3, 1);

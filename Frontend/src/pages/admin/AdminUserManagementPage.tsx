@@ -87,8 +87,8 @@ export const AdminUserManagementPage: React.FC = () => {
               {filtered.map((u) => (
                 <tr key={u.id}>
                   <td>
-                    <div style={{ fontWeight: '700', color: '#F8FAFC' }}>{u.fullName}</div>
-                    <div style={{ fontSize: '12px', color: '#64748B' }}>{u.email}</div>
+                    <div style={{ fontWeight: '700', color: '#111625' }}>{u.fullName}</div>
+                    <div style={{ fontSize: '12px', color: '#5F6B85' }}>{u.email}</div>
                   </td>
                   <td>
                     <span className="badge badge-neutral">

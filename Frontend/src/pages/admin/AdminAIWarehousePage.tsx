@@ -107,8 +107,8 @@ export const AdminAIWarehousePage: React.FC = () => {
                 <tr key={asset.id}>
                   <td>
                     <div>
-                      <div style={{ fontWeight: '700', color: '#F8FAFC' }}>{asset.title}</div>
-                      <div style={{ fontSize: '11px', color: '#64748B', maxWidth: '320px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      <div style={{ fontWeight: '700', color: '#111625' }}>{asset.title}</div>
+                      <div style={{ fontSize: '11px', color: '#5F6B85', maxWidth: '320px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                         {asset.description}
                       </div>
                     </div>
@@ -122,7 +122,7 @@ export const AdminAIWarehousePage: React.FC = () => {
 
                   <td>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                      <span style={{ color: '#E2E8F0', fontWeight: '600' }}>{asset.creatorName}</span>
+                      <span style={{ color: '#111625', fontWeight: '600' }}>{asset.creatorName}</span>
                       {asset.isVerifiedCreator && (
                         <span title="Verified Creator" style={{ display: 'inline-flex', alignItems: 'center' }}>
                           <ShieldCheck size={14} color="#34D399" />

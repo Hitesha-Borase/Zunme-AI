@@ -204,8 +204,8 @@ export const SuperAdminDashboardPage: React.FC = () => {
                   justifyContent: 'space-between',
                   padding: '10px 12px',
                   borderRadius: '10px',
-                  background: 'rgba(255, 255, 255, 0.02)',
-                  border: '1px solid rgba(255, 255, 255, 0.04)',
+                  background: '#FAFBFD',
+                  border: '1px solid #E8ECF5',
                   fontSize: '12px',
                   gap: '12px'
                 }}
@@ -220,16 +220,16 @@ export const SuperAdminDashboardPage: React.FC = () => {
                     {log.status}
                   </span>
                   <div style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-                    <span style={{ color: '#F1F5F9', fontWeight: '600', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                    <span style={{ color: '#111625', fontWeight: '600', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                       {log.action.replace(/_/g, ' ')}
                     </span>
-                    <span style={{ color: '#64748B', fontSize: '11px' }}>
+                    <span style={{ color: '#5F6B85', fontSize: '11px' }}>
                       By {log.actor} • {log.resource}
                     </span>
                   </div>
                 </div>
 
-                <div style={{ fontSize: '11px', color: '#64748B', whiteSpace: 'nowrap', textAlign: 'right' }}>
+                <div style={{ fontSize: '11px', color: '#8C97B0', whiteSpace: 'nowrap', textAlign: 'right' }}>
                   {new Date(log.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                 </div>
               </div>
@@ -242,29 +242,29 @@ export const SuperAdminDashboardPage: React.FC = () => {
       <div className="glass-panel">
         <div className="panel-header">
           <div className="panel-title">
-            <Server size={18} color="#38BDF8" />
+            <Server size={18} color="#0284C7" />
             Core Infrastructure Nodes & Routing
           </div>
           <span className="badge badge-success">Production Healthy</span>
         </div>
 
         <div className="cards-grid-3">
-          <div style={{ padding: '14px', borderRadius: '12px', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)' }}>
-            <div style={{ fontSize: '12px', color: '#94A3B8', marginBottom: '4px' }}>AI Primary Inference Engine</div>
-            <div style={{ fontSize: '14px', fontWeight: '700', color: '#F8FAFC' }}>OpenAI GPT-4o Gateway</div>
-            <div style={{ fontSize: '11px', color: '#34D399', marginTop: '6px' }}>● 100% Traffic Routed • 240ms latency</div>
+          <div style={{ padding: '14px', borderRadius: '12px', background: '#FAFBFD', border: '1px solid #E8ECF5' }}>
+            <div style={{ fontSize: '12px', color: '#5F6B85', marginBottom: '4px' }}>AI Primary Inference Engine</div>
+            <div style={{ fontSize: '14px', fontWeight: '700', color: '#111625' }}>OpenAI GPT-4o Gateway</div>
+            <div style={{ fontSize: '11px', color: '#059669', marginTop: '6px' }}>● 100% Traffic Routed • 240ms latency</div>
           </div>
 
-          <div style={{ padding: '14px', borderRadius: '12px', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)' }}>
-            <div style={{ fontSize: '12px', color: '#94A3B8', marginBottom: '4px' }}>Web Search Grounding Engine</div>
-            <div style={{ fontSize: '14px', fontWeight: '700', color: '#F8FAFC' }}>Tavily API Cluster</div>
-            <div style={{ fontSize: '11px', color: '#34D399', marginTop: '6px' }}>● Citation Extraction Active • 180ms</div>
+          <div style={{ padding: '14px', borderRadius: '12px', background: '#FAFBFD', border: '1px solid #E8ECF5' }}>
+            <div style={{ fontSize: '12px', color: '#5F6B85', marginBottom: '4px' }}>Web Search Grounding Engine</div>
+            <div style={{ fontSize: '14px', fontWeight: '700', color: '#111625' }}>Tavily API Cluster</div>
+            <div style={{ fontSize: '11px', color: '#059669', marginTop: '6px' }}>● Citation Extraction Active • 180ms</div>
           </div>
 
-          <div style={{ padding: '14px', borderRadius: '12px', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)' }}>
-            <div style={{ fontSize: '12px', color: '#94A3B8', marginBottom: '4px' }}>Persistent Data Layer</div>
-            <div style={{ fontSize: '14px', fontWeight: '700', color: '#F8FAFC' }}>PostgreSQL + AWS S3 Storage</div>
-            <div style={{ fontSize: '11px', color: '#34D399', marginTop: '6px' }}>● Backups Hourly • Zero Loss</div>
+          <div style={{ padding: '14px', borderRadius: '12px', background: '#FAFBFD', border: '1px solid #E8ECF5' }}>
+            <div style={{ fontSize: '12px', color: '#5F6B85', marginBottom: '4px' }}>Persistent Data Layer</div>
+            <div style={{ fontSize: '14px', fontWeight: '700', color: '#111625' }}>PostgreSQL + AWS S3 Storage</div>
+            <div style={{ fontSize: '11px', color: '#059669', marginTop: '6px' }}>● Backups Hourly • Zero Loss</div>
           </div>
         </div>
       </div>

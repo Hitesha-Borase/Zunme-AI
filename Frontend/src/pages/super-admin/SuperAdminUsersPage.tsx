@@ -146,8 +146,8 @@ export const SuperAdminUsersPage: React.FC = () => {
                           {item.fullName.charAt(0)}
                         </div>
                         <div>
-                          <div style={{ fontWeight: '700', color: '#F8FAFC' }}>{item.fullName}</div>
-                          <div style={{ fontSize: '12px', color: '#64748B' }}>{item.email}</div>
+                          <div style={{ fontWeight: '700', color: '#111625' }}>{item.fullName}</div>
+                          <div style={{ fontSize: '12px', color: '#5F6B85' }}>{item.email}</div>
                         </div>
                       </div>
                     </td>
@@ -255,21 +255,21 @@ export const SuperAdminUsersPage: React.FC = () => {
                   {selectedUser.fullName.charAt(0)}
                 </div>
                 <div>
-                  <h3 style={{ fontSize: '18px', fontWeight: '800', color: '#F8FAFC' }}>{selectedUser.fullName}</h3>
-                  <div style={{ color: '#94A3B8', fontSize: '13px' }}>{selectedUser.email}</div>
-                  <div style={{ fontSize: '11px', color: '#64748B', marginTop: '2px' }}>User ID: {selectedUser.id}</div>
+                  <h3 style={{ fontSize: '18px', fontWeight: '800', color: '#111625' }}>{selectedUser.fullName}</h3>
+                  <div style={{ color: '#5F6B85', fontSize: '13px' }}>{selectedUser.email}</div>
+                  <div style={{ fontSize: '11px', color: '#8C97B0', marginTop: '2px' }}>User ID: {selectedUser.id}</div>
                 </div>
               </div>
 
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-                <div style={{ padding: '12px', background: 'rgba(255,255,255,0.02)', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.06)' }}>
-                  <div style={{ fontSize: '11px', color: '#94A3B8' }}>Current Role</div>
-                  <div style={{ fontSize: '14px', fontWeight: '700', color: '#F8FAFC', marginTop: '2px' }}>{selectedUser.role}</div>
+                <div style={{ padding: '12px', background: '#FAFBFD', borderRadius: '8px', border: '1px solid #E8ECF5' }}>
+                  <div style={{ fontSize: '11px', color: '#5F6B85' }}>Current Role</div>
+                  <div style={{ fontSize: '14px', fontWeight: '700', color: '#111625', marginTop: '2px' }}>{selectedUser.role}</div>
                 </div>
 
-                <div style={{ padding: '12px', background: 'rgba(255,255,255,0.02)', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.06)' }}>
-                  <div style={{ fontSize: '11px', color: '#94A3B8' }}>Account Status</div>
-                  <div style={{ fontSize: '14px', fontWeight: '700', color: selectedUser.status === 'ACTIVE' ? '#34D399' : '#F87171', marginTop: '2px' }}>
+                <div style={{ padding: '12px', background: '#FAFBFD', borderRadius: '8px', border: '1px solid #E8ECF5' }}>
+                  <div style={{ fontSize: '11px', color: '#5F6B85' }}>Account Status</div>
+                  <div style={{ fontSize: '14px', fontWeight: '700', color: selectedUser.status === 'ACTIVE' ? '#059669' : '#E11D48', marginTop: '2px' }}>
                     {selectedUser.status}
                   </div>
                 </div>

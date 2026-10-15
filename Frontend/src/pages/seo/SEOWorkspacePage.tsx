@@ -192,13 +192,13 @@ export const SEOWorkspacePage: React.FC = () => {
                 <span className="badge badge-warning">High Priority</span>
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                <div style={{ padding: '12px', background: 'rgba(255,255,255,0.02)', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.05)' }}>
-                  <div style={{ fontWeight: '700', color: '#F8FAFC', fontSize: '13px' }}>Draft Pillar Section for "ai productivity workspace"</div>
-                  <div style={{ fontSize: '11px', color: '#94A3B8', marginTop: '2px' }}>Search volume: 14,800/mo • Intent: Commercial</div>
+                <div style={{ padding: '12px', background: '#FAFBFD', borderRadius: '10px', border: '1px solid #E8ECF5' }}>
+                  <div style={{ fontWeight: '700', color: '#111625', fontSize: '13px' }}>Draft Pillar Section for "ai productivity workspace"</div>
+                  <div style={{ fontSize: '11px', color: '#5F6B85', marginTop: '2px' }}>Search volume: 14,800/mo • Intent: Commercial</div>
                 </div>
-                <div style={{ padding: '12px', background: 'rgba(255,255,255,0.02)', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.05)' }}>
-                  <div style={{ fontWeight: '700', color: '#F8FAFC', fontSize: '13px' }}>Add schema FAQ blocks to battery tech research brief</div>
-                  <div style={{ fontSize: '11px', color: '#94A3B8', marginTop: '2px' }}>Targeting Google featured snippets for 2026 clean energy queries</div>
+                <div style={{ padding: '12px', background: '#FAFBFD', borderRadius: '10px', border: '1px solid #E8ECF5' }}>
+                  <div style={{ fontWeight: '700', color: '#111625', fontSize: '13px' }}>Add schema FAQ blocks to battery tech research brief</div>
+                  <div style={{ fontSize: '11px', color: '#5F6B85', marginTop: '2px' }}>Targeting Google featured snippets for 2026 clean energy queries</div>
                 </div>
               </div>
             </div>
@@ -277,7 +277,7 @@ export const SEOWorkspacePage: React.FC = () => {
                 <tbody>
                   {seoKeywords.map((kw) => (
                     <tr key={kw.id}>
-                      <td style={{ fontWeight: '700', color: '#F8FAFC' }}>{kw.keyword}</td>
+                      <td style={{ fontWeight: '700', color: '#111625' }}>{kw.keyword}</td>
                       <td>{kw.searchVolume}</td>
                       <td>
                         <span
@@ -437,10 +437,10 @@ export const SEOWorkspacePage: React.FC = () => {
               <AlertCircle size={24} color="#FBBF24" />
             </div>
             <div>
-              <h3 style={{ fontSize: '16px', fontWeight: '800', color: '#F8FAFC', marginBottom: '4px' }}>
+              <h3 style={{ fontSize: '16px', fontWeight: '800', color: '#FFFFFF', marginBottom: '4px' }}>
                 {activeTab} Engine — Integration Pipeline Status
               </h3>
-              <p style={{ fontSize: '13px', color: '#94A3B8', lineHeight: '1.5' }}>
+              <p style={{ fontSize: '13px', color: 'rgba(255, 255, 255, 0.9)', lineHeight: '1.5' }}>
                 Third-party SERP crawler and domain backlink crawler APIs are currently being provisioned. In accordance with system policy, real keyword research and content brief synthesis are fully operational, while automated live site crawling is awaiting API key configuration.
               </p>
             </div>
@@ -461,16 +461,16 @@ export const SEOWorkspacePage: React.FC = () => {
                 style={{
                   padding: '12px 16px',
                   borderRadius: '10px',
-                  background: 'rgba(255,255,255,0.02)',
-                  border: '1px solid rgba(255,255,255,0.05)',
+                  background: '#FAFBFD',
+                  border: '1px solid #E8ECF5',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'space-between'
                 }}
               >
                 <div>
-                  <div style={{ fontWeight: '700', color: '#F8FAFC', fontSize: '14px' }}>{kw.keyword}</div>
-                  <div style={{ fontSize: '11px', color: '#94A3B8' }}>Search volume: {kw.searchVolume} • CPC: {kw.cpc}</div>
+                  <div style={{ fontWeight: '700', color: '#111625', fontSize: '14px' }}>{kw.keyword}</div>
+                  <div style={{ fontSize: '11px', color: '#5F6B85' }}>Search volume: {kw.searchVolume} • CPC: {kw.cpc}</div>
                 </div>
                 <span className="badge badge-primary">{kw.status}</span>
               </div>

@@ -51,11 +51,12 @@ export const UserHomePage: React.FC = () => {
       <div
         className="glass-panel"
         style={{
-          background: 'linear-gradient(135deg, rgba(124, 58, 237, 0.18) 0%, rgba(99, 91, 255, 0.08) 50%, rgba(14, 18, 30, 0.8) 100%)',
-          borderColor: 'rgba(139, 92, 246, 0.3)',
+          background: 'linear-gradient(135deg, rgba(253, 238, 233, 0.9) 0%, rgba(245, 235, 249, 0.9) 50%, #FFFFFF 100%)',
+          borderColor: '#E8ECF5',
           padding: 'var(--space-6) var(--space-8)',
           position: 'relative',
-          overflow: 'hidden'
+          overflow: 'hidden',
+          boxShadow: '0 4px 20px -2px rgba(30, 20, 60, 0.04)'
         }}
       >
         <div style={{ maxWidth: '720px', position: 'relative', zIndex: 2 }}>
@@ -63,10 +64,10 @@ export const UserHomePage: React.FC = () => {
             <Sparkles size={12} />
             <span>Unified AI Workspace</span>
           </div>
-          <h1 style={{ fontSize: '32px', fontWeight: '900', letterSpacing: '-0.02em', color: '#F8FAFC', marginBottom: '8px' }}>
+          <h1 style={{ fontSize: '32px', fontWeight: '900', letterSpacing: '-0.02em', color: '#111625', marginBottom: '8px' }}>
             Welcome back, {user?.fullName || 'Creator'} 👋
           </h1>
-          <p style={{ fontSize: '15px', color: '#CBD5E1', lineHeight: '1.5', marginBottom: '24px' }}>
+          <p style={{ fontSize: '15px', color: '#5F6B85', lineHeight: '1.5', marginBottom: '24px' }}>
             What would you like to explore or create today? Start a conversation, verify real-time facts with web search, or generate marketing copy in seconds.
           </p>
 
@@ -82,8 +83,11 @@ export const UserHomePage: React.FC = () => {
                 height: '52px',
                 fontSize: '15px',
                 paddingRight: '120px',
-                background: 'rgba(11, 14, 24, 0.85)',
-                borderColor: 'rgba(139, 92, 246, 0.4)'
+                background: '#FFFFFF',
+                borderColor: '#E2E6F2',
+                color: '#111625',
+                borderRadius: 'var(--radius-full)',
+                boxShadow: '0 2px 8px rgba(30, 20, 60, 0.04)'
               }}
             />
             <button
@@ -94,8 +98,8 @@ export const UserHomePage: React.FC = () => {
                 right: '6px',
                 top: '6px',
                 bottom: '6px',
-                borderRadius: '8px',
-                padding: '0 18px',
+                borderRadius: 'var(--radius-full)',
+                padding: '0 20px',
                 fontWeight: '700'
               }}
             >
@@ -129,52 +133,52 @@ export const UserHomePage: React.FC = () => {
       <div className="cards-grid-4">
         <NavLink to="/app/chat" className="metric-card" style={{ textDecoration: 'none', cursor: 'pointer' }}>
           <div className="metric-card-top">
-            <div className="metric-icon-box" style={{ background: 'rgba(124, 58, 237, 0.15)', color: '#A78BFA' }}>
+            <div className="metric-icon-box" style={{ background: '#EFEBFC', color: '#6E56CF' }}>
               <MessageSquare size={20} />
             </div>
-            <ArrowRight size={14} color="#A78BFA" />
+            <ArrowRight size={14} color="#6E56CF" />
           </div>
-          <div style={{ fontSize: '16px', fontWeight: '800', color: '#F8FAFC' }}>Ask Zunme</div>
-          <div style={{ fontSize: '12px', color: '#94A3B8', lineHeight: '1.4' }}>
+          <div style={{ fontSize: '16px', fontWeight: '800', color: '#111625' }}>Ask Zunme</div>
+          <div style={{ fontSize: '12px', color: '#5F6B85', lineHeight: '1.4' }}>
             Multi-turn conversation with memory, code analysis, and smart suggestions.
           </div>
         </NavLink>
 
         <NavLink to="/app/search" className="metric-card" style={{ textDecoration: 'none', cursor: 'pointer' }}>
           <div className="metric-card-top">
-            <div className="metric-icon-box" style={{ background: 'rgba(56, 189, 248, 0.15)', color: '#38BDF8' }}>
+            <div className="metric-icon-box" style={{ background: '#E0F2FE', color: '#0284C7' }}>
               <Search size={20} />
             </div>
-            <ArrowRight size={14} color="#38BDF8" />
+            <ArrowRight size={14} color="#0284C7" />
           </div>
-          <div style={{ fontSize: '16px', fontWeight: '800', color: '#F8FAFC' }}>Live Web Search</div>
-          <div style={{ fontSize: '12px', color: '#94A3B8', lineHeight: '1.4' }}>
+          <div style={{ fontSize: '16px', fontWeight: '800', color: '#111625' }}>Live Web Search</div>
+          <div style={{ fontSize: '12px', color: '#5F6B85', lineHeight: '1.4' }}>
             Ground answers with real-time web citations and verifiable source links.
           </div>
         </NavLink>
 
         <NavLink to="/app/builders" className="metric-card" style={{ textDecoration: 'none', cursor: 'pointer' }}>
           <div className="metric-card-top">
-            <div className="metric-icon-box" style={{ background: 'rgba(16, 185, 129, 0.15)', color: '#34D399' }}>
+            <div className="metric-icon-box" style={{ background: '#E8F8F0', color: '#059669' }}>
               <PenTool size={20} />
             </div>
-            <ArrowRight size={14} color="#34D399" />
+            <ArrowRight size={14} color="#059669" />
           </div>
-          <div style={{ fontSize: '16px', fontWeight: '800', color: '#F8FAFC' }}>Content Builders</div>
-          <div style={{ fontSize: '12px', color: '#94A3B8', lineHeight: '1.4' }}>
+          <div style={{ fontSize: '16px', fontWeight: '800', color: '#111625' }}>Content Builders</div>
+          <div style={{ fontSize: '12px', color: '#5F6B85', lineHeight: '1.4' }}>
             1,000+ templates for blogs, newsletters, ads, and social media hooks.
           </div>
         </NavLink>
 
         <NavLink to="/app/warehouse" className="metric-card" style={{ textDecoration: 'none', cursor: 'pointer' }}>
           <div className="metric-card-top">
-            <div className="metric-icon-box" style={{ background: 'rgba(245, 158, 11, 0.15)', color: '#FBBF24' }}>
+            <div className="metric-icon-box" style={{ background: '#FEF3E2', color: '#D97706' }}>
               <Package size={20} />
             </div>
-            <ArrowRight size={14} color="#FBBF24" />
+            <ArrowRight size={14} color="#D97706" />
           </div>
-          <div style={{ fontSize: '16px', fontWeight: '800', color: '#F8FAFC' }}>AI Warehouse</div>
-          <div style={{ fontSize: '12px', color: '#94A3B8', lineHeight: '1.4' }}>
+          <div style={{ fontSize: '16px', fontWeight: '800', color: '#111625' }}>AI Warehouse</div>
+          <div style={{ fontSize: '12px', color: '#5F6B85', lineHeight: '1.4' }}>
             Explore verified prompts, workflows, and creator assets in the repository.
           </div>
         </NavLink>
@@ -187,7 +191,7 @@ export const UserHomePage: React.FC = () => {
           <div className="panel-header">
             <div>
               <div className="panel-title">
-                <Clock size={18} color="#A78BFA" />
+                <Clock size={18} color="#6E56CF" />
                 Recent Conversations
               </div>
               <div className="panel-subtitle">Pick up right where you left off</div>
@@ -211,20 +215,20 @@ export const UserHomePage: React.FC = () => {
                   justifyContent: 'space-between',
                   padding: '12px 14px',
                   borderRadius: '10px',
-                  background: 'rgba(255, 255, 255, 0.02)',
-                  border: '1px solid rgba(255, 255, 255, 0.04)',
+                  background: '#FAFBFD',
+                  border: '1px solid #E8ECF5',
                   cursor: 'pointer',
                   transition: 'all 0.15s ease'
                 }}
                 className="hover-highlight"
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px', overflow: 'hidden' }}>
-                  <MessageSquare size={16} color="#A78BFA" style={{ flexShrink: 0 }} />
-                  <span style={{ fontSize: '13px', fontWeight: '600', color: '#F1F5F9', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  <MessageSquare size={16} color="#6E56CF" style={{ flexShrink: 0 }} />
+                  <span style={{ fontSize: '13px', fontWeight: '600', color: '#111625', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                     {conv.title}
                   </span>
                 </div>
-                <span style={{ fontSize: '11px', color: '#64748B', whiteSpace: 'nowrap' }}>
+                <span style={{ fontSize: '11px', color: '#8C97B0', whiteSpace: 'nowrap' }}>
                   {new Date(conv.updatedAt).toLocaleDateString()}
                 </span>
               </div>
@@ -237,7 +241,7 @@ export const UserHomePage: React.FC = () => {
           <div className="panel-header">
             <div>
               <div className="panel-title">
-                <Bookmark size={18} color="#38BDF8" />
+                <Bookmark size={18} color="#0284C7" />
                 Saved to My Library
               </div>
               <div className="panel-subtitle">Archived knowledge, extracts, and drafts</div>
@@ -257,15 +261,15 @@ export const UserHomePage: React.FC = () => {
                   justifyContent: 'space-between',
                   padding: '12px 14px',
                   borderRadius: '10px',
-                  background: 'rgba(255, 255, 255, 0.02)',
-                  border: '1px solid rgba(255, 255, 255, 0.04)'
+                  background: '#FAFBFD',
+                  border: '1px solid #E8ECF5'
                 }}
               >
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', overflow: 'hidden' }}>
-                  <span style={{ fontSize: '13px', fontWeight: '700', color: '#F8FAFC', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  <span style={{ fontSize: '13px', fontWeight: '700', color: '#111625', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                     {item.title}
                   </span>
-                  <span style={{ fontSize: '11px', color: '#94A3B8' }}>
+                  <span style={{ fontSize: '11px', color: '#5F6B85' }}>
                     Category: {item.contentType} • {new Date(item.createdAt).toLocaleDateString()}
                   </span>
                 </div>

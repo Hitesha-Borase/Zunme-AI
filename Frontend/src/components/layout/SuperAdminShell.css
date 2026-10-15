@@ -1,5 +1,6 @@
 /* ==========================================================================
-   Super Admin Shell — Dark Obsidian & Crimson-Violet Governance Aesthetics
+   Super Admin Shell — Reference Luxury Theme
+   Aesthetics: Midnight Indigo Violet Sidebar (#1E1648) & Warm Light Canvas
    ========================================================================== */
 
 .superadmin-shell {
@@ -7,7 +8,12 @@
   width: 100vw;
   height: 100vh;
   overflow: hidden;
-  background-color: var(--color-bg-base);
+  background-color: var(--color-bg);
+  background-image: 
+    radial-gradient(ellipse 65% 50% at 95% 5%, rgba(253, 238, 233, 0.85) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 5% 35%, rgba(245, 235, 249, 0.85) 0%, transparent 60%),
+    linear-gradient(180deg, #FAF9FC 0%, #F5F6FC 50%, #FAF9FC 100%);
+  background-size: 100% 100%;
   color: var(--color-text-primary);
   position: relative;
 }
@@ -16,9 +22,7 @@
 .superadmin-sidebar {
   width: 270px;
   height: 100vh;
-  background: rgba(14, 18, 30, 0.85);
-  backdrop-filter: blur(28px);
-  -webkit-backdrop-filter: blur(28px);
+  background: var(--color-sidebar-bg, #1E1648);
   border-right: 1px solid rgba(255, 255, 255, 0.08);
   display: flex;
   flex-direction: column;
@@ -26,7 +30,7 @@
   gap: var(--space-5);
   z-index: 40;
   transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 4px 0 32px rgba(0, 0, 0, 0.45);
+  box-shadow: 4px 0 24px rgba(20, 14, 48, 0.25);
 }
 
 .superadmin-brand-section {
@@ -45,13 +49,13 @@
 .superadmin-badge-icon {
   width: 38px;
   height: 38px;
-  border-radius: var(--radius-lg);
-  background: linear-gradient(135deg, #EF4444 0%, #7C3AED 100%);
+  border-radius: var(--radius-md);
+  background: var(--gradient-sunset);
   display: flex;
   align-items: center;
   justify-content: center;
   color: #FFFFFF;
-  box-shadow: 0 4px 16px rgba(239, 68, 68, 0.35);
+  box-shadow: 0 4px 14px rgba(110, 86, 207, 0.4);
 }
 
 .superadmin-brand-text {
@@ -61,23 +65,23 @@
 
 .superadmin-brand-text .brand-title {
   font-size: 15px;
-  font-weight: 900;
-  letter-spacing: 0.04em;
-  color: #F8FAFC;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: #FFFFFF;
 }
 
 .superadmin-brand-text .brand-tier-badge {
   font-size: 9px;
   font-weight: 800;
   letter-spacing: 0.1em;
-  color: #F87171;
+  color: #D9538F;
   text-transform: uppercase;
 }
 
 /* Status Indicator */
 .superadmin-status-box {
-  background: rgba(239, 68, 68, 0.08);
-  border: 1px solid rgba(239, 68, 68, 0.2);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: var(--radius-lg);
   padding: 10px 14px;
   display: flex;
@@ -89,8 +93,8 @@
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #EF4444;
-  box-shadow: 0 0 10px #EF4444;
+  background: #10B981;
+  box-shadow: 0 0 10px #10B981;
   animation: pulseDot 2s infinite ease-in-out;
 }
 
@@ -107,14 +111,14 @@
 .status-title {
   font-size: 11px;
   font-weight: 700;
-  color: #FCA5A5;
+  color: #FFFFFF;
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
 
 .status-desc {
   font-size: 11px;
-  color: #94A3B8;
+  color: #A297C8;
 }
 
 /* Navigation List */
@@ -129,27 +133,26 @@
   display: flex;
   align-items: center;
   gap: var(--space-3);
-  padding: 11px 14px;
-  border-radius: var(--radius-lg);
+  padding: 11px 16px;
+  border-radius: var(--radius-full);
   font-size: 13px;
-  font-weight: 600;
-  color: #94A3B8;
+  font-weight: 500;
+  color: #A297C8;
   text-decoration: none;
   transition: all 0.18s ease;
   border: 1px solid transparent;
 }
 
 .superadmin-nav-item:hover {
-  background: rgba(255, 255, 255, 0.04);
-  color: #F8FAFC;
+  background: rgba(255, 255, 255, 0.08);
+  color: #FFFFFF;
 }
 
 .superadmin-nav-item.active {
-  background: rgba(124, 58, 237, 0.2);
-  color: #DDD6FE;
-  border-color: rgba(139, 92, 246, 0.35);
+  background: rgba(255, 255, 255, 0.14);
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.18);
   font-weight: 700;
-  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1);
 }
 
 /* Footer & Logout */
@@ -165,20 +168,20 @@
   display: flex;
   align-items: center;
   gap: var(--space-3);
-  padding: 10px 14px;
-  border-radius: var(--radius-lg);
+  padding: 10px 16px;
+  border-radius: var(--radius-full);
   font-size: 13px;
   font-weight: 600;
   color: #F87171;
-  background: rgba(239, 68, 68, 0.08);
-  border: 1px solid rgba(239, 68, 68, 0.2);
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.25);
   cursor: pointer;
   width: 100%;
   transition: all 0.2s ease;
 }
 
 .superadmin-logout-btn:hover {
-  background: rgba(239, 68, 68, 0.18);
+  background: rgba(239, 68, 68, 0.2);
   color: #FCA5A5;
 }
 
@@ -186,23 +189,23 @@
   display: flex;
   align-items: center;
   gap: var(--space-3);
-  padding: 8px 10px;
-  background: rgba(255, 255, 255, 0.03);
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.07);
   border-radius: var(--radius-lg);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .superadmin-avatar {
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: rgba(124, 58, 237, 0.4);
+  background: var(--gradient-sunset);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 13px;
   font-weight: 800;
-  color: #DDD6FE;
+  color: #FFFFFF;
 }
 
 .superadmin-user-info {
@@ -214,7 +217,7 @@
 .superadmin-user-info .user-name {
   font-size: 12px;
   font-weight: 700;
-  color: #F8FAFC;
+  color: #FFFFFF;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -222,7 +225,7 @@
 
 .superadmin-user-info .user-role-label {
   font-size: 10px;
-  color: #94A3B8;
+  color: #A297C8;
 }
 
 /* Main Canvas */
@@ -237,21 +240,22 @@
 .superadmin-topbar {
   height: 68px;
   padding: 0 var(--space-6);
-  background: rgba(14, 18, 30, 0.7);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border-bottom: 1px solid #E8ECF5;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-4);
   z-index: 20;
+  box-shadow: 0 2px 8px rgba(30, 20, 60, 0.03);
 }
 
 .superadmin-breadcrumb {
   font-size: 11px;
-  font-weight: 600;
-  color: var(--color-text-muted);
+  font-weight: 700;
+  color: var(--color-primary);
   text-transform: uppercase;
   letter-spacing: 0.05em;
   margin-bottom: 2px;
@@ -260,7 +264,7 @@
 .superadmin-page-heading {
   font-size: 18px;
   font-weight: 800;
-  color: #F8FAFC;
+  color: #111625;
   letter-spacing: -0.01em;
 }
 
@@ -274,7 +278,7 @@
 .superadmin-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.65);
+  background: rgba(17, 22, 37, 0.5);
   backdrop-filter: blur(8px);
   z-index: 35;
 }

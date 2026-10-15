@@ -100,7 +100,7 @@ export const UserHelpSupportPage: React.FC = () => {
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
               <div>
-                <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#CBD5E1', marginBottom: '6px' }}>
+                <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#111625', marginBottom: '6px' }}>
                   Issue Category
                 </label>
                 <select
@@ -116,7 +116,7 @@ export const UserHelpSupportPage: React.FC = () => {
               </div>
 
               <div>
-                <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#CBD5E1', marginBottom: '6px' }}>
+                <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#111625', marginBottom: '6px' }}>
                   Subject
                 </label>
                 <input
@@ -131,7 +131,7 @@ export const UserHelpSupportPage: React.FC = () => {
             </div>
 
             <div>
-              <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#CBD5E1', marginBottom: '6px' }}>
+              <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#111625', marginBottom: '6px' }}>
                 Detailed Description
               </label>
               <textarea
@@ -155,7 +155,7 @@ export const UserHelpSupportPage: React.FC = () => {
         <div className="glass-panel">
           <div className="panel-header">
             <div className="panel-title">
-              <BookOpen size={18} color="#38BDF8" />
+              <BookOpen size={18} color="#0284C7" />
               Frequently Asked Questions
             </div>
             <span className="badge badge-neutral">Knowledgebase</span>
@@ -167,8 +167,8 @@ export const UserHelpSupportPage: React.FC = () => {
                 key={i}
                 style={{
                   borderRadius: '10px',
-                  background: 'rgba(255, 255, 255, 0.02)',
-                  border: '1px solid rgba(255, 255, 255, 0.05)',
+                  background: '#FAFBFD',
+                  border: '1px solid #E8ECF5',
                   overflow: 'hidden'
                 }}
               >
@@ -183,7 +183,7 @@ export const UserHelpSupportPage: React.FC = () => {
                     justifyContent: 'space-between',
                     background: 'transparent',
                     border: 'none',
-                    color: '#F8FAFC',
+                    color: '#111625',
                     fontWeight: '700',
                     fontSize: '13px',
                     textAlign: 'left',
@@ -191,7 +191,7 @@ export const UserHelpSupportPage: React.FC = () => {
                   }}
                 >
                   <span>{faq.q}</span>
-                  {openFaq === i ? <ChevronUp size={16} color="#A78BFA" /> : <ChevronDown size={16} color="#94A3B8" />}
+                  {openFaq === i ? <ChevronUp size={16} color="#6E56CF" /> : <ChevronDown size={16} color="#8C97B0" />}
                 </button>
 
                 {openFaq === i && (
@@ -200,8 +200,8 @@ export const UserHelpSupportPage: React.FC = () => {
                       padding: '0 16px 14px 16px',
                       fontSize: '13px',
                       lineHeight: '1.5',
-                      color: '#94A3B8',
-                      borderTop: '1px solid rgba(255, 255, 255, 0.04)',
+                      color: '#5F6B85',
+                      borderTop: '1px solid #E8ECF5',
                       paddingTop: '10px'
                     }}
                   >

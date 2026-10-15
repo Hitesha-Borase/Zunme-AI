@@ -175,12 +175,12 @@ export const AdminDashboardPage: React.FC = () => {
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-            <div style={{ padding: '12px', borderRadius: '10px', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <div style={{ padding: '12px', borderRadius: '10px', background: '#FAFBFD', border: '1px solid #E8ECF5', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
               <div>
-                <div style={{ fontSize: '13px', fontWeight: '700', color: '#F8FAFC' }}>
+                <div style={{ fontSize: '13px', fontWeight: '700', color: '#111625' }}>
                   Review Creator Submission: Solopreneur Blueprint
                 </div>
-                <div style={{ fontSize: '11px', color: '#94A3B8', marginTop: '2px' }}>
+                <div style={{ fontSize: '11px', color: '#5F6B85', marginTop: '2px' }}>
                   Submitted by Sarah Connor • Branding Category
                 </div>
               </div>
@@ -189,12 +189,12 @@ export const AdminDashboardPage: React.FC = () => {
               </NavLink>
             </div>
 
-            <div style={{ padding: '12px', borderRadius: '10px', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <div style={{ padding: '12px', borderRadius: '10px', background: '#FAFBFD', border: '1px solid #E8ECF5', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
               <div>
-                <div style={{ fontSize: '13px', fontWeight: '700', color: '#F8FAFC' }}>
+                <div style={{ fontSize: '13px', fontWeight: '700', color: '#111625' }}>
                   Approve AI Warehouse Asset: Competitor SEO Chain
                 </div>
-                <div style={{ fontSize: '11px', color: '#94A3B8', marginTop: '2px' }}>
+                <div style={{ fontSize: '11px', color: '#5F6B85', marginTop: '2px' }}>
                   Submitted by Marcus Vance • Prompts Category
                 </div>
               </div>
@@ -203,12 +203,12 @@ export const AdminDashboardPage: React.FC = () => {
               </NavLink>
             </div>
 
-            <div style={{ padding: '12px', borderRadius: '10px', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <div style={{ padding: '12px', borderRadius: '10px', background: '#FAFBFD', border: '1px solid #E8ECF5', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
               <div>
-                <div style={{ fontSize: '13px', fontWeight: '700', color: '#F8FAFC' }}>
+                <div style={{ fontSize: '13px', fontWeight: '700', color: '#111625' }}>
                   nErgy CRM Integration Scheduled Health Check
                 </div>
-                <div style={{ fontSize: '11px', color: '#94A3B8', marginTop: '2px' }}>
+                <div style={{ fontSize: '11px', color: '#5F6B85', marginTop: '2px' }}>
                   Currently in MAINTENANCE mode for pipeline sync
                 </div>
               </div>

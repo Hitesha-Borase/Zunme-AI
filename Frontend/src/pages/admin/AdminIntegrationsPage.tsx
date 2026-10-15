@@ -69,22 +69,22 @@ export const AdminIntegrationsPage: React.FC = () => {
                 </span>
               </div>
 
-              <h3 style={{ fontSize: '17px', fontWeight: '800', color: '#F8FAFC', marginBottom: '6px' }}>
+              <h3 style={{ fontSize: '17px', fontWeight: '800', color: '#111625', marginBottom: '6px' }}>
                 {item.name}
               </h3>
-              <p style={{ fontSize: '13px', color: '#94A3B8', lineHeight: '1.4', marginBottom: '16px' }}>
+              <p style={{ fontSize: '13px', color: '#5F6B85', lineHeight: '1.4', marginBottom: '16px' }}>
                 {item.description}
               </p>
 
-              <div style={{ display: 'flex', gap: '16px', fontSize: '12px', color: '#64748B', marginBottom: '16px' }}>
-                <span>Latency: <strong style={{ color: '#CBD5E1' }}>{item.latency || 'N/A'}</strong></span>
+              <div style={{ display: 'flex', gap: '16px', fontSize: '12px', color: '#5F6B85', marginBottom: '16px' }}>
+                <span>Latency: <strong style={{ color: '#111625' }}>{item.latency || 'N/A'}</strong></span>
                 {item.connectedAt && (
-                  <span>Connected: <strong style={{ color: '#CBD5E1' }}>{item.connectedAt}</strong></span>
+                  <span>Connected: <strong style={{ color: '#111625' }}>{item.connectedAt}</strong></span>
                 )}
               </div>
             </div>
 
-            <div style={{ borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: '14px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <div style={{ borderTop: '1px solid #E8ECF5', paddingTop: '14px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
               <button
                 className="btn btn-outline btn-sm"
                 onClick={() => handleTestConnection(item.name)}

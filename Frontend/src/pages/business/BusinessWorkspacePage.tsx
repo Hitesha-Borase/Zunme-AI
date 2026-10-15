@@ -199,23 +199,23 @@ export const BusinessWorkspacePage: React.FC = () => {
                     style={{
                       padding: '12px',
                       borderRadius: '10px',
-                      background: 'rgba(255,255,255,0.02)',
-                      border: '1px solid rgba(255,255,255,0.05)',
+                      background: '#FAFBFD',
+                      border: '1px solid #E8ECF5',
                       display: 'flex',
                       flexDirection: 'column',
                       gap: '8px'
                     }}
                   >
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span style={{ fontWeight: '700', color: '#F8FAFC', fontSize: '13px' }}>{proj.name}</span>
+                      <span style={{ fontWeight: '700', color: '#111625', fontSize: '13px' }}>{proj.name}</span>
                       <span className="badge badge-neutral" style={{ fontSize: '10px' }}>{proj.category}</span>
                     </div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: '#94A3B8' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: '#5F6B85' }}>
                       <span>Due: {proj.dueDate}</span>
                       <span>Progress: {proj.progress}%</span>
                     </div>
-                    <div style={{ width: '100%', height: '4px', borderRadius: '2px', background: 'rgba(255,255,255,0.06)' }}>
-                      <div style={{ width: `${proj.progress}%`, height: '100%', background: '#7C3AED', borderRadius: '2px' }} />
+                    <div style={{ width: '100%', height: '4px', borderRadius: '2px', background: '#E8ECF5' }}>
+                      <div style={{ width: `${proj.progress}%`, height: '100%', background: '#6E56CF', borderRadius: '2px' }} />
                     </div>
                   </div>
                 ))}
@@ -242,16 +242,16 @@ export const BusinessWorkspacePage: React.FC = () => {
                     style={{
                       padding: '12px',
                       borderRadius: '10px',
-                      background: 'rgba(255,255,255,0.02)',
-                      border: '1px solid rgba(255,255,255,0.05)',
+                      background: '#FAFBFD',
+                      border: '1px solid #E8ECF5',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'space-between'
                     }}
                   >
                     <div>
-                      <div style={{ fontWeight: '700', color: '#F8FAFC', fontSize: '13px' }}>{ev.title}</div>
-                      <div style={{ fontSize: '11px', color: '#94A3B8', marginTop: '2px' }}>
+                      <div style={{ fontWeight: '700', color: '#111625', fontSize: '13px' }}>{ev.title}</div>
+                      <div style={{ fontSize: '11px', color: '#5F6B85', marginTop: '2px' }}>
                         Channel: <strong>{ev.platform}</strong> • Date: {ev.date}
                       </div>
                     </div>
@@ -404,16 +404,16 @@ export const BusinessWorkspacePage: React.FC = () => {
                     <span className="badge badge-neutral" style={{ fontSize: '10px' }}>{proj.category}</span>
                     <span className="status-chip success">{proj.status}</span>
                   </div>
-                  <h3 style={{ fontSize: '16px', fontWeight: '800', color: '#F8FAFC', marginBottom: '6px' }}>{proj.name}</h3>
-                  <p style={{ fontSize: '12px', color: '#94A3B8', lineHeight: '1.4', marginBottom: '14px' }}>{proj.description}</p>
+                  <h3 style={{ fontSize: '16px', fontWeight: '800', color: '#111625', marginBottom: '6px' }}>{proj.name}</h3>
+                  <p style={{ fontSize: '12px', color: '#5F6B85', lineHeight: '1.4', marginBottom: '14px' }}>{proj.description}</p>
                 </div>
                 <div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: '#64748B', marginBottom: '6px' }}>
                     <span>Target: {proj.dueDate}</span>
                     <span>{proj.progress}% Done</span>
                   </div>
-                  <div style={{ width: '100%', height: '6px', borderRadius: '3px', background: 'rgba(255,255,255,0.06)' }}>
-                    <div style={{ width: `${proj.progress}%`, height: '100%', background: '#7C3AED', borderRadius: '3px' }} />
+                  <div style={{ width: '100%', height: '6px', borderRadius: '3px', background: '#E8ECF5' }}>
+                    <div style={{ width: `${proj.progress}%`, height: '100%', background: '#6E56CF', borderRadius: '3px' }} />
                   </div>
                 </div>
               </div>
@@ -475,7 +475,7 @@ export const BusinessWorkspacePage: React.FC = () => {
                 <tbody>
                   {calendarEvents.map((ev) => (
                     <tr key={ev.id}>
-                      <td style={{ fontWeight: '700', color: '#F8FAFC' }}>{ev.title}</td>
+                      <td style={{ fontWeight: '700', color: '#111625' }}>{ev.title}</td>
                       <td><span className="badge badge-neutral">{ev.platform}</span></td>
                       <td>{ev.date}</td>
                       <td><span className="status-chip success">{ev.status}</span></td>
@@ -511,10 +511,10 @@ export const BusinessWorkspacePage: React.FC = () => {
               <Users size={24} color="#A78BFA" />
             </div>
             <div>
-              <h3 style={{ fontSize: '16px', fontWeight: '800', color: '#F8FAFC', marginBottom: '4px' }}>
+              <h3 style={{ fontSize: '16px', fontWeight: '800', color: '#FFFFFF', marginBottom: '4px' }}>
                 Multi-User Team Collaboration & Access Controls
               </h3>
-              <p style={{ fontSize: '13px', color: '#94A3B8', lineHeight: '1.5' }}>
+              <p style={{ fontSize: '13px', color: 'rgba(255, 255, 255, 0.9)', lineHeight: '1.5' }}>
                 You are currently in Single-Owner Workspace mode. Multi-seat team invites and role-based permissions (RBAC) are included with the Business & Agency plan ($99/mo) and will activate upon team member invitation.
               </p>
             </div>
