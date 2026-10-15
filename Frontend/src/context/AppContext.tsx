@@ -33,6 +33,7 @@ interface AppContextType {
   updateProfile: (fullName: string) => void;
   toggleRole: () => void;
   setRole: (role: UserRole) => void;
+  loginWithRole: (role: UserRole, targetName?: string) => void;
 
   // Conversations & Chat
   conversations: Conversation[];
@@ -760,6 +761,26 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
   };
 
+  const loginWithRole = (role: UserRole, targetName?: string) => {
+    const demoProfiles: Record<UserRole, { fullName: string; email: string }> = {
+      SUPER_ADMIN: { fullName: 'Alex Johnson (Super Admin)', email: 'superadmin@zunme.ai' },
+      ADMIN: { fullName: 'Operations Admin', email: 'admin@zunme.ai' },
+      USER: { fullName: 'Alex Creator', email: 'alex.creator@zunme.ai' }
+    };
+    const profile = demoProfiles[role] || demoProfiles.USER;
+    setUser({
+      id: 'usr_' + Date.now(),
+      email: profile.email,
+      fullName: profile.fullName,
+      role,
+      createdAt: new Date().toISOString()
+    });
+    showToast(
+      `Logged in as ${role === 'SUPER_ADMIN' ? 'Super Admin' : role === 'ADMIN' ? 'Admin' : 'Creator'}${targetName ? ` (${targetName})` : ''}`,
+      'success'
+    );
+  };
+
   // Chat Functions
   const createNewChat = () => {
     const newId = 'conv_' + Date.now();
@@ -1058,6 +1079,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         updateProfile,
         toggleRole,
         setRole,
+        loginWithRole,
         conversations,
         activeConversationId,
         activeMessages,

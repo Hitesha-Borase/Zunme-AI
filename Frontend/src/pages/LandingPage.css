@@ -1986,13 +1986,21 @@
   gap: 10px;
 }
 
-.footer-col a {
+.footer-col a,
+.footer-modal-trigger-btn {
   font-size: 13px;
   color: #94A3B8;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
   transition: all var(--transition-fast);
 }
 
-.footer-col a:hover {
+.footer-col a:hover,
+.footer-modal-trigger-btn:hover {
   color: #DDD6FE;
   text-shadow: 0 0 10px rgba(167, 139, 250, 0.4);
 }

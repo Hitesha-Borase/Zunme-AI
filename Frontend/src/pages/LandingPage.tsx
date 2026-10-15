@@ -29,6 +29,7 @@ import {
   ArrowUpRight
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
+import { DashboardLoginModal } from '../components/modals/DashboardLoginModal';
 import './LandingPage.css';
 
 interface CapabilityItem {
@@ -58,6 +59,7 @@ interface FaqItem {
 export const LandingPage: React.FC = () => {
   const { user } = useApp();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState<boolean>(false);
   const [activeShowcaseTab, setActiveShowcaseTab] = useState<'chat' | 'search' | 'studio' | 'library'>('chat');
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
   const [copiedSnippet, setCopiedSnippet] = useState(false);
@@ -251,10 +253,15 @@ export const LandingPage: React.FC = () => {
               <NavLink to="/register" className="btn btn-ghost btn-sm">
                 Get Started
               </NavLink>
-              <NavLink to="/login" className="btn btn-primary btn-sm btn-glow">
+              <button
+                type="button"
+                onClick={() => setShowLoginModal(true)}
+                className="btn btn-primary btn-sm btn-glow"
+                aria-label="Open Workspace Login"
+              >
                 <span>Login</span>
                 <ArrowRight size={14} />
-              </NavLink>
+              </button>
 
               {/* Mobile Menu Toggle Button */}
               <button
@@ -291,14 +298,17 @@ export const LandingPage: React.FC = () => {
               </a>
             </nav>
             <div className="mobile-drawer-actions">
-              <NavLink
-                to="/login"
+              <button
+                type="button"
                 className="btn btn-primary btn-block"
-                onClick={() => setMobileMenuOpen(false)}
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  setShowLoginModal(true);
+                }}
               >
                 <span>Login</span>
                 <ArrowRight size={15} />
-              </NavLink>
+              </button>
               <NavLink
                 to="/register"
                 className="btn btn-outline btn-block"
@@ -343,10 +353,14 @@ export const LandingPage: React.FC = () => {
               <span>Get Started</span>
               <ArrowRight size={18} />
             </NavLink>
-            <NavLink to="/login" className="btn btn-secondary btn-lg hero-secondary-btn">
+            <button
+              type="button"
+              onClick={() => setShowLoginModal(true)}
+              className="btn btn-secondary btn-lg hero-secondary-btn"
+            >
               <span>Sign In / Login</span>
               <ArrowRight size={16} />
-            </NavLink>
+            </button>
           </div>
 
           {/* Micro trust indicators */}
@@ -1149,9 +1163,13 @@ export const LandingPage: React.FC = () => {
                 <span>Get Started</span>
                 <ArrowRight size={17} />
               </NavLink>
-              <NavLink to="/login" className="btn btn-outline btn-lg cta-secondary-btn">
-                Sign In
-              </NavLink>
+              <button
+                type="button"
+                onClick={() => setShowLoginModal(true)}
+                className="btn btn-outline btn-lg cta-secondary-btn"
+              >
+                Sign In / Workspaces
+              </button>
             </div>
 
             <div className="cta-subtext">
@@ -1243,7 +1261,13 @@ export const LandingPage: React.FC = () => {
                     <a href="#faq">FAQ</a>
                   </li>
                   <li>
-                    <NavLink to="/login">Sign In</NavLink>
+                    <button
+                      type="button"
+                      className="footer-modal-trigger-btn"
+                      onClick={() => setShowLoginModal(true)}
+                    >
+                      Sign In / Workspaces
+                    </button>
                   </li>
                   <li>
                     <NavLink to="/register">Create Account</NavLink>
@@ -1282,6 +1306,12 @@ export const LandingPage: React.FC = () => {
           </div>
         </div>
       </footer>
+
+      {/* Dashboard Selection & Instant Access Modal */}
+      <DashboardLoginModal
+        isOpen={showLoginModal}
+        onClose={() => setShowLoginModal(false)}
+      />
     </div>
   );
 };
