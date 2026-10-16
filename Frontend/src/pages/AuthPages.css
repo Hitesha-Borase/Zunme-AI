@@ -160,69 +160,408 @@
   color: #5F6B85;
 }
 
-/* Auth Divider */
-.auth-divider {
+/* ==========================================================================
+   PORTAL LOGIN — HOME PAGE LUXURY LIGHT & SUNSET THEME
+   Strict viewport fitting (100vh non-scrollable desktop) + responsive fallback
+   ========================================================================== */
+
+.energy-auth-page {
+  height: 100vh;
+  max-height: 100vh;
+  overflow: hidden;
+  background-color: var(--color-bg, #FAF9FC);
+  color: var(--color-text-primary, #111625);
+  display: flex;
+  flex-direction: column;
   position: relative;
-  text-align: center;
-  margin: 24px 0 16px 0;
+  font-family: var(--font-sans);
+  box-sizing: border-box;
 }
 
-.auth-divider::before {
-  content: '';
+/* Atmosphere Layers from Home Page */
+.energy-auth-page .cosmic-grid-overlay {
   position: absolute;
-  top: 50%;
+  top: 0;
   left: 0;
   right: 0;
-  height: 1px;
-  background: #E2E8F0;
-  z-index: 1;
+  bottom: 0;
+  background-image: 
+    linear-gradient(rgba(110, 86, 207, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(110, 86, 207, 0.035) 1px, transparent 1px);
+  background-size: 52px 52px;
+  pointer-events: none;
+  z-index: 0;
 }
 
-.auth-divider span {
+.energy-auth-page .ambient-aurora-top {
+  position: absolute;
+  top: -80px;
+  right: -5%;
+  width: 900px;
+  height: 600px;
+  background: radial-gradient(ellipse at center, rgba(253, 238, 233, 0.95) 0%, rgba(245, 235, 249, 0.7) 45%, transparent 75%);
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.energy-auth-page .ambient-aurora-accent {
+  position: absolute;
+  top: 500px;
+  left: -100px;
+  width: 700px;
+  height: 550px;
+  background: radial-gradient(circle, rgba(239, 235, 252, 0.9) 0%, rgba(245, 235, 249, 0.6) 45%, transparent 70%);
+  filter: blur(90px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Header matching LandingPage */
+.energy-auth-topbar {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  height: 60px;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border-bottom: 1px solid rgba(232, 236, 245, 0.9);
+  box-shadow: 0 4px 18px -2px rgba(30, 20, 60, 0.04);
+  z-index: 10;
+}
+
+.energy-status-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #6E56CF;
+  background: #EFEBFC;
+  border: 1px solid rgba(110, 86, 207, 0.25);
+  padding: 5px 12px;
+  border-radius: 9999px;
+}
+
+/* Main Container — Fitted within remaining viewport */
+.energy-auth-main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 28px;
   position: relative;
   z-index: 2;
-  background: #FFFFFF;
-  padding: 0 12px;
-  font-size: 11.5px;
-  font-weight: 700;
-  color: #8C97B0;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  overflow: hidden;
+  min-height: 0;
 }
 
-/* Quick Dashboards Grid */
-.login-quick-dashboards-grid {
+.energy-auth-grid {
+  width: 100%;
+  max-width: 1260px;
+  height: 100%;
+  max-height: calc(100vh - 84px);
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  gap: 24px;
+  align-items: stretch;
+}
+
+/* Left Login Card */
+.energy-login-card {
+  background: #FFFFFF;
+  border: 1px solid #E8ECF5;
+  border-radius: 18px;
+  padding: 22px 24px;
+  box-shadow: 
+    0 20px 50px -8px rgba(30, 20, 60, 0.08),
+    0 4px 12px rgba(0, 0, 0, 0.02);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+}
+
+.energy-login-header {
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.energy-card-logo-box {
+  margin: 0 auto 8px auto;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+}
+
+.energy-card-logo-box .brand-glyph {
+  font-size: 20px;
+}
+
+.energy-card-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.energy-card-title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #111625;
+  letter-spacing: -0.02em;
+}
+
+.energy-card-meta {
+  margin: 3px 0 1px 0;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: #6E56CF;
+  text-transform: uppercase;
+}
+
+.energy-card-desc {
+  margin: 0;
+  font-size: 0.78rem;
+  color: #5F6B85;
+}
+
+.energy-alert-error {
+  background: #FEECEB;
+  border: 1px solid rgba(225, 29, 72, 0.25);
+  color: #E11D48;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.energy-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+  justify-content: center;
+}
+
+.energy-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.energy-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #374151;
+}
+
+.energy-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.energy-input-icon {
+  position: absolute;
+  left: 12px;
+  font-size: 0.82rem;
+  color: #8C97B0;
+  pointer-events: none;
+}
+
+.energy-input {
+  width: 100%;
+  height: 38px;
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 10px;
+  padding: 0 38px 0 34px;
+  color: #111625;
+  font-size: 0.82rem;
+  outline: none;
+  transition: all 0.18s ease;
+  box-sizing: border-box;
+}
+
+.energy-input:focus {
+  border-color: #6E56CF;
+  box-shadow: 0 0 0 2.5px rgba(110, 86, 207, 0.18);
+  background: #FFFFFF;
+}
+
+.energy-pw-toggle {
+  position: absolute;
+  right: 10px;
+  background: transparent;
+  border: none;
+  color: #8C97B0;
+  cursor: pointer;
+  padding: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.energy-pw-toggle:hover {
+  color: #111625;
+}
+
+/* Context Box */
+.energy-context-box {
+  background: #F8FAFD;
+  border: 1px solid #E8ECF5;
+  border-radius: 10px;
+  padding: 8px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 2px;
+}
+
+.energy-context-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.74rem;
+}
+
+.energy-ctx-muted {
+  color: #64748B;
+}
+
+.energy-ctx-highlight {
+  color: #111625;
+  font-weight: 700;
+}
+
+.energy-ctx-org {
+  color: #6E56CF;
+  font-weight: 700;
+}
+
+.energy-submit-btn {
+  width: 100%;
+  height: 40px;
+  background: var(--gradient-primary, linear-gradient(135deg, #6E56CF 0%, #7C3AED 100%));
+  border: 1px solid rgba(110, 86, 207, 0.4);
+  border-radius: 10px;
+  color: #FFFFFF;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 14px rgba(110, 86, 207, 0.25);
+  margin-top: 4px;
+}
+
+.energy-submit-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(110, 86, 207, 0.35);
+}
+
+.energy-submit-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.energy-card-footer {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #F1F5F9;
+}
+
+.energy-footer-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 0.7rem;
+  color: #64748B;
+}
+
+.text-emerald {
+  color: #059669;
+}
+
+/* Right Column: Personas Panel */
+.energy-personas-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  overflow: hidden;
+}
+
+.energy-personas-header {
+  margin-bottom: 10px;
+}
+
+.energy-panel-title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #111625;
+  letter-spacing: -0.02em;
+}
+
+.energy-panel-subtitle {
+  margin: 2px 0 0 0;
+  font-size: 0.78rem;
+  color: #5F6B85;
+}
+
+.energy-personas-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-  margin-top: 10px;
-  margin-bottom: 6px;
+  grid-template-rows: repeat(6, 1fr);
+  gap: 8px;
+  flex: 1;
 }
 
-.login-quick-btn {
+.energy-persona-card {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 10px 12px;
-  background: #F8FAFC;
-  border: 1px solid #E2E8F0;
-  border-radius: 12px;
+  background: #FFFFFF;
+  border: 1px solid #E8ECF5;
+  border-radius: 11px;
+  padding: 8px 12px;
   cursor: pointer;
   text-align: left;
-  transition: all 0.18s ease;
+  transition: all 0.16s ease;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.02);
   position: relative;
-  overflow: hidden;
-  width: 100%;
+  min-height: 0;
 }
 
-.login-quick-btn:hover {
+.energy-persona-card:hover {
+  background: #FAFBFD;
+  border-color: rgba(110, 86, 207, 0.4);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(110, 86, 207, 0.08);
+}
+
+.energy-persona-card.is-selected {
   background: #FFFFFF;
-  border-color: var(--btn-accent, #635BFF);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(99, 91, 255, 0.12);
+  border-color: #6E56CF;
+  box-shadow: 0 0 0 1.5px #6E56CF, 0 6px 18px rgba(110, 86, 207, 0.14);
 }
 
-.login-quick-btn-icon {
+.persona-icon-box {
   width: 34px;
   height: 34px;
   border-radius: 9px;
@@ -230,84 +569,160 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  transition: transform 0.18s ease;
+  transition: all 0.16s ease;
 }
 
-.login-quick-btn:hover .login-quick-btn-icon {
-  transform: scale(1.08);
-}
-
-.login-quick-btn-info {
+.persona-text-col {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  flex: 1;
+  gap: 1px;
   min-width: 0;
 }
 
-.login-quick-btn-name {
-  font-size: 12.5px;
+.persona-name {
+  font-size: 0.82rem;
   font-weight: 700;
-  color: #0F172A;
+  color: #111625;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  letter-spacing: -0.01em;
 }
 
-.login-quick-btn-path {
-  font-size: 11px;
+.persona-sub {
+  font-size: 0.68rem;
   color: #64748B;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 }
 
-.login-quick-badge {
-  font-size: 10.5px;
-  font-weight: 600;
-  padding: 2px 6px;
-  border-radius: 6px;
-  background: #F1F5F9;
-  border: 1px solid #E2E8F0;
-  color: #475569;
-  white-space: nowrap;
-}
-
-.login-quick-arrow {
+.persona-arrow {
   color: #94A3B8;
   flex-shrink: 0;
-  transition: transform 0.18s ease, color 0.18s ease;
+  transition: transform 0.16s ease, color 0.16s ease;
 }
 
-.login-quick-btn:hover .login-quick-arrow {
-  color: var(--btn-accent, #635BFF);
-  transform: translateX(3px);
+.energy-persona-card:hover .persona-arrow,
+.energy-persona-card.is-selected .persona-arrow {
+  color: #6E56CF;
+  transform: translateX(2px);
 }
 
-/* Responsive adjustments for Login Page & Cards */
-.auth-page-wrapper:has(.login-quick-dashboards-grid) .auth-card {
-  max-width: 620px;
+.energy-personas-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #E8ECF5;
+  font-size: 0.74rem;
+  color: #5F6B85;
+}
+
+.energy-security-note {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.energy-roles-counter {
+  color: #6E56CF;
+  font-weight: 700;
+}
+
+/* Large Laptop / Ultra-compact height screen tuning (e.g., 768px height) */
+@media (max-height: 800px) and (min-width: 1041px) {
+  .energy-auth-topbar {
+    height: 52px;
+  }
+  .energy-auth-main {
+    padding: 8px 24px;
+  }
+  .energy-login-card {
+    padding: 16px 20px;
+  }
+  .energy-card-logo-box {
+    width: 34px;
+    height: 34px;
+    margin-bottom: 4px;
+  }
+  .energy-card-title {
+    font-size: 1.15rem;
+  }
+  .energy-personas-grid {
+    gap: 6px;
+  }
+  .energy-persona-card {
+    padding: 6px 10px;
+  }
+  .persona-icon-box {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+/* Tablets and Mobile Responsive Behavior */
+@media (max-width: 1040px) {
+  .energy-auth-page {
+    height: auto;
+    min-height: 100vh;
+    max-height: none;
+    overflow-y: auto;
+  }
+
+  .energy-auth-main {
+    overflow-y: visible;
+    padding: 24px 20px;
+  }
+
+  .energy-auth-grid {
+    grid-template-columns: 1fr;
+    max-height: none;
+    height: auto;
+  }
+
+  .energy-login-card {
+    max-width: 520px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .energy-personas-panel {
+    max-width: 520px;
+    margin: 0 auto;
+    width: 100%;
+    height: auto;
+  }
+
+  .energy-personas-grid {
+    grid-template-rows: auto;
+  }
 }
 
 @media (max-width: 640px) {
-  .auth-page-wrapper {
-    padding: 16px 12px;
+  .energy-auth-topbar {
+    padding: 0 16px;
+    height: 56px;
   }
 
-  .auth-card {
-    padding: 28px 20px;
+  .energy-status-tag {
+    display: none;
   }
 
-  .login-quick-dashboards-grid {
+  .energy-auth-main {
+    padding: 18px 14px;
+  }
+
+  .energy-login-card {
+    padding: 22px 18px;
+  }
+
+  .energy-personas-grid {
     grid-template-columns: 1fr;
     gap: 8px;
   }
 
-  .login-quick-btn {
-    padding: 9px 11px;
-  }
-
-  .login-quick-badge {
-    display: none;
+  .energy-personas-bottom {
+    flex-direction: column;
+    gap: 6px;
+    text-align: center;
   }
 }
-
