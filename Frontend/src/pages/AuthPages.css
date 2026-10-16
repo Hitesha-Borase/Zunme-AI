@@ -744,3 +744,57 @@
     text-align: center;
   }
 }
+
+/* Social Login Buttons */
+.login-social-divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 10px 0 8px 0;
+}
+
+.login-social-divider::before,
+.login-social-divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.login-social-divider span {
+  padding: 0 10px;
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #8C94A6;
+}
+
+.login-social-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.login-social-btn {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #2D3748;
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.login-social-btn:hover {
+  background: #F8FAFC;
+  border-color: #CBD5E1;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}

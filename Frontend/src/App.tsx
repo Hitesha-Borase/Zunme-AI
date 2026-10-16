@@ -12,6 +12,10 @@ import { LandingPage } from './pages/LandingPage';
 import { LoginPage } from './pages/LoginPage';
 import { RegisterPage } from './pages/RegisterPage';
 import { ForgotPasswordPage } from './pages/ForgotPasswordPage';
+import { TermsPage } from './pages/TermsPage';
+import { PrivacyPage } from './pages/PrivacyPage';
+import { ContactPage } from './pages/ContactPage';
+import { PublicCreatorProfilePage } from './pages/creator/PublicCreatorProfilePage';
 
 // General User Pages
 import { UserHomePage } from './pages/user/UserHomePage';
@@ -62,6 +66,12 @@ export const App: React.FC = () => {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+
+          {/* Legal, Contact & Public Creator Suite */}
+          <Route path="/terms" element={<TermsPage />} />
+          <Route path="/privacy" element={<PrivacyPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/creator/:creatorId" element={<PublicCreatorProfilePage />} />
 
           {/* General User Workspace */}
           <Route path="/app" element={<AppShell />}>

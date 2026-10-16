@@ -33,6 +33,7 @@ import {
   Share2
 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
+import { AssetPaywallModal } from '../../components/modals/AssetPaywallModal';
 import '../../styles/dashboard.css';
 import './AIWarehousePage.css';
 
@@ -219,6 +220,9 @@ export const AIWarehousePage: React.FC = () => {
   const [selectedAsset, setSelectedAsset] = useState<WarehouseManagedAsset | null>(null);
   const [newTagInput, setNewTagInput] = useState('');
 
+  // Asset Paywall Modal State
+  const [paywallAsset, setPaywallAsset] = useState<WarehouseManagedAsset | null>(null);
+
   // Storage Quota Calculations
   const totalAssetsCount = assets.length;
   const totalBytesKb = assets.reduce((acc, a) => acc + a.sizeKb, 0);
@@ -318,6 +322,10 @@ export const AIWarehousePage: React.FC = () => {
 
   // Single Asset Download (.md)
   const handleDownloadSingle = (asset: WarehouseManagedAsset) => {
+    if (asset.licensing === 'Commercial Pro') {
+      setPaywallAsset(asset);
+      return;
+    }
     const content = `# ${asset.title}\n\n**Collection**: ${asset.collection} | **Type**: ${asset.type}\n**Category**: ${asset.category} | **License**: ${asset.licensing}\n\n## Description\n${asset.description}\n\n## Content / Instructions\n\`\`\`\n${asset.content}\n\`\`\`\n`;
     const blob = new Blob([content], { type: 'text/markdown' });
     const url = URL.createObjectURL(blob);
@@ -327,6 +335,18 @@ export const AIWarehousePage: React.FC = () => {
     a.click();
     URL.revokeObjectURL(url);
     showToast(`Downloaded "${asset.title}"`, 'success');
+  };
+
+  const handleSimulatedPaywallUnlock = (asset: WarehouseManagedAsset) => {
+    const content = `# ${asset.title}\n\n**Collection**: ${asset.collection} | **Type**: ${asset.type}\n**Category**: ${asset.category} | **License**: ${asset.licensing} (UNLOCKED)\n\n## Description\n${asset.description}\n\n## Content / Instructions\n\`\`\`\n${asset.content}\n\`\`\`\n`;
+    const blob = new Blob([content], { type: 'text/markdown' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${asset.title.toLowerCase().replace(/[^a-z0-9]/g, '_')}_unlocked.md`;
+    a.click();
+    URL.revokeObjectURL(url);
+    setPaywallAsset(null);
   };
 
   // Create New Collection
@@ -1068,6 +1088,20 @@ export const AIWarehousePage: React.FC = () => {
             </div>
           </div>
         </div>
+      )}
+
+      {/* Asset Paywall Modal for Commercial Pro Assets */}
+      {paywallAsset && (
+        <AssetPaywallModal
+          isOpen={Boolean(paywallAsset)}
+          onClose={() => setPaywallAsset(null)}
+          assetTitle={paywallAsset.title}
+          creatorName={paywallAsset.creatorName}
+          category={paywallAsset.category}
+          licensing={paywallAsset.licensing}
+          mockPrice="$4.99"
+          onUnlockSimulate={() => handleSimulatedPaywallUnlock(paywallAsset)}
+        />
       )}
     </div>
   );

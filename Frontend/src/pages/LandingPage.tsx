@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { NavLink, useSearchParams } from 'react-router-dom';
+import { NavLink, useSearchParams, useNavigate } from 'react-router-dom';
 import {
   Sparkles,
   MessageSquare,
@@ -62,8 +62,21 @@ export const LandingPage: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState<boolean>(false);
   const [activeShowcaseTab, setActiveShowcaseTab] = useState<'chat' | 'search' | 'studio' | 'library'>('chat');
-  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
+  const navigate = useNavigate();
+  const [askZunmeQuery, setAskZunmeQuery] = useState('');
+  const [isSubmittingQuery, setIsSubmittingQuery] = useState(false);
+  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
   const [copiedSnippet, setCopiedSnippet] = useState(false);
+
+  const handleAskZunmeSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!askZunmeQuery.trim()) return;
+    setIsSubmittingQuery(true);
+    setTimeout(() => {
+      setIsSubmittingQuery(false);
+      navigate(`/login?prompt=${encodeURIComponent(askZunmeQuery.trim())}`);
+    }, 300);
+  };
 
   useEffect(() => {
     if (searchParams.get('login') === 'true') {
@@ -367,6 +380,56 @@ export const LandingPage: React.FC = () => {
             <div className="signal-item">
               <CheckCircle2 size={14} className="signal-icon text-success" />
               <span>Personal library repository</span>
+            </div>
+          </div>
+
+          {/* Ask Zunme Interactive Search Bar directly in Hero */}
+          <div className="hero-ask-zunme-wrap">
+            <form onSubmit={handleAskZunmeSubmit} className="hero-ask-form">
+              <div className="hero-ask-icon">
+                <Sparkles size={18} />
+              </div>
+              <input
+                type="text"
+                className="hero-ask-input"
+                placeholder="Ask Zunme anything... (e.g., 'Research 2026 SaaS trends and draft an executive brief')"
+                value={askZunmeQuery}
+                onChange={(e) => setAskZunmeQuery(e.target.value)}
+                disabled={isSubmittingQuery}
+              />
+              <button
+                type="submit"
+                className="hero-ask-btn"
+                disabled={isSubmittingQuery || !askZunmeQuery.trim()}
+              >
+                <span>{isSubmittingQuery ? 'Grounding...' : 'Ask Zunme'}</span>
+                <ArrowRight size={14} />
+              </button>
+            </form>
+
+            <div className="hero-prompt-chips">
+              <span className="chips-label">Popular Prompts:</span>
+              <button
+                type="button"
+                className="prompt-chip"
+                onClick={() => setAskZunmeQuery('Synthesize top 2026 AI content creator monetization models')}
+              >
+                "Top 2026 Creator Monetization Models"
+              </button>
+              <button
+                type="button"
+                className="prompt-chip"
+                onClick={() => setAskZunmeQuery('Draft a high-converting B2B LinkedIn carousel hook sequence')}
+              >
+                "B2B LinkedIn Carousel Hooks"
+              </button>
+              <button
+                type="button"
+                className="prompt-chip"
+                onClick={() => setAskZunmeQuery('Explain SEO topical cluster architecture with internal link hierarchy')}
+              >
+                "SEO Topical Cluster Blueprint"
+              </button>
             </div>
           </div>
 
@@ -1272,16 +1335,16 @@ export const LandingPage: React.FC = () => {
                 <h4>Trust &amp; Support</h4>
                 <ul>
                   <li>
-                    <a href="#faq">Support Center</a>
+                    <NavLink to="/contact">Contact Support</NavLink>
                   </li>
                   <li>
-                    <a href="#hero">Privacy Policy</a>
+                    <NavLink to="/privacy">Privacy Policy</NavLink>
                   </li>
                   <li>
-                    <a href="#hero">Terms of Service</a>
+                    <NavLink to="/terms">Terms of Service</NavLink>
                   </li>
                   <li>
-                    <a href="#hero">Security Architecture</a>
+                    <a href="#faq">FAQ &amp; Architecture</a>
                   </li>
                 </ul>
               </div>
