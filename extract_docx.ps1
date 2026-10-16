@@ -36,6 +36,6 @@ $ads | Out-File -FilePath "d:\Kiaan\Zunme-AI-\document_ads_extracted.txt" -Encod
 Write-Host "Extracted $($ads.Count) lines to document_ads_extracted.txt"
 
 Write-Host "`n=== 2. Home - zunme - website entry point.docx ==="
-$home = Read-DocxText "d:\Kiaan\Zunme-AI-\document\Home - zunme - website entry point.docx"
-$home | Out-File -FilePath "d:\Kiaan\Zunme-AI-\document_home_extracted.txt" -Encoding utf8
-Write-Host "Extracted $($home.Count) lines to document_home_extracted.txt"
+$homeDoc = Read-DocxText "d:\Kiaan\Zunme-AI-\document\Home - zunme - website entry point.docx"
+$homeDoc | Out-File -FilePath "d:\Kiaan\Zunme-AI-\document_home_extracted.txt" -Encoding utf8
+Write-Host "Extracted $($homeDoc.Count) lines to document_home_extracted.txt"
