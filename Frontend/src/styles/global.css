@@ -395,10 +395,83 @@ textarea.input-field {
   .hide-on-mobile {
     display: none !important;
   }
+
+  /* Prevent any accidental horizontal scroll on mobile */
+  html, body {
+    overflow-x: hidden;
+    max-width: 100vw;
+  }
+
+  /* Make tables horizontally scrollable without breaking layouts */
+  .table-responsive,
+  table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Modals full fluid sizing on mobile */
+  .modal-container,
+  .hire-modal-container,
+  .paywall-modal-container {
+    width: 94% !important;
+    max-width: 94% !important;
+    margin: 16px auto !important;
+    padding: 18px 16px !important;
+    max-height: 92vh !important;
+    overflow-y: auto !important;
+  }
+
+  /* Toast notification on mobile */
+  .toast-container {
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+  }
+  .toast {
+    width: 100%;
+  }
+
+  /* Input fields and buttons touch targets */
+  input, select, textarea, button {
+    font-size: 14px;
+  }
 }
 
 @media (min-width: 769px) {
   .hide-on-desktop {
     display: none !important;
+  }
+}
+
+/* Small mobile devices (under 480px) */
+@media (max-width: 480px) {
+  .landing-container,
+  .dashboard-page-container,
+  .legal-container,
+  .creator-profile-container {
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+  }
+
+  .hero-title {
+    font-size: 28px !important;
+    line-height: 1.2 !important;
+  }
+
+  .section-title {
+    font-size: 24px !important;
+  }
+
+  .hero-ask-form {
+    flex-direction: column;
+    padding: 8px;
+    border-radius: 16px;
+  }
+
+  .hero-ask-btn {
+    width: 100%;
+    justify-content: center;
   }
 }

@@ -535,137 +535,112 @@ export const LandingPage: React.FC = () => {
             </div>
           </div>
 
-          {/* Hero 3D Perspective Workspace Preview */}
-          <div className="hero-3d-stage">
+          {/* Modern Interactive Bento Grid Showcase */}
+          <div className="hero-bento-stage">
             <div className="hero-stage-glow" aria-hidden="true" />
 
-            {/* Central Workspace Showcase Window */}
-            <div className="showcase-window">
-              {/* Window Title Bar */}
-              <div className="showcase-topbar">
-                <div className="window-dots">
-                  <span className="dot dot-red" />
-                  <span className="dot dot-yellow" />
-                  <span className="dot dot-green" />
+            <div className="hero-bento-grid">
+              {/* Bento Card 1: Multimodal AI & Prompt Intelligence */}
+              <div className="bento-card bento-card-primary">
+                <div className="bento-card-badge">
+                  <Sparkles size={13} />
+                  <span>Multimodal Reasoning</span>
                 </div>
-                <div className="showcase-address-bar">
-                  <span className="address-lock">🔒</span>
-                  <span className="address-url">zunme.ai/app/workspace</span>
+                <h3 className="bento-card-title">Next-Gen Contextual Intelligence</h3>
+                <p className="bento-card-desc">
+                  Generate comprehensive multi-stage strategies, executive briefings, and creative copy with sub-second execution speeds.
+                </p>
+
+                <div className="bento-mock-chat-bubble">
+                  <div className="bento-chat-header">
+                    <span className="bento-dot-green" />
+                    <span className="bento-chat-sender">Zunme AI Engine • GPT-4.5</span>
+                    <span className="bento-latency">⚡ 1.2s</span>
+                  </div>
+                  <div className="bento-chat-preview">
+                    "Synthesized 12 topical clusters with automatic internal link taxonomy and verified hook angles."
+                  </div>
                 </div>
-                <div className="showcase-status-indicator">
-                  <span className="pulse-indicator" />
-                  <span className="status-text">Engine 2026 Online</span>
+
+                <div className="bento-card-footer">
+                  <NavLink to="/register" className="bento-action-link">
+                    <span>Try Multimodal AI</span>
+                    <ArrowRight size={13} />
+                  </NavLink>
                 </div>
               </div>
 
-              {/* Window Content Split */}
-              <div className="showcase-content-grid">
-                {/* Left Mini Sidebar */}
-                <div className="showcase-sidebar">
-                  <div className="sidebar-brand-mini">
-                    <span className="brand-dot" />
-                    <span>ZUNME AI</span>
+              {/* Bento Card 2: Live Web Search & Grounded Citations */}
+              <div className="bento-card bento-card-cyan">
+                <div className="bento-card-badge badge-cyan">
+                  <Globe size={13} />
+                  <span>Live Web Grounding</span>
+                </div>
+                <h3 className="bento-card-title">Zero-Hallucination Live Citations</h3>
+                <p className="bento-card-desc">
+                  Every generative response is bench-checked against real-time indexed search nodes with transparent source links.
+                </p>
+
+                <div className="bento-citations-preview">
+                  <div className="bento-citation-item">
+                    <span className="bento-cite-num">[1]</span>
+                    <span className="bento-cite-url">techinsights-journal.com</span>
+                    <span className="bento-cite-verified">✓ 99.4%</span>
                   </div>
-                  <div className="sidebar-nav-mini">
-                    <div className="sidebar-nav-item active">
-                      <MessageSquare size={13} />
-                      <span>AI Assistant</span>
-                    </div>
-                    <div className="sidebar-nav-item">
-                      <Search size={13} />
-                      <span>Live Search</span>
-                    </div>
-                    <div className="sidebar-nav-item">
-                      <PenTool size={13} />
-                      <span>Content Studio</span>
-                    </div>
-                    <div className="sidebar-nav-item">
-                      <Bookmark size={13} />
-                      <span>My Library</span>
-                    </div>
+                  <div className="bento-citation-item">
+                    <span className="bento-cite-num">[2]</span>
+                    <span className="bento-cite-url">clean-creator-index.org</span>
+                    <span className="bento-cite-verified">✓ Verified</span>
                   </div>
-                  <div className="sidebar-footer-mini">
-                    <div className="storage-meter-label">Workspace Storage</div>
-                    <div className="storage-bar">
-                      <div className="storage-fill" style={{ width: '42%' }} />
-                    </div>
+                  <div className="bento-citation-item">
+                    <span className="bento-cite-num">[3]</span>
+                    <span className="bento-cite-url">saas-architecture-review.io</span>
+                    <span className="bento-cite-verified">✓ Live</span>
                   </div>
                 </div>
 
-                {/* Right Main Interactive Canvas */}
-                <div className="showcase-canvas">
-                  {/* Top Canvas Bar */}
-                  <div className="canvas-header">
-                    <div className="canvas-breadcrumbs">
-                      <span>Research &amp; Creation</span>
-                      <span className="crumb-sep">/</span>
-                      <span className="crumb-active">Q3 Strategy &amp; Intelligence</span>
-                    </div>
-                    <div className="canvas-actions-mini">
-                      <span className="badge badge-success">3 Sources Cited</span>
-                      <span className="badge badge-neutral">Saved to Library</span>
-                    </div>
+                <div className="bento-card-footer">
+                  <NavLink to="/register" className="bento-action-link">
+                    <span>Explore Live Search</span>
+                    <ArrowRight size={13} />
+                  </NavLink>
+                </div>
+              </div>
+
+              {/* Bento Card 3: Creator Asset Warehouse & Monetization */}
+              <div className="bento-card bento-card-pink">
+                <div className="bento-card-badge badge-pink">
+                  <Layers size={13} />
+                  <span>Asset Warehouse</span>
+                </div>
+                <h3 className="bento-card-title">Curated Blueprints &amp; Tools</h3>
+                <p className="bento-card-desc">
+                  Access 1,000+ verified creator templates, prompt sequences, and video scripts ready for instant deployment.
+                </p>
+
+                <div className="bento-assets-preview">
+                  <div className="bento-asset-row">
+                    <span className="bento-asset-tag">Workflow</span>
+                    <span className="bento-asset-name">Omnichannel B2B Cold Outreach</span>
+                    <span className="bento-pro-pill">PRO</span>
                   </div>
-
-                  {/* Simulated Conversation Feed */}
-                  <div className="canvas-dialogue">
-                    {/* User Prompt */}
-                    <div className="chat-bubble-user">
-                      <div className="bubble-meta">
-                        <span className="user-avatar-tag">User</span>
-                        <span className="timestamp-tag">Just now</span>
-                      </div>
-                      <p className="bubble-text">
-                        Synthesize current 2026 trends in AI-assisted content workflows and draft a 3-point strategy for creators.
-                      </p>
-                    </div>
-
-                    {/* AI Assistant Response */}
-                    <div className="chat-bubble-assistant">
-                      <div className="bubble-meta">
-                        <div className="assistant-badge">
-                          <Sparkles size={12} />
-                          <span>Zunme AI Engine</span>
-                        </div>
-                        <span className="engine-speed">1.2s response</span>
-                      </div>
-                      <div className="assistant-text">
-                        <p>
-                          Here is the strategic synthesis based on real-time web citations and creator benchmarking:
-                        </p>
-                        <div className="summary-card-mini">
-                          <div className="summary-point">
-                            <strong>1. Grounded Ideation:</strong> Top operators link every generative prompt to live web citations to eliminate hallucination risk.
-                          </div>
-                          <div className="summary-point">
-                            <strong>2. Multi-Format Calibration:</strong> Single research queries are automatically repurposed into newsletters, briefs, and social threads.
-                          </div>
-                          <div className="summary-point">
-                            <strong>3. Centralized Knowledge Archiving:</strong> Winning drafts and prompts are preserved in a persistent personal library for team reuse.
-                          </div>
-                        </div>
-
-                        {/* Verified Citations Row */}
-                        <div className="citations-row">
-                          <div className="citation-chip">
-                            <span className="citation-num">[1]</span>
-                            <span className="citation-domain">techinsights-journal.com</span>
-                            <ArrowUpRight size={11} />
-                          </div>
-                          <div className="citation-chip">
-                            <span className="citation-num">[2]</span>
-                            <span className="citation-domain">clean-creator-index.org</span>
-                            <ArrowUpRight size={11} />
-                          </div>
-                          <div className="citation-chip">
-                            <span className="citation-num">[3]</span>
-                            <span className="citation-domain">saas-architecture-review.io</span>
-                            <ArrowUpRight size={11} />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                  <div className="bento-asset-row">
+                    <span className="bento-asset-tag">Prompt Pack</span>
+                    <span className="bento-asset-name">Viral YouTube 3-Sec Hooks</span>
+                    <span className="bento-pro-pill free">FREE</span>
                   </div>
+                  <div className="bento-asset-row">
+                    <span className="bento-asset-tag">Template</span>
+                    <span className="bento-asset-name">Topical Authority 12-Cluster</span>
+                    <span className="bento-pro-pill">PRO</span>
+                  </div>
+                </div>
+
+                <div className="bento-card-footer">
+                  <NavLink to="/register" className="bento-action-link">
+                    <span>Browse Warehouse</span>
+                    <ArrowRight size={13} />
+                  </NavLink>
                 </div>
               </div>
             </div>
@@ -1230,8 +1205,8 @@ export const LandingPage: React.FC = () => {
       </section>
       )}
 
-      {/* FAQ Section */}
-      {activeSection === 'faq' && (
+      {/* FAQ Section (Shown on Home and FAQ nav) */}
+      {(activeSection === 'all' || activeSection === 'faq') && (
       <section id="faq" className="faq-section">
         <div className="landing-container">
           <div className="section-header">
@@ -1268,40 +1243,6 @@ export const LandingPage: React.FC = () => {
                 </div>
               );
             })}
-          </div>
-        </div>
-      </section>
-      )}
-
-      {/* Final CTA Section */}
-      {activeSection === 'all' && (
-      <section className="final-cta-section" id="cta">
-        <div className="landing-container">
-          <div className="cta-box">
-            <div className="cta-box-glow" aria-hidden="true" />
-            <div className="cta-badge">
-              <Sparkles size={14} />
-              <span>START CREATING TODAY</span>
-            </div>
-
-            {/* Headline (exact required text) */}
-            <h2 className="cta-title">Bring Your Ideas to Life with AI.</h2>
-
-            {/* Supporting text (exact required text) */}
-            <p className="cta-desc">
-              Explore AI-powered tools for searching, creating, and organizing your work.
-            </p>
-
-            <div className="cta-subtext">
-              <span>Free Starter access · No credit card required · Instant setup</span>
-            </div>
-
-            <div style={{ marginTop: '20px' }}>
-              <NavLink to="/register" className="btn btn-primary btn-glow">
-                <span>Create Account</span>
-                <ArrowRight size={15} />
-              </NavLink>
-            </div>
           </div>
         </div>
       </section>
