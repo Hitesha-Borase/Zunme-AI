@@ -357,9 +357,11 @@ export const LandingPage: React.FC = () => {
   return (
     <div className="landing-page" id="top">
       {/* Background Atmosphere Layers */}
-      <div className="cosmic-grid-overlay" aria-hidden="true" />
-      <div className="ambient-aurora-top" aria-hidden="true" />
-      <div className="ambient-aurora-accent" aria-hidden="true" />
+      <div className="landing-atmosphere-wrap" aria-hidden="true">
+        <div className="cosmic-grid-overlay" />
+        <div className="ambient-aurora-top" />
+        <div className="ambient-aurora-accent" />
+      </div>
 
       {/* Navigation Header */}
       <header className="landing-header">
@@ -371,7 +373,7 @@ export const LandingPage: React.FC = () => {
               aria-label="Zunme AI Home"
               onClick={() => handleNavClick('all')}
             >
-              <img src="/zunme_logo.png" alt="Zunme AI" style={{ height: '42px', width: 'auto', display: 'block' }} />
+              <img src="/zunme_logo.png" alt="Zunme AI" style={{ height: '33px', width: 'auto', display: 'block' }} />
             </NavLink>
 
             {/* Desktop Navigation */}
