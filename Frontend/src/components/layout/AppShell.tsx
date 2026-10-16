@@ -429,17 +429,11 @@ export const AppShell: React.FC = () => {
           /* ============================================================ */
           <>
             <div className="sidebar-brand-section">
-<<<<<<< HEAD
-              <NavLink to="/" className="brand-link" onClick={() => setMobileMenuOpen(false)}>
+              <NavLink to="/app" className="brand-link" onClick={() => setMobileMenuOpen(false)}>
                 <div className="brand-icon-box">
                   <span className="brand-glyph">Z</span>
                 </div>
-                <span>Zunme AI</span>
-=======
-              <NavLink to="/app" className="brand-link" onClick={() => setMobileMenuOpen(false)}>
-                <div className="brand-icon-box">Z</div>
                 <span className="brand-title-text" style={{ color: '#FFFFFF', fontWeight: '800', fontSize: '16px' }}>Zunme AI</span>
->>>>>>> 091f76ae678a697972f13e1a3db47f742ae22f45
               </NavLink>
               <button
                 className="btn-ghost hide-on-desktop"
