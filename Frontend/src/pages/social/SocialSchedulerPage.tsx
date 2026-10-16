@@ -33,6 +33,7 @@ import {
   Settings as SettingsIcon
 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
+import { PlatformConnectionModal } from '../../components/modals/PlatformConnectionModal';
 import '../../styles/dashboard.css';
 import './SocialSchedulerPage.css';
 
@@ -117,6 +118,64 @@ export const SocialSchedulerPage: React.FC = () => {
   const [newChannelName, setNewChannelName] = useState('');
   const [newChannelHandle, setNewChannelHandle] = useState('');
   const [newChannelFollowers, setNewChannelFollowers] = useState('');
+
+  // Reusable Platform Connection Dialog State
+  const [connectionModal, setConnectionModal] = useState<{
+    isOpen: boolean;
+    platformId: string;
+    platformName: string;
+    category?: string;
+    currentStatus: 'CONNECTED' | 'DISCONNECTED' | 'NEEDS_REAUTH' | 'NOT_CONFIGURED';
+    purposeDescription?: string;
+    knownPermissions?: string[];
+    accountId?: string;
+  } | null>(null);
+
+  const openPlatformConnectionDialog = (acc: ConnectedAccount) => {
+    const permMap: Record<string, string[]> = {
+      twitter: ['tweet.read', 'tweet.write', 'users.read', 'offline.access'],
+      linkedin: ['w_member_social', 'r_liteprofile', 'r_emailaddress'],
+      instagram: ['instagram_basic', 'instagram_content_publish', 'pages_read_engagement'],
+      youtube: ['https://www.googleapis.com/auth/youtube.upload', 'https://www.googleapis.com/auth/youtube.readonly'],
+      tiktok: ['user.info.basic', 'video.upload', 'video.publish']
+    };
+    setConnectionModal({
+      isOpen: true,
+      platformId: acc.platform,
+      platformName: acc.platformName,
+      category: 'Social Media Broadcast',
+      currentStatus: acc.status,
+      purposeDescription: `Direct automated publishing, queue synchronization, and cross-channel engagement telemetry for ${acc.platformName}.`,
+      knownPermissions: permMap[acc.platform] || ['profile.basic', 'content.publish'],
+      accountId: acc.id
+    });
+  };
+
+  const handleModalConnect = () => {
+    if (!connectionModal?.accountId) return;
+    setAccounts((prev) =>
+      prev.map((a) =>
+        a.id === connectionModal.accountId
+          ? { ...a, status: 'CONNECTED', lastSynced: 'Just now' }
+          : a
+      )
+    );
+    showToast(`${connectionModal.platformName} connection authorized!`, 'success');
+    setConnectionModal(null);
+  };
+
+  const handleModalDisconnect = () => {
+    if (!connectionModal?.accountId) return;
+    setAccounts((prev) =>
+      prev.map((a) =>
+        a.id === connectionModal.accountId
+          ? { ...a, status: 'DISCONNECTED', lastSynced: 'Disconnected' }
+          : a
+      )
+    );
+    showToast(`${connectionModal.platformName} disconnected`, 'info');
+    setConnectionModal(null);
+  };
 
   // Initial Scheduled Posts
   const [posts, setPosts] = useState<ScheduledPost[]>([
@@ -1146,9 +1205,9 @@ export const SocialSchedulerPage: React.FC = () => {
                     </span>
                     <button
                       className={`btn btn-sm ${acc.status === 'CONNECTED' ? 'btn-outline' : 'btn-primary'}`}
-                      onClick={() => handleToggleAccount(acc.id)}
+                      onClick={() => openPlatformConnectionDialog(acc)}
                     >
-                      {acc.status === 'CONNECTED' ? 'Disconnect' : 'Connect Channel'}
+                      {acc.status === 'CONNECTED' ? 'Manage Connection' : 'Connect Channel'}
                     </button>
                   </div>
                 </div>
@@ -1654,6 +1713,22 @@ export const SocialSchedulerPage: React.FC = () => {
             </form>
           </div>
         </div>
+      )}
+
+      {/* P2: Reusable Social Platform Connection Modal */}
+      {connectionModal && (
+        <PlatformConnectionModal
+          isOpen={connectionModal.isOpen}
+          onClose={() => setConnectionModal(null)}
+          platformId={connectionModal.platformId}
+          platformName={connectionModal.platformName}
+          category={connectionModal.category}
+          currentStatus={connectionModal.currentStatus}
+          purposeDescription={connectionModal.purposeDescription}
+          knownPermissions={connectionModal.knownPermissions}
+          onConnect={handleModalConnect}
+          onDisconnect={handleModalDisconnect}
+        />
       )}
     </div>
   );

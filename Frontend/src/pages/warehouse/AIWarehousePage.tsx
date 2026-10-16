@@ -34,6 +34,7 @@ import {
 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import { AssetPaywallModal } from '../../components/modals/AssetPaywallModal';
+import { AudioPreviewWidget } from '../../components/studio/AudioPreviewWidget';
 import '../../styles/dashboard.css';
 import './AIWarehousePage.css';
 
@@ -41,7 +42,7 @@ export interface WarehouseManagedAsset {
   id: string;
   title: string;
   description: string;
-  type: 'Prompt Pack' | 'Workflow' | 'Template' | 'Video Script' | 'Research Dataset';
+  type: 'Prompt Pack' | 'Workflow' | 'Template' | 'Video Script' | 'Research Dataset' | 'Audio & Music';
   category: string;
   collection: string;
   sizeKb: number;
@@ -150,6 +151,22 @@ const INITIAL_WAREHOUSE_ASSETS: WarehouseManagedAsset[] = [
     isVerifiedCreator: false,
     createdAt: '2026-10-10',
     content: 'Cart Abandon Trigger 1 (1 hour): Subtle reminder\nCart Abandon Trigger 2 (24 hours): Social proof\nCart Abandon Trigger 3 (48 hours): Special perk'
+  },
+  {
+    id: 'wh-audio-1',
+    title: 'Cinematic Ambient Background Theme & Stems',
+    description: 'Royalty-free synth atmospheric audio stems for product launch videos and podcast intros.',
+    type: 'Audio & Music',
+    category: 'Audio & Music',
+    collection: 'Client Pitches',
+    sizeKb: 2420,
+    tags: ['Audio', 'Music', 'Podcast', 'Soundtrack'],
+    licensing: 'Commercial Pro',
+    downloads: 890,
+    creatorName: 'Marcus Vance',
+    isVerifiedCreator: true,
+    createdAt: '2026-10-11',
+    content: 'Track Key: D minor | BPM: 110 | Mood: Uplifting Tech Ambient | Stems: Bass, Lead Synth, Kick Drum, Atmospheric Pad'
   },
   {
     id: 'wh-7',
@@ -1018,6 +1035,16 @@ export const AIWarehousePage: React.FC = () => {
               <div style={{ padding: '14px', borderRadius: '10px', background: '#FAFBFD', border: '1px solid #E8ECF5', fontSize: '13px', lineHeight: '1.6', color: '#272F3E' }}>
                 {selectedAsset.description}
               </div>
+
+              {(selectedAsset.category === 'Audio & Music' || selectedAsset.type === 'Audio & Music' || selectedAsset.tags.includes('Audio')) && (
+                <div style={{ marginTop: '4px' }}>
+                  <AudioPreviewWidget
+                    title={selectedAsset.title}
+                    artist={selectedAsset.creatorName}
+                    durationSeconds={54}
+                  />
+                </div>
+              )}
 
               <div>
                 <div style={{ fontSize: '12px', fontWeight: '800', color: '#6E56CF', textTransform: 'uppercase', marginBottom: '8px' }}>

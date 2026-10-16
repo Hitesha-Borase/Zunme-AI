@@ -23,10 +23,14 @@ import {
   ShieldCheck,
   ExternalLink,
   LifeBuoy,
-  X
+  X,
+  Download,
+  Upload
 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import { BusinessProject, CalendarEvent } from '../../types';
+import { CsvImportModal, exportToCsv } from '../../components/modals/CsvImportModal';
+import { PlatformConnectionModal } from '../../components/modals/PlatformConnectionModal';
 import '../../styles/dashboard.css';
 
 interface CrmLead {
@@ -106,6 +110,11 @@ export const BusinessWorkspacePage: React.FC = () => {
   const [newLeadCompany, setNewLeadCompany] = useState('');
   const [newLeadRole, setNewLeadRole] = useState('VP Growth');
   const [newLeadValue, setNewLeadValue] = useState(24000);
+
+  // CSV Import & CRM Connection Dialog States
+  const [isCsvImportOpen, setIsCsvImportOpen] = useState(false);
+  const [isCrmConnectModalOpen, setIsCrmConnectModalOpen] = useState(false);
+  const [crmConnectedStatus, setCrmConnectedStatus] = useState<'CONNECTED' | 'DISCONNECTED'>('CONNECTED');
 
   const [crmLeads, setCrmLeads] = useState<CrmLead[]>([
     {
@@ -735,12 +744,37 @@ export const BusinessWorkspacePage: React.FC = () => {
 
           {/* CRM Leads Table */}
           <div className="glass-panel">
-            <div className="panel-header">
+            <div className="panel-header" style={{ flexWrap: 'wrap', gap: '10px' }}>
               <div className="panel-title">
                 <Users size={18} color="#6E56CF" />
                 Synchronized Lead Pipeline &amp; Customer Interactions
               </div>
-              <span className="badge badge-primary">{crmLeads.length} Synced Records</span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+                <button
+                  className="btn btn-outline btn-sm"
+                  onClick={() => exportToCsv('nergy_crm_leads.csv', crmLeads)}
+                  title="Export contacts and leads to CSV"
+                >
+                  <Download size={13} />
+                  <span>Export CSV</span>
+                </button>
+                <button
+                  className="btn btn-outline btn-sm"
+                  onClick={() => setIsCsvImportOpen(true)}
+                  title="Upload CSV to import contacts into local pipeline"
+                >
+                  <Upload size={13} />
+                  <span>Import CSV</span>
+                </button>
+                <button
+                  className="btn btn-secondary btn-sm"
+                  onClick={() => setIsCrmConnectModalOpen(true)}
+                  title="Configure nErgy CRM Integration & OAuth"
+                >
+                  <span>Sync Settings</span>
+                </button>
+                <span className="badge badge-primary">{crmLeads.length} Synced Records</span>
+              </div>
             </div>
 
             <div style={{ overflowX: 'auto' }}>
@@ -1072,6 +1106,52 @@ export const BusinessWorkspacePage: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* P2: CSV Import Dialog for CRM Contacts */}
+      <CsvImportModal
+        isOpen={isCsvImportOpen}
+        onClose={() => setIsCsvImportOpen(false)}
+        title="Import CRM Contacts & Leads (CSV)"
+        targetEntityName="CRM Leads"
+        expectedHeaders={['name', 'email', 'company', 'role', 'dealStage', 'dealValue']}
+        sampleCsvTemplate={`name,email,company,role,dealStage,dealValue\nAlice Morgan,alice@nexuscloud.io,Nexus Cloud,CTO,DEMO_SCHEDULED,32000\nRobert Chen,robert@hypergrowth.ai,HyperGrowth,Head of Growth,NEW_LEAD,18000\nSophia Ramirez,sophia@stellarbrand.com,Stellar Brands,VP Marketing,PROPOSAL_SENT,45000`}
+        onConfirmImport={(parsedRows: Record<string, string>[]) => {
+          const imported: CrmLead[] = parsedRows.map((r: Record<string, string>, i: number) => ({
+            id: `lead-import-${Date.now()}-${i}`,
+            name: r.name || 'Imported Lead',
+            email: r.email || 'lead@enterprise.com',
+            company: r.company || 'Enterprise Account',
+            role: r.role || 'Executive',
+            score: Math.floor(Math.random() * 20) + 80,
+            channel: 'CSV Ingest',
+            dealStage: (r.dealStage as any) || 'NEW_LEAD',
+            dealValue: Number(r.dealValue) || 20000,
+            syncedAt: 'Just now'
+          }));
+          setCrmLeads((prev) => [...imported, ...prev]);
+          showToast(`Successfully imported ${imported.length} leads into local CRM state!`, 'success');
+        }}
+      />
+
+      {/* P2: Platform Connection Modal for nErgy CRM */}
+      <PlatformConnectionModal
+        isOpen={isCrmConnectModalOpen}
+        onClose={() => setIsCrmConnectModalOpen(false)}
+        platformId="nergy_crm"
+        platformName="nErgy CRM Enterprise Bridge"
+        category="CRM & Pipeline Sync"
+        currentStatus={crmConnectedStatus}
+        purposeDescription="Synchronizes real-time qualified website leads, conversational research insights, and customer deal stages into your active CRM pipeline."
+        knownPermissions={['crm.leads.read', 'crm.leads.write', 'crm.deals.write', 'webhooks.ingest']}
+        onConnect={() => {
+          setCrmConnectedStatus('CONNECTED');
+          showToast('nErgy CRM connection verified and authorized in sandbox', 'success');
+        }}
+        onDisconnect={() => {
+          setCrmConnectedStatus('DISCONNECTED');
+          showToast('nErgy CRM disconnected', 'info');
+        }}
+      />
     </div>
   );
 };

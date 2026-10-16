@@ -30,7 +30,11 @@ import {
   RefreshCw,
   LifeBuoy,
   Settings as SettingsIcon,
-  X
+  X,
+  Smartphone,
+  Laptop,
+  Globe,
+  Rocket
 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import '../../styles/dashboard.css';
@@ -163,6 +167,10 @@ export const ZunmeAdsPage: React.FC = () => {
   const [cBid, setCBid] = useState(0.4);
   const [cKeywords, setCKeywords] = useState('ai productivity, marketing copy, content calendar');
   const [cHeadline, setCHeadline] = useState('');
+  const [cDescription, setCDescription] = useState('Scale your enterprise writing velocity with verified workflows and model routing in Zunme AI.');
+  const [cCallToAction, setCCallToAction] = useState('Learn More');
+  const [cPathSlug, setCPathSlug] = useState('solutions/ai-studio');
+  const [adPreviewMode, setAdPreviewMode] = useState<'SERP' | 'MOBILE' | 'NATIVE'>('SERP');
   const [cDestination, setCDestination] = useState('https://zunme.ai');
 
   // Keyword Auctions
@@ -619,17 +627,75 @@ export const ZunmeAdsPage: React.FC = () => {
               </div>
 
               <div>
-                <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#111625', marginBottom: '6px' }}>
-                  Ad Headline &amp; Pitch (Shown to Users)
-                </label>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                  <label style={{ fontSize: '12px', fontWeight: '700', color: '#111625' }}>
+                    Ad Headline
+                  </label>
+                  <span style={{ fontSize: '11px', color: cHeadline.length > 35 ? '#E11D48' : '#8C97B0', fontWeight: '600' }}>
+                    {cHeadline.length}/35 chars {cHeadline.length > 35 && '(Exceeds optimal limit)'}
+                  </span>
+                </div>
                 <input
                   type="text"
                   className="input-field"
-                  placeholder="e.g. Scale your team productivity with verified prompt packs"
+                  placeholder="e.g. Scale Executive Writing with Verified Prompts"
                   value={cHeadline}
                   onChange={(e) => setCHeadline(e.target.value)}
+                  maxLength={50}
                   required
                 />
+              </div>
+
+              <div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                  <label style={{ fontSize: '12px', fontWeight: '700', color: '#111625' }}>
+                    Ad Description &amp; Pitch
+                  </label>
+                  <span style={{ fontSize: '11px', color: cDescription.length > 90 ? '#E11D48' : '#8C97B0', fontWeight: '600' }}>
+                    {cDescription.length}/90 chars {cDescription.length > 90 && '(Trim for mobile CTR)'}
+                  </span>
+                </div>
+                <textarea
+                  className="input-field"
+                  style={{ minHeight: '68px', resize: 'vertical' }}
+                  placeholder="e.g. Accelerate daily executive output with verified workflows and enterprise-grade models inside Zunme AI."
+                  value={cDescription}
+                  onChange={(e) => setCDescription(e.target.value)}
+                  maxLength={120}
+                  required
+                />
+              </div>
+
+              <div className="form-grid-2">
+                <div>
+                  <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#111625', marginBottom: '6px' }}>
+                    Display Path Slug
+                  </label>
+                  <input
+                    type="text"
+                    className="input-field"
+                    value={cPathSlug}
+                    onChange={(e) => setCPathSlug(e.target.value)}
+                    placeholder="solutions/ai-studio"
+                  />
+                </div>
+
+                <div>
+                  <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#111625', marginBottom: '6px' }}>
+                    Call To Action Button
+                  </label>
+                  <select
+                    className="input-field"
+                    value={cCallToAction}
+                    onChange={(e) => setCCallToAction(e.target.value)}
+                  >
+                    <option value="Learn More">Learn More</option>
+                    <option value="Get Started">Get Started</option>
+                    <option value="Book Demo">Book Demo</option>
+                    <option value="Try Free">Try Free</option>
+                    <option value="Visit Website">Visit Website</option>
+                  </select>
+                </div>
               </div>
 
               <div>
@@ -692,69 +758,258 @@ export const ZunmeAdsPage: React.FC = () => {
               </div>
 
               <button type="submit" className="btn btn-primary" style={{ justifyContent: 'center', marginTop: '6px' }}>
-                <RocketIcon size={16} />
+                <Rocket size={16} />
                 <span>Submit &amp; Launch Campaign to Auction</span>
               </button>
             </form>
           </div>
 
-          {/* Real-time Native Ad Preview */}
+          {/* Interactive Live Advertisement Preview */}
           <div className="glass-panel" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
             <div>
-              <div className="panel-header">
-                <div className="panel-title">
-                  <Eye size={18} color="#0284C7" />
-                  Live Placement Simulation Preview
+              <div className="panel-header" style={{ marginBottom: '12px' }}>
+                <div>
+                  <div className="panel-title">
+                    <Eye size={18} color="#0284C7" />
+                    Interactive Placement Simulator
+                  </div>
+                  <span style={{ fontSize: '11px', color: '#5F6B85' }}>
+                    Real-time visual rendering as you edit
+                  </span>
                 </div>
-                <span className="badge badge-success">Pixel Perfect</span>
+
+                {/* Viewport & Channel Mode Switcher */}
+                <div style={{ display: 'flex', gap: '4px', background: '#F1F5F9', padding: '3px', borderRadius: '8px' }}>
+                  <button
+                    type="button"
+                    onClick={() => setAdPreviewMode('SERP')}
+                    style={{
+                      border: 'none',
+                      background: adPreviewMode === 'SERP' ? '#FFFFFF' : 'transparent',
+                      color: adPreviewMode === 'SERP' ? '#6E56CF' : '#64748B',
+                      fontSize: '11px',
+                      fontWeight: '700',
+                      padding: '4px 8px',
+                      borderRadius: '6px',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      boxShadow: adPreviewMode === 'SERP' ? '0 1px 3px rgba(0,0,0,0.06)' : 'none'
+                    }}
+                  >
+                    <Laptop size={12} />
+                    <span>SERP</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setAdPreviewMode('MOBILE')}
+                    style={{
+                      border: 'none',
+                      background: adPreviewMode === 'MOBILE' ? '#FFFFFF' : 'transparent',
+                      color: adPreviewMode === 'MOBILE' ? '#6E56CF' : '#64748B',
+                      fontSize: '11px',
+                      fontWeight: '700',
+                      padding: '4px 8px',
+                      borderRadius: '6px',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      boxShadow: adPreviewMode === 'MOBILE' ? '0 1px 3px rgba(0,0,0,0.06)' : 'none'
+                    }}
+                  >
+                    <Smartphone size={12} />
+                    <span>Mobile</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setAdPreviewMode('NATIVE')}
+                    style={{
+                      border: 'none',
+                      background: adPreviewMode === 'NATIVE' ? '#FFFFFF' : 'transparent',
+                      color: adPreviewMode === 'NATIVE' ? '#6E56CF' : '#64748B',
+                      fontSize: '11px',
+                      fontWeight: '700',
+                      padding: '4px 8px',
+                      borderRadius: '6px',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      boxShadow: adPreviewMode === 'NATIVE' ? '0 1px 3px rgba(0,0,0,0.06)' : 'none'
+                    }}
+                  >
+                    <Globe size={12} />
+                    <span>In-Feed</span>
+                  </button>
+                </div>
               </div>
 
-              <p style={{ fontSize: '13px', color: '#5F6B85', marginBottom: '16px' }}>
-                This is exactly how your sponsored advertisement will render across user sessions:
-              </p>
+              {/* SERP Search Engine Result Mode */}
+              {adPreviewMode === 'SERP' && (
+                <div
+                  style={{
+                    padding: '20px',
+                    borderRadius: '12px',
+                    background: '#FFFFFF',
+                    border: '1px solid #E2E8F0',
+                    boxShadow: '0 4px 16px rgba(15, 23, 42, 0.04)'
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
+                    <div style={{ width: '18px', height: '18px', borderRadius: '50%', background: '#6E56CF', color: '#FFFFFF', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '10px', fontWeight: '900' }}>
+                      Z
+                    </div>
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <span style={{ fontSize: '11px', fontWeight: '700', color: '#202124' }}>
+                          Zunme AI Sponsored
+                        </span>
+                        <span style={{ fontSize: '11px', color: '#70757A' }}>•</span>
+                        <span style={{ fontSize: '11px', color: '#202124' }}>
+                          {cDestination.replace(/^https?:\/\//, '')}{cPathSlug ? ` › ${cPathSlug.replace(/^\//, '')}` : ''}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
 
-              {/* Preview Unit */}
-              <div
-                style={{
-                  padding: '16px',
-                  borderRadius: '12px',
-                  background: '#FAFBFD',
-                  border: '2px dashed #6E56CF',
-                  boxShadow: '0 8px 24px rgba(110,86,207,0.08)'
-                }}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
-                  <span style={{ fontSize: '10px', fontWeight: '900', color: '#6E56CF', background: '#EFEBFC', padding: '2px 8px', borderRadius: '4px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                    Sponsored • Partner Feature
-                  </span>
-                  <span style={{ fontSize: '11px', color: '#8C97B0' }}>Target: {cKeywords.split(',')[0]}</span>
+                  <h3
+                    style={{
+                      fontSize: '18px',
+                      fontWeight: '500',
+                      color: '#1A0DAB',
+                      margin: '4px 0 6px 0',
+                      lineHeight: '1.3',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    {cHeadline || <span style={{ color: '#94A3B8', fontStyle: 'italic' }}>Headline will appear here (e.g. Scale Executive Writing)</span>}
+                  </h3>
+
+                  <p style={{ fontSize: '13px', color: '#4D5156', lineHeight: '1.5', margin: '0 0 10px 0' }}>
+                    {cDescription || <span style={{ color: '#94A3B8', fontStyle: 'italic' }}>Ad description will appear here. Highlight your offer and verified value proposition.</span>}
+                  </p>
+
+                  {/* Sitelinks Extension Simulation */}
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', paddingTop: '8px', borderTop: '1px solid #F1F5F9' }}>
+                    <div>
+                      <span style={{ fontSize: '12px', color: '#1A0DAB', fontWeight: '600', display: 'block' }}>
+                        {cCallToAction}: Free Trial
+                      </span>
+                      <span style={{ fontSize: '11px', color: '#70757A' }}>Instant 1-click workspace access</span>
+                    </div>
+                    <div>
+                      <span style={{ fontSize: '12px', color: '#1A0DAB', fontWeight: '600', display: 'block' }}>
+                        Creator Marketplace
+                      </span>
+                      <span style={{ fontSize: '11px', color: '#70757A' }}>Verified templates &amp; blueprints</span>
+                    </div>
+                  </div>
                 </div>
+              )}
 
-                <h4 style={{ fontSize: '15px', fontWeight: '800', color: '#111625', margin: '0 0 6px 0' }}>
-                  {cHeadline || 'Your Compelling Headline Will Render Here'}
-                </h4>
+              {/* Mobile Smartphone Card Mode */}
+              {adPreviewMode === 'MOBILE' && (
+                <div
+                  style={{
+                    maxWidth: '340px',
+                    margin: '0 auto',
+                    padding: '16px',
+                    borderRadius: '24px',
+                    background: '#FAFBFD',
+                    border: '3px solid #1E293B',
+                    boxShadow: '0 12px 28px rgba(0, 0, 0, 0.12)'
+                  }}
+                >
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '10px', color: '#64748B', marginBottom: '10px', fontWeight: '700' }}>
+                    <span>9:41</span>
+                    <span>5G • 100%</span>
+                  </div>
 
-                <p style={{ fontSize: '12.5px', color: '#5F6B85', lineHeight: '1.45', marginBottom: '12px' }}>
-                  Accelerate daily executive output with verified workflows and enterprise-grade models inside Zunme AI.
-                </p>
+                  <div style={{ background: '#FFFFFF', padding: '12px', borderRadius: '14px', border: '1px solid #E2E8F0' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
+                      <span style={{ fontSize: '10px', fontWeight: '800', color: '#059669', background: '#E8F8F0', padding: '1px 6px', borderRadius: '4px' }}>
+                        Sponsored
+                      </span>
+                      <span style={{ fontSize: '10px', color: '#64748B' }}>
+                        {cDestination.replace(/^https?:\/\//, '')}
+                      </span>
+                    </div>
 
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                  <span style={{ fontSize: '11.5px', color: '#0284C7', textDecoration: 'underline' }}>
-                    {cDestination}
-                  </span>
-                  <span className="btn btn-sm btn-primary" style={{ pointerEvents: 'none', padding: '4px 10px', fontSize: '11px' }}>
-                    <span>Learn More</span>
-                    <ArrowRight size={12} />
-                  </span>
+                    <h4 style={{ fontSize: '14px', fontWeight: '700', color: '#1A0DAB', margin: '4px 0' }}>
+                      {cHeadline || 'Your Mobile Ad Headline'}
+                    </h4>
+
+                    <p style={{ fontSize: '11.5px', color: '#475569', lineHeight: '1.4', margin: '0 0 8px 0' }}>
+                      {cDescription || 'Mobile description text optimized for compact screens.'}
+                    </p>
+
+                    <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                      <span style={{ fontSize: '10.5px', fontWeight: '700', color: '#6E56CF', background: '#EFEBFC', padding: '3px 8px', borderRadius: '6px' }}>
+                        {cCallToAction} &rarr;
+                      </span>
+                    </div>
+                  </div>
                 </div>
-              </div>
+              )}
+
+              {/* Native In-Feed Placement Mode */}
+              {adPreviewMode === 'NATIVE' && (
+                <div
+                  style={{
+                    padding: '16px',
+                    borderRadius: '12px',
+                    background: '#FAFBFD',
+                    border: '2px dashed #6E56CF',
+                    boxShadow: '0 8px 24px rgba(110,86,207,0.08)'
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
+                    <span style={{ fontSize: '10px', fontWeight: '900', color: '#6E56CF', background: '#EFEBFC', padding: '2px 8px', borderRadius: '4px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                      Sponsored • Partner Feature
+                    </span>
+                    <span style={{ fontSize: '11px', color: '#8C97B0' }}>Target: #{cKeywords.split(',')[0]}</span>
+                  </div>
+
+                  <h4 style={{ fontSize: '15px', fontWeight: '800', color: '#111625', margin: '0 0 6px 0' }}>
+                    {cHeadline || 'Your Compelling Headline Will Render Here'}
+                  </h4>
+
+                  <p style={{ fontSize: '12.5px', color: '#5F6B85', lineHeight: '1.45', marginBottom: '12px' }}>
+                    {cDescription || 'Accelerate daily executive output with verified workflows and enterprise-grade models inside Zunme AI.'}
+                  </p>
+
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <span style={{ fontSize: '11.5px', color: '#0284C7', textDecoration: 'underline' }}>
+                      {cDestination}
+                    </span>
+                    <span className="btn btn-sm btn-primary" style={{ pointerEvents: 'none', padding: '4px 10px', fontSize: '11px' }}>
+                      <span>{cCallToAction}</span>
+                      <ArrowRight size={12} />
+                    </span>
+                  </div>
+                </div>
+              )}
             </div>
 
-            <div style={{ padding: '14px', background: '#E8F8F0', borderRadius: '10px', marginTop: '20px', border: '1px solid rgba(5,150,105,0.25)' }}>
-              <span style={{ fontSize: '12px', fontWeight: '700', color: '#059669', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <CheckCircle2 size={15} />
-                <span>Auction Verification: High Ad Quality Score (9.4/10)</span>
-              </span>
+            {/* Quality Score & Honest Simulator Notice */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '16px' }}>
+              <div style={{ padding: '12px 14px', background: '#E8F8F0', borderRadius: '10px', border: '1px solid rgba(5,150,105,0.25)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <span style={{ fontSize: '12px', fontWeight: '700', color: '#059669', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <CheckCircle2 size={15} />
+                  <span>Auction Verification: High Ad Quality Score ({cHeadline.length > 0 && cDescription.length > 0 ? '9.6/10' : '6.0/10'})</span>
+                </span>
+                <span style={{ fontSize: '11px', color: '#059669', fontWeight: '600' }}>
+                  Expected CTR: ~4.2%
+                </span>
+              </div>
+
+              <div style={{ padding: '8px 12px', background: '#F8FAFC', borderRadius: '8px', border: '1px solid #E2E8F0', fontSize: '11px', color: '#64748B' }}>
+                <strong>Simulator Notice:</strong> This interactive preview simulates placement layout across desktop SERP, mobile devices, and in-feed positions. Ad activation operates in frontend simulation mode.
+              </div>
             </div>
           </div>
         </div>

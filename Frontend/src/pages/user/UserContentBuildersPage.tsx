@@ -57,6 +57,26 @@ import {
   ToolTemplate,
   CategoryCardDef
 } from './toolsCatalogData';
+import { AudioPreviewWidget } from '../../components/studio/AudioPreviewWidget';
+
+export interface PlatformFilterItem {
+  id: string;
+  name: string;
+  icon: string;
+  keywords?: string[];
+}
+
+export const PLATFORM_QUICK_FILTERS: PlatformFilterItem[] = [
+  { id: 'all', name: 'All Platforms', icon: '🌐' },
+  { id: 'youtube', name: 'YouTube', icon: '▶️', keywords: ['youtube', 'yt', 'channel video', 'video script', 'video tags', 'video title'] },
+  { id: 'tiktok', name: 'TikTok', icon: '🎵', keywords: ['tiktok', 'tik tok', 'short video', 'reels', 'hook generator', 'dance'] },
+  { id: 'amazon', name: 'Amazon', icon: '📦', keywords: ['amazon', 'product description', 'listing', 'ecommerce', 'e-commerce', 'bullet points'] },
+  { id: 'linkedin', name: 'LinkedIn', icon: '💼', keywords: ['linkedin', 'professional bio', 'connection request', 'carousel', 'recommendation'] },
+  { id: 'x', name: 'X / Twitter', icon: '𝕏', keywords: ['twitter', 'tweet', 'threads', 'thread', ' x ', 'x post'] },
+  { id: 'google', name: 'Google', icon: '🔍', keywords: ['google', 'seo', 'serp', 'sheets & excel', 'search ad'] },
+  { id: 'instagram', name: 'Instagram', icon: '📸', keywords: ['instagram', 'ig', 'caption', 'hashtag', 'reels', 'story'] },
+  { id: 'facebook', name: 'Facebook', icon: '👥', keywords: ['facebook', 'fb', 'fan page'] }
+];
 
 export const UserContentBuildersPage: React.FC = () => {
   const {
@@ -70,6 +90,7 @@ export const UserContentBuildersPage: React.FC = () => {
   const [activeStudioTab, setActiveStudioTab] = useState<'templates' | 'images' | 'video' | 'canvas'>('templates');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
+  const [selectedPlatform, setSelectedPlatform] = useState<string>('all');
   const [selectedTemplate, setSelectedTemplate] = useState<ToolTemplate>(TEMPLATES_CATALOG[0]);
   const [visibleLimit, setVisibleLimit] = useState<number>(36);
 
@@ -79,29 +100,50 @@ export const UserContentBuildersPage: React.FC = () => {
   const [length, setLength] = useState<ContentLength>('Medium (~500 words)');
   const [copied, setCopied] = useState(false);
 
-  // Filter templates by selected category and search text
+  // Filter templates by selected category, platform, and search text
   const filteredTemplates = TEMPLATES_CATALOG.filter((t) => {
     const matchesCategory =
       selectedCategory === 'All' ||
       t.templateCategory.toLowerCase() === selectedCategory.toLowerCase();
 
+    const matchesPlatform =
+      selectedPlatform === 'all' ||
+      (() => {
+        const filterDef = PLATFORM_QUICK_FILTERS.find((p) => p.id === selectedPlatform);
+        if (!filterDef || !filterDef.keywords) return true;
+        const fullText = `${t.name} ${t.description} ${t.templateCategory}`.toLowerCase();
+        return filterDef.keywords.some((kw) => fullText.includes(kw.toLowerCase()));
+      })();
+
     const matchesSearch =
+      !searchQuery ||
       t.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       t.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
       t.templateCategory.toLowerCase().includes(searchQuery.toLowerCase());
 
-    return matchesCategory && matchesSearch;
+    return matchesCategory && matchesPlatform && matchesSearch;
   });
 
   const displayedTemplates =
-    selectedCategory === 'All' && !searchQuery
+    selectedCategory === 'All' && selectedPlatform === 'all' && !searchQuery
       ? filteredTemplates.slice(0, visibleLimit)
       : filteredTemplates;
 
   const handleCategorySelect = (catId: string) => {
     setSelectedCategory(catId);
     setVisibleLimit(36);
+  };
+
+  const handlePlatformSelect = (platId: string) => {
+    setSelectedPlatform(platId);
+    setVisibleLimit(36);
+  };
+
+  const handleClearAllFilters = () => {
+    setSelectedCategory('All');
+    setSelectedPlatform('all');
     setSearchQuery('');
+    setVisibleLimit(36);
   };
 
   const handleSelectTemplate = (tpl: ToolTemplate) => {
@@ -301,24 +343,76 @@ export const UserContentBuildersPage: React.FC = () => {
               })}
             </div>
 
+            {/* P3: Platform Quick Filters Bar */}
+            <div style={{ marginTop: '16px', paddingTop: '14px', borderTop: '1px solid #F0F3FA' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px', flexWrap: 'wrap', gap: '8px' }}>
+                <span style={{ fontSize: '12px', fontWeight: '800', color: '#111625', textTransform: 'uppercase', letterSpacing: '0.04em', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <Share2 size={13} color="#6E56CF" />
+                  Filter by Target Platform:
+                </span>
+                {selectedPlatform !== 'all' && (
+                  <button
+                    className="btn-ghost"
+                    onClick={() => setSelectedPlatform('all')}
+                    style={{ fontSize: '11px', color: '#6E56CF', padding: '2px 6px' }}
+                  >
+                    Reset Platform Filter
+                  </button>
+                )}
+              </div>
+
+              <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', paddingBottom: '4px', scrollbarWidth: 'thin' }}>
+                {PLATFORM_QUICK_FILTERS.map((plat) => {
+                  const isActive = selectedPlatform === plat.id;
+                  return (
+                    <button
+                      key={plat.id}
+                      onClick={() => handlePlatformSelect(plat.id)}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '6px',
+                        padding: '6px 14px',
+                        borderRadius: '20px',
+                        fontSize: '12px',
+                        fontWeight: isActive ? '700' : '500',
+                        border: isActive ? '1px solid #6E56CF' : '1px solid #E8ECF5',
+                        background: isActive ? '#6E56CF' : '#FFFFFF',
+                        color: isActive ? '#FFFFFF' : '#475467',
+                        cursor: 'pointer',
+                        whiteSpace: 'nowrap',
+                        transition: 'all 0.15s ease',
+                        boxShadow: isActive ? '0 2px 8px rgba(110,86,207,0.25)' : 'none'
+                      }}
+                    >
+                      <span>{plat.icon}</span>
+                      <span>{plat.name}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
             {/* Filter Status Bar */}
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '14px', paddingTop: '12px', borderTop: '1px solid #F0F3FA' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '14px', paddingTop: '12px', borderTop: '1px solid #F0F3FA', flexWrap: 'wrap', gap: '10px' }}>
               <div style={{ fontSize: '13px', color: '#5F6B85' }}>
                 Showing <strong>{filteredTemplates.length}</strong> blueprints in{' '}
                 <strong style={{ color: '#6E56CF' }}>{selectedCategory === 'All' ? 'All Categories' : selectedCategory}</strong>
+                {selectedPlatform !== 'all' && (
+                  <span>
+                    {' '}• Platform: <strong style={{ color: '#6E56CF' }}>{PLATFORM_QUICK_FILTERS.find((p) => p.id === selectedPlatform)?.name}</strong>
+                  </span>
+                )}
                 {searchQuery && <span> matching "{searchQuery}"</span>}
               </div>
 
-              {(selectedCategory !== 'All' || searchQuery) && (
+              {(selectedCategory !== 'All' || selectedPlatform !== 'all' || searchQuery) && (
                 <button
                   className="btn-ghost"
-                  onClick={() => {
-                    setSelectedCategory('All');
-                    setSearchQuery('');
-                  }}
-                  style={{ fontSize: '12px', color: '#6E56CF', padding: '4px 8px' }}
+                  onClick={handleClearAllFilters}
+                  style={{ fontSize: '12px', color: '#6E56CF', padding: '4px 8px', fontWeight: '700' }}
                 >
-                  Clear Filters
+                  Clear All Filters (Reset)
                 </button>
               )}
             </div>
@@ -326,7 +420,45 @@ export const UserContentBuildersPage: React.FC = () => {
 
           {/* Template Selector Grid */}
           <div style={{ marginBottom: 'var(--space-6)' }}>
-            <div className="cards-grid-3">
+            {filteredTemplates.length === 0 ? (
+              <div
+                style={{
+                  textAlign: 'center',
+                  padding: '48px 24px',
+                  background: '#FFFFFF',
+                  borderRadius: '16px',
+                  border: '1px solid #E8ECF5'
+                }}
+              >
+                <div
+                  style={{
+                    width: '48px',
+                    height: '48px',
+                    borderRadius: '50%',
+                    background: '#F5EFFF',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    margin: '0 auto 12px'
+                  }}
+                >
+                  <Search size={22} color="#6E56CF" />
+                </div>
+                <h3 style={{ fontSize: '16px', fontWeight: '800', color: '#111625', marginBottom: '6px' }}>
+                  No Matching Blueprints Found
+                </h3>
+                <p style={{ fontSize: '13px', color: '#5F6B85', maxWidth: '420px', margin: '0 auto 16px' }}>
+                  No templates match category "{selectedCategory}", platform "{selectedPlatform}", and query "{searchQuery}".
+                </p>
+                <button
+                  className="btn btn-primary btn-sm"
+                  onClick={handleClearAllFilters}
+                >
+                  Reset All Filters &amp; View Catalog
+                </button>
+              </div>
+            ) : (
+              <div className="cards-grid-3">
               {displayedTemplates.map((tpl) => (
                 <div
                   key={tpl.id}
@@ -377,6 +509,7 @@ export const UserContentBuildersPage: React.FC = () => {
                 </div>
               ))}
             </div>
+          )}
 
             {selectedCategory === 'All' && !searchQuery && filteredTemplates.length > visibleLimit && (
               <div style={{ textAlign: 'center', marginTop: '24px' }}>
@@ -502,6 +635,18 @@ export const UserContentBuildersPage: React.FC = () => {
                   </div>
                 )}
               </div>
+
+              {/* P1: Audio and Music Preview UI for Audio Blueprints */}
+              {(selectedTemplate.templateCategory === 'Audio & Music' ||
+                (generatedContent && (generatedContent.title.toLowerCase().includes('audio') || generatedContent.title.toLowerCase().includes('song') || generatedContent.title.toLowerCase().includes('sound')))) && (
+                <div style={{ marginBottom: '14px' }}>
+                  <AudioPreviewWidget
+                    title={generatedContent ? `${generatedContent.title} (Audio Preview)` : `${selectedTemplate.name} Synthesized Demo`}
+                    artist="Zunme AI Acoustic Studio"
+                    durationSeconds={48}
+                  />
+                </div>
+              )}
 
               {generatedContent ? (
                 <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '12px' }}>

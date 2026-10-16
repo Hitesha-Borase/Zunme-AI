@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Cpu,
   Search,
@@ -8,16 +8,29 @@ import {
   Power,
   Clock,
   Database,
-  ExternalLink
+  ExternalLink,
+  Sliders
 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
+import { PlatformConnectionModal } from '../../components/modals/PlatformConnectionModal';
 import '../../styles/dashboard.css';
 
 export const AdminIntegrationsPage: React.FC = () => {
   const { integrations, toggleIntegrationStatus, showToast } = useApp();
+  const [selectedIntegration, setSelectedIntegration] = useState<any | null>(null);
 
   const handleTestConnection = (name: string) => {
     showToast(`Pinging ${name}... Connection validated (200 OK)`, 'success');
+  };
+
+  const getPermissionsForService = (name: string) => {
+    const n = name.toLowerCase();
+    if (n.includes('google')) return ['customsearch.readonly', 'cse.list', 'searchconsole.readonly'];
+    if (n.includes('openai')) return ['model.chat.completions', 'embeddings.create', 'usage.read'];
+    if (n.includes('anthropic') || n.includes('claude')) return ['messages.create', 'models.read'];
+    if (n.includes('s3') || n.includes('aws') || n.includes('storage')) return ['s3:PutObject', 's3:GetObject', 's3:ListBucket'];
+    if (n.includes('crm') || n.includes('nergy')) return ['crm.leads.read', 'crm.leads.write', 'webhooks.ingest'];
+    return ['api.read', 'api.write', 'telemetry.sync'];
   };
 
   return (
@@ -84,19 +97,30 @@ export const AdminIntegrationsPage: React.FC = () => {
               </div>
             </div>
 
-            <div style={{ borderTop: '1px solid #E8ECF5', paddingTop: '14px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <div style={{ borderTop: '1px solid #E8ECF5', paddingTop: '14px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px' }}>
               <button
                 className="btn btn-outline btn-sm"
                 onClick={() => handleTestConnection(item.name)}
-                style={{ padding: '4px 10px', fontSize: '11px' }}
+                style={{ padding: '4px 8px', fontSize: '11px' }}
               >
                 <RefreshCw size={12} />
                 <span>Ping Health</span>
               </button>
 
               <button
+                className="btn btn-outline btn-sm"
+                onClick={() => setSelectedIntegration(item)}
+                style={{ padding: '4px 8px', fontSize: '11px' }}
+              >
+                <Sliders size={12} />
+                <span>Configure</span>
+              </button>
+
+              <button
                 className={`btn btn-sm ${item.status === 'CONNECTED' ? 'btn-danger' : 'btn-secondary'}`}
-                onClick={() => toggleIntegrationStatus(item.id)}
+                onClick={() => {
+                  setSelectedIntegration(item);
+                }}
                 style={{
                   padding: '4px 10px',
                   fontSize: '11px',
@@ -112,6 +136,34 @@ export const AdminIntegrationsPage: React.FC = () => {
           </div>
         ))}
       </div>
+
+      {/* P2: Platform & Integration Connection Dialog */}
+      {selectedIntegration && (
+        <PlatformConnectionModal
+          isOpen={Boolean(selectedIntegration)}
+          onClose={() => setSelectedIntegration(null)}
+          platformId={selectedIntegration.id}
+          platformName={selectedIntegration.name}
+          category={selectedIntegration.category}
+          currentStatus={selectedIntegration.status === 'CONNECTED' ? 'CONNECTED' : 'DISCONNECTED'}
+          purposeDescription={selectedIntegration.description}
+          knownPermissions={getPermissionsForService(selectedIntegration.name)}
+          onConnect={() => {
+            if (selectedIntegration.status !== 'CONNECTED') {
+              toggleIntegrationStatus(selectedIntegration.id);
+            }
+            showToast(`${selectedIntegration.name} bridge enabled`, 'success');
+            setSelectedIntegration(null);
+          }}
+          onDisconnect={() => {
+            if (selectedIntegration.status === 'CONNECTED') {
+              toggleIntegrationStatus(selectedIntegration.id);
+            }
+            showToast(`${selectedIntegration.name} disconnected`, 'info');
+            setSelectedIntegration(null);
+          }}
+        />
+      )}
     </div>
   );
 };

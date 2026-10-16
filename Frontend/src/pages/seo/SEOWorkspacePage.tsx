@@ -15,10 +15,13 @@ import {
   ExternalLink,
   ShieldAlert,
   Search,
-  Filter
+  Filter,
+  Download,
+  Upload
 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import { SEOKeyword } from '../../types';
+import { CsvImportModal, exportToCsv } from '../../components/modals/CsvImportModal';
 import '../../styles/dashboard.css';
 
 export const SEOWorkspacePage: React.FC = () => {
@@ -27,6 +30,8 @@ export const SEOWorkspacePage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<
     'Overview' | 'Keyword Research' | 'Content Planner' | 'SEO Content Builder' | 'Website Audit' | 'Competitor Research' | 'Saved Reports' | 'Settings'
   >('Overview');
+
+  const [isCsvImportOpen, setIsCsvImportOpen] = useState(false);
 
   // Keyword Research Form
   const [newKeyword, setNewKeyword] = useState('');
@@ -253,10 +258,30 @@ export const SEOWorkspacePage: React.FC = () => {
                 <option value="European Union (EU)">European Union (EU)</option>
               </select>
 
-              <button type="submit" className="btn btn-primary">
-                <Plus size={14} />
-                <span>Track Keyword</span>
-              </button>
+              <div style={{ display: 'flex', gap: '8px' }}>
+                <button type="submit" className="btn btn-primary">
+                  <Plus size={14} />
+                  <span>Track Keyword</span>
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-outline"
+                  onClick={() => setIsCsvImportOpen(true)}
+                  title="Import keyword list from CSV"
+                >
+                  <Upload size={14} />
+                  <span>Import CSV</span>
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-outline"
+                  onClick={() => exportToCsv('seo_keywords_tracked.csv', seoKeywords)}
+                  title="Export tracked keywords to CSV"
+                >
+                  <Download size={14} />
+                  <span>Export CSV</span>
+                </button>
+              </div>
             </form>
           </div>
 
@@ -490,6 +515,34 @@ export const SEOWorkspacePage: React.FC = () => {
           </p>
         </div>
       )}
+
+      {/* P2: CSV Import Dialog for SEO Keywords */}
+      <CsvImportModal
+        isOpen={isCsvImportOpen}
+        onClose={() => setIsCsvImportOpen(false)}
+        title="Import SEO Keywords (CSV)"
+        targetEntityName="SEO Keywords"
+        expectedHeaders={['keyword', 'searchVolume', 'difficulty', 'cpc', 'intent']}
+        sampleCsvTemplate={`keyword,searchVolume,difficulty,cpc,intent\nai workflow software,18500/mo,Moderate,$3.40,Commercial\nsemantic search cluster,8200/mo,Easy,$1.90,Informational\nb2b email automation,24000/mo,Hard,$5.10,Transactional`}
+        onConfirmImport={(parsedRows: Record<string, string>[]) => {
+          let count = 0;
+          parsedRows.forEach((r: Record<string, string>) => {
+            if (r.keyword && r.keyword.trim()) {
+              addSeoKeyword({
+                keyword: r.keyword.trim().toLowerCase(),
+                searchVolume: r.searchVolume || '10,000/mo',
+                difficulty: (r.difficulty as any) || 'Moderate',
+                difficultyScore: r.difficulty === 'Easy' ? 25 : r.difficulty === 'Hard' ? 75 : 50,
+                cpc: r.cpc || '$2.50',
+                intent: (r.intent as any) || 'Commercial',
+                status: 'Targeted'
+              });
+              count++;
+            }
+          });
+          showToast(`Successfully imported ${count} SEO keywords into your research list!`, 'success');
+        }}
+      />
     </div>
   );
 };
