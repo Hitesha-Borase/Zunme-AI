@@ -119,8 +119,8 @@ export const AppShell: React.FC = () => {
                   <Megaphone size={16} color="#FFFFFF" />
                 </div>
                 <div>
-                  <div style={{ fontSize: '15px', fontWeight: '800', color: '#111625', lineHeight: '1.2' }}>Zunme Ads</div>
-                  <div style={{ fontSize: '9px', fontWeight: '800', color: '#8B5CF6', letterSpacing: '0.06em' }}>ADS PLATFORM</div>
+                  <div style={{ fontSize: '15px', fontWeight: '800', color: '#FFFFFF', lineHeight: '1.2' }}>Zunme Ads</div>
+                  <div style={{ fontSize: '9px', fontWeight: '800', color: '#C4B5FD', letterSpacing: '0.06em' }}>ADS PLATFORM</div>
                 </div>
               </NavLink>
               <button
@@ -131,19 +131,6 @@ export const AppShell: React.FC = () => {
                 <X size={18} />
               </button>
             </div>
-
-            {/* User Profile Card (Moved to Left Top) */}
-            {user && (
-              <div className="user-mini-card" style={{ margin: '0 16px 12px' }}>
-                <div className="user-avatar-circle">
-                  {displayName.charAt(0).toUpperCase()}
-                </div>
-                <div className="user-meta-info">
-                  <div className="user-name-label">{displayName}</div>
-                  <div className="user-email-label">{user.email || 'Ads Specialist'}</div>
-                </div>
-              </div>
-            )}
 
             <div className="sidebar-new-chat-box">
               <NavLink
@@ -249,8 +236,8 @@ export const AppShell: React.FC = () => {
                   <Briefcase size={16} color="#FFFFFF" />
                 </div>
                 <div>
-                  <div style={{ fontSize: '15px', fontWeight: '800', color: '#111625', lineHeight: '1.2' }}>Zunme Business</div>
-                  <div style={{ fontSize: '9px', fontWeight: '800', color: '#059669', letterSpacing: '0.06em' }}>BUSINESS & CRM</div>
+                  <div style={{ fontSize: '15px', fontWeight: '800', color: '#FFFFFF', lineHeight: '1.2' }}>Zunme Business</div>
+                  <div style={{ fontSize: '9px', fontWeight: '800', color: '#34D399', letterSpacing: '0.06em' }}>BUSINESS & CRM</div>
                 </div>
               </NavLink>
               <button
@@ -261,19 +248,6 @@ export const AppShell: React.FC = () => {
                 <X size={18} />
               </button>
             </div>
-
-            {/* User Profile Card (Moved to Left Top) */}
-            {user && (
-              <div className="user-mini-card" style={{ margin: '0 16px 12px' }}>
-                <div className="user-avatar-circle">
-                  {displayName.charAt(0).toUpperCase()}
-                </div>
-                <div className="user-meta-info">
-                  <div className="user-name-label">{displayName}</div>
-                  <div className="user-email-label">{user.email || 'Business Owner'}</div>
-                </div>
-              </div>
-            )}
 
             <div className="sidebar-new-chat-box">
               <NavLink
@@ -379,8 +353,8 @@ export const AppShell: React.FC = () => {
                   <Share2 size={16} color="#FFFFFF" />
                 </div>
                 <div>
-                  <div style={{ fontSize: '15px', fontWeight: '800', color: '#111625', lineHeight: '1.2' }}>Zunme Social</div>
-                  <div style={{ fontSize: '9px', fontWeight: '800', color: '#6E56CF', letterSpacing: '0.06em' }}>CONTENT SCHEDULER</div>
+                  <div style={{ fontSize: '15px', fontWeight: '800', color: '#FFFFFF', lineHeight: '1.2' }}>Zunme Social</div>
+                  <div style={{ fontSize: '9px', fontWeight: '800', color: '#C4B5FD', letterSpacing: '0.06em' }}>CONTENT SCHEDULER</div>
                 </div>
               </NavLink>
               <button
@@ -391,19 +365,6 @@ export const AppShell: React.FC = () => {
                 <X size={18} />
               </button>
             </div>
-
-            {/* User Profile Card (Moved to Left Top) */}
-            {user && (
-              <div className="user-mini-card" style={{ margin: '0 16px 12px' }}>
-                <div className="user-avatar-circle">
-                  {displayName.charAt(0).toUpperCase()}
-                </div>
-                <div className="user-meta-info">
-                  <div className="user-name-label">{displayName}</div>
-                  <div className="user-email-label">{user.email || 'Social Creator'}</div>
-                </div>
-              </div>
-            )}
 
             <div className="sidebar-new-chat-box">
               <NavLink
@@ -468,11 +429,17 @@ export const AppShell: React.FC = () => {
           /* ============================================================ */
           <>
             <div className="sidebar-brand-section">
+<<<<<<< HEAD
               <NavLink to="/" className="brand-link" onClick={() => setMobileMenuOpen(false)}>
                 <div className="brand-icon-box">
                   <span className="brand-glyph">Z</span>
                 </div>
                 <span>Zunme AI</span>
+=======
+              <NavLink to="/app" className="brand-link" onClick={() => setMobileMenuOpen(false)}>
+                <div className="brand-icon-box">Z</div>
+                <span className="brand-title-text" style={{ color: '#FFFFFF', fontWeight: '800', fontSize: '16px' }}>Zunme AI</span>
+>>>>>>> 091f76ae678a697972f13e1a3db47f742ae22f45
               </NavLink>
               <button
                 className="btn-ghost hide-on-desktop"
@@ -482,19 +449,6 @@ export const AppShell: React.FC = () => {
                 <X size={18} />
               </button>
             </div>
-
-            {/* User Profile Card (Moved to Left Top) */}
-            {user && (
-              <div className="user-mini-card" style={{ margin: '0 16px 12px' }}>
-                <div className="user-avatar-circle">
-                  {displayName.charAt(0).toUpperCase()}
-                </div>
-                <div className="user-meta-info">
-                  <div className="user-name-label">{displayName}</div>
-                  <div className="user-email-label">{user.email || 'Platform Member'}</div>
-                </div>
-              </div>
-            )}
 
             {/* New Chat Primary Button */}
             <div className="sidebar-new-chat-box">

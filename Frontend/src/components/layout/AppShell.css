@@ -40,13 +40,23 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
+.app-sidebar .brand-link,
 .brand-link {
   display: flex;
   align-items: center;
   gap: 10px;
   font-weight: 700;
   font-size: 16px;
-  color: #FFFFFF;
+  color: #FFFFFF !important;
+  text-decoration: none;
+  letter-spacing: -0.02em;
+}
+
+.app-sidebar .brand-link span,
+.brand-title-text {
+  color: #FFFFFF !important;
+  font-weight: 800;
+  font-size: 16px;
   letter-spacing: -0.02em;
 }
 
