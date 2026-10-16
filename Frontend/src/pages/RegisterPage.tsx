@@ -140,7 +140,7 @@ export const RegisterPage: React.FC = () => {
           <div className="showcase-features-stack">
             <div className="showcase-feature-card">
               <div className="feature-card-icon violet">
-                <MessageSquare size={20} />
+                <MessageSquare size={18} />
               </div>
               <div className="feature-card-content">
                 <h3>
@@ -153,7 +153,7 @@ export const RegisterPage: React.FC = () => {
 
             <div className="showcase-feature-card">
               <div className="feature-card-icon emerald">
-                <Wand2 size={20} />
+                <Wand2 size={18} />
               </div>
               <div className="feature-card-content">
                 <h3>
@@ -166,7 +166,7 @@ export const RegisterPage: React.FC = () => {
 
             <div className="showcase-feature-card">
               <div className="feature-card-icon sunset">
-                <ImageIcon size={20} />
+                <ImageIcon size={18} />
               </div>
               <div className="feature-card-content">
                 <h3>
@@ -219,7 +219,7 @@ export const RegisterPage: React.FC = () => {
             <h2 id="register-heading" className="register-card-title">
               Create Your Free Account
             </h2>
-            <p className="register-card-subtitle" style={{ marginBottom: '22px' }}>
+            <p className="register-card-subtitle">
               Get full access to all verified models, live web search, and content builders in 15 seconds.
             </p>
           </div>
