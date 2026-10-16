@@ -33,14 +33,6 @@ export const SuperAdminShell: React.FC = () => {
     return <Navigate to="/login" replace />;
   }
 
-  const getPageTitle = () => {
-    const path = location.pathname;
-    if (path.includes('/super-admin/users')) return 'Platform Users & Roles';
-    if (path.includes('/super-admin/settings')) return 'Global Platform Configuration';
-    if (path.includes('/super-admin/plans')) return 'Plans & Subscription Pricing';
-    if (path.includes('/super-admin/audit-logs')) return 'Administrative Audit Logs';
-    return 'Super Admin Executive Dashboard';
-  };
 
   const displayName = (user?.fullName || 'Super Administrator').replace(/\s*\([^)]*\)/g, '').trim();
 
@@ -95,15 +87,6 @@ export const SuperAdminShell: React.FC = () => {
           </NavLink>
 
           <NavLink
-            to="/super-admin/settings"
-            className={({ isActive }) => `superadmin-nav-item ${isActive ? 'active' : ''}`}
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            <Settings size={18} />
-            <span>Settings</span>
-          </NavLink>
-
-          <NavLink
             to="/super-admin/plans"
             className={({ isActive }) => `superadmin-nav-item ${isActive ? 'active' : ''}`}
             onClick={() => setMobileMenuOpen(false)}
@@ -119,6 +102,15 @@ export const SuperAdminShell: React.FC = () => {
           >
             <FileText size={18} />
             <span>Audit Logs</span>
+          </NavLink>
+
+          <NavLink
+            to="/super-admin/settings"
+            className={({ isActive }) => `superadmin-nav-item ${isActive ? 'active' : ''}`}
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            <Settings size={18} />
+            <span>Settings</span>
           </NavLink>
         </nav>
 
@@ -147,10 +139,6 @@ export const SuperAdminShell: React.FC = () => {
             >
               <Menu size={20} />
             </button>
-            <div>
-              <div className="superadmin-breadcrumb">Platform Governance</div>
-              <h1 className="superadmin-page-heading">{getPageTitle()}</h1>
-            </div>
           </div>
 
           <div className="topbar-right">

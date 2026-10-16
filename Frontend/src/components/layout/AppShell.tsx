@@ -52,25 +52,6 @@ export const AppShell: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const getPageTitle = () => {
-    const path = location.pathname;
-    if (path === '/app' || path === '/app/') return 'Workspace Home';
-    if (path.includes('/app/chat')) return 'Ask Zunme — AI Assistant';
-    if (path.includes('/app/search')) return 'Live Web Search';
-    if (path.includes('/app/builders') || path.includes('/app/studio')) return 'AI Content Builders (1,000+ Blueprints)';
-    if (path.includes('/app/library')) return 'My Saved Library';
-    if (path.includes('/app/history')) return 'Conversation History';
-    if (path.includes('/app/usage')) return 'Account Usage & Plans';
-    if (path.includes('/app/settings')) return 'Account Settings';
-    if (path.includes('/app/support')) return 'Help & Documentation';
-    if (path.includes('/warehouse')) return 'AI Warehouse';
-    if (path.includes('/creator')) return 'Creator Studio';
-    if (path.includes('/seo')) return 'SEO Professional Workspace';
-    if (path.includes('/business')) return 'Small Business & Team Workspace';
-    if (path.includes('/social')) return 'Social Integrations & Content Scheduler';
-    if (path.includes('/ads')) return 'Zunme Ads Platform & Creator Monetization';
-    return 'Zunme AI Workspace';
-  };
 
   const handleNewChatClick = () => {
     createNewChat();
@@ -628,7 +609,6 @@ export const AppShell: React.FC = () => {
             >
               <Menu size={20} />
             </button>
-            <h1 className="topbar-title">{getPageTitle()}</h1>
           </div>
 
           <div className="topbar-right">
