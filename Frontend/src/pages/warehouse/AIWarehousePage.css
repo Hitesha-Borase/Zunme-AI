@@ -346,7 +346,7 @@
 /* Grid Card Details */
 .warehouse-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
   gap: 18px;
 }
 
@@ -400,3 +400,52 @@
   color: #8C97B0;
   font-weight: 600;
 }
+
+/* Responsive Overrides */
+@media (max-width: 768px) {
+  .warehouse-controls-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .warehouse-search-wrap {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .view-mode-toggle-group {
+    align-self: flex-start;
+  }
+
+  .collections-panel {
+    padding: 12px 14px;
+    gap: 10px;
+  }
+
+  .floating-batch-toolbar {
+    width: calc(100% - 32px);
+    max-width: 480px;
+    padding: 10px 14px;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+    bottom: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .warehouse-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .warehouse-card {
+    padding: 16px 14px;
+  }
+
+  .storage-quota-panel {
+    padding: 16px 14px;
+  }
+}
+

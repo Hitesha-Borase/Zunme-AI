@@ -468,15 +468,10 @@ export const AppShell: React.FC = () => {
           /* ============================================================ */
           <>
             <div className="sidebar-brand-section">
-<<<<<<< HEAD
-              <NavLink to="/app" className="brand-link" onClick={() => setMobileMenuOpen(false)}>
-                <div className="brand-icon-box">Z</div>
-=======
               <NavLink to="/" className="brand-link" onClick={() => setMobileMenuOpen(false)}>
                 <div className="brand-icon-box">
                   <span className="brand-glyph">Z</span>
                 </div>
->>>>>>> d0553b59c6c148660a70a0c0005d7a5bc3e41e67
                 <span>Zunme AI</span>
               </NavLink>
               <button

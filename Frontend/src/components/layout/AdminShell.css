@@ -247,14 +247,49 @@
     position: fixed;
     left: 0;
     top: 0;
+    bottom: 0;
+    height: 100vh;
+    z-index: 100;
     transform: translateX(-100%);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
   }
 
   .admin-sidebar.open {
     transform: translateX(0);
   }
 
+  .admin-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(17, 22, 37, 0.5);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 95;
+  }
+
   .admin-topbar {
     padding: 0 var(--space-4);
+    height: 62px;
   }
 }
+
+@media (max-width: 480px) {
+  .admin-topbar {
+    padding: 0 14px;
+    height: 58px;
+    gap: 8px;
+  }
+
+  .admin-page-heading {
+    font-size: 14.5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+  }
+
+  .admin-breadcrumb {
+    font-size: 9.5px;
+  }
+}
+

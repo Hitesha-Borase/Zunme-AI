@@ -333,3 +333,30 @@
     padding: 0 16px;
   }
 }
+
+@media (max-width: 480px) {
+  .app-topbar {
+    padding: 0 12px;
+    height: 56px;
+  }
+
+  .topbar-left {
+    gap: 8px;
+    min-width: 0;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  .topbar-title {
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .topbar-right {
+    gap: 6px;
+    flex-shrink: 0;
+  }
+}
+

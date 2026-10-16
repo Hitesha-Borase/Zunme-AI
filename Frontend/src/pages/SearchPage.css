@@ -241,3 +241,35 @@
     padding: 20px 16px;
   }
 }
+
+@media (max-width: 480px) {
+  .search-page {
+    padding: 16px 12px;
+  }
+
+  .search-page-title {
+    font-size: 22px;
+  }
+
+  .search-page-desc {
+    font-size: 13px;
+  }
+
+  .search-form-box {
+    padding: 6px 10px 6px 14px;
+    gap: 8px;
+  }
+
+  .search-input-field {
+    font-size: 13.5px;
+  }
+
+  .summary-card {
+    padding: 18px 14px;
+  }
+
+  .source-card {
+    padding: 14px 14px;
+  }
+}
+

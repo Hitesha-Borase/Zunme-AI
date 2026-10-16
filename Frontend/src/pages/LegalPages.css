@@ -382,3 +382,20 @@
     gap: 24px;
   }
 }
+
+@media (max-width: 480px) {
+  .legal-container {
+    padding: 0 14px;
+  }
+  .legal-card {
+    padding: 18px 14px;
+    border-radius: 16px;
+  }
+  .legal-title {
+    font-size: 22px;
+  }
+  .legal-header {
+    height: 56px;
+  }
+}
+

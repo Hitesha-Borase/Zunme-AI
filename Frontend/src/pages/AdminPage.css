@@ -171,3 +171,21 @@
     grid-template-columns: 1fr;
   }
 }
+
+@media (max-width: 480px) {
+  .admin-page {
+    padding: 16px 12px;
+  }
+  .admin-metric-card {
+    padding: 14px 16px;
+    border-radius: var(--radius-lg);
+  }
+  .admin-metric-value {
+    font-size: 24px;
+  }
+  .admin-table-card {
+    padding: 14px 12px;
+    border-radius: var(--radius-lg);
+  }
+}
+

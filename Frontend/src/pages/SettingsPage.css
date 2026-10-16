@@ -90,3 +90,24 @@
     padding: 20px 16px;
   }
 }
+
+@media (max-width: 480px) {
+  .settings-page {
+    padding: 16px 12px;
+  }
+  .settings-title {
+    font-size: 22px;
+  }
+  .settings-desc {
+    font-size: 13px;
+  }
+  .settings-card {
+    padding: 18px 14px;
+    border-radius: var(--radius-lg);
+  }
+  .settings-avatar-row {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+}
+
