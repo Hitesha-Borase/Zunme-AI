@@ -11,6 +11,7 @@ import {
   Share2,
   Megaphone,
   ArrowRight,
+  ArrowLeft,
   Shield,
   CheckCircle2
 } from 'lucide-react';
@@ -146,7 +147,28 @@ export const LoginPage: React.FC = () => {
           </div>
         </NavLink>
 
-        <div className="energy-topbar-meta">
+        <div className="energy-topbar-meta" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <NavLink
+            to="/"
+            className="energy-back-home-btn"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              fontSize: '0.8rem',
+              fontWeight: 600,
+              color: '#4B5565',
+              background: '#F1F5F9',
+              border: '1px solid #E2E8F0',
+              padding: '5px 12px',
+              borderRadius: '9999px',
+              textDecoration: 'none',
+              transition: 'all 0.18s ease'
+            }}
+          >
+            <ArrowLeft size={14} />
+            <span>Back to Home</span>
+          </NavLink>
           <div className="energy-status-tag">
             <Eye size={14} />
             <span>Super Admin: VISIBLE</span>
