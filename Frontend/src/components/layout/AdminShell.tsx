@@ -37,18 +37,6 @@ export const AdminShell: React.FC = () => {
     return <Navigate to="/login" replace />;
   }
 
-  const getPageTitle = () => {
-    const path = location.pathname;
-    if (path.includes('/admin/users')) return 'User Directory & Moderation';
-    if (path.includes('/admin/tools')) return 'AI Tools & Content Workflows';
-    if (path.includes('/admin/warehouse')) return 'AI Warehouse Moderation & Assets';
-    if (path.includes('/admin/creators')) return 'Creator Management & Verification';
-    if (path.includes('/admin/seo-marketing')) return 'SEO & Marketing Operational Hub';
-    if (path.includes('/admin/reports')) return 'Platform Usage & Telemetry Reports';
-    if (path.includes('/admin/support')) return 'Support Requests & Content Review';
-    if (path.includes('/admin/integrations')) return 'Supported Engine & API Integrations';
-    return 'Operations Command Dashboard';
-  };
 
   const displayName = (user?.fullName || 'Operations Manager').replace(/\s*\([^)]*\)/g, '').trim();
 
@@ -187,10 +175,6 @@ export const AdminShell: React.FC = () => {
             >
               <Menu size={20} />
             </button>
-            <div>
-              <div className="admin-breadcrumb">Operations & Management</div>
-              <h1 className="admin-page-heading">{getPageTitle()}</h1>
-            </div>
           </div>
 
           <div className="topbar-right">
