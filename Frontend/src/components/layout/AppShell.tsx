@@ -469,7 +469,9 @@ export const AppShell: React.FC = () => {
           <>
             <div className="sidebar-brand-section">
               <NavLink to="/" className="brand-link" onClick={() => setMobileMenuOpen(false)}>
-                <div className="brand-icon-box">Z</div>
+                <div className="brand-icon-box">
+                  <span className="brand-glyph">Z</span>
+                </div>
                 <span>Zunme AI</span>
               </NavLink>
               <button
