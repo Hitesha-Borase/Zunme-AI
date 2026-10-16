@@ -22,6 +22,7 @@ import {
   Mail,
   ShieldCheck,
   ExternalLink,
+  LifeBuoy,
   X
 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
@@ -54,11 +55,11 @@ export const BusinessWorkspacePage: React.FC = () => {
 
   const [searchParams, setSearchParams] = useSearchParams();
 
-  type BusinessTabType = 'Overview' | 'Brand Profile' | 'Projects' | 'Content Calendar' | 'Marketing Content' | 'nErgy CRM Deep Sync' | 'Team & Access' | 'Settings';
+  type BusinessTabType = 'Overview' | 'Brand Profile' | 'Projects' | 'Content Calendar' | 'Marketing Content' | 'nErgy CRM Deep Sync' | 'Team & Access' | 'Settings' | 'Help & Support';
 
   const [activeTab, setActiveTabState] = useState<BusinessTabType>(() => {
     const tabParam = searchParams.get('tab');
-    if (tabParam && ['Overview', 'Brand Profile', 'Projects', 'Content Calendar', 'Marketing Content', 'nErgy CRM Deep Sync', 'Team & Access', 'Settings'].includes(tabParam)) {
+    if (tabParam && ['Overview', 'Brand Profile', 'Projects', 'Content Calendar', 'Marketing Content', 'nErgy CRM Deep Sync', 'Team & Access', 'Settings', 'Help & Support'].includes(tabParam)) {
       return tabParam as BusinessTabType;
     }
     return 'Overview';
@@ -71,8 +72,10 @@ export const BusinessWorkspacePage: React.FC = () => {
 
   useEffect(() => {
     const tabParam = searchParams.get('tab');
-    if (tabParam && ['Overview', 'Brand Profile', 'Projects', 'Content Calendar', 'Marketing Content', 'nErgy CRM Deep Sync', 'Team & Access', 'Settings'].includes(tabParam)) {
+    if (tabParam && ['Overview', 'Brand Profile', 'Projects', 'Content Calendar', 'Marketing Content', 'nErgy CRM Deep Sync', 'Team & Access', 'Settings', 'Help & Support'].includes(tabParam)) {
       setActiveTabState(tabParam as BusinessTabType);
+    } else {
+      setActiveTabState('Overview');
     }
   }, [searchParams]);
 
@@ -258,30 +261,6 @@ export const BusinessWorkspacePage: React.FC = () => {
           <div className="badge badge-primary">
             {businessProjects.length} Active Business Projects
           </div>
-        </div>
-      </div>
-
-      {/* Sub-Navigation */}
-      <div className="glass-panel" style={{ padding: '12px 18px' }}>
-        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-          {[
-            'Overview',
-            'Brand Profile',
-            'Projects',
-            'Content Calendar',
-            'Marketing Content',
-            'nErgy CRM Deep Sync',
-            'Team & Access',
-            'Settings'
-          ].map((tab) => (
-            <button
-              key={tab}
-              className={`filter-pill ${activeTab === tab ? 'active' : ''}`}
-              onClick={() => setActiveTab(tab as any)}
-            >
-              {tab}
-            </button>
-          ))}
         </div>
       </div>
 
@@ -866,12 +845,12 @@ export const BusinessWorkspacePage: React.FC = () => {
       {isLeadModalOpen && (
         <div className="dashboard-modal-backdrop" onClick={() => setIsLeadModalOpen(false)}>
           <div className="dashboard-modal-container" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '540px' }}>
-            <div className="panel-header" style={{ padding: '16px 20px', borderBottom: '1px solid #E8ECF5', margin: 0 }}>
-              <div className="panel-title">
+            <div className="panel-header" style={{ padding: '16px 20px', borderBottom: '1px solid #E8ECF5', margin: 0, background: '#FAFAFC', borderTopLeftRadius: '20px', borderTopRightRadius: '20px' }}>
+              <div className="panel-title" style={{ fontSize: '16px', color: '#111625', fontWeight: '800' }}>
                 <Users size={18} color="#059669" />
-                Capture Lead to nErgy CRM
+                <span>Capture Lead to nErgy CRM</span>
               </div>
-              <button className="btn-ghost" onClick={() => setIsLeadModalOpen(false)} style={{ padding: '4px' }}>
+              <button className="btn-ghost" onClick={() => setIsLeadModalOpen(false)} style={{ padding: '6px', borderRadius: '8px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }} aria-label="Close modal">
                 <X size={18} />
               </button>
             </div>
@@ -991,6 +970,106 @@ export const BusinessWorkspacePage: React.FC = () => {
           <p style={{ color: '#94A3B8', fontSize: '13px' }}>
             Manage organization defaults, currency preferences, and notification webhooks.
           </p>
+        </div>
+      )}
+
+      {/* Tab: Help & Support */}
+      {activeTab === 'Help & Support' && (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-5)' }}>
+          <div className="glass-panel">
+            <div className="panel-header">
+              <div>
+                <div className="panel-title">
+                  <LifeBuoy size={20} color="#10B981" />
+                  <span>Business &amp; Team Support Center</span>
+                </div>
+                <div className="panel-subtitle">
+                  Dedicated operations assistance, CRM webhook integration guides, and high-priority business SLA support.
+                </div>
+              </div>
+              <span className="badge badge-success">
+                Average Response: &lt; 1hr
+              </span>
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '16px', marginTop: '12px' }}>
+              <div style={{ padding: '16px', background: '#FAFBFD', borderRadius: '12px', border: '1px solid #E8ECF5' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
+                  <Users size={18} color="#10B981" />
+                  <strong style={{ fontSize: '14px', color: '#111625' }}>CRM Integration &amp; Webhooks</strong>
+                </div>
+                <p style={{ fontSize: '12.5px', color: '#5F6B85', lineHeight: '1.5' }}>
+                  Connect nErgy CRM, synchronize real-time lead updates, and configure automatic opportunity ingestion pipelines.
+                </p>
+              </div>
+
+              <div style={{ padding: '16px', background: '#FAFBFD', borderRadius: '12px', border: '1px solid #E8ECF5' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
+                  <Calendar size={18} color="#10B981" />
+                  <strong style={{ fontSize: '14px', color: '#111625' }}>Content Calendar Automation</strong>
+                </div>
+                <p style={{ fontSize: '12.5px', color: '#5F6B85', lineHeight: '1.5' }}>
+                  Schedule multi-channel marketing campaigns, track publication status, and automate cross-platform social broadcasting.
+                </p>
+              </div>
+
+              <div style={{ padding: '16px', background: '#FAFBFD', borderRadius: '12px', border: '1px solid #E8ECF5' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
+                  <Briefcase size={18} color="#10B981" />
+                  <strong style={{ fontSize: '14px', color: '#111625' }}>Brand Profile Guidelines</strong>
+                </div>
+                <p style={{ fontSize: '12.5px', color: '#5F6B85', lineHeight: '1.5' }}>
+                  Configure company mission, target audience, and brand voice so all generated marketing content matches your executive identity.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="glass-panel">
+            <div className="panel-header">
+              <div className="panel-title">
+                <Mail size={18} color="#10B981" />
+                <span>Submit Business Priority Ticket</span>
+              </div>
+            </div>
+
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                showToast('Priority business support ticket submitted! Our operations team will respond within 1 hour.', 'success');
+              }}
+              style={{ display: 'flex', flexDirection: 'column', gap: '14px', maxWidth: '640px' }}
+            >
+              <div>
+                <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#111625', marginBottom: '6px' }}>
+                  Subject
+                </label>
+                <input
+                  type="text"
+                  className="input-field"
+                  placeholder="e.g. Inquiring about custom CRM webhook endpoint mapping"
+                  required
+                />
+              </div>
+
+              <div>
+                <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#111625', marginBottom: '6px' }}>
+                  Description &amp; Details
+                </label>
+                <textarea
+                  className="input-field"
+                  rows={4}
+                  placeholder="Provide context on your workflow or question..."
+                  required
+                />
+              </div>
+
+              <button type="submit" className="btn btn-primary" style={{ alignSelf: 'flex-start', background: '#059669', borderColor: '#059669' }}>
+                <Mail size={14} />
+                <span>Send Priority Ticket</span>
+              </button>
+            </form>
+          </div>
         </div>
       )}
     </div>

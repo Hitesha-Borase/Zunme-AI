@@ -210,8 +210,8 @@ export const AppShell: React.FC = () => {
               </NavLink>
 
               <NavLink
-                to="/app/settings"
-                className={({ isActive }) => `sidebar-nav-item ${isActive ? 'active' : ''}`}
+                to="/ads?tab=Settings"
+                className={() => `sidebar-nav-item ${location.search.includes('Settings') ? 'active' : ''}`}
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <Settings size={17} />
@@ -219,8 +219,8 @@ export const AppShell: React.FC = () => {
               </NavLink>
 
               <NavLink
-                to="/app/support"
-                className={({ isActive }) => `sidebar-nav-item ${isActive ? 'active' : ''}`}
+                to="/ads?tab=Help & Support"
+                className={() => `sidebar-nav-item ${location.search.includes('Support') || location.search.includes('Help') ? 'active' : ''}`}
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <LifeBuoy size={17} />
@@ -228,20 +228,7 @@ export const AppShell: React.FC = () => {
               </NavLink>
             </nav>
 
-            <div className="sidebar-section-divider">
-              <span>RETURN TO WORKSPACE</span>
-            </div>
-            <div style={{ padding: '0 var(--space-3)' }}>
-              <NavLink
-                to="/app"
-                className="sidebar-nav-item"
-                onClick={() => setMobileMenuOpen(false)}
-                style={{ color: '#6E56CF', fontWeight: '700' }}
-              >
-                <ArrowLeft size={16} />
-                <span>Exit to AI Workspace</span>
-              </NavLink>
-            </div>
+
           </>
         ) : location.pathname.startsWith('/business') ? (
           /* ============================================================ */
@@ -354,8 +341,8 @@ export const AppShell: React.FC = () => {
               </NavLink>
 
               <NavLink
-                to="/app/support"
-                className={({ isActive }) => `sidebar-nav-item ${isActive ? 'active' : ''}`}
+                to="/business?tab=Help & Support"
+                className={() => `sidebar-nav-item ${location.search.includes('Support') || location.search.includes('Help') ? 'active' : ''}`}
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <LifeBuoy size={17} />
@@ -363,20 +350,7 @@ export const AppShell: React.FC = () => {
               </NavLink>
             </nav>
 
-            <div className="sidebar-section-divider">
-              <span>RETURN TO WORKSPACE</span>
-            </div>
-            <div style={{ padding: '0 var(--space-3)' }}>
-              <NavLink
-                to="/app"
-                className="sidebar-nav-item"
-                onClick={() => setMobileMenuOpen(false)}
-                style={{ color: '#059669', fontWeight: '700' }}
-              >
-                <ArrowLeft size={16} />
-                <span>Exit to AI Workspace</span>
-              </NavLink>
-            </div>
+
           </>
         ) : location.pathname.startsWith('/social') ? (
           /* ============================================================ */
@@ -403,79 +377,84 @@ export const AppShell: React.FC = () => {
             </div>
 
             <div className="sidebar-new-chat-box">
-              <NavLink
-                to="/social"
+              <button
+                type="button"
                 className="btn-new-chat"
-                style={{ background: '#6E56CF', color: '#FFFFFF', textDecoration: 'none' }}
-                onClick={() => setMobileMenuOpen(false)}
+                style={{ background: '#6E56CF', color: '#FFFFFF', border: 'none', cursor: 'pointer', width: '100%', textDecoration: 'none' }}
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  navigate('/social?compose=true');
+                  window.dispatchEvent(new CustomEvent('open-social-composer'));
+                }}
               >
                 <Plus size={16} />
                 <span>Schedule Post</span>
-              </NavLink>
+              </button>
             </div>
 
             <nav className="sidebar-nav-list" aria-label="Social Navigation">
               <NavLink
-                to="/social"
-                end
-                className={({ isActive }) => `sidebar-nav-item ${isActive ? 'active' : ''}`}
-                onClick={() => setMobileMenuOpen(false)}
+                to="/social?tab=calendar"
+                className={() => `sidebar-nav-item ${location.pathname === '/social' && (!location.search || location.search.includes('tab=calendar')) ? 'active' : ''}`}
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  window.dispatchEvent(new CustomEvent('switch-social-tab', { detail: 'calendar' }));
+                }}
               >
                 <Calendar size={17} />
                 <span>Calendar & Scheduler</span>
               </NavLink>
 
               <NavLink
-                to="/social"
-                className="sidebar-nav-item"
-                onClick={() => setMobileMenuOpen(false)}
+                to="/social?tab=queue"
+                className={() => `sidebar-nav-item ${location.pathname === '/social' && location.search.includes('tab=queue') ? 'active' : ''}`}
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  window.dispatchEvent(new CustomEvent('switch-social-tab', { detail: 'queue' }));
+                }}
               >
                 <Clock size={17} />
                 <span>Publishing Queue</span>
               </NavLink>
 
               <NavLink
-                to="/social"
-                className="sidebar-nav-item"
-                onClick={() => setMobileMenuOpen(false)}
+                to="/social?tab=accounts"
+                className={() => `sidebar-nav-item ${location.pathname === '/social' && location.search.includes('tab=accounts') ? 'active' : ''}`}
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  window.dispatchEvent(new CustomEvent('switch-social-tab', { detail: 'accounts' }));
+                }}
               >
                 <Share2 size={17} />
                 <span>Connected Channels</span>
               </NavLink>
 
               <NavLink
-                to="/app/settings"
-                className={({ isActive }) => `sidebar-nav-item ${isActive ? 'active' : ''}`}
-                onClick={() => setMobileMenuOpen(false)}
+                to="/social?tab=settings"
+                className={() => `sidebar-nav-item ${location.search.includes('tab=settings') ? 'active' : ''}`}
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  window.dispatchEvent(new CustomEvent('switch-social-tab', { detail: 'settings' }));
+                }}
               >
                 <Settings size={17} />
                 <span>Settings</span>
               </NavLink>
 
               <NavLink
-                to="/app/support"
-                className={({ isActive }) => `sidebar-nav-item ${isActive ? 'active' : ''}`}
-                onClick={() => setMobileMenuOpen(false)}
+                to="/social?tab=support"
+                className={() => `sidebar-nav-item ${location.search.includes('tab=support') ? 'active' : ''}`}
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  window.dispatchEvent(new CustomEvent('switch-social-tab', { detail: 'support' }));
+                }}
               >
                 <LifeBuoy size={17} />
                 <span>Help & Support</span>
               </NavLink>
             </nav>
 
-            <div className="sidebar-section-divider">
-              <span>RETURN TO WORKSPACE</span>
-            </div>
-            <div style={{ padding: '0 var(--space-3)' }}>
-              <NavLink
-                to="/app"
-                className="sidebar-nav-item"
-                onClick={() => setMobileMenuOpen(false)}
-                style={{ color: '#6E56CF', fontWeight: '700' }}
-              >
-                <ArrowLeft size={16} />
-                <span>Exit to AI Workspace</span>
-              </NavLink>
-            </div>
+
           </>
         ) : (
           /* ============================================================ */

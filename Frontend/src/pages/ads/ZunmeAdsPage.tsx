@@ -28,6 +28,8 @@ import {
   MousePointer,
   Percent,
   RefreshCw,
+  LifeBuoy,
+  Settings as SettingsIcon,
   X
 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
@@ -74,11 +76,11 @@ export const ZunmeAdsPage: React.FC = () => {
   const { showToast } = useApp();
   const [searchParams, setSearchParams] = useSearchParams();
 
-  type TabType = 'Overview' | 'Campaigns' | 'Create Campaign' | 'Keyword Bidding' | 'Ad Placements' | 'Creator Monetization' | 'Billing & Budget';
+  type TabType = 'Overview' | 'Campaigns' | 'Create Campaign' | 'Keyword Bidding' | 'Ad Placements' | 'Creator Monetization' | 'Billing & Budget' | 'Settings' | 'Help & Support';
 
   const [activeTab, setActiveTabState] = useState<TabType>(() => {
     const tabParam = searchParams.get('tab');
-    if (tabParam && ['Overview', 'Campaigns', 'Create Campaign', 'Keyword Bidding', 'Ad Placements', 'Creator Monetization', 'Billing & Budget'].includes(tabParam)) {
+    if (tabParam && ['Overview', 'Campaigns', 'Create Campaign', 'Keyword Bidding', 'Ad Placements', 'Creator Monetization', 'Billing & Budget', 'Settings', 'Help & Support'].includes(tabParam)) {
       return tabParam as TabType;
     }
     return 'Overview';
@@ -91,8 +93,10 @@ export const ZunmeAdsPage: React.FC = () => {
 
   useEffect(() => {
     const tabParam = searchParams.get('tab');
-    if (tabParam && ['Overview', 'Campaigns', 'Create Campaign', 'Keyword Bidding', 'Ad Placements', 'Creator Monetization', 'Billing & Budget'].includes(tabParam)) {
+    if (tabParam && ['Overview', 'Campaigns', 'Create Campaign', 'Keyword Bidding', 'Ad Placements', 'Creator Monetization', 'Billing & Budget', 'Settings', 'Help & Support'].includes(tabParam)) {
       setActiveTabState(tabParam as TabType);
+    } else {
+      setActiveTabState('Overview');
     }
   }, [searchParams]);
 
@@ -291,34 +295,6 @@ export const ZunmeAdsPage: React.FC = () => {
             <span>New Ad Campaign</span>
           </button>
         </div>
-      </div>
-
-      {/* Tabs Navigation */}
-      <div className="tabs-nav-bar">
-        {[
-          'Overview',
-          'Campaigns',
-          'Create Campaign',
-          'Keyword Bidding',
-          'Ad Placements',
-          'Creator Monetization',
-          'Billing & Budget'
-        ].map((tab) => (
-          <button
-            key={tab}
-            className={`tab-item-btn ${activeTab === tab ? 'active' : ''}`}
-            onClick={() => setActiveTab(tab as any)}
-          >
-            {tab === 'Overview' && <BarChart2 size={15} />}
-            {tab === 'Campaigns' && <Target size={15} />}
-            {tab === 'Create Campaign' && <Plus size={15} />}
-            {tab === 'Keyword Bidding' && <DollarSign size={15} />}
-            {tab === 'Ad Placements' && <Eye size={15} />}
-            {tab === 'Creator Monetization' && <Award size={15} />}
-            {tab === 'Billing & Budget' && <CreditCard size={15} />}
-            <span>{tab}</span>
-          </button>
-        ))}
       </div>
 
       {/* TAB 1: OVERVIEW */}
@@ -1126,6 +1102,63 @@ export const ZunmeAdsPage: React.FC = () => {
                   </div>
                 </div>
               ))}
+            </div>
+          </div>
+        </div>
+      )}
+      {/* Tab: Settings */}
+      {activeTab === 'Settings' && (
+        <div className="glass-panel">
+          <div className="panel-header">
+            <div className="panel-title">
+              <SettingsIcon size={18} color="#6E56CF" />
+              <span>Ads Account &amp; Delivery Settings</span>
+            </div>
+          </div>
+          <p style={{ color: '#5F6B85', fontSize: '13px', marginBottom: '16px' }}>
+            Configure default bidding strategies, geographic targeting defaults, and advertiser compliance parameters.
+          </p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '16px' }}>
+            <div style={{ padding: '16px', background: '#FAFBFD', borderRadius: '12px', border: '1px solid #E8ECF5' }}>
+              <strong style={{ fontSize: '14px', color: '#111625', display: 'block', marginBottom: '6px' }}>Auto-Recharge Threshold</strong>
+              <p style={{ fontSize: '12px', color: '#5F6B85', margin: 0 }}>Automatically maintain $150 minimum balance when ad impressions spike.</p>
+            </div>
+            <div style={{ padding: '16px', background: '#FAFBFD', borderRadius: '12px', border: '1px solid #E8ECF5' }}>
+              <strong style={{ fontSize: '14px', color: '#111625', display: 'block', marginBottom: '6px' }}>Attribution Window</strong>
+              <p style={{ fontSize: '12px', color: '#5F6B85', margin: 0 }}>7-day click / 1-day view conversion tracking enabled.</p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Tab: Help & Support */}
+      {activeTab === 'Help & Support' && (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-5)' }}>
+          <div className="glass-panel">
+            <div className="panel-header">
+              <div>
+                <div className="panel-title">
+                  <LifeBuoy size={20} color="#6E56CF" />
+                  <span>Advertiser Help &amp; Policy Center</span>
+                </div>
+                <div className="panel-subtitle">
+                  Guidelines for search keyword auctions, native promoted blueprints, and publisher revenue share.
+                </div>
+              </div>
+              <span className="badge badge-primary">
+                Dedicated Ads Support
+              </span>
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '16px', marginTop: '12px' }}>
+              <div style={{ padding: '16px', background: '#FAFBFD', borderRadius: '12px', border: '1px solid #E8ECF5' }}>
+                <strong style={{ fontSize: '14px', color: '#111625', display: 'block', marginBottom: '6px' }}>Search Auction Guidelines</strong>
+                <p style={{ fontSize: '12px', color: '#5F6B85', margin: 0 }}>CPC bidding rules, semantic query relevance score thresholds, and second-price auction mechanics.</p>
+              </div>
+              <div style={{ padding: '16px', background: '#FAFBFD', borderRadius: '12px', border: '1px solid #E8ECF5' }}>
+                <strong style={{ fontSize: '14px', color: '#111625', display: 'block', marginBottom: '6px' }}>Billing &amp; Invoices</strong>
+                <p style={{ fontSize: '12px', color: '#5F6B85', margin: 0 }}>Download monthly VAT/GST tax invoices and update primary payment methods seamlessly.</p>
+              </div>
             </div>
           </div>
         </div>

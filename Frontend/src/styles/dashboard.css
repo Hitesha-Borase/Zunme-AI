@@ -331,6 +331,7 @@
   border-radius: var(--radius-full);
   font-size: 11px;
   font-weight: 700;
+  white-space: nowrap;
 }
 
 .status-chip.success {
@@ -396,13 +397,14 @@
   gap: var(--space-4);
 }
 
-/* Modal Overlay */
-.modal-overlay {
+/* Modal Overlay & Backdrop */
+.modal-overlay,
+.dashboard-modal-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(17, 22, 37, 0.5);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: rgba(17, 22, 37, 0.65);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   z-index: 1000;
   display: flex;
   align-items: center;
@@ -411,15 +413,23 @@
   animation: modalFadeIn 0.2s ease-out;
 }
 
-.modal-card {
-  background: #FFFFFF;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-2xl);
+.modal-card,
+.dashboard-modal-container {
+  background: #FFFFFF !important;
+  color: #111625;
+  border: 1px solid #E8ECF5;
+  border-radius: var(--radius-2xl, 20px);
   width: 100%;
   max-width: 640px;
   max-height: 90vh;
   overflow-y: auto;
-  box-shadow: 0 24px 60px -8px rgba(30, 20, 60, 0.16);
+  box-shadow: 0 24px 70px -10px rgba(17, 22, 37, 0.28);
+  display: flex;
+  flex-direction: column;
+  animation: modalScaleIn 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.modal-card {
   padding: var(--space-6);
 }
 
@@ -439,8 +449,19 @@
 }
 
 @keyframes modalFadeIn {
-  from { opacity: 0; transform: scale(0.97); }
-  to { opacity: 1; transform: scale(1); }
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes modalScaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
 }
 
 /* Future Module Banner - Signature Sunset Cosmic Gradient */
