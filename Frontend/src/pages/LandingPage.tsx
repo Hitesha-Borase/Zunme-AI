@@ -675,7 +675,7 @@ export const LandingPage: React.FC = () => {
       )}
 
       {/* Core Capabilities Section */}
-      {(activeSection === 'all' || activeSection === 'features') && (
+      {activeSection === 'features' && (
       <section id="features" className="capabilities-section">
         <div className="landing-container">
           <div className="section-header">
@@ -731,7 +731,7 @@ export const LandingPage: React.FC = () => {
       )}
 
       {/* How It Works Section */}
-      {(activeSection === 'all' || activeSection === 'how-it-works') && (
+      {activeSection === 'how-it-works' && (
       <section id="how-it-works" className="how-it-works-section">
         <div className="landing-container">
           <div className="section-header">
@@ -772,7 +772,7 @@ export const LandingPage: React.FC = () => {
       )}
 
       {/* Product Preview / Platform Showcase Section */}
-      {(activeSection === 'all' || activeSection === 'showcase') && (
+      {activeSection === 'showcase' && (
       <section id="showcase" className="showcase-section">
         <div className="landing-container">
           <div className="section-header">
@@ -1066,7 +1066,7 @@ export const LandingPage: React.FC = () => {
       )}
 
       {/* Plans & Pricing Section */}
-      {(activeSection === 'all' || activeSection === 'pricing') && (
+      {activeSection === 'pricing' && (
       <section id="pricing" className="pricing-section">
         <div className="landing-container">
           <div className="section-header">
@@ -1231,7 +1231,7 @@ export const LandingPage: React.FC = () => {
       )}
 
       {/* FAQ Section */}
-      {(activeSection === 'all' || activeSection === 'faq') && (
+      {activeSection === 'faq' && (
       <section id="faq" className="faq-section">
         <div className="landing-container">
           <div className="section-header">
