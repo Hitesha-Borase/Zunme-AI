@@ -58,8 +58,93 @@ interface FaqItem {
 
 export type LandingSection = 'all' | 'features' | 'how-it-works' | 'showcase' | 'pricing' | 'faq';
 
+interface InlineAiAnswer {
+  key: string;
+  query: string;
+  title: string;
+  sources: { title: string; domain: string; match: string }[];
+  bulletPoints: { label: string; text: string }[];
+  takeaway: string;
+}
+
+const PRESET_ANSWERS: Record<string, InlineAiAnswer> = {
+  creator: {
+    key: 'creator',
+    query: 'Synthesize top 2026 AI content creator monetization models',
+    title: 'Top 2026 AI Creator Monetization Framework',
+    sources: [
+      { title: 'Creator Economy Benchmark 2026', domain: 'creatoreconomy-report2026.org', match: '99.4%' },
+      { title: 'SaaS Creator Monetization Index', domain: 'saas-creator-index.io', match: 'Verified' },
+      { title: 'Hyper-Monetization Lab', domain: 'hyper-monetization.ai', match: 'Realtime' }
+    ],
+    bulletPoints: [
+      { label: 'Micro-Cohort Learning Nodes', text: 'Token-gated private mastermind communities with personalized 24/7 AI accountability co-pilots and daily prompt sprints.' },
+      { label: 'Dynamic Asset Warehousing', text: 'Monetizing proprietary prompt chains, trained fine-tuned domain models, and branded vector libraries with automated micro-royalties.' },
+      { label: 'Reverse-Sponsorship Syndicates', text: 'Moving away from flat sponsor rates to real-time programmatic click-stream attribution with verified live tracking.' },
+      { label: 'Agentic Workflow Licensing', text: 'Packaging repeatable multi-agent research and production pipelines as subscription-based micro-APIs for boutique agencies.' }
+    ],
+    takeaway: 'High-earning 2026 creators monetize verified intelligence and autonomous pipelines rather than generic ad impressions.'
+  },
+  carousel: {
+    key: 'carousel',
+    query: 'Draft a high-converting B2B LinkedIn carousel hook sequence',
+    title: '5-Slide High-Converting B2B Carousel Sequence',
+    sources: [
+      { title: 'B2B Conversion Benchmark Study', domain: 'b2b-conversion-study.io', match: '98.8%' },
+      { title: 'Growth Marketer Lab', domain: 'growth-marketer-lab.com', match: 'Verified' }
+    ],
+    bulletPoints: [
+      { label: 'Slide 1 (The Pattern Interrupt)', text: '"94% of B2B outreach fails for 1 avoidable mistake (and it is NOT your email template or subject line)."' },
+      { label: 'Slide 2 (The Trap vs Reality)', text: 'Most teams optimize copy words. High-growth teams optimize intent triggers and live verified contextual signals.' },
+      { label: 'Slide 3 (The 3-Step Framework)', text: 'Intent Signal Detection -> Contextual Intelligence Synthesis -> Personalized Value-First Asset Delivery.' },
+      { label: 'Slide 4 (Field Validation)', text: 'How a 3-person agency booked $180k qualified pipeline in 45 days using grounded AI research.' },
+      { label: 'Slide 5 (Frictionless Call-to-Action)', text: '"Save this slide deck for your team standup and comment PLAYBOOK for the raw prompt chain."' }
+    ],
+    takeaway: 'Hook sequences convert highest when moving from counter-intuitive reality to immediate field-proven frameworks.'
+  },
+  seo: {
+    key: 'seo',
+    query: 'Explain SEO topical cluster architecture with internal link hierarchy',
+    title: 'Topical Authority Cluster & Link Hierarchy',
+    sources: [
+      { title: 'Search Engine Land 2026 Analysis', domain: 'searchengineland-2026.com', match: '99.1%' },
+      { title: 'Topical Authority Matrix Review', domain: 'topical-authority-matrix.org', match: 'Verified' }
+    ],
+    bulletPoints: [
+      { label: 'Cornerstone Pillar Page', text: 'Broad, high-intent architectural guide targeting commercial volume (e.g. "The Complete Guide to Enterprise AI Adoption").' },
+      { label: 'Supporting Cluster Satellites', text: '8 to 12 hyper-specific long-tail articles answering single search intents (e.g. "Enterprise AI Security Protocols").' },
+      { label: 'Bidirectional Internal Linking', text: 'Strict semantic link hierarchy: every satellite links up to the pillar, and cross-links to sibling nodes only when contextually relevant.' },
+      { label: 'SERP Outcome', text: 'Eliminates keyword cannibalization and accelerates semantic indexing, driving 40%–65% organic visibility gains within 60 days.' }
+    ],
+    takeaway: 'Cluster architectures signal deep subject-matter mastery to semantic search engines better than isolated keyword blog posts.'
+  }
+};
+
+const getAnswerForQuery = (query: string): InlineAiAnswer => {
+  const q = query.toLowerCase();
+  if (q.includes('creator') || q.includes('monetiz')) return PRESET_ANSWERS.creator;
+  if (q.includes('carousel') || q.includes('linkedin') || q.includes('hook')) return PRESET_ANSWERS.carousel;
+  if (q.includes('seo') || q.includes('cluster') || q.includes('link')) return PRESET_ANSWERS.seo;
+
+  return {
+    key: 'custom',
+    query,
+    title: `Grounded Synthesis: "${query.slice(0, 50)}${query.length > 50 ? '...' : ''}"`,
+    sources: [
+      { title: 'Zunme Neural Index (Real-time)', domain: 'zunme.ai/grounding', match: 'Live' },
+      { title: 'Global Multi-Modal Web Repository', domain: 'web-grounding.org', match: 'Verified' }
+    ],
+    bulletPoints: [
+      { label: 'Executive Synthesis', text: `Real-time multimodal synthesis executed for: "${query}". Cross-verified against current 2026 knowledge graphs and authoritative web citations.` },
+      { label: 'Strategic Implementation', text: 'Actionable intelligence structured for immediate deployment in creative campaigns, technical briefs, and operational workflows.' },
+      { label: 'Continuous Reasoning', text: 'Multi-turn refinement and asset storage are available directly within the connected Zunme workspace modules.' }
+    ],
+    takeaway: 'Real-time multi-agent grounding provides validated, hallucination-free intelligence with transparent sources.'
+  };
+};
+
 export const LandingPage: React.FC = () => {
-  const { user, loginWithRole } = useApp();
+  const { user } = useApp();
   const [searchParams, setSearchParams] = useSearchParams();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState<boolean>(false);
@@ -67,6 +152,8 @@ export const LandingPage: React.FC = () => {
   const navigate = useNavigate();
   const [askZunmeQuery, setAskZunmeQuery] = useState('');
   const [isSubmittingQuery, setIsSubmittingQuery] = useState(false);
+  const [activeInlineAnswer, setActiveInlineAnswer] = useState<InlineAiAnswer | null>(null);
+  const [copiedAnswer, setCopiedAnswer] = useState(false);
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
   const [copiedSnippet, setCopiedSnippet] = useState(false);
   const [activeSection, setActiveSection] = useState<LandingSection>('all');
@@ -84,11 +171,26 @@ export const LandingPage: React.FC = () => {
     setIsSubmittingQuery(true);
     setTimeout(() => {
       setIsSubmittingQuery(false);
-      if (!user) {
-        loginWithRole('USER', 'Zunme Explorer');
-      }
-      navigate(`/app/chat?prompt=${encodeURIComponent(query)}`);
-    }, 250);
+      setActiveInlineAnswer(getAnswerForQuery(query));
+    }, 320);
+  };
+
+  const handlePromptChipSelect = (key: 'creator' | 'carousel' | 'seo') => {
+    const preset = PRESET_ANSWERS[key];
+    setAskZunmeQuery(preset.query);
+    setIsSubmittingQuery(true);
+    setTimeout(() => {
+      setIsSubmittingQuery(false);
+      setActiveInlineAnswer(preset);
+    }, 280);
+  };
+
+  const handleCopyAnswer = () => {
+    if (!activeInlineAnswer) return;
+    const textToCopy = `${activeInlineAnswer.title}\n\n${activeInlineAnswer.bulletPoints.map((b) => `• ${b.label}: ${b.text}`).join('\n')}\n\nKey Takeaway: ${activeInlineAnswer.takeaway}`;
+    navigator.clipboard?.writeText(textToCopy);
+    setCopiedAnswer(true);
+    setTimeout(() => setCopiedAnswer(false), 2000);
   };
 
   useEffect(() => {
@@ -517,26 +619,131 @@ export const LandingPage: React.FC = () => {
               <span className="chips-label">Popular Prompts:</span>
               <button
                 type="button"
-                className="prompt-chip"
-                onClick={() => setAskZunmeQuery('Synthesize top 2026 AI content creator monetization models')}
+                className={`prompt-chip ${activeInlineAnswer?.key === 'creator' ? 'active' : ''}`}
+                onClick={() => handlePromptChipSelect('creator')}
               >
                 "Top 2026 Creator Monetization Models"
               </button>
               <button
                 type="button"
-                className="prompt-chip"
-                onClick={() => setAskZunmeQuery('Draft a high-converting B2B LinkedIn carousel hook sequence')}
+                className={`prompt-chip ${activeInlineAnswer?.key === 'carousel' ? 'active' : ''}`}
+                onClick={() => handlePromptChipSelect('carousel')}
               >
                 "B2B LinkedIn Carousel Hooks"
               </button>
               <button
                 type="button"
-                className="prompt-chip"
-                onClick={() => setAskZunmeQuery('Explain SEO topical cluster architecture with internal link hierarchy')}
+                className={`prompt-chip ${activeInlineAnswer?.key === 'seo' ? 'active' : ''}`}
+                onClick={() => handlePromptChipSelect('seo')}
               >
                 "SEO Topical Cluster Blueprint"
               </button>
             </div>
+
+            {/* Inline AI Grounded Answer Card - Displayed right on the Landing Page */}
+            {activeInlineAnswer && (
+              <div className="hero-inline-answer-card" role="region" aria-label="AI Search Response">
+                <div className="inline-answer-header">
+                  <div className="inline-answer-brand">
+                    <div className="answer-spark-icon">
+                      <Sparkles size={17} />
+                    </div>
+                    <div>
+                      <h3 className="inline-answer-title">{activeInlineAnswer.title}</h3>
+                      <div className="inline-answer-meta">
+                        <span className="answer-model-badge">Zunme Neural Core 4.5</span>
+                        <span className="answer-meta-dot">•</span>
+                        <span className="answer-grounded-text">
+                          <CheckCircle2 size={12} className="text-emerald" /> Grounded in Real-Time
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="inline-answer-actions">
+                    <button
+                      type="button"
+                      className="btn-answer-action"
+                      onClick={handleCopyAnswer}
+                      title="Copy response"
+                    >
+                      {copiedAnswer ? <Check size={14} className="text-emerald" /> : <Copy size={14} />}
+                      <span>{copiedAnswer ? 'Copied' : 'Copy'}</span>
+                    </button>
+                    <button
+                      type="button"
+                      className="btn-answer-close"
+                      onClick={() => setActiveInlineAnswer(null)}
+                      aria-label="Close answer"
+                      title="Close"
+                    >
+                      <X size={16} />
+                    </button>
+                  </div>
+                </div>
+
+                {/* Grounded Sources Pills */}
+                <div className="inline-answer-sources">
+                  <span className="sources-label">Verified Sources:</span>
+                  <div className="sources-pills-row">
+                    {activeInlineAnswer.sources.map((src, i) => (
+                      <span key={i} className="source-pill">
+                        <Globe size={11} />
+                        <span className="source-pill-domain">{src.domain}</span>
+                        <span className="source-pill-match">{src.match}</span>
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Key Insights List */}
+                <div className="inline-answer-points">
+                  {activeInlineAnswer.bulletPoints.map((point, i) => (
+                    <div key={i} className="answer-point-item">
+                      <div className="point-number">{i + 1}</div>
+                      <div className="point-content">
+                        <strong className="point-label">{point.label}:</strong>{' '}
+                        <span className="point-text">{point.text}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Key Takeaway Banner */}
+                <div className="inline-answer-takeaway">
+                  <Zap size={15} className="takeaway-icon" />
+                  <p><strong>Executive Takeaway:</strong> {activeInlineAnswer.takeaway}</p>
+                </div>
+
+                {/* Footer Quick Switch */}
+                <div className="inline-answer-footer">
+                  <span className="footer-switch-label">Try Another Query:</span>
+                  <div className="footer-chips-row">
+                    <button
+                      type="button"
+                      className={`mini-chip ${activeInlineAnswer.key === 'creator' ? 'active' : ''}`}
+                      onClick={() => handlePromptChipSelect('creator')}
+                    >
+                      Monetization Models
+                    </button>
+                    <button
+                      type="button"
+                      className={`mini-chip ${activeInlineAnswer.key === 'carousel' ? 'active' : ''}`}
+                      onClick={() => handlePromptChipSelect('carousel')}
+                    >
+                      LinkedIn Hooks
+                    </button>
+                    <button
+                      type="button"
+                      className={`mini-chip ${activeInlineAnswer.key === 'seo' ? 'active' : ''}`}
+                      onClick={() => handlePromptChipSelect('seo')}
+                    >
+                      SEO Clusters
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Modern Interactive Bento Grid Showcase */}

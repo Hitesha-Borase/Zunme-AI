@@ -505,4 +505,18 @@ textarea.input-field {
     width: 100%;
     justify-content: center;
   }
+
+  /* Universal Touch Targets on Small Screens */
+  .btn {
+    min-height: 38px;
+  }
+
+  /* Form groups stacking on mobile */
+  .form-row,
+  .form-grid-2 {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
 }
+

@@ -169,7 +169,15 @@
   height: 100vh;
   max-height: 100vh;
   overflow: hidden;
-  background-color: var(--color-bg, #FAF9FC);
+  background-color: #0F121E;
+  background-image: 
+    radial-gradient(circle at 85% 15%, rgba(110, 86, 207, 0.15) 0%, transparent 45%),
+    radial-gradient(circle at 15% 85%, rgba(14, 165, 233, 0.12) 0%, transparent 45%),
+    linear-gradient(135deg, rgba(250, 249, 252, 0.62) 0%, rgba(244, 242, 250, 0.68) 50%, rgba(238, 242, 255, 0.74) 100%),
+    url('/zunme_login_bg.jpg');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
   color: var(--color-text-primary, #111625);
   display: flex;
   flex-direction: column;
@@ -186,8 +194,8 @@
   right: 0;
   bottom: 0;
   background-image: 
-    linear-gradient(rgba(110, 86, 207, 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(110, 86, 207, 0.035) 1px, transparent 1px);
+    linear-gradient(rgba(110, 86, 207, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(110, 86, 207, 0.04) 1px, transparent 1px);
   background-size: 52px 52px;
   pointer-events: none;
   z-index: 0;
@@ -199,7 +207,7 @@
   right: -5%;
   width: 900px;
   height: 600px;
-  background: radial-gradient(ellipse at center, rgba(253, 238, 233, 0.95) 0%, rgba(245, 235, 249, 0.7) 45%, transparent 75%);
+  background: radial-gradient(ellipse at center, rgba(253, 238, 233, 0.5) 0%, rgba(245, 235, 249, 0.35) 45%, transparent 75%);
   filter: blur(80px);
   pointer-events: none;
   z-index: 0;
@@ -211,7 +219,7 @@
   left: -100px;
   width: 700px;
   height: 550px;
-  background: radial-gradient(circle, rgba(239, 235, 252, 0.9) 0%, rgba(245, 235, 249, 0.6) 45%, transparent 70%);
+  background: radial-gradient(circle, rgba(239, 235, 252, 0.5) 0%, rgba(245, 235, 249, 0.3) 45%, transparent 70%);
   filter: blur(90px);
   pointer-events: none;
   z-index: 0;
@@ -228,7 +236,7 @@
   background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(24px) saturate(180%);
   -webkit-backdrop-filter: blur(24px) saturate(180%);
-  border-bottom: 1px solid rgba(232, 236, 245, 0.9);
+  border-bottom: 1px solid rgba(232, 236, 245, 0.85);
   box-shadow: 0 4px 18px -2px rgba(30, 20, 60, 0.04);
   z-index: 10;
 }
@@ -261,44 +269,49 @@
 
 .energy-auth-grid {
   width: 100%;
-  max-width: 1140px;
+  max-width: 1280px;
   display: grid;
-  grid-template-columns: 360px 1fr;
-  gap: 32px;
+  grid-template-columns: 500px 1fr;
+  gap: 36px;
   align-items: center;
   margin: auto 0;
 }
 
-/* Left Login Card */
+/* Left Login Card (Enlarged width, luxury glass styling) */
 .energy-login-card {
-  background: #FFFFFF;
-  border: 1px solid #E8ECF5;
-  border-radius: 18px;
-  padding: 22px 24px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  border-radius: 24px;
+  padding: 30px 32px;
   box-shadow: 
-    0 20px 50px -8px rgba(30, 20, 60, 0.08),
-    0 4px 12px rgba(0, 0, 0, 0.02);
+    0 24px 60px -10px rgba(15, 23, 42, 0.14),
+    0 4px 16px rgba(0, 0, 0, 0.03),
+    0 0 0 1px rgba(110, 86, 207, 0.06);
   position: relative;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   overflow: hidden;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .energy-login-header {
   text-align: center;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
 
 .energy-card-logo-box {
   margin: 0 auto 8px auto;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   border-radius: 12px;
 }
 
 .energy-card-logo-box .brand-glyph {
-  font-size: 20px;
+  font-size: 22px;
 }
 
 .energy-card-title-row {
@@ -310,7 +323,7 @@
 
 .energy-card-title {
   margin: 0;
-  font-size: 1.25rem;
+  font-size: 1.35rem;
   font-weight: 800;
   color: #111625;
   letter-spacing: -0.02em;
@@ -318,7 +331,7 @@
 
 .energy-card-meta {
   margin: 3px 0 1px 0;
-  font-size: 0.68rem;
+  font-size: 0.72rem;
   font-weight: 800;
   letter-spacing: 0.06em;
   color: #6E56CF;
@@ -327,7 +340,7 @@
 
 .energy-card-desc {
   margin: 0;
-  font-size: 0.78rem;
+  font-size: 0.82rem;
   color: #5F6B85;
 }
 
@@ -347,7 +360,7 @@
 .energy-form {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
   flex: 1;
   justify-content: center;
 }
@@ -355,11 +368,11 @@
 .energy-form-group {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 5px;
 }
 
 .energy-label {
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   font-weight: 700;
   color: #374151;
 }
@@ -372,21 +385,21 @@
 
 .energy-input-icon {
   position: absolute;
-  left: 12px;
-  font-size: 0.82rem;
+  left: 14px;
+  font-size: 0.92rem;
   color: #8C97B0;
   pointer-events: none;
 }
 
 .energy-input {
   width: 100%;
-  height: 38px;
+  height: 44px;
   background: #F8FAFC;
   border: 1px solid #E2E8F0;
-  border-radius: 10px;
-  padding: 0 38px 0 34px;
+  border-radius: 12px;
+  padding: 0 42px 0 40px;
   color: #111625;
-  font-size: 0.82rem;
+  font-size: 0.88rem;
   outline: none;
   transition: all 0.18s ease;
   box-sizing: border-box;
@@ -400,12 +413,12 @@
 
 .energy-pw-toggle {
   position: absolute;
-  right: 10px;
+  right: 12px;
   background: transparent;
   border: none;
   color: #8C97B0;
   cursor: pointer;
-  padding: 3px;
+  padding: 4px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -419,11 +432,11 @@
 .energy-context-box {
   background: #F8FAFD;
   border: 1px solid #E8ECF5;
-  border-radius: 10px;
-  padding: 8px 12px;
+  border-radius: 12px;
+  padding: 10px 14px;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 5px;
   margin-top: 2px;
 }
 
@@ -431,7 +444,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 0.74rem;
+  font-size: 0.78rem;
 }
 
 .energy-ctx-muted {
@@ -450,12 +463,12 @@
 
 .energy-submit-btn {
   width: 100%;
-  height: 40px;
+  height: 46px;
   background: var(--gradient-primary, linear-gradient(135deg, #6E56CF 0%, #7C3AED 100%));
   border: 1px solid rgba(110, 86, 207, 0.4);
-  border-radius: 10px;
+  border-radius: 12px;
   color: #FFFFFF;
-  font-size: 0.82rem;
+  font-size: 0.88rem;
   font-weight: 700;
   cursor: pointer;
   display: flex;
@@ -478,7 +491,7 @@
 }
 
 .energy-card-footer {
-  margin-top: 10px;
+  margin-top: 12px;
   padding-top: 10px;
   border-top: 1px solid #F1F5F9;
 }
@@ -552,8 +565,10 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  background: #FFFFFF;
-  border: 1px solid #E8ECF5;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(232, 236, 245, 0.9);
   border-radius: 12px;
   padding: 8px 12px;
   height: 54px;
@@ -561,21 +576,21 @@
   cursor: pointer;
   text-align: left;
   transition: all 0.16s ease;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
   position: relative;
 }
 
 .energy-persona-card:hover {
-  background: #FAFBFD;
-  border-color: rgba(110, 86, 207, 0.4);
+  background: rgba(255, 255, 255, 0.98);
+  border-color: rgba(110, 86, 207, 0.45);
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(110, 86, 207, 0.08);
+  box-shadow: 0 6px 16px rgba(110, 86, 207, 0.12);
 }
 
 .energy-persona-card.is-selected {
   background: #FFFFFF;
   border-color: #6E56CF;
-  box-shadow: 0 0 0 1.5px #6E56CF, 0 4px 14px rgba(110, 86, 207, 0.12);
+  box-shadow: 0 0 0 1.5px #6E56CF, 0 6px 18px rgba(110, 86, 207, 0.16);
 }
 
 .persona-icon-box {
@@ -628,8 +643,12 @@
   align-items: center;
   justify-content: space-between;
   margin-top: 8px;
-  padding-top: 8px;
-  border-top: 1px solid #E8ECF5;
+  padding: 7px 14px;
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(232, 236, 245, 0.85);
+  border-radius: 10px;
   font-size: 0.72rem;
   color: #5F6B85;
 }
@@ -646,7 +665,7 @@
 }
 
 /* Large Laptop / Ultra-compact height screen tuning (e.g., 768px height) */
-@media (max-height: 800px) and (min-width: 1041px) {
+@media (max-height: 820px) and (min-width: 1041px) {
   .energy-auth-topbar {
     height: 52px;
   }
@@ -654,18 +673,24 @@
     padding: 8px 24px;
   }
   .energy-login-card {
-    padding: 16px 20px;
+    padding: 20px 24px;
   }
   .energy-card-logo-box {
-    width: 34px;
-    height: 34px;
+    width: 36px;
+    height: 36px;
     margin-bottom: 4px;
   }
   .energy-card-title {
-    font-size: 1.15rem;
+    font-size: 1.2rem;
+  }
+  .energy-input {
+    height: 40px;
+  }
+  .energy-submit-btn {
+    height: 42px;
   }
   .energy-personas-grid {
-    gap: 6px;
+    gap: 8px;
   }
   .energy-persona-card {
     padding: 6px 10px;
@@ -676,7 +701,15 @@
   }
 }
 
-/* Tablets and Mobile Responsive Behavior */
+/* Intermediate Laptop Screen Widths (1041px - 1200px) */
+@media (max-width: 1200px) and (min-width: 1041px) {
+  .energy-auth-grid {
+    grid-template-columns: 460px 1fr;
+    gap: 26px;
+  }
+}
+
+/* Tablets and Mobile Responsive Behavior (1040px and below) */
 @media (max-width: 1040px) {
   .energy-auth-page {
     height: auto;
@@ -688,24 +721,27 @@
 
   .energy-auth-main {
     overflow-y: visible;
-    padding: 24px 20px 40px 20px;
+    padding: 28px 20px 48px 20px;
   }
 
   .energy-auth-grid {
     grid-template-columns: 1fr;
     max-height: none;
     height: auto;
-    gap: 24px;
+    gap: 28px;
+    max-width: 540px;
+    margin: 0 auto;
+    width: 100%;
   }
 
   .energy-login-card {
-    max-width: 520px;
+    max-width: 100%;
     margin: 0 auto;
     width: 100%;
   }
 
   .energy-personas-panel {
-    max-width: 520px;
+    max-width: 100%;
     margin: 0 auto;
     width: 100%;
     height: auto;
@@ -727,20 +763,21 @@
   }
 
   .energy-auth-main {
-    padding: 16px 12px 36px 12px;
+    padding: 20px 14px 44px 14px;
   }
 
   .energy-auth-grid {
-    gap: 18px;
+    gap: 20px;
+    max-width: 100%;
   }
 
   .energy-login-card {
-    padding: 20px 16px;
-    border-radius: 16px;
+    padding: 24px 18px;
+    border-radius: 20px;
   }
 
   .energy-card-title {
-    font-size: 1.15rem;
+    font-size: 1.2rem;
   }
 
   .energy-panel-title {
@@ -753,8 +790,8 @@
   }
 
   .energy-persona-card {
-    height: 50px;
-    padding: 6px 10px;
+    height: 52px;
+    padding: 6px 12px;
   }
 
   .persona-icon-box {

@@ -366,13 +366,13 @@
 /* Card Grids */
 .cards-grid-2 {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
   gap: var(--space-5);
 }
 
 .cards-grid-3 {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
   gap: var(--space-5);
   width: 100%;
 }
@@ -386,13 +386,13 @@
 
 @media (max-width: 1024px) {
   .plans-pricing-grid {
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
   }
 }
 
 .cards-grid-4 {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr));
   gap: var(--space-4);
 }
 
@@ -477,7 +477,8 @@
   }
 
   .metrics-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 160px), 1fr));
+    gap: var(--space-3);
   }
 
   .cards-grid-2, .cards-grid-3, .cards-grid-4, .plans-pricing-grid {
@@ -487,18 +488,71 @@
   .dashboard-header {
     flex-direction: column;
     align-items: stretch;
+    gap: var(--space-3);
   }
 
   .dashboard-header-actions {
     width: 100%;
+    gap: 8px;
   }
 
   .filter-toolbar {
     flex-direction: column;
     align-items: stretch;
+    gap: var(--space-3);
   }
 
   .search-box-wrap {
+    min-width: 0;
     max-width: 100%;
+    width: 100%;
+  }
+
+  .tabs-nav-bar {
+    padding: 4px;
+    border-radius: var(--radius-lg);
+  }
+
+  .tab-item-btn {
+    padding: 7px 12px;
+    font-size: 12px;
   }
 }
+
+@media (max-width: 480px) {
+  .dashboard-page-container {
+    padding: 12px;
+    gap: 12px;
+  }
+
+  .dashboard-title-group h1 {
+    font-size: 20px;
+  }
+
+  .dashboard-subtitle {
+    font-size: 12.5px;
+  }
+
+  .glass-panel {
+    padding: 16px 14px;
+    border-radius: var(--radius-lg);
+  }
+
+  .metrics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .metric-card {
+    padding: 14px 16px;
+  }
+
+  .metric-value {
+    font-size: 24px;
+  }
+
+  .modal-card {
+    padding: 18px 14px;
+    border-radius: var(--radius-xl);
+  }
+}
+
