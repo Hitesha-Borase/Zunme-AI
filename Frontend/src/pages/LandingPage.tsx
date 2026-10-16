@@ -262,15 +262,14 @@ export const LandingPage: React.FC = () => {
               <NavLink to="/register" className="btn btn-ghost btn-sm">
                 Get Started
               </NavLink>
-              <button
-                type="button"
-                onClick={() => setShowLoginModal(true)}
+              <NavLink
+                to="/login"
                 className="btn btn-primary btn-sm btn-glow"
                 aria-label="Open Workspace Login"
               >
                 <span>Login</span>
                 <ArrowRight size={14} />
-              </button>
+              </NavLink>
 
               {/* Mobile Menu Toggle Button */}
               <button
@@ -307,17 +306,14 @@ export const LandingPage: React.FC = () => {
               </a>
             </nav>
             <div className="mobile-drawer-actions">
-              <button
-                type="button"
+              <NavLink
+                to="/login"
                 className="btn btn-primary btn-block"
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  setShowLoginModal(true);
-                }}
+                onClick={() => setMobileMenuOpen(false)}
               >
                 <span>Login</span>
                 <ArrowRight size={15} />
-              </button>
+              </NavLink>
               <NavLink
                 to="/register"
                 className="btn btn-outline btn-block"
@@ -1275,13 +1271,9 @@ export const LandingPage: React.FC = () => {
                     <a href="#faq">FAQ</a>
                   </li>
                   <li>
-                    <button
-                      type="button"
-                      className="footer-modal-trigger-btn"
-                      onClick={() => setShowLoginModal(true)}
-                    >
+                    <NavLink to="/login" className="footer-modal-trigger-btn">
                       Sign In / Workspaces
-                    </button>
+                    </NavLink>
                   </li>
                   <li>
                     <NavLink to="/register">Create Account</NavLink>
