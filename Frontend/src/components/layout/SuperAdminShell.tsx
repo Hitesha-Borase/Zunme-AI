@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { NavLink, Outlet, useNavigate, useLocation } from 'react-router-dom';
+import { NavLink, Outlet, useNavigate, useLocation, Navigate } from 'react-router-dom';
 import {
   LayoutDashboard,
   Users,
@@ -26,8 +26,12 @@ export const SuperAdminShell: React.FC = () => {
 
   const handleLogout = () => {
     logout();
-    navigate('/?login=true');
+    navigate('/login', { replace: true });
   };
+
+  if (!user) {
+    return <Navigate to="/" replace />;
+  }
 
   const getPageTitle = () => {
     const path = location.pathname;

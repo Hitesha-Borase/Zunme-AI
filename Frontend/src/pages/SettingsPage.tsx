@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { User, Shield, Lock, Bell, AlertTriangle, Check, Sparkles } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import './SettingsPage.css';
 
 export const SettingsPage: React.FC = () => {
   const { user, updateProfile, logout, showToast } = useApp();
+  const navigate = useNavigate();
 
   const [fullName, setFullName] = useState(user?.fullName || '');
   const [currentPassword, setCurrentPassword] = useState('');
@@ -198,7 +200,13 @@ export const SettingsPage: React.FC = () => {
             </div>
           </div>
 
-          <button className="btn btn-danger btn-sm" onClick={logout}>
+          <button
+            className="btn btn-danger btn-sm"
+            onClick={() => {
+              logout();
+              navigate('/login', { replace: true });
+            }}
+          >
             Sign Out Everywhere
           </button>
         </div>

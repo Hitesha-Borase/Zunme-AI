@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { NavLink, Outlet, useLocation, useNavigate, Navigate } from 'react-router-dom';
 import {
   Home,
   MessageSquare,
@@ -84,8 +84,12 @@ export const AppShell: React.FC = () => {
 
   const handleLogout = () => {
     logout();
-    navigate('/?login=true');
+    navigate('/login', { replace: true });
   };
+
+  if (!user) {
+    return <Navigate to="/" replace />;
+  }
 
   const displayName = (user?.fullName || 'User').replace(/\s*\([^)]*\)/g, '').trim();
 
