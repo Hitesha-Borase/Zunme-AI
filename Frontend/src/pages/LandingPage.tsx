@@ -389,21 +389,7 @@ export const LandingPage: React.FC = () => {
               </div>
             </div>
 
-            {/* Floating UI Panel 2: Content Studio Status (Bottom Right) */}
-            <div className="floating-card floating-card-right" aria-hidden="true">
-              <div className="floating-card-header">
-                <PenTool size={13} className="text-violet" />
-                <span className="floating-card-title">Content Studio</span>
-                <span className="status-dot-active" />
-              </div>
-              <div className="floating-card-body">
-                <div className="floating-draft-title">Executive Brief Outline</div>
-                <div className="floating-metrics">
-                  <span className="badge badge-neutral">Tone: Bold</span>
-                  <span className="badge badge-primary">480 Words</span>
-                </div>
-              </div>
-            </div>
+
 
             {/* Central Workspace Showcase Window */}
             <div className="showcase-window">
