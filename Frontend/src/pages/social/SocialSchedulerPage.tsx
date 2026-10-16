@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import {
   Calendar as CalendarIcon,
   Share2,
@@ -27,13 +28,15 @@ import {
   Globe,
   MessageCircle,
   ThumbsUp,
-  ExternalLink
+  ExternalLink,
+  LifeBuoy,
+  Settings as SettingsIcon
 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import '../../styles/dashboard.css';
 
 type SocialPlatform = 'twitter' | 'linkedin' | 'instagram' | 'youtube' | 'tiktok';
-type TabType = 'calendar' | 'queue' | 'composer' | 'accounts' | 'analytics';
+type TabType = 'calendar' | 'queue' | 'composer' | 'accounts' | 'analytics' | 'settings' | 'support';
 
 interface ScheduledPost {
   id: string;
@@ -54,7 +57,8 @@ interface ScheduledPost {
 }
 
 interface ConnectedAccount {
-  id: SocialPlatform;
+  id: string;
+  platform: SocialPlatform;
   name: string;
   handle: string;
   platformName: string;
@@ -68,6 +72,7 @@ interface ConnectedAccount {
 
 export const SocialSchedulerPage: React.FC = () => {
   const { showToast } = useApp();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const [activeTab, setActiveTab] = useState<TabType>('calendar');
   const [platformFilter, setPlatformFilter] = useState<string>('ALL');
@@ -77,6 +82,7 @@ export const SocialSchedulerPage: React.FC = () => {
 
   // Modal State for Composer
   const [isComposerOpen, setIsComposerOpen] = useState(false);
+  const [editingPostId, setEditingPostId] = useState<string | null>(null);
   const [previewPlatform, setPreviewPlatform] = useState<SocialPlatform>('twitter');
 
   // Composer Form State
@@ -87,6 +93,13 @@ export const SocialSchedulerPage: React.FC = () => {
   const [scheduledTime, setScheduledTime] = useState('09:30');
   const [hasMediaAttachment, setHasMediaAttachment] = useState(false);
   const [isAiOptimizing, setIsAiOptimizing] = useState(false);
+
+  // Modal State for Add Channel
+  const [isAddChannelOpen, setIsAddChannelOpen] = useState(false);
+  const [newChannelPlatform, setNewChannelPlatform] = useState<SocialPlatform>('twitter');
+  const [newChannelName, setNewChannelName] = useState('');
+  const [newChannelHandle, setNewChannelHandle] = useState('');
+  const [newChannelFollowers, setNewChannelFollowers] = useState('');
 
   // Initial Scheduled Posts
   const [posts, setPosts] = useState<ScheduledPost[]>([
@@ -158,7 +171,8 @@ export const SocialSchedulerPage: React.FC = () => {
   // Connected Accounts
   const [accounts, setAccounts] = useState<ConnectedAccount[]>([
     {
-      id: 'twitter',
+      id: 'acc-twitter',
+      platform: 'twitter',
       name: 'X (Twitter)',
       platformName: 'X / Twitter',
       handle: '@zunme_ai',
@@ -170,7 +184,8 @@ export const SocialSchedulerPage: React.FC = () => {
       lastSynced: '10 mins ago'
     },
     {
-      id: 'linkedin',
+      id: 'acc-linkedin',
+      platform: 'linkedin',
       name: 'LinkedIn Company',
       platformName: 'LinkedIn',
       handle: 'Zunme AI Technologies',
@@ -182,11 +197,12 @@ export const SocialSchedulerPage: React.FC = () => {
       lastSynced: '1 hour ago'
     },
     {
-      id: 'instagram',
+      id: 'acc-instagram',
+      platform: 'instagram',
       name: 'Instagram Creator',
       platformName: 'Instagram',
       handle: '@zunme.workspace',
-      avatarBg: '#E1306C',
+      avatarBg: 'linear-gradient(135deg, #F58529, #D62976, #962FBF, #4F5BD5)',
       accentColor: '#E1306C',
       status: 'CONNECTED',
       followers: '34.1K',
@@ -194,7 +210,8 @@ export const SocialSchedulerPage: React.FC = () => {
       lastSynced: '25 mins ago'
     },
     {
-      id: 'youtube',
+      id: 'acc-youtube',
+      platform: 'youtube',
       name: 'YouTube Channel',
       platformName: 'YouTube',
       handle: 'Zunme AI Official',
@@ -206,7 +223,8 @@ export const SocialSchedulerPage: React.FC = () => {
       lastSynced: '3 hours ago'
     },
     {
-      id: 'tiktok',
+      id: 'acc-tiktok',
+      platform: 'tiktok',
       name: 'TikTok Business',
       platformName: 'TikTok',
       handle: '@zunme_official',
@@ -218,6 +236,42 @@ export const SocialSchedulerPage: React.FC = () => {
       lastSynced: 'Not connected'
     }
   ]);
+
+  // Synchronize events and search params for Schedule Post and tab navigation
+  useEffect(() => {
+    const handleOpenComposer = () => {
+      setEditingPostId(null);
+      setComposeTitle('');
+      setComposeContent('');
+      setSelectedPlatforms(['twitter', 'linkedin']);
+      setScheduledDate('2026-10-18');
+      setScheduledTime('09:30');
+      setHasMediaAttachment(false);
+      setIsComposerOpen(true);
+    };
+
+    const handleSwitchTab = (e: any) => {
+      if (e.detail && ['calendar', 'queue', 'composer', 'accounts', 'analytics', 'settings', 'support'].includes(e.detail)) {
+        setActiveTab(e.detail as TabType);
+      }
+    };
+
+    window.addEventListener('open-social-composer', handleOpenComposer);
+    window.addEventListener('switch-social-tab', handleSwitchTab);
+
+    if (searchParams.get('compose') === 'true') {
+      handleOpenComposer();
+    }
+    const tabParam = searchParams.get('tab');
+    if (tabParam && ['calendar', 'queue', 'composer', 'accounts', 'analytics', 'settings', 'support'].includes(tabParam)) {
+      setActiveTab(tabParam as TabType);
+    }
+
+    return () => {
+      window.removeEventListener('open-social-composer', handleOpenComposer);
+      window.removeEventListener('switch-social-tab', handleSwitchTab);
+    };
+  }, [searchParams]);
 
   // Platform styling helpers
   const getPlatformIcon = (platform: SocialPlatform, size: number = 14) => {
@@ -257,6 +311,29 @@ export const SocialSchedulerPage: React.FC = () => {
     }
   };
 
+  const getPlatformAvatarBg = (platform: SocialPlatform) => {
+    switch (platform) {
+      case 'twitter': return '#0F1419';
+      case 'linkedin': return '#0A66C2';
+      case 'instagram': return 'linear-gradient(135deg, #F58529, #D62976, #962FBF, #4F5BD5)';
+      case 'youtube': return '#FF0000';
+      case 'tiktok': return '#000000';
+      default: return '#6E56CF';
+    }
+  };
+
+  // Open Post Composer in Edit Mode
+  const handleOpenEditPost = (post: ScheduledPost) => {
+    setEditingPostId(post.id);
+    setComposeTitle(post.title);
+    setComposeContent(post.content);
+    setSelectedPlatforms(post.platforms.length > 0 ? post.platforms : ['twitter']);
+    setScheduledDate(post.scheduledDate);
+    setScheduledTime(post.scheduledTime);
+    setHasMediaAttachment(post.hasMedia);
+    setIsComposerOpen(true);
+  };
+
   // Toggle platform selection in composer
   const togglePlatform = (p: SocialPlatform) => {
     if (selectedPlatforms.includes(p)) {
@@ -284,7 +361,7 @@ export const SocialSchedulerPage: React.FC = () => {
     }, 900);
   };
 
-  // Submit Schedule
+  // Submit Schedule or Update existing post
   const handleCreatePost = (e: React.FormEvent) => {
     e.preventDefault();
     if (!composeContent.trim()) {
@@ -292,25 +369,103 @@ export const SocialSchedulerPage: React.FC = () => {
       return;
     }
 
-    const newPost: ScheduledPost = {
-      id: `post-${Date.now()}`,
-      title: composeTitle.trim() || composeContent.slice(0, 36) + '...',
-      content: composeContent,
-      platforms: selectedPlatforms,
-      scheduledDate,
-      scheduledTime,
-      status: 'SCHEDULED',
-      hasMedia: hasMediaAttachment,
-      mediaType: hasMediaAttachment ? 'image' : undefined,
-      optimalScore: 95
-    };
+    if (editingPostId) {
+      setPosts((prev) =>
+        prev.map((p) =>
+          p.id === editingPostId
+            ? {
+                ...p,
+                title: composeTitle.trim() || composeContent.slice(0, 36) + '...',
+                content: composeContent,
+                platforms: selectedPlatforms,
+                scheduledDate,
+                scheduledTime,
+                hasMedia: hasMediaAttachment,
+                mediaType: hasMediaAttachment ? (p.mediaType || 'image') : undefined
+              }
+            : p
+        )
+      );
+      showToast(`Post updated successfully for ${scheduledDate} at ${scheduledTime}`, 'success');
+      setEditingPostId(null);
+    } else {
+      const newPost: ScheduledPost = {
+        id: `post-${Date.now()}`,
+        title: composeTitle.trim() || composeContent.slice(0, 36) + '...',
+        content: composeContent,
+        platforms: selectedPlatforms,
+        scheduledDate,
+        scheduledTime,
+        status: 'SCHEDULED',
+        hasMedia: hasMediaAttachment,
+        mediaType: hasMediaAttachment ? 'image' : undefined,
+        optimalScore: 95
+      };
 
-    setPosts([newPost, ...posts]);
+      setPosts([newPost, ...posts]);
+      showToast(`Post scheduled across ${selectedPlatforms.length} channels for ${scheduledDate} at ${scheduledTime}`, 'success');
+    }
+
     setIsComposerOpen(false);
     setComposeTitle('');
     setComposeContent('');
     setHasMediaAttachment(false);
-    showToast(`Post scheduled across ${selectedPlatforms.length} channels for ${scheduledDate} at ${scheduledTime}`, 'success');
+  };
+
+  // Add New Social Channel
+  const handleAddChannel = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newChannelName.trim()) {
+      showToast('Please enter a channel name', 'warning');
+      return;
+    }
+    const cleanHandle = newChannelHandle.trim()
+      ? (newChannelHandle.trim().startsWith('@') ? newChannelHandle.trim() : `@${newChannelHandle.trim()}`)
+      : `@${newChannelName.trim().toLowerCase().replace(/\s+/g, '_')}`;
+
+    const existingIndex = accounts.findIndex(
+      (a) => a.platform === newChannelPlatform || a.handle.toLowerCase() === cleanHandle.toLowerCase()
+    );
+
+    if (existingIndex >= 0) {
+      setAccounts((prev) =>
+        prev.map((acc, idx) =>
+          idx === existingIndex
+            ? {
+                ...acc,
+                name: newChannelName.trim(),
+                handle: cleanHandle,
+                status: 'CONNECTED',
+                followers: newChannelFollowers.trim() || (acc.followers === '--' ? '18.4K' : acc.followers),
+                monthlyReach: acc.monthlyReach === '--' ? '92.0K' : acc.monthlyReach,
+                lastSynced: 'Just now'
+              }
+            : acc
+        )
+      );
+      showToast(`${newChannelName.trim()} (${cleanHandle}) connected & updated!`, 'success');
+    } else {
+      const newAcc: ConnectedAccount = {
+        id: `acc-${Date.now()}`,
+        platform: newChannelPlatform,
+        name: newChannelName.trim(),
+        platformName: getPlatformLabel(newChannelPlatform),
+        handle: cleanHandle,
+        avatarBg: getPlatformAvatarBg(newChannelPlatform),
+        accentColor: getPlatformBadgeColor(newChannelPlatform),
+        status: 'CONNECTED',
+        followers: newChannelFollowers.trim() || '14.2K',
+        monthlyReach: '78.5K',
+        lastSynced: 'Just now'
+      };
+      setAccounts((prev) => [...prev, newAcc]);
+      showToast(`${newAcc.name} (${newAcc.handle}) connected successfully!`, 'success');
+    }
+
+    setIsAddChannelOpen(false);
+    setNewChannelName('');
+    setNewChannelHandle('');
+    setNewChannelFollowers('');
   };
 
   // Publish Now Immediate Override
@@ -336,7 +491,7 @@ export const SocialSchedulerPage: React.FC = () => {
   };
 
   // Toggle Account Connection
-  const handleToggleAccount = (id: SocialPlatform) => {
+  const handleToggleAccount = (id: string) => {
     setAccounts(
       accounts.map((acc) => {
         if (acc.id === id) {
@@ -344,8 +499,8 @@ export const SocialSchedulerPage: React.FC = () => {
           return {
             ...acc,
             status: isConn ? 'DISCONNECTED' : 'CONNECTED',
-            followers: isConn ? '--' : '15.2K',
-            monthlyReach: isConn ? '--' : '72.0K',
+            followers: isConn ? '--' : (acc.followers === '--' ? '15.2K' : acc.followers),
+            monthlyReach: isConn ? '--' : (acc.monthlyReach === '--' ? '72.0K' : acc.monthlyReach),
             lastSynced: isConn ? 'Disconnected' : 'Just now'
           };
         }
@@ -565,7 +720,7 @@ export const SocialSchedulerPage: React.FC = () => {
                           key={post.id}
                           onClick={(e) => {
                             e.stopPropagation();
-                            showToast(`Post: "${post.title}" scheduled for ${post.scheduledTime}`, 'info');
+                            handleOpenEditPost(post);
                           }}
                           style={{
                             padding: '4px 6px',
@@ -749,7 +904,7 @@ export const SocialSchedulerPage: React.FC = () => {
                       </button>
                       <button
                         className="btn btn-sm btn-outline"
-                        onClick={() => showToast('Post editor drawer opened', 'info')}
+                        onClick={() => handleOpenEditPost(post)}
                         title="Edit post parameters"
                       >
                         <Edit3 size={13} />
@@ -785,7 +940,13 @@ export const SocialSchedulerPage: React.FC = () => {
               </div>
               <button
                 className="btn btn-primary btn-sm"
-                onClick={() => showToast('OAuth channel integration wizard initialized', 'info')}
+                onClick={() => {
+                  setNewChannelPlatform('twitter');
+                  setNewChannelName('X / Twitter Channel');
+                  setNewChannelHandle('@zunme_ai');
+                  setNewChannelFollowers('22.4K');
+                  setIsAddChannelOpen(true);
+                }}
               >
                 <Plus size={14} /> Add Channel
               </button>
@@ -820,7 +981,7 @@ export const SocialSchedulerPage: React.FC = () => {
                           justifyContent: 'center'
                         }}
                       >
-                        {getPlatformIcon(acc.id, 20)}
+                        {getPlatformIcon(acc.platform, 20)}
                       </div>
                       <div>
                         <h4 style={{ fontSize: '15px', fontWeight: '800', color: '#111625', margin: 0 }}>
@@ -956,25 +1117,93 @@ export const SocialSchedulerPage: React.FC = () => {
         </div>
       )}
 
+      {/* Tab: Settings */}
+      {activeTab === 'settings' && (
+        <div className="glass-panel">
+          <div className="panel-header">
+            <div className="panel-title">
+              <SettingsIcon size={18} color="#6E56CF" />
+              <span>Social Scheduler Automation Settings</span>
+            </div>
+          </div>
+          <p style={{ color: '#5F6B85', fontSize: '13px', marginBottom: '16px' }}>
+            Configure default post timezones, hashtag generation templates, and auto-publishing API retry parameters.
+          </p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '16px' }}>
+            <div style={{ padding: '16px', background: '#FAFBFD', borderRadius: '12px', border: '1px solid #E8ECF5' }}>
+              <strong style={{ fontSize: '14px', color: '#111625', display: 'block', marginBottom: '6px' }}>Default Publishing Timezone</strong>
+              <p style={{ fontSize: '12px', color: '#5F6B85', margin: 0 }}>Sync posts to target audience local active peaks automatically.</p>
+            </div>
+            <div style={{ padding: '16px', background: '#FAFBFD', borderRadius: '12px', border: '1px solid #E8ECF5' }}>
+              <strong style={{ fontSize: '14px', color: '#111625', display: 'block', marginBottom: '6px' }}>API Failure Auto-Retry</strong>
+              <p style={{ fontSize: '12px', color: '#5F6B85', margin: 0 }}>Up to 3 automated retries with exponential backoff on platform rate limits.</p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Tab: Help & Support */}
+      {activeTab === 'support' && (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-5)' }}>
+          <div className="glass-panel">
+            <div className="panel-header">
+              <div>
+                <div className="panel-title">
+                  <LifeBuoy size={20} color="#6E56CF" />
+                  <span>Social Integrations Help &amp; Support</span>
+                </div>
+                <div className="panel-subtitle">
+                  OAuth token refreshment guides, multi-platform media aspect ratio specifications, and live developer support.
+                </div>
+              </div>
+              <span className="badge badge-primary">
+                Multi-Channel Support
+              </span>
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '16px', marginTop: '12px' }}>
+              <div style={{ padding: '16px', background: '#FAFBFD', borderRadius: '12px', border: '1px solid #E8ECF5' }}>
+                <strong style={{ fontSize: '14px', color: '#111625', display: 'block', marginBottom: '6px' }}>OAuth Re-Authorization</strong>
+                <p style={{ fontSize: '12px', color: '#5F6B85', margin: 0 }}>How to refresh expired tokens for X (Twitter), LinkedIn Company pages, and Instagram Creators.</p>
+              </div>
+              <div style={{ padding: '16px', background: '#FAFBFD', borderRadius: '12px', border: '1px solid #E8ECF5' }}>
+                <strong style={{ fontSize: '14px', color: '#111625', display: 'block', marginBottom: '6px' }}>Media Dimensions</strong>
+                <p style={{ fontSize: '12px', color: '#5F6B85', margin: 0 }}>Optimal image/video ratios across platforms (1200x675 for X, 1:1 for Instagram, 16:9 for YouTube).</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* COMPOSER MODAL (Full Multi-Channel Studio) */}
       {isComposerOpen && (
-        <div className="dashboard-modal-backdrop" onClick={() => setIsComposerOpen(false)}>
+        <div
+          className="dashboard-modal-backdrop"
+          onClick={() => {
+            setEditingPostId(null);
+            setIsComposerOpen(false);
+          }}
+        >
           <div
             className="dashboard-modal-container"
             onClick={(e) => e.stopPropagation()}
             style={{ maxWidth: '820px' }}
           >
             {/* Modal Header */}
-            <div className="panel-header" style={{ padding: '18px 24px', borderBottom: '1px solid #E8ECF5', margin: 0 }}>
-              <div className="panel-title" style={{ fontSize: '17px' }}>
+            <div className="panel-header" style={{ padding: '18px 24px', borderBottom: '1px solid #E8ECF5', margin: 0, background: '#FAFAFC', borderTopLeftRadius: '20px', borderTopRightRadius: '20px' }}>
+              <div className="panel-title" style={{ fontSize: '17px', color: '#111625', fontWeight: '800' }}>
                 <Edit3 size={20} color="#6E56CF" />
-                Multi-Channel Post Composer
+                <span>{editingPostId ? 'Edit Scheduled Broadcast' : 'Multi-Channel Post Composer'}</span>
               </div>
               <button
                 type="button"
                 className="btn-ghost"
-                onClick={() => setIsComposerOpen(false)}
-                style={{ padding: '4px' }}
+                onClick={() => {
+                  setEditingPostId(null);
+                  setIsComposerOpen(false);
+                }}
+                style={{ padding: '6px', borderRadius: '8px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                aria-label="Close modal"
               >
                 <X size={18} />
               </button>
@@ -1114,14 +1343,182 @@ export const SocialSchedulerPage: React.FC = () => {
                 </span>
 
                 <div style={{ display: 'flex', gap: '10px' }}>
-                  <button type="button" className="btn btn-outline btn-sm" onClick={() => setIsComposerOpen(false)}>
+                  <button
+                    type="button"
+                    className="btn btn-outline btn-sm"
+                    onClick={() => {
+                      setEditingPostId(null);
+                      setIsComposerOpen(false);
+                    }}
+                  >
                     Cancel
                   </button>
                   <button type="submit" className="btn btn-primary btn-sm">
                     <CalendarIcon size={14} />
-                    <span>Confirm &amp; Schedule Broadcast</span>
+                    <span>{editingPostId ? 'Save & Update Broadcast' : 'Confirm & Schedule Broadcast'}</span>
                   </button>
                 </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ADD CHANNEL MODAL */}
+      {isAddChannelOpen && (
+        <div
+          className="dashboard-modal-backdrop"
+          onClick={() => setIsAddChannelOpen(false)}
+        >
+          <div
+            className="dashboard-modal-container"
+            onClick={(e) => e.stopPropagation()}
+            style={{ maxWidth: '540px' }}
+          >
+            {/* Modal Header */}
+            <div className="panel-header" style={{ padding: '18px 24px', borderBottom: '1px solid #E8ECF5', margin: 0, background: '#FAFAFC', borderTopLeftRadius: '20px', borderTopRightRadius: '20px' }}>
+              <div className="panel-title" style={{ fontSize: '17px', color: '#111625', fontWeight: '800' }}>
+                <Globe size={20} color="#6E56CF" />
+                <span>Connect Social Channel</span>
+              </div>
+              <button
+                type="button"
+                className="btn-ghost"
+                onClick={() => setIsAddChannelOpen(false)}
+                style={{ padding: '6px', borderRadius: '8px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                aria-label="Close modal"
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            <form onSubmit={handleAddChannel} style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              {/* Select Platform */}
+              <div>
+                <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#111625', marginBottom: '8px' }}>
+                  Select Platform:
+                </label>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(95px, 1fr))', gap: '8px' }}>
+                  {(['twitter', 'linkedin', 'instagram', 'youtube', 'tiktok'] as SocialPlatform[]).map((plt) => {
+                    const isSelected = newChannelPlatform === plt;
+                    return (
+                      <button
+                        type="button"
+                        key={plt}
+                        onClick={() => {
+                          setNewChannelPlatform(plt);
+                          if (!newChannelName || newChannelName.includes('Channel') || newChannelName.includes('Creator') || newChannelName.includes('Organization') || newChannelName.includes('Studio')) {
+                            if (plt === 'twitter') setNewChannelName('X / Twitter Channel');
+                            else if (plt === 'linkedin') setNewChannelName('LinkedIn Organization');
+                            else if (plt === 'instagram') setNewChannelName('Instagram Creator');
+                            else if (plt === 'youtube') setNewChannelName('YouTube Studio');
+                            else if (plt === 'tiktok') setNewChannelName('TikTok Business');
+                          }
+                        }}
+                        style={{
+                          padding: '10px 6px',
+                          borderRadius: '10px',
+                          background: isSelected ? '#EFEBFC' : '#FAFBFD',
+                          border: isSelected ? '2px solid #6E56CF' : '1px solid #E8ECF5',
+                          color: isSelected ? '#6E56CF' : '#5F6B85',
+                          fontWeight: '700',
+                          fontSize: '11px',
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'center',
+                          gap: '6px',
+                          cursor: 'pointer'
+                        }}
+                      >
+                        <div
+                          style={{
+                            width: '28px',
+                            height: '28px',
+                            borderRadius: '8px',
+                            background: getPlatformAvatarBg(plt),
+                            color: '#FFFFFF',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                          }}
+                        >
+                          {getPlatformIcon(plt, 14)}
+                        </div>
+                        <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '100%' }}>
+                          {getPlatformLabel(plt)}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Display Name */}
+              <div>
+                <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#111625', marginBottom: '6px' }}>
+                  Channel / Account Name
+                </label>
+                <input
+                  type="text"
+                  className="input-field"
+                  placeholder="e.g. Zunme AI Official or Growth Insights"
+                  value={newChannelName}
+                  onChange={(e) => setNewChannelName(e.target.value)}
+                  required
+                />
+              </div>
+
+              {/* Handle / Username */}
+              <div>
+                <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#111625', marginBottom: '6px' }}>
+                  Account Handle / Username
+                </label>
+                <input
+                  type="text"
+                  className="input-field"
+                  placeholder="e.g. @zunme_ai or @creator_hub"
+                  value={newChannelHandle}
+                  onChange={(e) => setNewChannelHandle(e.target.value)}
+                  required
+                />
+              </div>
+
+              {/* Followers / Audience */}
+              <div>
+                <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#111625', marginBottom: '6px' }}>
+                  Audience Size / Current Followers (Optional)
+                </label>
+                <input
+                  type="text"
+                  className="input-field"
+                  placeholder="e.g. 24.5K"
+                  value={newChannelFollowers}
+                  onChange={(e) => setNewChannelFollowers(e.target.value)}
+                />
+              </div>
+
+              {/* OAuth Security Note */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 14px', background: '#F0FDF4', borderRadius: '8px', border: '1px solid #BBF7D0', fontSize: '12px', color: '#15803D' }}>
+                <CheckCircle2 size={16} />
+                <span>Encrypted OAuth 2.0 PKCE authentication handshake ready</span>
+              </div>
+
+              {/* Actions */}
+              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', marginTop: '6px', borderTop: '1px solid #E8ECF5', paddingTop: '16px' }}>
+                <button
+                  type="button"
+                  className="btn btn-outline btn-sm"
+                  onClick={() => setIsAddChannelOpen(false)}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="btn btn-primary btn-sm"
+                >
+                  <Plus size={14} />
+                  <span>Authorize &amp; Connect Channel</span>
+                </button>
               </div>
             </form>
           </div>
