@@ -522,7 +522,7 @@ export const ZunmeAdsPage: React.FC = () => {
                 </div>
 
                 {/* Performance Numbers */}
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px', textAlign: 'center', minWidth: '320px' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(75px, 1fr))', gap: '12px', textAlign: 'center', width: '100%', maxWidth: '420px' }}>
                   <div>
                     <span style={{ fontSize: '11px', color: '#8C97B0', display: 'block' }}>Daily Budget</span>
                     <strong style={{ fontSize: '14px', color: '#111625' }}>${camp.dailyBudget}</strong>
@@ -658,7 +658,7 @@ export const ZunmeAdsPage: React.FC = () => {
                 />
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+              <div className="form-grid-2">
                 <div>
                   <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#111625', marginBottom: '6px' }}>
                     Daily Budget Limit ($)
@@ -1025,7 +1025,7 @@ export const ZunmeAdsPage: React.FC = () => {
               <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#111625', marginBottom: '10px' }}>
                 Quick Top-Up Ad Credits:
               </label>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '10px' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(65px, 1fr))', gap: '10px' }}>
                 {[50, 100, 250, 500].map((amt) => (
                   <button
                     key={amt}

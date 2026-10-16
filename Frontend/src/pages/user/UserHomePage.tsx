@@ -75,7 +75,7 @@ export const UserHomePage: React.FC = () => {
           <form onSubmit={handleStartPrompt} style={{ display: 'flex', gap: '10px', position: 'relative' }}>
             <input
               type="text"
-              className="input-field"
+              className="input-field home-ask-input"
               placeholder="Ask Zunme anything, brainstorm a topic, or generate copy..."
               value={promptInput}
               onChange={(e) => setPromptInput(e.target.value)}
@@ -92,7 +92,7 @@ export const UserHomePage: React.FC = () => {
             />
             <button
               type="submit"
-              className="btn btn-primary"
+              className="btn btn-primary home-ask-btn"
               style={{
                 position: 'absolute',
                 right: '6px',

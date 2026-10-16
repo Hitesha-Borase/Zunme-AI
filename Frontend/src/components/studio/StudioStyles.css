@@ -564,3 +564,53 @@
 .canvas-stat-pill {
   font-weight: 600;
 }
+
+/* Responsive Overrides */
+@media (max-width: 768px) {
+  .studio-tab-bar {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 8px 12px;
+  }
+
+  .studio-nav-pill {
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+
+  .canvas-toolbar {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+    padding: 8px 12px;
+    gap: 10px;
+  }
+
+  .canvas-tool-group {
+    flex-shrink: 0;
+  }
+
+  .canvas-wrapper {
+    min-height: 480px;
+  }
+
+  .canvas-editor-area {
+    padding: 18px 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .style-selector-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .aspect-ratio-selector {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .image-controls-panel {
+    padding: 16px 14px;
+  }
+}
+

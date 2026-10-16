@@ -67,9 +67,7 @@ export const AdminShell: React.FC = () => {
       <aside className={`admin-sidebar ${mobileMenuOpen ? 'open' : ''}`}>
         <div className="admin-brand-section">
           <NavLink to="/admin" className="admin-brand-link">
-            <div className="admin-badge-icon">
-              <ShieldCheck size={18} />
-            </div>
+            <img src="/zunme_icon.png" alt="Zunme AI" style={{ width: '30px', height: '30px', objectFit: 'contain' }} />
             <div className="admin-brand-text">
               <span className="brand-title">ZUNME AI</span>
             </div>

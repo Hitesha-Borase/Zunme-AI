@@ -498,3 +498,76 @@
     grid-template-columns: 1fr;
   }
 }
+
+@media (max-width: 768px) {
+  .creator-profile-header {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .creator-bio-section {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .creator-name-row {
+    justify-content: center;
+  }
+
+  .creator-specialties-row {
+    justify-content: center;
+  }
+
+  .creator-stats-socials {
+    align-items: center;
+    width: 100%;
+  }
+
+  .creator-stats-pills {
+    width: 100%;
+    justify-content: space-around;
+  }
+
+  .marketplace-filter-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .categories-pill-group {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: 4px;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+  }
+
+  .cat-pill {
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .filter-controls-right {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .marketplace-search,
+  .marketplace-search-input {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .creator-profile-card {
+    padding: 18px 14px;
+  }
+
+  .marketplace-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+}
+

@@ -423,6 +423,19 @@
     gap: 10px;
   }
 
+  .collections-pills-row {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 4px;
+    width: 100%;
+  }
+
+  .collection-folder-pill {
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+
   .floating-batch-toolbar {
     width: calc(100% - 32px);
     max-width: 480px;

@@ -262,6 +262,7 @@
   cursor: pointer;
   transition: all 0.2s ease;
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .tab-item-btn:hover {
@@ -280,12 +281,14 @@
 .table-responsive {
   width: 100%;
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   border-radius: var(--radius-lg);
   border: 1px solid #E8ECF5;
 }
 
 .dashboard-table {
   width: 100%;
+  min-width: 640px;
   border-collapse: collapse;
   font-size: 13px;
   text-align: left;
@@ -397,9 +400,26 @@
   gap: var(--space-4);
 }
 
+<<<<<<< HEAD
 /* Modal Overlay & Backdrop */
 .modal-overlay,
 .dashboard-modal-backdrop {
+=======
+.form-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+@media (max-width: 640px) {
+  .form-grid-2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Modal Overlay */
+.modal-overlay {
+>>>>>>> e30dfccca26e3dde93f204d5b43b9eeadd4cd3e3
   position: fixed;
   inset: 0;
   background: rgba(17, 22, 37, 0.65);
@@ -530,13 +550,31 @@
   }
 
   .tabs-nav-bar {
-    padding: 4px;
+    padding: 6px;
     border-radius: var(--radius-lg);
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
   }
 
   .tab-item-btn {
     padding: 7px 12px;
     font-size: 12px;
+    flex-shrink: 0;
+  }
+
+  .future-module-banner {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: var(--space-4);
+    gap: var(--space-3);
+  }
+
+  .panel-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
   }
 }
 
@@ -571,9 +609,31 @@
     font-size: 24px;
   }
 
+  .modal-overlay {
+    padding: 8px;
+  }
+
   .modal-card {
     padding: 18px 14px;
     border-radius: var(--radius-xl);
+    max-width: 95vw;
+    max-height: 92vh;
+  }
+
+  .btn {
+    font-size: 12.5px;
+  }
+
+  .home-ask-input {
+    font-size: 13.5px !important;
+    padding-right: 90px !important;
+    height: 46px !important;
+  }
+
+  .home-ask-btn {
+    padding: 0 14px !important;
+    font-size: 12.5px !important;
   }
 }
+
 

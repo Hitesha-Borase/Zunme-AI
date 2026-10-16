@@ -371,14 +371,7 @@ export const LandingPage: React.FC = () => {
               aria-label="Zunme AI Home"
               onClick={() => handleNavClick('all')}
             >
-              <div className="brand-icon-box">
-                <span className="brand-glyph">Z</span>
-                <span className="brand-glow-ring" />
-              </div>
-              <div className="brand-text-wrap">
-                <span className="brand-name">Zunme AI</span>
-                <span className="brand-version-pill">Workspace</span>
-              </div>
+              <img src="/zunme_logo.png" alt="Zunme AI" style={{ height: '42px', width: 'auto', display: 'block' }} />
             </NavLink>
 
             {/* Desktop Navigation */}
@@ -687,10 +680,10 @@ export const LandingPage: React.FC = () => {
                   <span className="sources-label">Verified Sources:</span>
                   <div className="sources-pills-row">
                     {activeInlineAnswer.sources.map((src, i) => (
-                      <span key={i} className="source-pill">
-                        <Globe size={11} />
-                        <span className="source-pill-domain">{src.domain}</span>
-                        <span className="source-pill-match">{src.match}</span>
+                      <span key={i} className="inline-source-pill">
+                        <Globe size={13} className="inline-source-icon" />
+                        <span className="inline-source-domain">{src.domain}</span>
+                        <span className="inline-source-match">{src.match}</span>
                       </span>
                     ))}
                   </div>
@@ -699,11 +692,11 @@ export const LandingPage: React.FC = () => {
                 {/* Key Insights List */}
                 <div className="inline-answer-points">
                   {activeInlineAnswer.bulletPoints.map((point, i) => (
-                    <div key={i} className="answer-point-item">
-                      <div className="point-number">{i + 1}</div>
-                      <div className="point-content">
-                        <strong className="point-label">{point.label}:</strong>{' '}
-                        <span className="point-text">{point.text}</span>
+                    <div key={i} className="inline-point-item">
+                      <div className="inline-point-number">{i + 1}</div>
+                      <div className="inline-point-content">
+                        <strong className="inline-point-label">{point.label}:</strong>{' '}
+                        <span className="inline-point-text">{point.text}</span>
                       </div>
                     </div>
                   ))}
@@ -1465,10 +1458,7 @@ export const LandingPage: React.FC = () => {
           <div className="footer-top">
             <div className="footer-brand">
               <NavLink to="/" className="brand-link">
-                <div className="brand-icon-box">
-                  <span className="brand-glyph">Z</span>
-                </div>
-                <span className="brand-name">Zunme AI</span>
+                <img src="/zunme_logo.png" alt="Zunme AI" style={{ height: '34px', width: 'auto', display: 'block' }} />
               </NavLink>
               <p className="footer-brand-desc">
                 Your unified AI workspace for ideas, content &amp; discovery. Search the web, create compelling copy, and organize your work in one connected platform.
