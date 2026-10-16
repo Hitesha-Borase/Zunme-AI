@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { NavLink, useSearchParams } from 'react-router-dom';
+import { NavLink, useSearchParams, useNavigate } from 'react-router-dom';
 import {
   Sparkles,
   MessageSquare,
@@ -64,7 +64,10 @@ export const LandingPage: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState<boolean>(false);
   const [activeShowcaseTab, setActiveShowcaseTab] = useState<'chat' | 'search' | 'studio' | 'library'>('chat');
-  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
+  const navigate = useNavigate();
+  const [askZunmeQuery, setAskZunmeQuery] = useState('');
+  const [isSubmittingQuery, setIsSubmittingQuery] = useState(false);
+  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
   const [copiedSnippet, setCopiedSnippet] = useState(false);
   const [activeSection, setActiveSection] = useState<LandingSection>('all');
 
@@ -72,6 +75,16 @@ export const LandingPage: React.FC = () => {
     setActiveSection(section);
     setMobileMenuOpen(false);
     window.scrollTo({ top: 0, behavior: 'instant' });
+  };
+
+  const handleAskZunmeSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!askZunmeQuery.trim()) return;
+    setIsSubmittingQuery(true);
+    setTimeout(() => {
+      setIsSubmittingQuery(false);
+      navigate(`/login?prompt=${encodeURIComponent(askZunmeQuery.trim())}`);
+    }, 300);
   };
 
   useEffect(() => {
@@ -472,26 +485,59 @@ export const LandingPage: React.FC = () => {
             </div>
           </div>
 
-          {/* Hero 3D Perspective Workspace Preview with Floating Panels */}
+          {/* Ask Zunme Interactive Search Bar directly in Hero */}
+          <div className="hero-ask-zunme-wrap">
+            <form onSubmit={handleAskZunmeSubmit} className="hero-ask-form">
+              <div className="hero-ask-icon">
+                <Sparkles size={18} />
+              </div>
+              <input
+                type="text"
+                className="hero-ask-input"
+                placeholder="Ask Zunme anything... (e.g., 'Research 2026 SaaS trends and draft an executive brief')"
+                value={askZunmeQuery}
+                onChange={(e) => setAskZunmeQuery(e.target.value)}
+                disabled={isSubmittingQuery}
+              />
+              <button
+                type="submit"
+                className="hero-ask-btn"
+                disabled={isSubmittingQuery || !askZunmeQuery.trim()}
+              >
+                <span>{isSubmittingQuery ? 'Grounding...' : 'Ask Zunme'}</span>
+                <ArrowRight size={14} />
+              </button>
+            </form>
+
+            <div className="hero-prompt-chips">
+              <span className="chips-label">Popular Prompts:</span>
+              <button
+                type="button"
+                className="prompt-chip"
+                onClick={() => setAskZunmeQuery('Synthesize top 2026 AI content creator monetization models')}
+              >
+                "Top 2026 Creator Monetization Models"
+              </button>
+              <button
+                type="button"
+                className="prompt-chip"
+                onClick={() => setAskZunmeQuery('Draft a high-converting B2B LinkedIn carousel hook sequence')}
+              >
+                "B2B LinkedIn Carousel Hooks"
+              </button>
+              <button
+                type="button"
+                className="prompt-chip"
+                onClick={() => setAskZunmeQuery('Explain SEO topical cluster architecture with internal link hierarchy')}
+              >
+                "SEO Topical Cluster Blueprint"
+              </button>
+            </div>
+          </div>
+
+          {/* Hero 3D Perspective Workspace Preview */}
           <div className="hero-3d-stage">
             <div className="hero-stage-glow" aria-hidden="true" />
-
-            {/* Floating UI Panel 1: Live Web Search (Top Left) */}
-            <div className="floating-card floating-card-left" aria-hidden="true">
-              <div className="floating-card-header">
-                <span className="radar-ping" />
-                <span className="floating-card-title">Live Web Grounding</span>
-              </div>
-              <div className="floating-card-body">
-                <div className="floating-source-item">
-                  <div className="source-domain">reuters.com/tech</div>
-                  <div className="source-snippet">Automated citation verification &amp; source benchmarking...</div>
-                </div>
-                <div className="floating-card-badge">99.4% Verified</div>
-              </div>
-            </div>
-
-
 
             {/* Central Workspace Showcase Window */}
             <div className="showcase-window">
@@ -629,7 +675,7 @@ export const LandingPage: React.FC = () => {
       )}
 
       {/* Core Capabilities Section */}
-      {(activeSection === 'all' || activeSection === 'features') && (
+      {activeSection === 'features' && (
       <section id="features" className="capabilities-section">
         <div className="landing-container">
           <div className="section-header">
@@ -685,7 +731,7 @@ export const LandingPage: React.FC = () => {
       )}
 
       {/* How It Works Section */}
-      {(activeSection === 'all' || activeSection === 'how-it-works') && (
+      {activeSection === 'how-it-works' && (
       <section id="how-it-works" className="how-it-works-section">
         <div className="landing-container">
           <div className="section-header">
@@ -726,7 +772,7 @@ export const LandingPage: React.FC = () => {
       )}
 
       {/* Product Preview / Platform Showcase Section */}
-      {(activeSection === 'all' || activeSection === 'showcase') && (
+      {activeSection === 'showcase' && (
       <section id="showcase" className="showcase-section">
         <div className="landing-container">
           <div className="section-header">
@@ -1020,7 +1066,7 @@ export const LandingPage: React.FC = () => {
       )}
 
       {/* Plans & Pricing Section */}
-      {(activeSection === 'all' || activeSection === 'pricing') && (
+      {activeSection === 'pricing' && (
       <section id="pricing" className="pricing-section">
         <div className="landing-container">
           <div className="section-header">
@@ -1185,7 +1231,7 @@ export const LandingPage: React.FC = () => {
       )}
 
       {/* FAQ Section */}
-      {(activeSection === 'all' || activeSection === 'faq') && (
+      {activeSection === 'faq' && (
       <section id="faq" className="faq-section">
         <div className="landing-container">
           <div className="section-header">
@@ -1402,16 +1448,16 @@ export const LandingPage: React.FC = () => {
                 <h4>Trust &amp; Support</h4>
                 <ul>
                   <li>
-                    <a href="#faq">Support Center</a>
+                    <NavLink to="/contact">Contact Support</NavLink>
                   </li>
                   <li>
-                    <a href="#hero">Privacy Policy</a>
+                    <NavLink to="/privacy">Privacy Policy</NavLink>
                   </li>
                   <li>
-                    <a href="#hero">Terms of Service</a>
+                    <NavLink to="/terms">Terms of Service</NavLink>
                   </li>
                   <li>
-                    <a href="#hero">Security Architecture</a>
+                    <a href="#faq">FAQ &amp; Architecture</a>
                   </li>
                 </ul>
               </div>

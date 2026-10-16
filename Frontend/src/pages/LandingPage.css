@@ -458,10 +458,145 @@
   gap: 16px;
   font-size: 13px;
   color: #5F6B85;
-  margin-bottom: 60px;
+  margin-bottom: 24px;
   position: relative;
   z-index: 2;
   flex-wrap: wrap;
+}
+
+/* Ask Zunme Hero Search Bar */
+.hero-ask-zunme-wrap {
+  max-width: 760px;
+  margin: 0 auto 50px auto;
+  position: relative;
+  z-index: 5;
+}
+
+.hero-ask-form {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: var(--radius-full, 9999px);
+  padding: 6px 8px 6px 20px;
+  box-shadow: 
+    0 16px 40px -6px rgba(30, 20, 60, 0.08),
+    0 2px 6px rgba(0, 0, 0, 0.03);
+  transition: all 0.2s ease;
+}
+
+.hero-ask-form:focus-within {
+  border-color: #6E56CF;
+  box-shadow: 
+    0 20px 48px -6px rgba(110, 86, 207, 0.16),
+    0 0 0 3px rgba(110, 86, 207, 0.18);
+}
+
+.hero-ask-icon {
+  color: #6E56CF;
+  display: flex;
+  align-items: center;
+  margin-right: 12px;
+  flex-shrink: 0;
+}
+
+.hero-ask-input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 15px;
+  color: #111625;
+  min-width: 0;
+  padding: 8px 4px;
+}
+
+.hero-ask-input::placeholder {
+  color: #94A3B8;
+  font-size: 14px;
+}
+
+.hero-ask-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--gradient-primary, linear-gradient(135deg, #6E56CF 0%, #7C3AED 100%));
+  color: #FFFFFF;
+  border: none;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 10px 22px;
+  border-radius: var(--radius-full, 9999px);
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(110, 86, 207, 0.35);
+  transition: all 0.18s ease;
+  white-space: nowrap;
+}
+
+.hero-ask-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(110, 86, 207, 0.45);
+}
+
+.hero-ask-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.hero-prompt-chips {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+}
+
+.chips-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #64748B;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.prompt-chip {
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid #E8ECF5;
+  border-radius: var(--radius-full, 9999px);
+  padding: 5px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #475569;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  backdrop-filter: blur(8px);
+}
+
+.prompt-chip:hover {
+  background: #FFFFFF;
+  border-color: #6E56CF;
+  color: #6E56CF;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(110, 86, 207, 0.1);
+}
+
+@media (max-width: 640px) {
+  .hero-ask-form {
+    padding: 6px 8px 6px 14px;
+  }
+  .hero-ask-input {
+    font-size: 13.5px;
+  }
+  .hero-ask-btn {
+    padding: 8px 14px;
+    font-size: 13px;
+  }
+  .prompt-chip {
+    font-size: 11px;
+    padding: 4px 10px;
+  }
 }
 
 .signal-item {
