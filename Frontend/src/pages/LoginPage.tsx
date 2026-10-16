@@ -5,20 +5,14 @@ import {
   EyeOff,
   AlertCircle,
   Crown,
-  Shield,
+  ShieldCheck,
+  Sparkles,
   Briefcase,
   Share2,
   Megaphone,
   ArrowRight,
-  Globe,
-  PenTool,
-  TrendingUp,
-  UserCheck,
-  Building,
-  Sliders,
-  CheckCircle2,
-  ShieldCheck,
-  Video
+  Shield,
+  CheckCircle2
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { UserRole } from '../types';
@@ -28,10 +22,10 @@ interface PersonaRole {
   id: string;
   name: string;
   subtitle: string;
-  email: string;
+  path: string;
   role: UserRole;
   roleBadge: string;
-  path: string;
+  email: string;
   icon: React.ReactNode;
   accentColor: string;
 }
@@ -40,138 +34,73 @@ export const LoginPage: React.FC = () => {
   const { loginWithRole } = useApp();
   const navigate = useNavigate();
 
+  // Exactly the 6 dashboards from the original modal shown in Image 2
   const personas: PersonaRole[] = [
     {
-      id: 'business',
-      name: 'Business Owners',
-      subtitle: 'Secure Access',
-      email: 'business.owner@zunme.ai',
-      role: 'USER',
-      roleBadge: 'Business Owner',
-      path: '/business',
-      icon: <Building size={18} />,
-      accentColor: '#6E56CF'
-    },
-    {
-      id: 'customer',
-      name: 'Customer Workspace',
-      subtitle: 'Secure Access',
-      email: 'customer@zunme.ai',
-      role: 'USER',
-      roleBadge: 'Customer',
-      path: '/app',
-      icon: <Globe size={18} />,
-      accentColor: '#38BDF8'
-    },
-    {
-      id: 'creator',
-      name: 'Content Creators',
-      subtitle: 'Secure Access',
-      email: 'alex.creator@zunme.ai',
-      role: 'USER',
-      roleBadge: 'Content Creator',
-      path: '/creator',
-      icon: <Video size={18} />,
-      accentColor: '#F472B6'
-    },
-    {
-      id: 'builder',
-      name: 'Content Builders',
-      subtitle: 'Secure Access',
-      email: 'builder@zunme.ai',
-      role: 'USER',
-      roleBadge: 'Content Builder',
-      path: '/app/builders',
-      icon: <PenTool size={18} />,
-      accentColor: '#C084FC'
-    },
-    {
-      id: 'influencer',
-      name: 'Influencer & Social',
-      subtitle: 'Secure Access',
-      email: 'influencer@zunme.ai',
-      role: 'USER',
-      roleBadge: 'Influencer',
-      path: '/social',
-      icon: <Share2 size={18} />,
+      id: 'super-admin',
+      name: 'Super Admin Governance',
+      subtitle: '/super-admin',
+      path: '/super-admin',
+      role: 'SUPER_ADMIN',
+      roleBadge: 'Super Admin',
+      email: 'superadmin@zunme.ai',
+      icon: <Crown size={18} />,
       accentColor: '#8B5CF6'
     },
     {
-      id: 'affiliate',
-      name: 'Affiliate Partners',
-      subtitle: 'Secure Access',
-      email: 'affiliate@zunme.ai',
-      role: 'USER',
-      roleBadge: 'Affiliate Partner',
-      path: '/warehouse',
-      icon: <TrendingUp size={18} />,
-      accentColor: '#34D399'
-    },
-    {
-      id: 'marketing',
-      name: 'AI Marketing & Ads',
-      subtitle: 'Secure Access',
-      email: 'marketing.pro@zunme.ai',
-      role: 'USER',
-      roleBadge: 'AI Marketer',
-      path: '/ads',
-      icon: <Megaphone size={18} />,
-      accentColor: '#EC4899'
-    },
-    {
-      id: 'hr',
-      name: 'HR & Talent',
-      subtitle: 'Secure Access',
-      email: 'hr.lead@zunme.ai',
-      role: 'USER',
-      roleBadge: 'HR Ops',
-      path: '/app',
-      icon: <UserCheck size={18} />,
-      accentColor: '#F59E0B'
-    },
-    {
       id: 'admin',
-      name: 'Admin I (Operations)',
-      subtitle: 'Secure Access',
-      email: 'admin@zunme.ai',
-      role: 'ADMIN',
-      roleBadge: 'Admin I',
+      name: 'Admin Operations Hub',
+      subtitle: '/admin',
       path: '/admin',
-      icon: <ShieldCheck size={18} />,
-      accentColor: '#6366F1'
-    },
-    {
-      id: 'admin2',
-      name: 'Admin II (Tools & Models)',
-      subtitle: 'Secure Access',
-      email: 'admin.tools@zunme.ai',
       role: 'ADMIN',
-      roleBadge: 'Admin II',
-      path: '/admin/tools',
-      icon: <Sliders size={18} />,
-      accentColor: '#7C3AED'
+      roleBadge: 'Admin',
+      email: 'admin@zunme.ai',
+      icon: <ShieldCheck size={18} />,
+      accentColor: '#635BFF'
     },
     {
-      id: 'crm',
-      name: 'CRM Specialists',
-      subtitle: 'Secure Access',
-      email: 'crm.pro@zunme.ai',
+      id: 'app',
+      name: 'User AI Workspace',
+      subtitle: '/app',
+      path: '/app',
       role: 'USER',
-      roleBadge: 'CRM Specialist',
+      roleBadge: 'Core User',
+      email: 'alex.creator@zunme.ai',
+      icon: <Sparkles size={18} />,
+      accentColor: '#0EA5E9'
+    },
+    {
+      id: 'business',
+      name: 'Business & CRM Hub',
+      subtitle: '/business',
       path: '/business',
+      role: 'USER',
+      roleBadge: 'Business',
+      email: 'business@zunme.ai',
       icon: <Briefcase size={18} />,
       accentColor: '#10B981'
     },
     {
-      id: 'super-admin',
-      name: 'Super Admin Governance',
-      subtitle: 'Secure Access',
-      email: 'superadmin@zunme.ai',
-      role: 'SUPER_ADMIN',
-      roleBadge: 'Super Admin',
-      path: '/super-admin',
-      icon: <Crown size={18} />,
-      accentColor: '#D946EF'
+      id: 'social',
+      name: 'Social & Content Scheduler',
+      subtitle: '/social',
+      path: '/social',
+      role: 'USER',
+      roleBadge: 'Social',
+      email: 'social@zunme.ai',
+      icon: <Share2 size={18} />,
+      accentColor: '#6E56CF'
+    },
+    {
+      id: 'ads',
+      name: 'Zunme Ads Platform',
+      subtitle: '/ads',
+      path: '/ads',
+      role: 'USER',
+      roleBadge: 'Ads Platform',
+      email: 'ads@zunme.ai',
+      icon: <Megaphone size={18} />,
+      accentColor: '#A855F7'
     }
   ];
 
@@ -303,8 +232,8 @@ export const LoginPage: React.FC = () => {
                   <span className="energy-ctx-highlight">{selectedPersona.roleBadge}</span>
                 </div>
                 <div className="energy-context-row">
-                  <span className="energy-ctx-muted">Organization</span>
-                  <span className="energy-ctx-org">Zunme AI Workspace Hub</span>
+                  <span className="energy-ctx-muted">Target Dashboard</span>
+                  <span className="energy-ctx-org">{selectedPersona.name}</span>
                 </div>
               </div>
 
@@ -333,11 +262,11 @@ export const LoginPage: React.FC = () => {
           {/* Right Column: Persona Grid */}
           <div className="energy-personas-panel">
             <div className="energy-personas-header">
-              <h2 className="energy-panel-title">Select Your Business Role &amp; Persona</h2>
-              <p className="energy-panel-subtitle">Quick One-Click Demo Access</p>
+              <h2 className="energy-panel-title">Choose Dashboard</h2>
+              <p className="energy-panel-subtitle">Click any dashboard button to sign in directly.</p>
             </div>
 
-            <div className="energy-personas-grid">
+            <div className="energy-personas-grid personas-grid-6">
               {personas.map((persona) => {
                 const isSelected = selectedPersona.id === persona.id;
                 return (
@@ -350,7 +279,7 @@ export const LoginPage: React.FC = () => {
                     <div
                       className="persona-icon-box"
                       style={{
-                        backgroundColor: isSelected ? 'var(--color-primary, #6E56CF)' : 'rgba(110, 86, 207, 0.08)',
+                        backgroundColor: isSelected ? 'var(--color-primary, #6E56CF)' : `${persona.accentColor}18`,
                         color: isSelected ? '#FFFFFF' : persona.accentColor
                       }}
                     >
@@ -361,6 +290,8 @@ export const LoginPage: React.FC = () => {
                       <span className="persona-name">{persona.name}</span>
                       <span className="persona-sub">{persona.subtitle}</span>
                     </div>
+
+                    <span className="persona-badge-tag">{persona.roleBadge}</span>
 
                     <ArrowRight size={15} className="persona-arrow" />
                   </button>
@@ -374,7 +305,7 @@ export const LoginPage: React.FC = () => {
                 <span>Encrypted RBAC Security Layer Active</span>
               </div>
               <div className="energy-roles-counter">
-                <span>12 Roles Configured • Click to switch persona</span>
+                <span>6 Dashboards Configured • Instant 1-Click Access</span>
               </div>
             </div>
           </div>
