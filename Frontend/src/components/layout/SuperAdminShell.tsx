@@ -51,10 +51,7 @@ export const SuperAdminShell: React.FC = () => {
       <aside className={`superadmin-sidebar ${mobileMenuOpen ? 'open' : ''}`}>
         <div className="superadmin-brand-section">
           <NavLink to="/super-admin" className="superadmin-brand-link">
-            <img src="/zunme_icon.png" alt="Zunme AI" style={{ width: '30px', height: '30px', objectFit: 'contain' }} />
-            <div className="superadmin-brand-text">
-              <span className="brand-title">ZUNME AI</span>
-            </div>
+            <img src="/zunme_logo_white.png" alt="Zunme AI" style={{ height: '32px', width: 'auto', display: 'block' }} />
           </NavLink>
           <button
             className="btn-ghost hide-on-desktop"

@@ -433,8 +433,7 @@ export const AppShell: React.FC = () => {
           <>
             <div className="sidebar-brand-section">
               <NavLink to="/app" className="brand-link" onClick={() => setMobileMenuOpen(false)}>
-                <img src="/zunme_icon.png" alt="Zunme AI" style={{ width: '30px', height: '30px', objectFit: 'contain' }} />
-                <span className="brand-title-text" style={{ color: '#FFFFFF', fontWeight: '800', fontSize: '16px' }}>Zunme AI</span>
+                <img src="/zunme_logo_white.png" alt="Zunme AI" style={{ height: '32px', width: 'auto', display: 'block' }} />
               </NavLink>
               <button
                 className="btn-ghost hide-on-desktop"
