@@ -30,7 +30,7 @@ export const SuperAdminShell: React.FC = () => {
   };
 
   if (!user) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/login" replace />;
   }
 
   const getPageTitle = () => {
@@ -58,7 +58,7 @@ export const SuperAdminShell: React.FC = () => {
       {/* Sidebar: STRICTLY 5 Menu Items + Logout */}
       <aside className={`superadmin-sidebar ${mobileMenuOpen ? 'open' : ''}`}>
         <div className="superadmin-brand-section">
-          <NavLink to="/" className="superadmin-brand-link">
+          <NavLink to="/super-admin" className="superadmin-brand-link">
             <div className="superadmin-badge-icon">
               <ShieldAlert size={18} />
             </div>
