@@ -34,6 +34,7 @@ import {
 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import './AppShell.css';
+import './SuperAdminShell.css';
 
 export const AppShell: React.FC = () => {
   const {
@@ -47,6 +48,7 @@ export const AppShell: React.FC = () => {
   } = useApp();
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -649,12 +651,63 @@ export const AppShell: React.FC = () => {
           </div>
 
           <div className="topbar-right">
-            <span
-              className="btn btn-outline btn-sm hide-on-mobile"
-              style={{ cursor: 'default', pointerEvents: 'none', userSelect: 'none' }}
-            >
-              Active Role: <strong>{user?.role || 'USER'}</strong>
-            </span>
+            {user ? (
+              <div className="superadmin-profile-menu-wrap" style={{ position: 'relative' }}>
+                <button
+                  type="button"
+                  className="superadmin-topbar-profile-btn"
+                  onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
+                  aria-expanded={profileDropdownOpen}
+                  aria-haspopup="true"
+                  title="Account Menu"
+                >
+                  <div className="superadmin-topbar-avatar" style={{ background: 'linear-gradient(135deg, #10B981 0%, #6E56CF 100%)' }}>
+                    {displayName.charAt(0).toUpperCase()}
+                  </div>
+                  <ChevronDown size={14} className={`dropdown-chevron ${profileDropdownOpen ? 'rotated' : ''}`} />
+                </button>
+
+                {profileDropdownOpen && (
+                  <>
+                    <div
+                      className="superadmin-dropdown-backdrop"
+                      onClick={() => setProfileDropdownOpen(false)}
+                      style={{ position: 'fixed', inset: 0, zIndex: 90 }}
+                    />
+                    <div className="superadmin-profile-dropdown" style={{ zIndex: 100 }}>
+                      <div className="dropdown-user-header">
+                        <div className="dropdown-avatar" style={{ background: 'linear-gradient(135deg, #10B981 0%, #6E56CF 100%)' }}>
+                          {displayName.charAt(0).toUpperCase()}
+                        </div>
+                        <div className="dropdown-user-details">
+                          <span className="dropdown-name">{displayName}</span>
+                          <span className="dropdown-email">{user.email || 'user@zunme.ai'}</span>
+                          <span className="dropdown-role-tag" style={{ color: '#059669', background: '#ECFDF5' }}>
+                            {user.role === 'SUPER_ADMIN' ? 'Super Administrator' : user.role === 'ADMIN' ? 'Platform Administrator' : 'Verified Member'}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="dropdown-divider" />
+                      <button
+                        type="button"
+                        className="dropdown-item dropdown-logout-btn"
+                        onClick={() => {
+                          setProfileDropdownOpen(false);
+                          handleLogout();
+                        }}
+                      >
+                        <LogOut size={15} />
+                        <span>Log Out</span>
+                      </button>
+                    </div>
+                  </>
+                )}
+              </div>
+            ) : (
+              <NavLink to="/login" className="btn btn-primary btn-sm">
+                Sign In
+              </NavLink>
+            )}
           </div>
         </header>
 

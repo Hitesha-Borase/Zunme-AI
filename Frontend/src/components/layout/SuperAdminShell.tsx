@@ -182,13 +182,10 @@ export const SuperAdminShell: React.FC = () => {
                 onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
                 aria-expanded={profileDropdownOpen}
                 aria-haspopup="true"
+                title="Account Menu"
               >
                 <div className="superadmin-topbar-avatar">
                   {displayName.charAt(0) || 'A'}
-                </div>
-                <div className="superadmin-topbar-user-text hide-on-mobile">
-                  <span className="topbar-user-name">{displayName}</span>
-                  <span className="topbar-user-badge">SUPER_ADMIN</span>
                 </div>
                 <ChevronDown size={14} className={`dropdown-chevron ${profileDropdownOpen ? 'rotated' : ''}`} />
               </button>
