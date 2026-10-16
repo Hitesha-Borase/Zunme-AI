@@ -527,9 +527,27 @@
 .energy-personas-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(6, 1fr);
-  gap: 8px;
+  grid-template-rows: repeat(3, 1fr);
+  gap: 12px;
   flex: 1;
+}
+
+.persona-badge-tag {
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: #F1F5F9;
+  border: 1px solid #E2E8F0;
+  color: #475569;
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+}
+
+.energy-persona-card.is-selected .persona-badge-tag {
+  background: #EFEBFC;
+  border-color: rgba(110, 86, 207, 0.3);
+  color: #6E56CF;
 }
 
 .energy-persona-card {
