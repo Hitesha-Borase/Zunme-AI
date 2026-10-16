@@ -15,7 +15,16 @@
   justify-content: center;
   position: relative;
   overflow: hidden;
-  background-color: var(--color-bg, #FAF9FC);
+  background-color: #0F121E;
+  background-image: 
+    radial-gradient(circle at 85% 15%, rgba(110, 86, 207, 0.16) 0%, transparent 45%),
+    radial-gradient(circle at 15% 85%, rgba(14, 165, 233, 0.12) 0%, transparent 45%),
+    linear-gradient(135deg, rgba(250, 249, 252, 0.65) 0%, rgba(244, 242, 250, 0.70) 50%, rgba(238, 242, 255, 0.76) 100%),
+    url('/zunme_login_bg.jpg');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  background-attachment: fixed;
   padding: 16px 32px;
   box-sizing: border-box;
 }
@@ -154,23 +163,28 @@
   font-weight: 900;
   line-height: 1.18;
   letter-spacing: -0.03em;
-  color: #111625;
+  color: #0F172A;
   margin: 0;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.9);
 }
 
 .showcase-heading .gradient-text {
-  background: linear-gradient(135deg, #6E56CF 0%, #903D9C 50%, #EC4899 100%);
+  background: linear-gradient(135deg, #6E56CF 0%, #7C3AED 45%, #BE185D 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   display: inline;
+  font-weight: 900;
+  filter: drop-shadow(0 1px 2px rgba(255, 255, 255, 0.8));
 }
 
 .showcase-description {
-  font-size: 13.5px;
-  line-height: 1.48;
-  color: #5F6B85;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.55;
+  color: #1E293B;
   margin: 0;
-  max-width: 500px;
+  max-width: 510px;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.9);
 }
 
 /* Feature Cards Stack */
@@ -326,12 +340,14 @@
    RIGHT COLUMN: LUXURY REGISTRATION CARD (COMPACT VIEWPORT FIT)
    ========================================================================== */
 .register-form-card {
-  background: #FFFFFF;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
   border-radius: 18px;
-  border: 1px solid #E8ECF5;
+  border: 1px solid rgba(232, 236, 245, 0.95);
   box-shadow: 
-    0 16px 45px -8px rgba(30, 20, 60, 0.08),
-    0 4px 16px -2px rgba(110, 86, 207, 0.04),
+    0 24px 60px -8px rgba(30, 20, 60, 0.12),
+    0 4px 16px -2px rgba(110, 86, 207, 0.06),
     0 1px 3px rgba(0, 0, 0, 0.02);
   padding: 20px 26px;
   position: relative;
@@ -729,6 +745,8 @@
     overflow-x: hidden;
     padding: 24px 16px;
     align-items: flex-start;
+    background-attachment: scroll;
+    background-position: center top;
   }
 
   .register-split-container {
