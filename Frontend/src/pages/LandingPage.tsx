@@ -59,7 +59,7 @@ interface FaqItem {
 export type LandingSection = 'all' | 'features' | 'how-it-works' | 'showcase' | 'pricing' | 'faq';
 
 export const LandingPage: React.FC = () => {
-  const { user } = useApp();
+  const { user, loginWithRole } = useApp();
   const [searchParams, setSearchParams] = useSearchParams();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState<boolean>(false);
@@ -79,12 +79,16 @@ export const LandingPage: React.FC = () => {
 
   const handleAskZunmeSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!askZunmeQuery.trim()) return;
+    const query = askZunmeQuery.trim();
+    if (!query) return;
     setIsSubmittingQuery(true);
     setTimeout(() => {
       setIsSubmittingQuery(false);
-      navigate(`/login?prompt=${encodeURIComponent(askZunmeQuery.trim())}`);
-    }, 300);
+      if (!user) {
+        loginWithRole('USER', 'Zunme Explorer');
+      }
+      navigate(`/app/chat?prompt=${encodeURIComponent(query)}`);
+    }, 250);
   };
 
   useEffect(() => {

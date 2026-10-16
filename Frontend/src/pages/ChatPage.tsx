@@ -31,6 +31,19 @@ export const ChatPage: React.FC = () => {
   const [copiedMsgId, setCopiedMsgId] = useState<string | null>(null);
   const scrollEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const hasSentInitialPrompt = useRef(false);
+
+  // Check if routed with a prompt from Landing Page
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const initialPrompt = params.get('prompt');
+    if (initialPrompt && !hasSentInitialPrompt.current) {
+      hasSentInitialPrompt.current = true;
+      sendMessage(initialPrompt);
+      // Clean query param from URL without reload
+      window.history.replaceState({}, '', window.location.pathname);
+    }
+  }, [sendMessage]);
 
   // Auto scroll to bottom when messages update
   useEffect(() => {
