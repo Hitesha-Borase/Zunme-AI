@@ -56,6 +56,8 @@ interface FaqItem {
   answer: string;
 }
 
+export type LandingSection = 'all' | 'features' | 'how-it-works' | 'showcase' | 'pricing' | 'faq';
+
 export const LandingPage: React.FC = () => {
   const { user } = useApp();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -64,6 +66,13 @@ export const LandingPage: React.FC = () => {
   const [activeShowcaseTab, setActiveShowcaseTab] = useState<'chat' | 'search' | 'studio' | 'library'>('chat');
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
   const [copiedSnippet, setCopiedSnippet] = useState(false);
+  const [activeSection, setActiveSection] = useState<LandingSection>('all');
+
+  const handleNavClick = (section: LandingSection) => {
+    setActiveSection(section);
+    setMobileMenuOpen(false);
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  };
 
   useEffect(() => {
     if (searchParams.get('login') === 'true') {
@@ -237,7 +246,12 @@ export const LandingPage: React.FC = () => {
       <header className="landing-header">
         <div className="landing-container">
           <div className="header-content">
-            <NavLink to="/" className="brand-link" aria-label="Zunme AI Home">
+            <NavLink
+              to="/"
+              className="brand-link"
+              aria-label="Zunme AI Home"
+              onClick={() => handleNavClick('all')}
+            >
               <div className="brand-icon-box">
                 <span className="brand-glyph">Z</span>
                 <span className="brand-glow-ring" />
@@ -250,24 +264,54 @@ export const LandingPage: React.FC = () => {
 
             {/* Desktop Navigation */}
             <nav className="landing-nav-links" aria-label="Main Navigation">
-              <a href="#features">Features</a>
-              <a href="#how-it-works">How It Works</a>
-              <a href="#showcase">Product</a>
-              <a href="#pricing">Pricing</a>
-              <a href="#faq">FAQ</a>
+              <button
+                type="button"
+                className={activeSection === 'features' ? 'active' : ''}
+                onClick={() => handleNavClick('features')}
+              >
+                Features
+              </button>
+              <button
+                type="button"
+                className={activeSection === 'how-it-works' ? 'active' : ''}
+                onClick={() => handleNavClick('how-it-works')}
+              >
+                How It Works
+              </button>
+              <button
+                type="button"
+                className={activeSection === 'showcase' ? 'active' : ''}
+                onClick={() => handleNavClick('showcase')}
+              >
+                Product
+              </button>
+              <button
+                type="button"
+                className={activeSection === 'pricing' ? 'active' : ''}
+                onClick={() => handleNavClick('pricing')}
+              >
+                Pricing
+              </button>
+              <button
+                type="button"
+                className={activeSection === 'faq' ? 'active' : ''}
+                onClick={() => handleNavClick('faq')}
+              >
+                FAQ
+              </button>
             </nav>
 
             {/* Header Right Actions */}
             <div className="header-actions">
-              <NavLink to="/register" className="btn btn-ghost btn-sm">
-                Get Started
+              <NavLink to="/login" className="btn btn-ghost btn-sm">
+                Log In
               </NavLink>
               <NavLink
-                to="/login"
+                to="/register"
                 className="btn btn-primary btn-sm btn-glow"
-                aria-label="Open Workspace Login"
+                aria-label="Create Account"
               >
-                <span>Login</span>
+                <span>Create Account</span>
                 <ArrowRight size={14} />
               </NavLink>
 
@@ -289,44 +333,102 @@ export const LandingPage: React.FC = () => {
         {mobileMenuOpen && (
           <div className="mobile-drawer" role="dialog" aria-modal="true">
             <nav className="mobile-nav-links">
-              <a href="#features" onClick={() => setMobileMenuOpen(false)}>
+              <button
+                type="button"
+                className={activeSection === 'features' ? 'active' : ''}
+                onClick={() => handleNavClick('features')}
+              >
                 Features
-              </a>
-              <a href="#how-it-works" onClick={() => setMobileMenuOpen(false)}>
+              </button>
+              <button
+                type="button"
+                className={activeSection === 'how-it-works' ? 'active' : ''}
+                onClick={() => handleNavClick('how-it-works')}
+              >
                 How It Works
-              </a>
-              <a href="#showcase" onClick={() => setMobileMenuOpen(false)}>
+              </button>
+              <button
+                type="button"
+                className={activeSection === 'showcase' ? 'active' : ''}
+                onClick={() => handleNavClick('showcase')}
+              >
                 Product Showcase
-              </a>
-              <a href="#pricing" onClick={() => setMobileMenuOpen(false)}>
+              </button>
+              <button
+                type="button"
+                className={activeSection === 'pricing' ? 'active' : ''}
+                onClick={() => handleNavClick('pricing')}
+              >
                 Pricing
-              </a>
-              <a href="#faq" onClick={() => setMobileMenuOpen(false)}>
+              </button>
+              <button
+                type="button"
+                className={activeSection === 'faq' ? 'active' : ''}
+                onClick={() => handleNavClick('faq')}
+              >
                 FAQ
-              </a>
+              </button>
             </nav>
             <div className="mobile-drawer-actions">
               <NavLink
-                to="/login"
+                to="/register"
                 className="btn btn-primary btn-block"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                <span>Login</span>
+                <span>Create Account</span>
                 <ArrowRight size={15} />
               </NavLink>
               <NavLink
-                to="/register"
+                to="/login"
                 className="btn btn-outline btn-block"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                Get Started Free
+                Log In
               </NavLink>
             </div>
           </div>
         )}
       </header>
 
+      {/* Focused Section Indicator Banner when section is directly opened */}
+      {activeSection !== 'all' && (
+        <div className="section-active-banner">
+          <div
+            className="landing-container"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              padding: '12px 0',
+              flexWrap: 'wrap',
+              gap: '10px'
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span
+                className="badge badge-primary"
+                style={{ textTransform: 'uppercase', fontSize: '11px', letterSpacing: '0.04em' }}
+              >
+                {activeSection === 'showcase' ? 'Product' : activeSection.replace('-', ' ')}
+              </span>
+              <span style={{ fontSize: '13px', color: '#5F6B85' }}>
+                Section view active • Direct access
+              </span>
+            </div>
+            <button
+              type="button"
+              className="btn btn-ghost btn-sm"
+              onClick={() => handleNavClick('all')}
+              style={{ fontSize: '12.5px', fontWeight: 700, color: '#6E56CF' }}
+            >
+              <span>← Show Full Page Overview</span>
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Hero Section */}
+      {activeSection === 'all' && (
       <section className="hero-section" id="hero">
         <div className="hero-ambient-spotlight" aria-hidden="true" />
         <div className="hero-cyan-spotlight" aria-hidden="true" />
@@ -524,8 +626,10 @@ export const LandingPage: React.FC = () => {
           </div>
         </div>
       </section>
+      )}
 
       {/* Core Capabilities Section */}
+      {(activeSection === 'all' || activeSection === 'features') && (
       <section id="features" className="capabilities-section">
         <div className="landing-container">
           <div className="section-header">
@@ -578,8 +682,10 @@ export const LandingPage: React.FC = () => {
           </div>
         </div>
       </section>
+      )}
 
       {/* How It Works Section */}
+      {(activeSection === 'all' || activeSection === 'how-it-works') && (
       <section id="how-it-works" className="how-it-works-section">
         <div className="landing-container">
           <div className="section-header">
@@ -617,8 +723,10 @@ export const LandingPage: React.FC = () => {
           </div>
         </div>
       </section>
+      )}
 
       {/* Product Preview / Platform Showcase Section */}
+      {(activeSection === 'all' || activeSection === 'showcase') && (
       <section id="showcase" className="showcase-section">
         <div className="landing-container">
           <div className="section-header">
@@ -909,8 +1017,10 @@ export const LandingPage: React.FC = () => {
           </div>
         </div>
       </section>
+      )}
 
       {/* Plans & Pricing Section */}
+      {(activeSection === 'all' || activeSection === 'pricing') && (
       <section id="pricing" className="pricing-section">
         <div className="landing-container">
           <div className="section-header">
@@ -960,7 +1070,7 @@ export const LandingPage: React.FC = () => {
 
               <div className="pricing-card-footer">
                 <NavLink to="/register" className="btn btn-outline btn-block">
-                  Get Started Free
+                  Create Account
                 </NavLink>
               </div>
             </div>
@@ -1060,7 +1170,7 @@ export const LandingPage: React.FC = () => {
 
               <div className="pricing-card-footer">
                 <NavLink to="/register" className="btn btn-outline btn-block">
-                  Get Started with Teams
+                  Create Account
                 </NavLink>
               </div>
             </div>
@@ -1072,8 +1182,10 @@ export const LandingPage: React.FC = () => {
           </div>
         </div>
       </section>
+      )}
 
       {/* FAQ Section */}
+      {(activeSection === 'all' || activeSection === 'faq') && (
       <section id="faq" className="faq-section">
         <div className="landing-container">
           <div className="section-header">
@@ -1113,8 +1225,10 @@ export const LandingPage: React.FC = () => {
           </div>
         </div>
       </section>
+      )}
 
       {/* Final CTA Section */}
+      {activeSection === 'all' && (
       <section className="final-cta-section" id="cta">
         <div className="landing-container">
           <div className="cta-box">
@@ -1135,9 +1249,17 @@ export const LandingPage: React.FC = () => {
             <div className="cta-subtext">
               <span>Free Starter access · No credit card required · Instant setup</span>
             </div>
+
+            <div style={{ marginTop: '20px' }}>
+              <NavLink to="/register" className="btn btn-primary btn-glow">
+                <span>Create Account</span>
+                <ArrowRight size={15} />
+              </NavLink>
+            </div>
           </div>
         </div>
       </section>
+      )}
 
       {/* Public Footer */}
       <footer className="landing-footer">
@@ -1170,7 +1292,7 @@ export const LandingPage: React.FC = () => {
                       onClick={(e) => {
                         e.preventDefault();
                         setActiveShowcaseTab('chat');
-                        document.getElementById('showcase')?.scrollIntoView({ behavior: 'smooth' });
+                        handleNavClick('showcase');
                       }}
                     >
                       AI Assistant
@@ -1182,7 +1304,7 @@ export const LandingPage: React.FC = () => {
                       onClick={(e) => {
                         e.preventDefault();
                         setActiveShowcaseTab('search');
-                        document.getElementById('showcase')?.scrollIntoView({ behavior: 'smooth' });
+                        handleNavClick('showcase');
                       }}
                     >
                       Live Web Search
@@ -1194,7 +1316,7 @@ export const LandingPage: React.FC = () => {
                       onClick={(e) => {
                         e.preventDefault();
                         setActiveShowcaseTab('studio');
-                        document.getElementById('showcase')?.scrollIntoView({ behavior: 'smooth' });
+                        handleNavClick('showcase');
                       }}
                     >
                       Content Studio
@@ -1206,14 +1328,22 @@ export const LandingPage: React.FC = () => {
                       onClick={(e) => {
                         e.preventDefault();
                         setActiveShowcaseTab('library');
-                        document.getElementById('showcase')?.scrollIntoView({ behavior: 'smooth' });
+                        handleNavClick('showcase');
                       }}
                     >
                       Personal Library
                     </a>
                   </li>
                   <li>
-                    <a href="#pricing">Plans &amp; Pricing</a>
+                    <a
+                      href="#pricing"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleNavClick('pricing');
+                      }}
+                    >
+                      Plans &amp; Pricing
+                    </a>
                   </li>
                 </ul>
               </div>
@@ -1223,22 +1353,22 @@ export const LandingPage: React.FC = () => {
                 <h4>Capabilities</h4>
                 <ul>
                   <li>
-                    <a href="#features">AI Chat</a>
+                    <a href="#features" onClick={(e) => { e.preventDefault(); handleNavClick('features'); }}>AI Chat</a>
                   </li>
                   <li>
-                    <a href="#features">Web Search</a>
+                    <a href="#features" onClick={(e) => { e.preventDefault(); handleNavClick('features'); }}>Web Search</a>
                   </li>
                   <li>
-                    <a href="#features">AI Content Builders</a>
+                    <a href="#features" onClick={(e) => { e.preventDefault(); handleNavClick('features'); }}>AI Content Builders</a>
                   </li>
                   <li>
-                    <a href="#features">AI Warehouse</a>
+                    <a href="#features" onClick={(e) => { e.preventDefault(); handleNavClick('features'); }}>AI Warehouse</a>
                   </li>
                   <li>
-                    <a href="#features">Creator Tools</a>
+                    <a href="#features" onClick={(e) => { e.preventDefault(); handleNavClick('features'); }}>Creator Tools</a>
                   </li>
                   <li>
-                    <a href="#features">SEO Workspace</a>
+                    <a href="#features" onClick={(e) => { e.preventDefault(); handleNavClick('features'); }}>SEO Workspace</a>
                   </li>
                 </ul>
               </div>
@@ -1248,13 +1378,13 @@ export const LandingPage: React.FC = () => {
                 <h4>Company</h4>
                 <ul>
                   <li>
-                    <a href="#hero">About Zunme AI</a>
+                    <a href="#hero" onClick={(e) => { e.preventDefault(); handleNavClick('all'); }}>About Zunme AI</a>
                   </li>
                   <li>
-                    <a href="#how-it-works">How It Works</a>
+                    <a href="#how-it-works" onClick={(e) => { e.preventDefault(); handleNavClick('how-it-works'); }}>How It Works</a>
                   </li>
                   <li>
-                    <a href="#faq">FAQ</a>
+                    <a href="#faq" onClick={(e) => { e.preventDefault(); handleNavClick('faq'); }}>FAQ</a>
                   </li>
                   <li>
                     <NavLink to="/login" className="footer-modal-trigger-btn">
