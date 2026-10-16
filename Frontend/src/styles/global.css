@@ -317,6 +317,37 @@ textarea.input-field {
   min-height: 80px;
 }
 
+/* Universal Zunme AI Modern Brand Logo */
+.brand-icon-box {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  border-radius: 11px;
+  background: linear-gradient(135deg, #1E1238 0%, #4A2368 50%, #6E56CF 100%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 
+    0 4px 14px rgba(110, 86, 207, 0.4),
+    inset 0 1px 1px rgba(255, 255, 255, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  flex-shrink: 0;
+  font-weight: 900;
+  color: #FFFFFF;
+}
+
+.brand-glyph {
+  font-size: 19px;
+  font-weight: 900;
+  background: linear-gradient(135deg, #FF3B70 0%, #D946EF 45%, #8B5CF6 80%, #06B6D4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -0.05em;
+  filter: drop-shadow(0 2px 5px rgba(217, 70, 239, 0.4));
+  font-family: system-ui, -apple-system, sans-serif;
+  line-height: 1;
+}
+
 /* Liquid Glass Modal Overlay */
 .modal-backdrop {
   position: fixed;
