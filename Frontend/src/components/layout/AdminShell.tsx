@@ -43,6 +43,8 @@ export const AdminShell: React.FC = () => {
     return 'Operations Command Dashboard';
   };
 
+  const displayName = (user?.fullName || 'Operations Manager').replace(/\s*\([^)]*\)/g, '').trim();
+
   return (
     <div className="admin-shell">
       {/* Mobile Drawer Overlay */}
@@ -63,7 +65,6 @@ export const AdminShell: React.FC = () => {
             </div>
             <div className="admin-brand-text">
               <span className="brand-title">ZUNME AI</span>
-              <span className="brand-tier-badge">OPERATIONS HUB</span>
             </div>
           </NavLink>
           <button
@@ -73,6 +74,15 @@ export const AdminShell: React.FC = () => {
           >
             <X size={18} />
           </button>
+        </div>
+
+        {/* User Profile Card (Moved to Left Top) */}
+        <div className="admin-user-card">
+          <div className="admin-avatar">{displayName.charAt(0) || 'A'}</div>
+          <div className="admin-user-info">
+            <span className="user-name">{displayName}</span>
+            <span className="user-role-label">Operations Management</span>
+          </div>
         </div>
 
         {/* Navigation Items */}
@@ -160,20 +170,12 @@ export const AdminShell: React.FC = () => {
           </NavLink>
         </nav>
 
-        {/* Admin Footer & Logout */}
+        {/* Admin Footer & Logout at the Very Bottom */}
         <div className="admin-footer">
           <button className="admin-logout-btn" onClick={handleLogout} title="Sign out">
             <LogOut size={16} />
             <span>Logout</span>
           </button>
-
-          <div className="admin-user-card">
-            <div className="admin-avatar">{user?.fullName?.charAt(0) || 'A'}</div>
-            <div className="admin-user-info">
-              <span className="user-name">{user?.fullName || 'Operations Manager'}</span>
-              <span className="user-role-label">Staff Administrator</span>
-            </div>
-          </div>
         </div>
       </aside>
 
@@ -190,7 +192,7 @@ export const AdminShell: React.FC = () => {
               <Menu size={20} />
             </button>
             <div>
-              <div className="admin-breadcrumb">Operations / Administration</div>
+              <div className="admin-breadcrumb">Operations & Management</div>
               <h1 className="admin-page-heading">{getPageTitle()}</h1>
             </div>
           </div>

@@ -130,12 +130,7 @@ export const SuperAdminAuditLogsPage: React.FC = () => {
                     </td>
 
                     <td>
-                      <div>
-                        <div style={{ fontWeight: '700', color: '#111625' }}>{log.actor}</div>
-                        <span className="badge badge-neutral" style={{ fontSize: '10px' }}>
-                          {log.role}
-                        </span>
-                      </div>
+                      <div style={{ fontWeight: '700', color: '#111625' }}>{log.actor}</div>
                     </td>
 
                     <td>

@@ -36,6 +36,8 @@ export const SuperAdminShell: React.FC = () => {
     return 'Super Admin Executive Dashboard';
   };
 
+  const displayName = (user?.fullName || 'Super Administrator').replace(/\s*\([^)]*\)/g, '').trim();
+
   return (
     <div className="superadmin-shell">
       {/* Mobile Backdrop */}
@@ -56,7 +58,6 @@ export const SuperAdminShell: React.FC = () => {
             </div>
             <div className="superadmin-brand-text">
               <span className="brand-title">ZUNME AI</span>
-              <span className="brand-tier-badge">SUPER ADMIN</span>
             </div>
           </NavLink>
           <button
@@ -66,6 +67,17 @@ export const SuperAdminShell: React.FC = () => {
           >
             <X size={18} />
           </button>
+        </div>
+
+        {/* User Profile Card (Moved to Left Top) */}
+        <div className="superadmin-user-card">
+          <div className="superadmin-avatar">
+            {displayName.charAt(0) || 'A'}
+          </div>
+          <div className="superadmin-user-info">
+            <span className="user-name">{displayName}</span>
+            <span className="user-role-label">Platform Root Owner</span>
+          </div>
         </div>
 
         <div className="superadmin-status-box">
@@ -125,7 +137,7 @@ export const SuperAdminShell: React.FC = () => {
           </NavLink>
         </nav>
 
-        {/* Sidebar Footer with Logout */}
+        {/* Sidebar Footer with Logout at the Very Bottom */}
         <div className="superadmin-footer">
           <button
             className="superadmin-logout-btn"
@@ -135,16 +147,6 @@ export const SuperAdminShell: React.FC = () => {
             <LogOut size={18} />
             <span>Logout</span>
           </button>
-
-          <div className="superadmin-user-card">
-            <div className="superadmin-avatar">
-              {user?.fullName?.charAt(0) || 'S'}
-            </div>
-            <div className="superadmin-user-info">
-              <span className="user-name">{user?.fullName || 'Super Administrator'}</span>
-              <span className="user-role-label">Platform Root Owner</span>
-            </div>
-          </div>
         </div>
       </aside>
 
@@ -161,7 +163,7 @@ export const SuperAdminShell: React.FC = () => {
               <Menu size={20} />
             </button>
             <div>
-              <div className="superadmin-breadcrumb">Super Admin / Platform Governance</div>
+              <div className="superadmin-breadcrumb">Platform Governance</div>
               <h1 className="superadmin-page-heading">{getPageTitle()}</h1>
             </div>
           </div>
