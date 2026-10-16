@@ -83,15 +83,6 @@ export const AdminShell: React.FC = () => {
           </button>
         </div>
 
-        {/* User Profile Card (Moved to Left Top) */}
-        <div className="admin-user-card">
-          <div className="admin-avatar">{displayName.charAt(0) || 'A'}</div>
-          <div className="admin-user-info">
-            <span className="user-name">{displayName}</span>
-            <span className="user-role-label">Operations Management</span>
-          </div>
-        </div>
-
         {/* Navigation Items */}
         <nav className="admin-nav" aria-label="Admin Operational Navigation">
           <NavLink

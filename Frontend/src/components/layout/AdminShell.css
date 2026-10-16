@@ -45,6 +45,7 @@
   align-items: center;
   gap: var(--space-3);
   text-decoration: none;
+  color: #FFFFFF !important;
 }
 
 .admin-badge-icon {
@@ -68,7 +69,7 @@
   font-size: 15px;
   font-weight: 800;
   letter-spacing: 0.02em;
-  color: #FFFFFF;
+  color: #FFFFFF !important;
 }
 
 .admin-brand-text .brand-tier-badge {

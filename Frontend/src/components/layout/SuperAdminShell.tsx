@@ -75,25 +75,6 @@ export const SuperAdminShell: React.FC = () => {
           </button>
         </div>
 
-        {/* User Profile Card (Moved to Left Top) */}
-        <div className="superadmin-user-card">
-          <div className="superadmin-avatar">
-            {displayName.charAt(0) || 'A'}
-          </div>
-          <div className="superadmin-user-info">
-            <span className="user-name">{displayName}</span>
-            <span className="user-role-label">Platform Root Owner</span>
-          </div>
-        </div>
-
-        <div className="superadmin-status-box">
-          <div className="status-indicator-dot" />
-          <div className="status-meta">
-            <span className="status-title">Root Governance</span>
-            <span className="status-desc">Strict Platform Scope</span>
-          </div>
-        </div>
-
         {/* The 5 Required Menu Items */}
         <nav className="superadmin-nav" aria-label="Super Admin Navigation">
           <NavLink
