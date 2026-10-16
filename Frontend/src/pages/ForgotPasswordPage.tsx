@@ -24,8 +24,7 @@ export const ForgotPasswordPage: React.FC = () => {
       <div className="auth-card">
         <div className="auth-header">
           <NavLink to="/" className="auth-brand-logo">
-            <div className="brand-icon-box">Z</div>
-            <span>Zunme AI</span>
+            <img src="/zunme_logo.png" alt="Zunme AI" style={{ height: '36px', width: 'auto', display: 'block' }} />
           </NavLink>
           <h1 className="auth-title">Reset Your Password</h1>
           <p className="auth-subtitle">

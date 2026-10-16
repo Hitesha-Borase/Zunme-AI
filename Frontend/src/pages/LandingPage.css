@@ -3199,6 +3199,16 @@
   .landing-container {
     padding: 0 16px;
   }
+  .header-actions {
+    gap: 8px;
+  }
+  .header-actions .btn-sm:not(.mobile-menu-btn) {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+  .header-actions a[aria-label="Create Account"] {
+    display: none;
+  }
   .hero-title {
     font-size: 28px;
   }

@@ -494,14 +494,16 @@ export const SocialSchedulerPage: React.FC = () => {
 
           {/* Monthly Calendar Grid */}
           <div className="glass-panel" style={{ padding: '20px' }}>
-            {/* Weekday headers */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '8px', marginBottom: '10px', textAlign: 'center' }}>
-              {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((d) => (
-                <div key={d} style={{ fontSize: '12px', fontWeight: '800', color: '#8C97B0', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-                  {d}
+            <div style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch', width: '100%', paddingBottom: '6px' }}>
+              <div style={{ minWidth: '700px' }}>
+                {/* Weekday headers */}
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '8px', marginBottom: '10px', textAlign: 'center' }}>
+                  {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((d) => (
+                    <div key={d} style={{ fontSize: '12px', fontWeight: '800', color: '#8C97B0', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                      {d}
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
 
             {/* Calendar Days */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '8px' }}>
@@ -593,6 +595,8 @@ export const SocialSchedulerPage: React.FC = () => {
                   </div>
                 );
               })}
+            </div>
+              </div>
             </div>
           </div>
         </div>
@@ -1074,7 +1078,7 @@ export const SocialSchedulerPage: React.FC = () => {
               </div>
 
               {/* Schedule Timing & Optimal Recommendation */}
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
+              <div className="form-grid-2">
                 <div>
                   <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#111625', marginBottom: '6px' }}>
                     Publish Date

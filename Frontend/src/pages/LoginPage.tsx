@@ -137,14 +137,7 @@ export const LoginPage: React.FC = () => {
       {/* Top Global Bar matching Home Page */}
       <header className="energy-auth-topbar">
         <NavLink to="/" className="brand-link" aria-label="Zunme AI Home">
-          <div className="brand-icon-box">
-            <span className="brand-glyph">Z</span>
-            <span className="brand-glow-ring" />
-          </div>
-          <div className="brand-text-wrap">
-            <span className="brand-name">Zunme AI</span>
-            <span className="brand-version-pill">Workspace</span>
-          </div>
+          <img src="/zunme_logo.png" alt="Zunme AI" style={{ height: '34px', width: 'auto', display: 'block' }} />
         </NavLink>
 
         <div className="energy-topbar-meta" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
@@ -182,14 +175,8 @@ export const LoginPage: React.FC = () => {
           {/* Left Column: Login Card with Home Page Luxury Card Styling */}
           <div className="energy-login-card">
             <div className="energy-login-header">
-              <div className="brand-icon-box energy-card-logo-box">
-                <span className="brand-glyph">Z</span>
-                <span className="brand-glow-ring" />
-              </div>
-
-              <div className="energy-card-title-row">
-                <h1 className="energy-card-title">Zunme AI</h1>
-                <span className="brand-version-pill">Workspace</span>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '8px' }}>
+                <img src="/zunme_logo.png" alt="Zunme AI" style={{ height: '38px', width: 'auto', display: 'block' }} />
               </div>
               <p className="energy-card-meta">Next-Gen Unified AI Platform</p>
               <p className="energy-card-desc">Sign in to continue to your workspace.</p>

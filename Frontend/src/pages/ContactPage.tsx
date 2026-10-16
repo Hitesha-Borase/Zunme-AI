@@ -55,8 +55,7 @@ export const ContactPage: React.FC = () => {
       <header className="legal-header">
         <div className="legal-container">
           <NavLink to="/" className="legal-brand">
-            <span className="brand-glyph">Z</span>
-            <span className="brand-name">Zunme AI</span>
+            <img src="/zunme_logo.png" alt="Zunme AI" style={{ height: '32px', width: 'auto', display: 'block' }} />
           </NavLink>
           <NavLink to="/" className="legal-back-link">
             <ArrowLeft size={15} />

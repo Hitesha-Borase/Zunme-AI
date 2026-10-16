@@ -141,8 +141,7 @@ export const PublicCreatorProfilePage: React.FC = () => {
             <span>Back to Workspace</span>
           </button>
           <NavLink to="/" className="creator-profile-brand">
-            <span>Zunme AI</span>
-            <span className="brand-version-pill">Workspace</span>
+            <img src="/zunme_logo.png" alt="Zunme AI" style={{ height: '30px', width: 'auto', display: 'block' }} />
           </NavLink>
         </div>
       </div>

@@ -207,8 +207,7 @@ export const RegisterPage: React.FC = () => {
           <div className="register-card-header">
             <div className="register-brand-row">
               <NavLink to="/" className="register-brand-link">
-                <div className="register-logo-icon">Z</div>
-                <span className="register-brand-title">Zunme AI</span>
+                <img src="/zunme_logo.png" alt="Zunme AI" style={{ height: '32px', width: 'auto', display: 'block' }} />
               </NavLink>
               <div style={{ display: 'flex', alignItems: 'center', gap: '5px', fontSize: '12px', color: '#10B981', fontWeight: 700 }}>
                 <Zap size={14} />

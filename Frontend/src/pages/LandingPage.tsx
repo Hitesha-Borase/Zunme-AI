@@ -371,14 +371,7 @@ export const LandingPage: React.FC = () => {
               aria-label="Zunme AI Home"
               onClick={() => handleNavClick('all')}
             >
-              <div className="brand-icon-box">
-                <span className="brand-glyph">Z</span>
-                <span className="brand-glow-ring" />
-              </div>
-              <div className="brand-text-wrap">
-                <span className="brand-name">Zunme AI</span>
-                <span className="brand-version-pill">Workspace</span>
-              </div>
+              <img src="/zunme_logo.png" alt="Zunme AI" style={{ height: '42px', width: 'auto', display: 'block' }} />
             </NavLink>
 
             {/* Desktop Navigation */}
@@ -1465,10 +1458,7 @@ export const LandingPage: React.FC = () => {
           <div className="footer-top">
             <div className="footer-brand">
               <NavLink to="/" className="brand-link">
-                <div className="brand-icon-box">
-                  <span className="brand-glyph">Z</span>
-                </div>
-                <span className="brand-name">Zunme AI</span>
+                <img src="/zunme_logo.png" alt="Zunme AI" style={{ height: '34px', width: 'auto', display: 'block' }} />
               </NavLink>
               <p className="footer-brand-desc">
                 Your unified AI workspace for ideas, content &amp; discovery. Search the web, create compelling copy, and organize your work in one connected platform.
