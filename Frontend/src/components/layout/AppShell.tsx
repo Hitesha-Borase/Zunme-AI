@@ -90,7 +90,7 @@ export const AppShell: React.FC = () => {
   };
 
   if (!user) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/login" replace />;
   }
 
   const displayName = (user?.fullName || 'User').replace(/\s*\([^)]*\)/g, '').trim();
@@ -468,7 +468,7 @@ export const AppShell: React.FC = () => {
           /* ============================================================ */
           <>
             <div className="sidebar-brand-section">
-              <NavLink to="/" className="brand-link" onClick={() => setMobileMenuOpen(false)}>
+              <NavLink to="/app" className="brand-link" onClick={() => setMobileMenuOpen(false)}>
                 <div className="brand-icon-box">Z</div>
                 <span>Zunme AI</span>
               </NavLink>

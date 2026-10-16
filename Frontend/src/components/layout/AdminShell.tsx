@@ -34,7 +34,7 @@ export const AdminShell: React.FC = () => {
   };
 
   if (!user) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/login" replace />;
   }
 
   const getPageTitle = () => {
@@ -66,7 +66,7 @@ export const AdminShell: React.FC = () => {
       {/* Admin Sidebar with the exact approved 9 Operational Items + Logout */}
       <aside className={`admin-sidebar ${mobileMenuOpen ? 'open' : ''}`}>
         <div className="admin-brand-section">
-          <NavLink to="/" className="admin-brand-link">
+          <NavLink to="/admin" className="admin-brand-link">
             <div className="admin-badge-icon">
               <ShieldCheck size={18} />
             </div>
