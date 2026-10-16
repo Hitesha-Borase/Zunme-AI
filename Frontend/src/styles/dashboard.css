@@ -400,11 +400,6 @@
   gap: var(--space-4);
 }
 
-<<<<<<< HEAD
-/* Modal Overlay & Backdrop */
-.modal-overlay,
-.dashboard-modal-backdrop {
-=======
 .form-grid-2 {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -417,9 +412,9 @@
   }
 }
 
-/* Modal Overlay */
-.modal-overlay {
->>>>>>> e30dfccca26e3dde93f204d5b43b9eeadd4cd3e3
+/* Modal Overlay & Backdrop */
+.modal-overlay,
+.dashboard-modal-backdrop {
   position: fixed;
   inset: 0;
   background: rgba(17, 22, 37, 0.65);

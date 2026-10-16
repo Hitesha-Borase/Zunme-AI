@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { NavLink } from 'react-router-dom';
 import {
   Search,
   Bookmark,
@@ -81,7 +82,7 @@ export const LibraryPage: React.FC = () => {
 
       {/* Toolbar: Search & Category Filters */}
       <div className="library-toolbar">
-        <div className="library-search-box">
+        <div className="library-search-box" style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
           <Search size={16} />
           <input
             type="text"
@@ -89,7 +90,28 @@ export const LibraryPage: React.FC = () => {
             placeholder="Search saved items by keyword..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
+            style={{ paddingRight: searchQuery ? '32px' : undefined }}
           />
+          {searchQuery && (
+            <button
+              type="button"
+              onClick={() => setSearchQuery('')}
+              style={{
+                position: 'absolute',
+                right: '8px',
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                color: '#8C97B0',
+                display: 'flex',
+                alignItems: 'center',
+                padding: '4px'
+              }}
+              title="Clear search query"
+            >
+              <X size={14} />
+            </button>
+          )}
         </div>
 
         <div className="category-filter-pills" role="tablist">
@@ -109,26 +131,124 @@ export const LibraryPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Grid of Saved Cards */}
+      {/* Grid of Saved Cards or Rich Empty States */}
       {filteredItems.length === 0 ? (
         <div
           style={{
             textAlign: 'center',
-            padding: '60px 20px',
+            padding: '64px 24px',
             backgroundColor: '#FFFFFF',
-            borderRadius: 'var(--radius-lg)',
-            border: '1px solid var(--color-border)'
+            borderRadius: '16px',
+            border: '1px solid #E8ECF5',
+            boxShadow: '0 4px 20px rgba(0,0,0,0.02)'
           }}
         >
-          <Bookmark size={32} color="var(--color-text-tertiary)" style={{ margin: '0 auto 12px' }} />
-          <h3 style={{ fontSize: '17px', fontWeight: '600', marginBottom: '6px' }}>
-            No Saved Items Found
-          </h3>
-          <p style={{ fontSize: '13.5px', color: 'var(--color-text-secondary)', maxWidth: '420px', margin: '0 auto' }}>
-            {searchQuery
-              ? `No items match "${searchQuery}". Try clearing your search.`
-              : 'Save answers from Chat, Search, or Studio to build your personal knowledge base.'}
-          </p>
+          {libraryItems.length === 0 ? (
+            /* Case 1: Total library empty */
+            <div>
+              <div
+                style={{
+                  width: '56px',
+                  height: '56px',
+                  borderRadius: '16px',
+                  background: '#F5EFFF',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  margin: '0 auto 16px'
+                }}
+              >
+                <Bookmark size={28} color="#6E56CF" />
+              </div>
+              <h3 style={{ fontSize: '18px', fontWeight: '800', color: '#111625', marginBottom: '8px' }}>
+                Your Library is Empty
+              </h3>
+              <p style={{ fontSize: '13.5px', color: '#5F6B85', maxWidth: '440px', margin: '0 auto 20px', lineHeight: '1.5' }}>
+                You haven't saved any conversational research or content blueprints yet. Generate content or run verified web searches and click "Save to Library" to curate your repository.
+              </p>
+              <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
+                <NavLink to="/app/chat" className="btn btn-outline btn-sm">
+                  Start AI Chat
+                </NavLink>
+                <NavLink to="/app/builders" className="btn btn-primary btn-sm">
+                  Explore Content Blueprints
+                </NavLink>
+              </div>
+            </div>
+          ) : searchQuery ? (
+            /* Case 2: No search matches */
+            <div>
+              <div
+                style={{
+                  width: '56px',
+                  height: '56px',
+                  borderRadius: '16px',
+                  background: '#F5EFFF',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  margin: '0 auto 16px'
+                }}
+              >
+                <Search size={28} color="#6E56CF" />
+              </div>
+              <h3 style={{ fontSize: '18px', fontWeight: '800', color: '#111625', marginBottom: '8px' }}>
+                No Results for "{searchQuery}"
+              </h3>
+              <p style={{ fontSize: '13.5px', color: '#5F6B85', maxWidth: '420px', margin: '0 auto 20px', lineHeight: '1.5' }}>
+                No saved items match your search term{selectedCategory !== 'ALL' ? ` within the ${selectedCategory} category` : ''}. Check for spelling errors or try resetting filters.
+              </p>
+              <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
+                <button
+                  className="btn btn-primary btn-sm"
+                  onClick={() => setSearchQuery('')}
+                >
+                  Clear Search Query
+                </button>
+                {selectedCategory !== 'ALL' && (
+                  <button
+                    className="btn btn-outline btn-sm"
+                    onClick={() => {
+                      setSelectedCategory('ALL');
+                      setSearchQuery('');
+                    }}
+                  >
+                    Reset All Filters
+                  </button>
+                )}
+              </div>
+            </div>
+          ) : (
+            /* Case 3: Category with 0 items */
+            <div>
+              <div
+                style={{
+                  width: '56px',
+                  height: '56px',
+                  borderRadius: '16px',
+                  background: '#F5EFFF',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  margin: '0 auto 16px'
+                }}
+              >
+                <Tag size={28} color="#6E56CF" />
+              </div>
+              <h3 style={{ fontSize: '18px', fontWeight: '800', color: '#111625', marginBottom: '8px' }}>
+                No Items in {selectedCategory === 'TEXT' ? 'Text Drafts' : selectedCategory === 'RESEARCH' ? 'Research Summaries' : 'Marketing Copy'}
+              </h3>
+              <p style={{ fontSize: '13.5px', color: '#5F6B85', maxWidth: '420px', margin: '0 auto 20px', lineHeight: '1.5' }}>
+                You have {counts.ALL} other saved items in your library, but none under category "{selectedCategory}".
+              </p>
+              <button
+                className="btn btn-primary btn-sm"
+                onClick={() => setSelectedCategory('ALL')}
+              >
+                View All Saved Items ({counts.ALL})
+              </button>
+            </div>
+          )}
         </div>
       ) : (
         <div className="library-cards-grid">
