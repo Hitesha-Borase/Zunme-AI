@@ -113,17 +113,6 @@ export const AppShell: React.FC = () => {
               </button>
             </div>
 
-            <div className="sidebar-new-chat-box">
-              <NavLink
-                to="/ads?tab=Create Campaign"
-                className="btn-new-chat"
-                style={{ background: '#6E56CF', color: '#FFFFFF', textDecoration: 'none' }}
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                <Plus size={16} />
-                <span>New Campaign</span>
-              </NavLink>
-            </div>
 
             <nav className="sidebar-nav-list" aria-label="Ads Navigation">
               <NavLink

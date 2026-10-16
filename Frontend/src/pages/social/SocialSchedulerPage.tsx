@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import {
   Calendar as CalendarIcon,
@@ -34,6 +34,7 @@ import {
 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import '../../styles/dashboard.css';
+import './SocialSchedulerPage.css';
 
 type SocialPlatform = 'twitter' | 'linkedin' | 'instagram' | 'youtube' | 'tiktok';
 type TabType = 'calendar' | 'queue' | 'composer' | 'accounts' | 'analytics' | 'settings' | 'support';
@@ -77,8 +78,24 @@ export const SocialSchedulerPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<TabType>('calendar');
   const [platformFilter, setPlatformFilter] = useState<string>('ALL');
 
-  // Month navigation state
-  const [currentMonth, setCurrentMonth] = useState('October 2026');
+  // Month navigation state (defaults to October 2026)
+  const [currentCalendarDate, setCurrentCalendarDate] = useState(new Date(2026, 9, 16));
+
+  const calendarYear = currentCalendarDate.getFullYear();
+  const calendarMonthIndex = currentCalendarDate.getMonth();
+  const currentMonthLabel = currentCalendarDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+
+  const handlePrevMonth = () => {
+    setCurrentCalendarDate(new Date(calendarYear, calendarMonthIndex - 1, 1));
+  };
+
+  const handleNextMonth = () => {
+    setCurrentCalendarDate(new Date(calendarYear, calendarMonthIndex + 1, 1));
+  };
+
+  const handleTodayMonth = () => {
+    setCurrentCalendarDate(new Date(2026, 9, 16));
+  };
 
   // Modal State for Composer
   const [isComposerOpen, setIsComposerOpen] = useState(false);
@@ -520,26 +537,94 @@ export const SocialSchedulerPage: React.FC = () => {
   const queuedPosts = filteredPosts.filter((p) => p.status === 'SCHEDULED');
   const publishedPosts = filteredPosts.filter((p) => p.status === 'PUBLISHED');
 
-  // Calendar days generation for October 2026
-  const calendarDays = Array.from({ length: 31 }, (_, i) => {
-    const dayNum = i + 1;
-    const dateStr = `2026-10-${dayNum < 10 ? '0' + dayNum : dayNum}`;
-    const dayPosts = posts.filter((p) => p.scheduledDate === dateStr);
-    return { dayNum, dateStr, dayPosts };
-  });
+  // Calendar cells generation for responsive monthly calendar
+  interface CalendarCell {
+    dayNum: number;
+    dateStr: string;
+    isCurrentMonth: boolean;
+    isToday: boolean;
+    isWeekend: boolean;
+    dayPosts: ScheduledPost[];
+  }
+
+  const calendarCells = useMemo<CalendarCell[]>(() => {
+    const firstDayOfWeek = new Date(calendarYear, calendarMonthIndex, 1).getDay(); // 0 (Sun) - 6 (Sat)
+    const daysInMonth = new Date(calendarYear, calendarMonthIndex + 1, 0).getDate();
+    const daysInPrevMonth = new Date(calendarYear, calendarMonthIndex, 0).getDate();
+
+    const cells: CalendarCell[] = [];
+
+    // Leading days from previous month
+    for (let i = firstDayOfWeek - 1; i >= 0; i--) {
+      const day = daysInPrevMonth - i;
+      const prevMonthIndex = calendarMonthIndex === 0 ? 11 : calendarMonthIndex - 1;
+      const prevYear = calendarMonthIndex === 0 ? calendarYear - 1 : calendarYear;
+      const mStr = String(prevMonthIndex + 1).padStart(2, '0');
+      const dStr = String(day).padStart(2, '0');
+      const dateStr = `${prevYear}-${mStr}-${dStr}`;
+      const dayPosts = filteredPosts.filter((p) => p.scheduledDate === dateStr);
+      cells.push({
+        dayNum: day,
+        dateStr,
+        isCurrentMonth: false,
+        isToday: dateStr === '2026-10-16',
+        isWeekend: cells.length % 7 === 0 || cells.length % 7 === 6,
+        dayPosts
+      });
+    }
+
+    // Days in current month
+    for (let day = 1; day <= daysInMonth; day++) {
+      const mStr = String(calendarMonthIndex + 1).padStart(2, '0');
+      const dStr = String(day).padStart(2, '0');
+      const dateStr = `${calendarYear}-${mStr}-${dStr}`;
+      const dayPosts = filteredPosts.filter((p) => p.scheduledDate === dateStr);
+      const dayOfWeek = (firstDayOfWeek + day - 1) % 7;
+      cells.push({
+        dayNum: day,
+        dateStr,
+        isCurrentMonth: true,
+        isToday: dateStr === '2026-10-16',
+        isWeekend: dayOfWeek === 0 || dayOfWeek === 6,
+        dayPosts
+      });
+    }
+
+    // Trailing days from next month to complete the row
+    const remainder = cells.length % 7;
+    if (remainder !== 0) {
+      const trailingCount = 7 - remainder;
+      for (let day = 1; day <= trailingCount; day++) {
+        const nextMonthIndex = calendarMonthIndex === 11 ? 0 : calendarMonthIndex + 1;
+        const nextYear = calendarMonthIndex === 11 ? calendarYear + 1 : calendarYear;
+        const mStr = String(nextMonthIndex + 1).padStart(2, '0');
+        const dStr = String(day).padStart(2, '0');
+        const dateStr = `${nextYear}-${mStr}-${dStr}`;
+        const dayPosts = filteredPosts.filter((p) => p.scheduledDate === dateStr);
+        const dayOfWeek = cells.length % 7;
+        cells.push({
+          dayNum: day,
+          dateStr,
+          isCurrentMonth: false,
+          isToday: dateStr === '2026-10-16',
+          isWeekend: dayOfWeek === 0 || dayOfWeek === 6,
+          dayPosts
+        });
+      }
+    }
+
+    return cells;
+  }, [calendarYear, calendarMonthIndex, filteredPosts]);
 
   return (
     <div className="dashboard-page-container">
-      {/* Page Header */}
-      <div className="dashboard-header">
+      {/* Page Header (Compact & Executive) */}
+      <div className="dashboard-header" style={{ marginBottom: '-6px' }}>
         <div className="dashboard-title-group">
-          <h1>
-            <Share2 size={26} color="#6E56CF" />
-            Social Integrations & Content Scheduler
+          <h1 style={{ fontSize: '20px', display: 'flex', alignItems: 'center', gap: '8px', margin: 0 }}>
+            <Share2 size={22} color="#6E56CF" />
+            Social Content Command Center
           </h1>
-          <p className="dashboard-subtitle">
-            Plan, compose, and automate multi-channel social publishing across X, LinkedIn, Instagram, and YouTube from one unified command center.
-          </p>
         </div>
 
         <div className="dashboard-header-actions">
@@ -555,19 +640,19 @@ export const SocialSchedulerPage: React.FC = () => {
             onClick={() => setIsComposerOpen(true)}
           >
             <Plus size={14} />
-            <span>Compose & Schedule</span>
+            <span>Schedule Post</span>
           </button>
         </div>
       </div>
 
       {/* Top Level Navigation Tabs */}
-      <div className="tabs-nav-bar">
+      <div className="tabs-nav-bar" style={{ marginBottom: '-4px' }}>
         <button
           className={`tab-item-btn ${activeTab === 'calendar' ? 'active' : ''}`}
           onClick={() => setActiveTab('calendar')}
         >
-          <CalendarIcon size={15} />
-          <span>Content Calendar</span>
+          <CalendarIcon size={14} />
+          <span>Calendar</span>
           <span className="tab-counter-badge">{posts.length}</span>
         </button>
 
@@ -575,182 +660,228 @@ export const SocialSchedulerPage: React.FC = () => {
           className={`tab-item-btn ${activeTab === 'queue' ? 'active' : ''}`}
           onClick={() => setActiveTab('queue')}
         >
-          <Clock size={15} />
+          <Clock size={14} />
           <span>Publishing Queue</span>
           <span className="tab-counter-badge">{queuedPosts.length}</span>
-        </button>
-
-        <button
-          className={`tab-item-btn ${activeTab === 'composer' ? 'active' : ''}`}
-          onClick={() => {
-            setIsComposerOpen(true);
-            setActiveTab('calendar');
-          }}
-        >
-          <Edit3 size={15} />
-          <span>New Cross-Post</span>
         </button>
 
         <button
           className={`tab-item-btn ${activeTab === 'accounts' ? 'active' : ''}`}
           onClick={() => setActiveTab('accounts')}
         >
-          <Globe size={15} />
-          <span>Connected Channels</span>
+          <Globe size={14} />
+          <span>Channels</span>
         </button>
 
         <button
           className={`tab-item-btn ${activeTab === 'analytics' ? 'active' : ''}`}
           onClick={() => setActiveTab('analytics')}
         >
-          <BarChart2 size={15} />
-          <span>Channel Analytics</span>
+          <BarChart2 size={14} />
+          <span>Analytics</span>
         </button>
       </div>
 
       {/* Tab: Calendar View */}
       {activeTab === 'calendar' && (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-5)' }}>
-          {/* Calendar Toolbar */}
-          <div className="glass-panel" style={{ padding: '16px 20px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '14px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                <h2 style={{ fontSize: '18px', fontWeight: '800', color: '#111625', margin: 0 }}>
-                  {currentMonth}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
+          <div className="social-calendar-card">
+            {/* Calendar Toolbar */}
+            <div className="social-calendar-toolbar">
+              <div className="calendar-nav-group">
+                <h2 className="calendar-month-title">
+                  {currentMonthLabel}
                 </h2>
-                <div style={{ display: 'flex', gap: '4px' }}>
-                  <button className="btn btn-outline btn-sm" style={{ padding: '4px 8px' }} onClick={() => showToast('Previous month loaded', 'info')}>
-                    <ChevronLeft size={14} />
+                <div className="calendar-nav-buttons">
+                  <button
+                    className="calendar-nav-btn"
+                    onClick={handlePrevMonth}
+                    title="Previous Month"
+                  >
+                    <ChevronLeft size={16} />
                   </button>
-                  <button className="btn btn-outline btn-sm" style={{ padding: '4px 8px' }} onClick={() => showToast('Next month loaded', 'info')}>
-                    <ChevronRight size={14} />
+                  <button
+                    className="calendar-nav-btn"
+                    onClick={handleNextMonth}
+                    title="Next Month"
+                  >
+                    <ChevronRight size={16} />
                   </button>
+                </div>
+                <button
+                  className="calendar-today-btn"
+                  onClick={handleTodayMonth}
+                  title="Jump to Current Date (October 16, 2026)"
+                >
+                  Today
+                </button>
+                <div className="calendar-stat-pill">
+                  <CalendarIcon size={13} color="#6E56CF" />
+                  <span>{filteredPosts.length} posts ({queuedPosts.length} scheduled)</span>
                 </div>
               </div>
 
               {/* Platform Filter Buttons */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
-                <span style={{ fontSize: '12px', fontWeight: '700', color: '#5F6B85', marginRight: '4px' }}>
-                  Filter Channel:
-                </span>
-                {['ALL', 'twitter', 'linkedin', 'instagram', 'youtube'].map((p) => (
+              <div className="calendar-filters-group">
+                <span className="filter-label">Filter Channel:</span>
+                {[
+                  { key: 'ALL', label: 'All Channels', color: '#6E56CF' },
+                  { key: 'twitter', label: 'Twitter / X', color: '#0284C7' },
+                  { key: 'linkedin', label: 'LinkedIn', color: '#0A66C2' },
+                  { key: 'instagram', label: 'Instagram', color: '#E11D48' },
+                  { key: 'youtube', label: 'YouTube', color: '#DC2626' }
+                ].map((item) => (
                   <button
-                    key={p}
-                    onClick={() => setPlatformFilter(p)}
-                    className={`btn btn-sm ${platformFilter === p ? 'btn-primary' : 'btn-outline'}`}
-                    style={{ fontSize: '11px', padding: '4px 10px', textTransform: 'capitalize' }}
+                    key={item.key}
+                    onClick={() => setPlatformFilter(item.key)}
+                    className={`channel-filter-btn ${platformFilter === item.key ? 'active' : ''}`}
                   >
-                    {p === 'ALL' ? 'All Channels' : p}
+                    {item.key !== 'ALL' && (
+                      <span
+                        style={{
+                          width: '7px',
+                          height: '7px',
+                          borderRadius: '50%',
+                          background: platformFilter === item.key ? '#FFFFFF' : item.color
+                        }}
+                      />
+                    )}
+                    <span>{item.label}</span>
                   </button>
                 ))}
               </div>
             </div>
-          </div>
 
-          {/* Monthly Calendar Grid */}
-          <div className="glass-panel" style={{ padding: '20px' }}>
-            <div style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch', width: '100%', paddingBottom: '6px' }}>
-              <div style={{ minWidth: '700px' }}>
-                {/* Weekday headers */}
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '8px', marginBottom: '10px', textAlign: 'center' }}>
+            {/* Calendar Grid Frame */}
+            <div className="calendar-grid-wrapper">
+              <div className="calendar-grid-container">
+                {/* Weekday Row */}
+                <div className="calendar-weekday-row">
                   {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((d) => (
-                    <div key={d} style={{ fontSize: '12px', fontWeight: '800', color: '#8C97B0', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                    <div key={d} className="calendar-weekday-cell">
                       {d}
                     </div>
                   ))}
                 </div>
 
-            {/* Calendar Days */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '8px' }}>
-              {/* Leading blanks for Thursday start (Oct 1, 2026 is Thursday -> 4 blank cells) */}
-              {Array.from({ length: 4 }).map((_, i) => (
-                <div key={`blank-${i}`} style={{ minHeight: '105px', background: '#FAFBFD', borderRadius: '10px', opacity: 0.3 }} />
-              ))}
+                {/* Days Grid */}
+                <div className="calendar-days-grid">
+                  {calendarCells.map((cell) => {
+                    const isOutside = !cell.isCurrentMonth;
+                    const isToday = cell.isToday;
+                    const isWeekend = cell.isWeekend;
 
-              {calendarDays.map((cell) => {
-                const isToday = cell.dayNum === 15;
-                return (
-                  <div
-                    key={cell.dateStr}
-                    onClick={() => {
-                      setScheduledDate(cell.dateStr);
-                      setIsComposerOpen(true);
-                    }}
-                    style={{
-                      minHeight: '115px',
-                      background: isToday ? '#F5EFFF' : '#FFFFFF',
-                      border: isToday ? '2px solid #6E56CF' : '1px solid #E8ECF5',
-                      borderRadius: '12px',
-                      padding: '8px',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      gap: '6px',
-                      cursor: 'pointer',
-                      transition: 'all 0.18s ease'
-                    }}
-                  >
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span
-                        style={{
-                          fontSize: '12px',
-                          fontWeight: isToday ? '900' : '700',
-                          color: isToday ? '#6E56CF' : '#111625',
-                          width: '22px',
-                          height: '22px',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          borderRadius: '50%',
-                          background: isToday ? '#EFEBFC' : 'transparent'
+                    return (
+                      <div
+                        key={cell.dateStr}
+                        className={`calendar-day-cell ${isOutside ? 'outside-month' : ''} ${isToday ? 'is-today' : ''} ${isWeekend ? 'weekend' : ''}`}
+                        onClick={() => {
+                          setScheduledDate(cell.dateStr);
+                          setEditingPostId(null);
+                          setComposeTitle('');
+                          setComposeContent('');
+                          setIsComposerOpen(true);
                         }}
                       >
-                        {cell.dayNum}
-                      </span>
-                      {cell.dayPosts.length > 0 && (
-                        <span style={{ fontSize: '10px', fontWeight: '800', color: '#6E56CF', background: '#EFEBFC', padding: '1px 6px', borderRadius: '10px' }}>
-                          {cell.dayPosts.length}
-                        </span>
-                      )}
-                    </div>
-
-                    {/* Posts inside day */}
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', overflowY: 'auto', maxHeight: '78px' }}>
-                      {cell.dayPosts.map((post) => (
-                        <div
-                          key={post.id}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleOpenEditPost(post);
-                          }}
-                          style={{
-                            padding: '4px 6px',
-                            borderRadius: '6px',
-                            background: post.status === 'PUBLISHED' ? '#E8F8F0' : '#F6F8FD',
-                            borderLeft: `3px solid ${post.status === 'PUBLISHED' ? '#059669' : '#6E56CF'}`,
-                            fontSize: '11px',
-                            color: '#111625',
-                            whiteSpace: 'nowrap',
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '4px'
-                          }}
-                          title={post.title}
-                        >
-                          <span style={{ fontSize: '10px', fontWeight: '700', color: '#5F6B85' }}>
-                            {post.scheduledTime}
+                        {/* Day Cell Top Bar */}
+                        <div className="day-cell-top">
+                          <span className="day-number-badge">
+                            {cell.dayNum}
                           </span>
-                          <span style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                            {post.title}
-                          </span>
+                          <div className="day-cell-actions">
+                            {cell.dayPosts.length > 0 && (
+                              <span className="day-count-badge">
+                                {cell.dayPosts.length}
+                              </span>
+                            )}
+                            <button
+                              className="day-quick-add-btn"
+                              title={`Schedule post for ${cell.dateStr}`}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setScheduledDate(cell.dateStr);
+                                setEditingPostId(null);
+                                setComposeTitle('');
+                                setComposeContent('');
+                                setIsComposerOpen(true);
+                              }}
+                            >
+                              <Plus size={12} />
+                            </button>
+                          </div>
                         </div>
-                      ))}
-                    </div>
-                  </div>
-                );
-              })}
+
+                        {/* Events list inside cell */}
+                        <div className="day-events-list">
+                          {cell.dayPosts.slice(0, 1).map((post) => {
+                            const primaryPlatform = post.platforms[0] || 'twitter';
+                            const platformColor = getPlatformBadgeColor(primaryPlatform);
+                            return (
+                              <div
+                                key={post.id}
+                                className={`calendar-event-pill status-${post.status.toLowerCase()}`}
+                                style={{ borderLeft: `3px solid ${platformColor}` }}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleOpenEditPost(post);
+                                }}
+                                title={`${post.title} (${post.scheduledTime}) - Click to edit`}
+                              >
+                                <span
+                                  className="event-platform-indicator"
+                                  style={{ background: platformColor }}
+                                />
+                                <span className="event-pill-time">{post.scheduledTime}</span>
+                                <span className="event-pill-title">{post.title}</span>
+                              </div>
+                            );
+                          })}
+                          {cell.dayPosts.length > 1 && (
+                            <div style={{ fontSize: '9px', fontWeight: '800', color: '#6E56CF', paddingLeft: '2px' }}>
+                              +{cell.dayPosts.length - 1} more
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
             </div>
+
+            {/* Calendar Legend & Quick Guide */}
+            <div className="calendar-legend-bar">
+              <div className="calendar-legend-items">
+                <div className="calendar-legend-item">
+                  <span className="legend-dot" style={{ background: '#0284C7' }} />
+                  <span>Twitter / X</span>
+                </div>
+                <div className="calendar-legend-item">
+                  <span className="legend-dot" style={{ background: '#0A66C2' }} />
+                  <span>LinkedIn</span>
+                </div>
+                <div className="calendar-legend-item">
+                  <span className="legend-dot" style={{ background: '#E11D48' }} />
+                  <span>Instagram</span>
+                </div>
+                <div className="calendar-legend-item">
+                  <span className="legend-dot" style={{ background: '#DC2626' }} />
+                  <span>YouTube</span>
+                </div>
+                <div style={{ width: '1px', height: '14px', background: '#E2E8F0', margin: '0 4px' }} />
+                <div className="calendar-legend-item">
+                  <span className="legend-dot" style={{ background: '#10B981' }} />
+                  <span>Published</span>
+                </div>
+                <div className="calendar-legend-item">
+                  <span className="legend-dot" style={{ background: '#6E56CF' }} />
+                  <span>Scheduled</span>
+                </div>
+              </div>
+
+              <div className="calendar-legend-hint">
+                <Sparkles size={12} color="#6E56CF" />
+                <span>Click any date or '+' to schedule. Click post to edit.</span>
               </div>
             </div>
           </div>
