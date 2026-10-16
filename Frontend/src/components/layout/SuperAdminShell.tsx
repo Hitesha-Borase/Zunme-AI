@@ -11,7 +11,8 @@ import {
   X,
   ShieldAlert,
   ArrowLeft,
-  Sparkles
+  Sparkles,
+  ChevronDown
 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import './SuperAdminShell.css';
@@ -19,6 +20,7 @@ import './SuperAdminShell.css';
 export const SuperAdminShell: React.FC = () => {
   const { user, logout, toggleRole } = useApp();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -169,23 +171,56 @@ export const SuperAdminShell: React.FC = () => {
           </div>
 
           <div className="topbar-right">
-            <span
-              className="btn btn-outline btn-sm hide-on-mobile"
-              style={{ cursor: 'default' }}
-            >
-              Role: <strong>{user?.role || 'SUPER_ADMIN'}</strong>
-            </span>
+            <div className="superadmin-profile-menu-wrap" style={{ position: 'relative' }}>
+              <button
+                type="button"
+                className="superadmin-topbar-profile-btn"
+                onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
+                aria-expanded={profileDropdownOpen}
+                aria-haspopup="true"
+              >
+                <div className="superadmin-topbar-avatar">
+                  {displayName.charAt(0) || 'A'}
+                </div>
+                <div className="superadmin-topbar-user-text hide-on-mobile">
+                  <span className="topbar-user-name">{displayName}</span>
+                  <span className="topbar-user-badge">SUPER_ADMIN</span>
+                </div>
+                <ChevronDown size={14} className={`dropdown-chevron ${profileDropdownOpen ? 'rotated' : ''}`} />
+              </button>
 
-            {/* Commented out as requested:
-            <NavLink to="/admin" className="btn btn-secondary btn-sm hide-on-mobile">
-              <span>Admin Operations</span>
-            </NavLink>
-
-            <NavLink to="/app" className="btn btn-primary btn-sm">
-              <ArrowLeft size={14} />
-              <span>Workspace</span>
-            </NavLink>
-            */}
+              {profileDropdownOpen && (
+                <>
+                  <div
+                    className="superadmin-dropdown-backdrop"
+                    onClick={() => setProfileDropdownOpen(false)}
+                    style={{ position: 'fixed', inset: 0, zIndex: 90 }}
+                  />
+                  <div className="superadmin-profile-dropdown" style={{ zIndex: 100 }}>
+                    <div className="dropdown-user-header">
+                      <div className="dropdown-avatar">{displayName.charAt(0) || 'A'}</div>
+                      <div className="dropdown-user-details">
+                        <span className="dropdown-name">{displayName}</span>
+                        <span className="dropdown-email">{user?.email || 'superadmin@zunme.ai'}</span>
+                        <span className="dropdown-role-tag">Super Administrator</span>
+                      </div>
+                    </div>
+                    <div className="dropdown-divider" />
+                    <button
+                      type="button"
+                      className="dropdown-item dropdown-logout-btn"
+                      onClick={() => {
+                        setProfileDropdownOpen(false);
+                        handleLogout();
+                      }}
+                    >
+                      <LogOut size={15} />
+                      <span>Log Out</span>
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
           </div>
         </header>
 

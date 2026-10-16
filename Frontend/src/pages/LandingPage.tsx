@@ -535,26 +535,9 @@ export const LandingPage: React.FC = () => {
             </div>
           </div>
 
-          {/* Hero 3D Perspective Workspace Preview with Floating Panels */}
+          {/* Hero 3D Perspective Workspace Preview */}
           <div className="hero-3d-stage">
             <div className="hero-stage-glow" aria-hidden="true" />
-
-            {/* Floating UI Panel 1: Live Web Search (Top Left) */}
-            <div className="floating-card floating-card-left" aria-hidden="true">
-              <div className="floating-card-header">
-                <span className="radar-ping" />
-                <span className="floating-card-title">Live Web Grounding</span>
-              </div>
-              <div className="floating-card-body">
-                <div className="floating-source-item">
-                  <div className="source-domain">reuters.com/tech</div>
-                  <div className="source-snippet">Automated citation verification &amp; source benchmarking...</div>
-                </div>
-                <div className="floating-card-badge">99.4% Verified</div>
-              </div>
-            </div>
-
-
 
             {/* Central Workspace Showcase Window */}
             <div className="showcase-window">
