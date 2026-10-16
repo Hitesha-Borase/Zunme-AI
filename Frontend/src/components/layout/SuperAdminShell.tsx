@@ -15,6 +15,7 @@ import {
   ChevronDown
 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
+import { NotificationBell } from '../common/NotificationBell';
 import './SuperAdminShell.css';
 
 export const SuperAdminShell: React.FC = () => {
@@ -50,8 +51,16 @@ export const SuperAdminShell: React.FC = () => {
       {/* Sidebar: STRICTLY 5 Menu Items + Logout */}
       <aside className={`superadmin-sidebar ${mobileMenuOpen ? 'open' : ''}`}>
         <div className="superadmin-brand-section">
+<<<<<<< HEAD
           <NavLink to="/super-admin" className="superadmin-brand-link">
             <img src="/zunme_logo_white.png" alt="Zunme AI" style={{ height: '32px', width: 'auto', display: 'block' }} />
+=======
+          <NavLink to="/super-admin/dashboard" className="superadmin-brand-link">
+            <img src="/zunme_icon.png" alt="Zunme AI" style={{ width: '30px', height: '30px', objectFit: 'contain' }} />
+            <div className="superadmin-brand-text">
+              <span className="brand-title">ZUNME AI</span>
+            </div>
+>>>>>>> 0c56802995139c4d109161202f435ff0848437da
           </NavLink>
           <button
             className="btn-ghost hide-on-desktop"
@@ -65,9 +74,8 @@ export const SuperAdminShell: React.FC = () => {
         {/* The 5 Required Menu Items */}
         <nav className="superadmin-nav" aria-label="Super Admin Navigation">
           <NavLink
-            to="/super-admin"
-            end
-            className={({ isActive }) => `superadmin-nav-item ${isActive ? 'active' : ''}`}
+            to="/super-admin/dashboard"
+            className={() => `superadmin-nav-item ${location.pathname === '/super-admin' || location.pathname === '/super-admin/dashboard' ? 'active' : ''}`}
             onClick={() => setMobileMenuOpen(false)}
           >
             <LayoutDashboard size={18} />
@@ -139,6 +147,7 @@ export const SuperAdminShell: React.FC = () => {
           </div>
 
           <div className="topbar-right">
+            <NotificationBell />
             <div className="superadmin-profile-menu-wrap" style={{ position: 'relative' }}>
               <button
                 type="button"

@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import {
   SearchCheck,
   TrendingUp,
@@ -26,10 +27,63 @@ import '../../styles/dashboard.css';
 
 export const SEOWorkspacePage: React.FC = () => {
   const { seoKeywords, addSeoKeyword, deleteSeoKeyword, showToast, saveToLibrary } = useApp();
+  const { section } = useParams<{ section?: string }>();
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
-  const [activeTab, setActiveTab] = useState<
-    'Overview' | 'Keyword Research' | 'Content Planner' | 'SEO Content Builder' | 'Website Audit' | 'Competitor Research' | 'Saved Reports' | 'Settings'
-  >('Overview');
+  type SEOTabType = 'Overview' | 'Keyword Research' | 'Content Planner' | 'SEO Content Builder' | 'Website Audit' | 'Competitor Research' | 'Saved Reports' | 'Settings';
+
+  const slugToTab: Record<string, SEOTabType> = {
+    'overview': 'Overview',
+    'dashboard': 'Overview',
+    'keywords': 'Keyword Research',
+    'keyword-research': 'Keyword Research',
+    'planner': 'Content Planner',
+    'content-planner': 'Content Planner',
+    'content-builder': 'SEO Content Builder',
+    'builder': 'SEO Content Builder',
+    'audit': 'Website Audit',
+    'website-audit': 'Website Audit',
+    'competitors': 'Competitor Research',
+    'competitor-research': 'Competitor Research',
+    'reports': 'Saved Reports',
+    'saved-reports': 'Saved Reports',
+    'settings': 'Settings'
+  };
+
+  const tabToSlug: Record<SEOTabType, string> = {
+    'Overview': 'overview',
+    'Keyword Research': 'keywords',
+    'Content Planner': 'planner',
+    'SEO Content Builder': 'content-builder',
+    'Website Audit': 'audit',
+    'Competitor Research': 'competitors',
+    'Saved Reports': 'reports',
+    'Settings': 'settings'
+  };
+
+  const resolveCurrentTab = (): SEOTabType => {
+    if (section && slugToTab[section.toLowerCase()]) {
+      return slugToTab[section.toLowerCase()];
+    }
+    const tabParam = searchParams.get('tab');
+    if (tabParam && ['Overview', 'Keyword Research', 'Content Planner', 'SEO Content Builder', 'Website Audit', 'Competitor Research', 'Saved Reports', 'Settings'].includes(tabParam)) {
+      return tabParam as SEOTabType;
+    }
+    return 'Overview';
+  };
+
+  const [activeTab, setActiveTabState] = useState<SEOTabType>(resolveCurrentTab);
+
+  useEffect(() => {
+    setActiveTabState(resolveCurrentTab());
+  }, [section, searchParams]);
+
+  const setActiveTab = (tab: SEOTabType) => {
+    setActiveTabState(tab);
+    const slug = tabToSlug[tab];
+    navigate(slug === 'overview' ? '/seo/overview' : `/seo/${slug}`);
+  };
 
   const [isCsvImportOpen, setIsCsvImportOpen] = useState(false);
 

@@ -18,6 +18,7 @@ import {
   ChevronDown
 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
+import { NotificationBell } from '../common/NotificationBell';
 import './AdminShell.css';
 import './SuperAdminShell.css';
 
@@ -54,8 +55,16 @@ export const AdminShell: React.FC = () => {
       {/* Admin Sidebar with the exact approved 9 Operational Items + Logout */}
       <aside className={`admin-sidebar ${mobileMenuOpen ? 'open' : ''}`}>
         <div className="admin-brand-section">
+<<<<<<< HEAD
           <NavLink to="/admin" className="admin-brand-link">
             <img src="/zunme_logo_white.png" alt="Zunme AI" style={{ height: '32px', width: 'auto', display: 'block' }} />
+=======
+          <NavLink to="/admin/dashboard" className="admin-brand-link">
+            <img src="/zunme_icon.png" alt="Zunme AI" style={{ width: '30px', height: '30px', objectFit: 'contain' }} />
+            <div className="admin-brand-text">
+              <span className="brand-title">ZUNME AI</span>
+            </div>
+>>>>>>> 0c56802995139c4d109161202f435ff0848437da
           </NavLink>
           <button
             className="btn-ghost hide-on-desktop"
@@ -69,9 +78,8 @@ export const AdminShell: React.FC = () => {
         {/* Navigation Items */}
         <nav className="admin-nav" aria-label="Admin Operational Navigation">
           <NavLink
-            to="/admin"
-            end
-            className={({ isActive }) => `admin-nav-item ${isActive ? 'active' : ''}`}
+            to="/admin/dashboard"
+            className={() => `admin-nav-item ${location.pathname === '/admin' || location.pathname === '/admin/dashboard' ? 'active' : ''}`}
             onClick={() => setMobileMenuOpen(false)}
           >
             <LayoutDashboard size={17} />
@@ -175,6 +183,7 @@ export const AdminShell: React.FC = () => {
           </div>
 
           <div className="topbar-right">
+            <NotificationBell />
             <div className="superadmin-profile-menu-wrap" style={{ position: 'relative' }}>
               <button
                 type="button"

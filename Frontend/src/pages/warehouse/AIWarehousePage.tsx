@@ -1,5 +1,5 @@
-import React, { useState, useMemo } from 'react';
-import { NavLink } from 'react-router-dom';
+import React, { useState, useMemo, useEffect } from 'react';
+import { NavLink, useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import {
   Package,
   Search,
@@ -208,7 +208,6 @@ export const AIWarehousePage: React.FC = () => {
   // Managed Assets State
   const [assets, setAssets] = useState<WarehouseManagedAsset[]>(INITIAL_WAREHOUSE_ASSETS);
 
-  // Collections State
   const [collections, setCollections] = useState<string[]>([
     'All Assets',
     'Q4 Campaigns',
@@ -217,7 +216,53 @@ export const AIWarehousePage: React.FC = () => {
     'SEO Blueprints',
     'Email Funnels'
   ]);
-  const [activeCollection, setActiveCollection] = useState<string>('All Assets');
+
+  const { section } = useParams<{ section?: string }>();
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
+  const slugToCollection: Record<string, string> = {
+    'all': 'All Assets',
+    'all-assets': 'All Assets',
+    'dashboard': 'All Assets',
+    'q4-campaigns': 'Q4 Campaigns',
+    'client-pitches': 'Client Pitches',
+    'youtube-shorts': 'YouTube Shorts',
+    'seo-blueprints': 'SEO Blueprints',
+    'email-funnels': 'Email Funnels'
+  };
+
+  const collectionToSlug: Record<string, string> = {
+    'All Assets': 'dashboard',
+    'Q4 Campaigns': 'q4-campaigns',
+    'Client Pitches': 'client-pitches',
+    'YouTube Shorts': 'youtube-shorts',
+    'SEO Blueprints': 'seo-blueprints',
+    'Email Funnels': 'email-funnels'
+  };
+
+  const resolveCurrentCollection = (): string => {
+    if (section && slugToCollection[section.toLowerCase()]) {
+      return slugToCollection[section.toLowerCase()];
+    }
+    const colParam = searchParams.get('collection');
+    if (colParam) {
+      return colParam;
+    }
+    return 'All Assets';
+  };
+
+  const [activeCollection, setActiveCollectionState] = useState<string>(resolveCurrentCollection);
+
+  useEffect(() => {
+    setActiveCollectionState(resolveCurrentCollection());
+  }, [section, searchParams]);
+
+  const setActiveCollection = (col: string) => {
+    setActiveCollectionState(col);
+    const slug = collectionToSlug[col] || col.toLowerCase().replace(/\s+/g, '-');
+    navigate(slug === 'dashboard' ? '/warehouse/dashboard' : `/warehouse/${slug}`);
+  };
 
   // Search, Filters & View Mode
   const [searchQuery, setSearchQuery] = useState('');

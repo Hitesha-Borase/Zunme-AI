@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { NavLink, useSearchParams } from 'react-router-dom';
+import { NavLink, useSearchParams, useParams, useNavigate } from 'react-router-dom';
 import {
   Briefcase,
   Users,
@@ -57,31 +57,65 @@ export const BusinessWorkspacePage: React.FC = () => {
     showToast
   } = useApp();
 
-  const [searchParams, setSearchParams] = useSearchParams();
+  const { section } = useParams<{ section?: string }>();
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
   type BusinessTabType = 'Overview' | 'Brand Profile' | 'Projects' | 'Content Calendar' | 'Marketing Content' | 'nErgy CRM Deep Sync' | 'Team & Access' | 'Settings' | 'Help & Support';
 
-  const [activeTab, setActiveTabState] = useState<BusinessTabType>(() => {
+  const slugToTab: Record<string, BusinessTabType> = {
+    'overview': 'Overview',
+    'dashboard': 'Overview',
+    'brand-profile': 'Brand Profile',
+    'brand': 'Brand Profile',
+    'projects': 'Projects',
+    'calendar': 'Content Calendar',
+    'content-calendar': 'Content Calendar',
+    'marketing': 'Marketing Content',
+    'marketing-content': 'Marketing Content',
+    'crm': 'nErgy CRM Deep Sync',
+    'crm-sync': 'nErgy CRM Deep Sync',
+    'team': 'Team & Access',
+    'team-access': 'Team & Access',
+    'settings': 'Settings',
+    'support': 'Help & Support',
+    'help-support': 'Help & Support'
+  };
+
+  const tabToSlug: Record<BusinessTabType, string> = {
+    'Overview': 'overview',
+    'Brand Profile': 'brand-profile',
+    'Projects': 'projects',
+    'Content Calendar': 'calendar',
+    'Marketing Content': 'marketing',
+    'nErgy CRM Deep Sync': 'crm',
+    'Team & Access': 'team',
+    'Settings': 'settings',
+    'Help & Support': 'support'
+  };
+
+  const resolveCurrentTab = (): BusinessTabType => {
+    if (section && slugToTab[section.toLowerCase()]) {
+      return slugToTab[section.toLowerCase()];
+    }
     const tabParam = searchParams.get('tab');
     if (tabParam && ['Overview', 'Brand Profile', 'Projects', 'Content Calendar', 'Marketing Content', 'nErgy CRM Deep Sync', 'Team & Access', 'Settings', 'Help & Support'].includes(tabParam)) {
       return tabParam as BusinessTabType;
     }
     return 'Overview';
-  });
+  };
+
+  const [activeTab, setActiveTabState] = useState<BusinessTabType>(resolveCurrentTab);
+
+  useEffect(() => {
+    setActiveTabState(resolveCurrentTab());
+  }, [section, searchParams]);
 
   const setActiveTab = (tab: BusinessTabType) => {
     setActiveTabState(tab);
-    setSearchParams({ tab });
+    const slug = tabToSlug[tab];
+    navigate(slug === 'overview' ? '/business/overview' : `/business/${slug}`);
   };
-
-  useEffect(() => {
-    const tabParam = searchParams.get('tab');
-    if (tabParam && ['Overview', 'Brand Profile', 'Projects', 'Content Calendar', 'Marketing Content', 'nErgy CRM Deep Sync', 'Team & Access', 'Settings', 'Help & Support'].includes(tabParam)) {
-      setActiveTabState(tabParam as BusinessTabType);
-    } else {
-      setActiveTabState('Overview');
-    }
-  }, [searchParams]);
 
   // Brand Profile State
   const [bName, setBName] = useState(brandProfile.brandName);

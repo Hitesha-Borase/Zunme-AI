@@ -167,10 +167,10 @@ export const LibraryPage: React.FC = () => {
                 You haven't saved any conversational research or content blueprints yet. Generate content or run verified web searches and click "Save to Library" to curate your repository.
               </p>
               <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
-                <NavLink to="/app/chat" className="btn btn-outline btn-sm">
+                <NavLink to="/user/chat" className="btn btn-outline btn-sm">
                   Start AI Chat
                 </NavLink>
-                <NavLink to="/app/builders" className="btn btn-primary btn-sm">
+                <NavLink to="/user/builders" className="btn btn-primary btn-sm">
                   Explore Content Blueprints
                 </NavLink>
               </div>

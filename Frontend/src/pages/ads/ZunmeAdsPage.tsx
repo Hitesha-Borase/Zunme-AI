@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useParams, useNavigate } from 'react-router-dom';
 import {
   Megaphone,
   TrendingUp,
@@ -78,31 +78,66 @@ interface CreatorPayout {
 
 export const ZunmeAdsPage: React.FC = () => {
   const { showToast } = useApp();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const { section } = useParams<{ section?: string }>();
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
   type TabType = 'Overview' | 'Campaigns' | 'Create Campaign' | 'Keyword Bidding' | 'Ad Placements' | 'Creator Monetization' | 'Billing & Budget' | 'Settings' | 'Help & Support';
 
-  const [activeTab, setActiveTabState] = useState<TabType>(() => {
+  const slugToTab: Record<string, TabType> = {
+    'overview': 'Overview',
+    'dashboard': 'Overview',
+    'campaigns': 'Campaigns',
+    'create-campaign': 'Create Campaign',
+    'create': 'Create Campaign',
+    'keyword-bidding': 'Keyword Bidding',
+    'bidding': 'Keyword Bidding',
+    'ad-placements': 'Ad Placements',
+    'placements': 'Ad Placements',
+    'creator-monetization': 'Creator Monetization',
+    'monetization': 'Creator Monetization',
+    'billing': 'Billing & Budget',
+    'wallet': 'Billing & Budget',
+    'billing-budget': 'Billing & Budget',
+    'settings': 'Settings',
+    'support': 'Help & Support',
+    'help-support': 'Help & Support'
+  };
+
+  const tabToSlug: Record<TabType, string> = {
+    'Overview': 'overview',
+    'Campaigns': 'campaigns',
+    'Create Campaign': 'create-campaign',
+    'Keyword Bidding': 'keyword-bidding',
+    'Ad Placements': 'ad-placements',
+    'Creator Monetization': 'creator-monetization',
+    'Billing & Budget': 'billing',
+    'Settings': 'settings',
+    'Help & Support': 'support'
+  };
+
+  const resolveCurrentTab = (): TabType => {
+    if (section && slugToTab[section.toLowerCase()]) {
+      return slugToTab[section.toLowerCase()];
+    }
     const tabParam = searchParams.get('tab');
     if (tabParam && ['Overview', 'Campaigns', 'Create Campaign', 'Keyword Bidding', 'Ad Placements', 'Creator Monetization', 'Billing & Budget', 'Settings', 'Help & Support'].includes(tabParam)) {
       return tabParam as TabType;
     }
     return 'Overview';
-  });
+  };
+
+  const [activeTab, setActiveTabState] = useState<TabType>(resolveCurrentTab);
+
+  useEffect(() => {
+    setActiveTabState(resolveCurrentTab());
+  }, [section, searchParams]);
 
   const setActiveTab = (tab: TabType) => {
     setActiveTabState(tab);
-    setSearchParams({ tab });
+    const slug = tabToSlug[tab];
+    navigate(slug === 'overview' ? '/ads/overview' : `/ads/${slug}`);
   };
-
-  useEffect(() => {
-    const tabParam = searchParams.get('tab');
-    if (tabParam && ['Overview', 'Campaigns', 'Create Campaign', 'Keyword Bidding', 'Ad Placements', 'Creator Monetization', 'Billing & Budget', 'Settings', 'Help & Support'].includes(tabParam)) {
-      setActiveTabState(tabParam as TabType);
-    } else {
-      setActiveTabState('Overview');
-    }
-  }, [searchParams]);
 
   // Ad Wallet Balance
   const [walletBalance, setWalletBalance] = useState<number>(450.0);

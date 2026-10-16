@@ -33,6 +33,7 @@ import {
   LayoutDashboard
 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
+import { NotificationBell } from '../common/NotificationBell';
 import './AppShell.css';
 import './SuperAdminShell.css';
 
@@ -55,13 +56,13 @@ export const AppShell: React.FC = () => {
 
   const handleNewChatClick = () => {
     createNewChat();
-    navigate('/app/chat');
+    navigate('/user/chat');
     setMobileMenuOpen(false);
   };
 
   const handleSelectConv = (id: string) => {
     selectConversation(id);
-    navigate('/app/chat');
+    navigate('/user/chat');
     setMobileMenuOpen(false);
   };
 
@@ -116,9 +117,8 @@ export const AppShell: React.FC = () => {
 
             <nav className="sidebar-nav-list" aria-label="Ads Navigation">
               <NavLink
-                to="/ads"
-                end
-                className={() => `sidebar-nav-item ${location.pathname === '/ads' && (!location.search || location.search.includes('Overview')) ? 'active' : ''}`}
+                to="/ads/overview"
+                className={() => `sidebar-nav-item ${location.pathname === '/ads' || location.pathname === '/ads/dashboard' || location.pathname === '/ads/overview' || (location.pathname.startsWith('/ads') && location.search.includes('Overview')) ? 'active' : ''}`}
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <LayoutDashboard size={17} />
@@ -126,8 +126,8 @@ export const AppShell: React.FC = () => {
               </NavLink>
 
               <NavLink
-                to="/ads?tab=Campaigns"
-                className={() => `sidebar-nav-item ${location.search.includes('Campaigns') ? 'active' : ''}`}
+                to="/ads/campaigns"
+                className={() => `sidebar-nav-item ${location.pathname === '/ads/campaigns' || location.search.includes('Campaigns') ? 'active' : ''}`}
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <Target size={17} />
@@ -135,8 +135,8 @@ export const AppShell: React.FC = () => {
               </NavLink>
 
               <NavLink
-                to="/ads?tab=Create Campaign"
-                className={() => `sidebar-nav-item ${location.search.includes('Create') ? 'active' : ''}`}
+                to="/ads/create-campaign"
+                className={() => `sidebar-nav-item ${location.pathname === '/ads/create-campaign' || location.pathname === '/ads/create' || location.search.includes('Create') ? 'active' : ''}`}
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <Plus size={17} />
@@ -144,8 +144,8 @@ export const AppShell: React.FC = () => {
               </NavLink>
 
               <NavLink
-                to="/ads?tab=Keyword Bidding"
-                className={() => `sidebar-nav-item ${location.search.includes('Bidding') ? 'active' : ''}`}
+                to="/ads/keyword-bidding"
+                className={() => `sidebar-nav-item ${location.pathname === '/ads/keyword-bidding' || location.pathname === '/ads/bidding' || location.search.includes('Bidding') ? 'active' : ''}`}
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <DollarSign size={17} />
@@ -153,8 +153,8 @@ export const AppShell: React.FC = () => {
               </NavLink>
 
               <NavLink
-                to="/ads?tab=Ad Placements"
-                className={() => `sidebar-nav-item ${location.search.includes('Placements') ? 'active' : ''}`}
+                to="/ads/ad-placements"
+                className={() => `sidebar-nav-item ${location.pathname === '/ads/ad-placements' || location.pathname === '/ads/placements' || location.search.includes('Placements') ? 'active' : ''}`}
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <Eye size={17} />
@@ -162,8 +162,8 @@ export const AppShell: React.FC = () => {
               </NavLink>
 
               <NavLink
-                to="/ads?tab=Creator Monetization"
-                className={() => `sidebar-nav-item ${location.search.includes('Monetization') ? 'active' : ''}`}
+                to="/ads/creator-monetization"
+                className={() => `sidebar-nav-item ${location.pathname === '/ads/creator-monetization' || location.pathname === '/ads/monetization' || location.search.includes('Monetization') ? 'active' : ''}`}
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <Award size={17} />
@@ -171,8 +171,8 @@ export const AppShell: React.FC = () => {
               </NavLink>
 
               <NavLink
-                to="/ads?tab=Billing & Budget"
-                className={() => `sidebar-nav-item ${location.search.includes('Billing') ? 'active' : ''}`}
+                to="/ads/billing"
+                className={() => `sidebar-nav-item ${location.pathname === '/ads/billing' || location.search.includes('Billing') ? 'active' : ''}`}
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <CreditCard size={17} />
@@ -180,8 +180,8 @@ export const AppShell: React.FC = () => {
               </NavLink>
 
               <NavLink
-                to="/ads?tab=Settings"
-                className={() => `sidebar-nav-item ${location.search.includes('Settings') ? 'active' : ''}`}
+                to="/ads/settings"
+                className={() => `sidebar-nav-item ${location.pathname === '/ads/settings' || location.search.includes('Settings') ? 'active' : ''}`}
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <Settings size={17} />
@@ -189,8 +189,8 @@ export const AppShell: React.FC = () => {
               </NavLink>
 
               <NavLink
-                to="/ads?tab=Help & Support"
-                className={() => `sidebar-nav-item ${location.search.includes('Support') || location.search.includes('Help') ? 'active' : ''}`}
+                to="/ads/support"
+                className={() => `sidebar-nav-item ${location.pathname === '/ads/support' || location.search.includes('Support') || location.search.includes('Help') ? 'active' : ''}`}
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <LifeBuoy size={17} />
@@ -206,7 +206,7 @@ export const AppShell: React.FC = () => {
           /* ============================================================ */
           <>
             <div className="sidebar-brand-section">
-              <NavLink to="/business" className="brand-link" onClick={() => setMobileMenuOpen(false)}>
+              <NavLink to="/business/overview" className="brand-link" onClick={() => setMobileMenuOpen(false)}>
                 <div className="brand-icon-box" style={{ background: 'linear-gradient(135deg, #10B981 0%, #059669 100%)' }}>
                   <Briefcase size={16} color="#FFFFFF" />
                 </div>
@@ -226,7 +226,7 @@ export const AppShell: React.FC = () => {
 
             <div className="sidebar-new-chat-box">
               <NavLink
-                to="/business?tab=nErgy CRM Deep Sync"
+                to="/business/crm"
                 className="btn-new-chat"
                 style={{ background: '#059669', color: '#FFFFFF', textDecoration: 'none' }}
                 onClick={() => setMobileMenuOpen(false)}
@@ -238,9 +238,8 @@ export const AppShell: React.FC = () => {
 
             <nav className="sidebar-nav-list" aria-label="Business Navigation">
               <NavLink
-                to="/business"
-                end
-                className={() => `sidebar-nav-item ${location.pathname === '/business' && (!location.search || location.search.includes('Overview')) ? 'active' : ''}`}
+                to="/business/overview"
+                className={() => `sidebar-nav-item ${location.pathname === '/business' || location.pathname === '/business/dashboard' || location.pathname === '/business/overview' || (location.pathname.startsWith('/business') && (!location.search || location.search.includes('Overview'))) ? 'active' : ''}`}
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <LayoutDashboard size={17} />
@@ -248,8 +247,8 @@ export const AppShell: React.FC = () => {
               </NavLink>
 
               <NavLink
-                to="/business?tab=Brand Profile"
-                className={() => `sidebar-nav-item ${location.search.includes('Brand') ? 'active' : ''}`}
+                to="/business/brand-profile"
+                className={() => `sidebar-nav-item ${location.pathname === '/business/brand-profile' || location.search.includes('Brand') ? 'active' : ''}`}
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <Award size={17} />
@@ -257,8 +256,8 @@ export const AppShell: React.FC = () => {
               </NavLink>
 
               <NavLink
-                to="/business?tab=Projects"
-                className={() => `sidebar-nav-item ${location.search.includes('Projects') ? 'active' : ''}`}
+                to="/business/projects"
+                className={() => `sidebar-nav-item ${location.pathname === '/business/projects' || location.search.includes('Projects') ? 'active' : ''}`}
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <Briefcase size={17} />
@@ -266,8 +265,8 @@ export const AppShell: React.FC = () => {
               </NavLink>
 
               <NavLink
-                to="/business?tab=Content Calendar"
-                className={() => `sidebar-nav-item ${location.search.includes('Calendar') ? 'active' : ''}`}
+                to="/business/calendar"
+                className={() => `sidebar-nav-item ${location.pathname === '/business/calendar' || location.search.includes('Calendar') ? 'active' : ''}`}
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <Calendar size={17} />
@@ -275,8 +274,8 @@ export const AppShell: React.FC = () => {
               </NavLink>
 
               <NavLink
-                to="/business?tab=Marketing Content"
-                className={() => `sidebar-nav-item ${location.search.includes('Marketing') ? 'active' : ''}`}
+                to="/business/marketing"
+                className={() => `sidebar-nav-item ${location.pathname === '/business/marketing' || location.search.includes('Marketing') ? 'active' : ''}`}
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <PenTool size={17} />
@@ -284,8 +283,8 @@ export const AppShell: React.FC = () => {
               </NavLink>
 
               <NavLink
-                to="/business?tab=nErgy CRM Deep Sync"
-                className={() => `sidebar-nav-item ${location.search.includes('CRM') ? 'active' : ''}`}
+                to="/business/crm"
+                className={() => `sidebar-nav-item ${location.pathname === '/business/crm' || location.search.includes('CRM') ? 'active' : ''}`}
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <Users size={17} />
@@ -293,8 +292,8 @@ export const AppShell: React.FC = () => {
               </NavLink>
 
               <NavLink
-                to="/business?tab=Team & Access"
-                className={() => `sidebar-nav-item ${location.search.includes('Team') ? 'active' : ''}`}
+                to="/business/team"
+                className={() => `sidebar-nav-item ${location.pathname === '/business/team' || location.search.includes('Team') ? 'active' : ''}`}
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <Users size={17} />
@@ -302,8 +301,8 @@ export const AppShell: React.FC = () => {
               </NavLink>
 
               <NavLink
-                to="/business?tab=Settings"
-                className={() => `sidebar-nav-item ${location.search.includes('Settings') ? 'active' : ''}`}
+                to="/business/settings"
+                className={() => `sidebar-nav-item ${location.pathname === '/business/settings' || location.search.includes('Settings') ? 'active' : ''}`}
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <Settings size={17} />
@@ -311,8 +310,8 @@ export const AppShell: React.FC = () => {
               </NavLink>
 
               <NavLink
-                to="/business?tab=Help & Support"
-                className={() => `sidebar-nav-item ${location.search.includes('Support') || location.search.includes('Help') ? 'active' : ''}`}
+                to="/business/support"
+                className={() => `sidebar-nav-item ${location.pathname === '/business/support' || location.search.includes('Support') || location.search.includes('Help') ? 'active' : ''}`}
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <LifeBuoy size={17} />
@@ -328,7 +327,7 @@ export const AppShell: React.FC = () => {
           /* ============================================================ */
           <>
             <div className="sidebar-brand-section">
-              <NavLink to="/social" className="brand-link" onClick={() => setMobileMenuOpen(false)}>
+              <NavLink to="/social/calendar" className="brand-link" onClick={() => setMobileMenuOpen(false)}>
                 <div className="brand-icon-box" style={{ background: 'linear-gradient(135deg, #6E56CF 0%, #4338CA 100%)' }}>
                   <Share2 size={16} color="#FFFFFF" />
                 </div>
@@ -353,7 +352,7 @@ export const AppShell: React.FC = () => {
                 style={{ background: '#6E56CF', color: '#FFFFFF', border: 'none', cursor: 'pointer', width: '100%', textDecoration: 'none' }}
                 onClick={() => {
                   setMobileMenuOpen(false);
-                  navigate('/social?compose=true');
+                  navigate('/social/calendar?compose=true');
                   window.dispatchEvent(new CustomEvent('open-social-composer'));
                 }}
               >
@@ -364,8 +363,8 @@ export const AppShell: React.FC = () => {
 
             <nav className="sidebar-nav-list" aria-label="Social Navigation">
               <NavLink
-                to="/social?tab=calendar"
-                className={() => `sidebar-nav-item ${location.pathname === '/social' && (!location.search || location.search.includes('tab=calendar')) ? 'active' : ''}`}
+                to="/social/calendar"
+                className={() => `sidebar-nav-item ${location.pathname === '/social' || location.pathname === '/social/dashboard' || location.pathname === '/social/calendar' || location.search.includes('tab=calendar') ? 'active' : ''}`}
                 onClick={() => {
                   setMobileMenuOpen(false);
                   window.dispatchEvent(new CustomEvent('switch-social-tab', { detail: 'calendar' }));
@@ -376,8 +375,8 @@ export const AppShell: React.FC = () => {
               </NavLink>
 
               <NavLink
-                to="/social?tab=queue"
-                className={() => `sidebar-nav-item ${location.pathname === '/social' && location.search.includes('tab=queue') ? 'active' : ''}`}
+                to="/social/queue"
+                className={() => `sidebar-nav-item ${location.pathname === '/social/queue' || location.search.includes('tab=queue') ? 'active' : ''}`}
                 onClick={() => {
                   setMobileMenuOpen(false);
                   window.dispatchEvent(new CustomEvent('switch-social-tab', { detail: 'queue' }));
@@ -388,8 +387,8 @@ export const AppShell: React.FC = () => {
               </NavLink>
 
               <NavLink
-                to="/social?tab=accounts"
-                className={() => `sidebar-nav-item ${location.pathname === '/social' && location.search.includes('tab=accounts') ? 'active' : ''}`}
+                to="/social/channels"
+                className={() => `sidebar-nav-item ${location.pathname === '/social/channels' || location.pathname === '/social/accounts' || location.search.includes('tab=accounts') ? 'active' : ''}`}
                 onClick={() => {
                   setMobileMenuOpen(false);
                   window.dispatchEvent(new CustomEvent('switch-social-tab', { detail: 'accounts' }));
@@ -400,8 +399,8 @@ export const AppShell: React.FC = () => {
               </NavLink>
 
               <NavLink
-                to="/social?tab=settings"
-                className={() => `sidebar-nav-item ${location.search.includes('tab=settings') ? 'active' : ''}`}
+                to="/social/settings"
+                className={() => `sidebar-nav-item ${location.pathname === '/social/settings' || location.search.includes('tab=settings') ? 'active' : ''}`}
                 onClick={() => {
                   setMobileMenuOpen(false);
                   window.dispatchEvent(new CustomEvent('switch-social-tab', { detail: 'settings' }));
@@ -412,8 +411,8 @@ export const AppShell: React.FC = () => {
               </NavLink>
 
               <NavLink
-                to="/social?tab=support"
-                className={() => `sidebar-nav-item ${location.search.includes('tab=support') ? 'active' : ''}`}
+                to="/social/support"
+                className={() => `sidebar-nav-item ${location.pathname === '/social/support' || location.search.includes('tab=support') ? 'active' : ''}`}
                 onClick={() => {
                   setMobileMenuOpen(false);
                   window.dispatchEvent(new CustomEvent('switch-social-tab', { detail: 'support' }));
@@ -432,8 +431,14 @@ export const AppShell: React.FC = () => {
           /* ============================================================ */
           <>
             <div className="sidebar-brand-section">
+<<<<<<< HEAD
               <NavLink to="/app" className="brand-link" onClick={() => setMobileMenuOpen(false)}>
                 <img src="/zunme_logo_white.png" alt="Zunme AI" style={{ height: '32px', width: 'auto', display: 'block' }} />
+=======
+              <NavLink to="/user/home" className="brand-link" onClick={() => setMobileMenuOpen(false)}>
+                <img src="/zunme_icon.png" alt="Zunme AI" style={{ width: '30px', height: '30px', objectFit: 'contain' }} />
+                <span className="brand-title-text" style={{ color: '#FFFFFF', fontWeight: '800', fontSize: '16px' }}>Zunme AI</span>
+>>>>>>> 0c56802995139c4d109161202f435ff0848437da
               </NavLink>
               <button
                 className="btn-ghost hide-on-desktop"
@@ -455,9 +460,8 @@ export const AppShell: React.FC = () => {
             {/* Core Navigation Links */}
             <nav className="sidebar-nav-list" aria-label="Main Navigation">
               <NavLink
-                to="/app"
-                end
-                className={({ isActive }) => `sidebar-nav-item ${isActive ? 'active' : ''}`}
+                to="/user/home"
+                className={() => `sidebar-nav-item ${location.pathname === '/user' || location.pathname === '/user/home' || location.pathname === '/user/dashboard' || location.pathname === '/app' || location.pathname === '/app/home' || location.pathname === '/app/dashboard' ? 'active' : ''}`}
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <Home size={17} />
@@ -465,8 +469,8 @@ export const AppShell: React.FC = () => {
               </NavLink>
 
               <NavLink
-                to="/app/chat"
-                className={({ isActive }) => `sidebar-nav-item ${isActive ? 'active' : ''}`}
+                to="/user/chat"
+                className={({ isActive }) => `sidebar-nav-item ${isActive || location.pathname === '/app/chat' ? 'active' : ''}`}
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <MessageSquare size={17} />
@@ -474,8 +478,8 @@ export const AppShell: React.FC = () => {
               </NavLink>
 
               <NavLink
-                to="/app/search"
-                className={({ isActive }) => `sidebar-nav-item ${isActive ? 'active' : ''}`}
+                to="/user/search"
+                className={({ isActive }) => `sidebar-nav-item ${isActive || location.pathname === '/app/search' ? 'active' : ''}`}
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <Search size={17} />
@@ -483,8 +487,8 @@ export const AppShell: React.FC = () => {
               </NavLink>
 
               <NavLink
-                to="/app/builders"
-                className={({ isActive }) => `sidebar-nav-item ${isActive ? 'active' : ''}`}
+                to="/user/builders"
+                className={({ isActive }) => `sidebar-nav-item ${isActive || location.pathname === '/app/builders' ? 'active' : ''}`}
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <PenTool size={17} />
@@ -492,8 +496,8 @@ export const AppShell: React.FC = () => {
               </NavLink>
 
               <NavLink
-                to="/warehouse"
-                className={({ isActive }) => `sidebar-nav-item ${isActive ? 'active' : ''}`}
+                to="/warehouse/dashboard"
+                className={() => `sidebar-nav-item ${location.pathname.startsWith('/warehouse') ? 'active' : ''}`}
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <Package size={17} />
@@ -501,8 +505,8 @@ export const AppShell: React.FC = () => {
               </NavLink>
 
               <NavLink
-                to="/app/library"
-                className={({ isActive }) => `sidebar-nav-item ${isActive ? 'active' : ''}`}
+                to="/user/library"
+                className={({ isActive }) => `sidebar-nav-item ${isActive || location.pathname === '/app/library' ? 'active' : ''}`}
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <Bookmark size={17} />
@@ -510,8 +514,8 @@ export const AppShell: React.FC = () => {
               </NavLink>
 
               <NavLink
-                to="/app/history"
-                className={({ isActive }) => `sidebar-nav-item ${isActive ? 'active' : ''}`}
+                to="/user/history"
+                className={({ isActive }) => `sidebar-nav-item ${isActive || location.pathname === '/app/history' ? 'active' : ''}`}
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <Clock size={17} />
@@ -519,8 +523,8 @@ export const AppShell: React.FC = () => {
               </NavLink>
 
               <NavLink
-                to="/app/usage"
-                className={({ isActive }) => `sidebar-nav-item ${isActive ? 'active' : ''}`}
+                to="/user/usage"
+                className={({ isActive }) => `sidebar-nav-item ${isActive || location.pathname === '/app/usage' ? 'active' : ''}`}
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <CreditCard size={17} />
@@ -528,8 +532,8 @@ export const AppShell: React.FC = () => {
               </NavLink>
 
               <NavLink
-                to="/app/settings"
-                className={({ isActive }) => `sidebar-nav-item ${isActive ? 'active' : ''}`}
+                to="/user/settings"
+                className={({ isActive }) => `sidebar-nav-item ${isActive || location.pathname === '/app/settings' ? 'active' : ''}`}
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <Settings size={17} />
@@ -537,8 +541,8 @@ export const AppShell: React.FC = () => {
               </NavLink>
 
               <NavLink
-                to="/app/support"
-                className={({ isActive }) => `sidebar-nav-item ${isActive ? 'active' : ''}`}
+                to="/user/support"
+                className={({ isActive }) => `sidebar-nav-item ${isActive || location.pathname === '/app/support' ? 'active' : ''}`}
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <LifeBuoy size={17} />
@@ -600,6 +604,7 @@ export const AppShell: React.FC = () => {
           </div>
 
           <div className="topbar-right">
+            {user && <NotificationBell />}
             {user ? (
               <div className="superadmin-profile-menu-wrap" style={{ position: 'relative' }}>
                 <button

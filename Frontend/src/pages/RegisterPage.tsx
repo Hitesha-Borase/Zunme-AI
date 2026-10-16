@@ -99,7 +99,7 @@ export const RegisterPage: React.FC = () => {
       try {
         await register(fullName, email, password);
         setIsLoading(false);
-        navigate('/app');
+        navigate('/user/dashboard');
       } catch (err) {
         setIsLoading(false);
         setError('Registration failed. Please try again or sign in.');
