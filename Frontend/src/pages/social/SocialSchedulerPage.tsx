@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useParams, useNavigate } from 'react-router-dom';
 import {
   Calendar as CalendarIcon,
   Share2,
@@ -74,9 +74,58 @@ interface ConnectedAccount {
 
 export const SocialSchedulerPage: React.FC = () => {
   const { showToast } = useApp();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const { section } = useParams<{ section?: string }>();
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
-  const [activeTab, setActiveTab] = useState<TabType>('calendar');
+  const slugToTab: Record<string, TabType> = {
+    'calendar': 'calendar',
+    'dashboard': 'calendar',
+    'overview': 'calendar',
+    'queue': 'queue',
+    'publishing-queue': 'queue',
+    'channels': 'accounts',
+    'accounts': 'accounts',
+    'analytics': 'analytics',
+    'channel-analytics': 'analytics',
+    'settings': 'settings',
+    'support': 'support',
+    'help-support': 'support'
+  };
+
+  const tabToSlug: Record<TabType, string> = {
+    'calendar': 'calendar',
+    'queue': 'queue',
+    'composer': 'calendar',
+    'accounts': 'channels',
+    'analytics': 'analytics',
+    'settings': 'settings',
+    'support': 'support'
+  };
+
+  const resolveCurrentTab = (): TabType => {
+    if (section && slugToTab[section.toLowerCase()]) {
+      return slugToTab[section.toLowerCase()];
+    }
+    const tabParam = searchParams.get('tab');
+    if (tabParam && ['calendar', 'queue', 'composer', 'accounts', 'analytics', 'settings', 'support'].includes(tabParam)) {
+      return tabParam as TabType;
+    }
+    return 'calendar';
+  };
+
+  const [activeTab, setActiveTabState] = useState<TabType>(resolveCurrentTab);
+
+  useEffect(() => {
+    setActiveTabState(resolveCurrentTab());
+  }, [section, searchParams]);
+
+  const setActiveTab = (tab: TabType) => {
+    setActiveTabState(tab);
+    const slug = tabToSlug[tab];
+    navigate(`/social/${slug}`);
+  };
+
   const [platformFilter, setPlatformFilter] = useState<string>('ALL');
 
   // Month navigation state (defaults to October 2026)

@@ -1,4 +1,5 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import {
   Sparkles,
   UploadCloud,
@@ -233,10 +234,57 @@ export const CreatorStudioPage: React.FC = () => {
     showToast
   } = useApp();
 
-  // Navigation Tabs
-  const [activeTab, setActiveTab] = useState<
-    'Marketplace & Showcase' | 'Upload Content' | 'My Submissions' | 'Creator Profile' | 'Earnings & Payouts'
-  >('Marketplace & Showcase');
+  // Navigation Tabs with Route Sync
+  type CreatorTabType = 'Marketplace & Showcase' | 'Upload Content' | 'My Submissions' | 'Creator Profile' | 'Earnings & Payouts';
+
+  const { section } = useParams<{ section?: string }>();
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
+  const slugToTab: Record<string, CreatorTabType> = {
+    'marketplace': 'Marketplace & Showcase',
+    'showcase': 'Marketplace & Showcase',
+    'dashboard': 'Marketplace & Showcase',
+    'upload': 'Upload Content',
+    'publish': 'Upload Content',
+    'submissions': 'My Submissions',
+    'reviews': 'My Submissions',
+    'earnings': 'Earnings & Payouts',
+    'payouts': 'Earnings & Payouts',
+    'monetization': 'Earnings & Payouts',
+    'profile': 'Creator Profile'
+  };
+
+  const tabToSlug: Record<CreatorTabType, string> = {
+    'Marketplace & Showcase': 'marketplace',
+    'Upload Content': 'upload',
+    'My Submissions': 'submissions',
+    'Earnings & Payouts': 'earnings',
+    'Creator Profile': 'profile'
+  };
+
+  const resolveCurrentTab = (): CreatorTabType => {
+    if (section && slugToTab[section.toLowerCase()]) {
+      return slugToTab[section.toLowerCase()];
+    }
+    const tabParam = searchParams.get('tab');
+    if (tabParam && ['Marketplace & Showcase', 'Upload Content', 'My Submissions', 'Creator Profile', 'Earnings & Payouts'].includes(tabParam)) {
+      return tabParam as CreatorTabType;
+    }
+    return 'Marketplace & Showcase';
+  };
+
+  const [activeTab, setActiveTabState] = useState<CreatorTabType>(resolveCurrentTab);
+
+  useEffect(() => {
+    setActiveTabState(resolveCurrentTab());
+  }, [section, searchParams]);
+
+  const setActiveTab = (tab: CreatorTabType) => {
+    setActiveTabState(tab);
+    const slug = tabToSlug[tab];
+    navigate(slug === 'marketplace' ? '/creator/marketplace' : `/creator/${slug}`);
+  };
 
   // Community Assets State
   const [communityAssets, setCommunityAssets] = useState<CommunityMarketplaceAsset[]>(INITIAL_COMMUNITY_ASSETS);

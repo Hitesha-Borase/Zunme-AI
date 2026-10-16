@@ -891,12 +891,12 @@ export const LandingPage: React.FC = () => {
                   <NavLink
                     to={
                       cap.id === 'chat'
-                        ? '/app/chat'
+                        ? '/user/chat'
                         : cap.id === 'search'
-                        ? '/app/search'
+                        ? '/user/search'
                         : cap.id === 'builders'
-                        ? '/app/studio'
-                        : '/app/library'
+                        ? '/user/builders'
+                        : '/user/library'
                     }
                     className="capability-link"
                   >

@@ -34,7 +34,7 @@ export const UserHistoryPage: React.FC = () => {
 
   const handleOpen = (id: string) => {
     selectConversation(id);
-    navigate('/app/chat');
+    navigate('/user/chat');
   };
 
   const handleStartRename = (id: string, title: string, e: React.MouseEvent) => {
@@ -72,7 +72,7 @@ export const UserHistoryPage: React.FC = () => {
             className="btn btn-primary btn-sm"
             onClick={() => {
               createNewChat();
-              navigate('/app/chat');
+              navigate('/user/chat');
             }}
           >
             <Plus size={14} />

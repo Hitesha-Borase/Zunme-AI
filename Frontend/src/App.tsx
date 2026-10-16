@@ -67,20 +67,21 @@ export const App: React.FC = () => {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
 
-          {/* Legal, Contact & Public Creator Suite */}
+          {/* Legal & Contact Suite */}
           <Route path="/terms" element={<TermsPage />} />
           <Route path="/privacy" element={<PrivacyPage />} />
           <Route path="/contact" element={<ContactPage />} />
-          <Route path="/creator/:creatorId" element={<PublicCreatorProfilePage />} />
 
-          {/* General User Workspace */}
-          <Route path="/app" element={<AppShell />}>
+          {/* General User Workspace (Canonical /user Routing) */}
+          <Route path="/user" element={<AppShell />}>
             <Route index element={<UserHomePage />} />
+            <Route path="home" element={<UserHomePage />} />
+            <Route path="dashboard" element={<UserHomePage />} />
             <Route path="chat" element={<ChatPage />} />
             <Route path="search" element={<SearchPage />} />
             <Route path="builders" element={<UserContentBuildersPage />} />
-            <Route path="studio" element={<Navigate to="/app/builders" replace />} />
-            <Route path="warehouse" element={<Navigate to="/warehouse" replace />} />
+            <Route path="studio" element={<Navigate to="/user/builders" replace />} />
+            <Route path="warehouse" element={<Navigate to="/warehouse/dashboard" replace />} />
             <Route path="library" element={<LibraryPage />} />
             <Route path="history" element={<UserHistoryPage />} />
             <Route path="usage" element={<UserUsagePlanPage />} />
@@ -88,34 +89,76 @@ export const App: React.FC = () => {
             <Route path="support" element={<UserHelpSupportPage />} />
           </Route>
 
+          {/* Backward Compatibility: Redirect /app/* to /user/* */}
+          <Route path="/app" element={<Navigate to="/user/dashboard" replace />} />
+          <Route path="/app/home" element={<Navigate to="/user/home" replace />} />
+          <Route path="/app/dashboard" element={<Navigate to="/user/dashboard" replace />} />
+          <Route path="/app/chat" element={<Navigate to="/user/chat" replace />} />
+          <Route path="/app/search" element={<Navigate to="/user/search" replace />} />
+          <Route path="/app/builders" element={<Navigate to="/user/builders" replace />} />
+          <Route path="/app/studio" element={<Navigate to="/user/builders" replace />} />
+          <Route path="/app/warehouse" element={<Navigate to="/warehouse/dashboard" replace />} />
+          <Route path="/app/library" element={<Navigate to="/user/library" replace />} />
+          <Route path="/app/history" element={<Navigate to="/user/history" replace />} />
+          <Route path="/app/usage" element={<Navigate to="/user/usage" replace />} />
+          <Route path="/app/settings" element={<Navigate to="/user/settings" replace />} />
+          <Route path="/app/support" element={<Navigate to="/user/support" replace />} />
+
           {/* Specialist Workspaces (Under AppShell) */}
           <Route path="/warehouse" element={<AppShell />}>
             <Route index element={<AIWarehousePage />} />
+            <Route path="dashboard" element={<AIWarehousePage />} />
+            <Route path=":section" element={<AIWarehousePage />} />
           </Route>
 
           <Route path="/creator" element={<AppShell />}>
             <Route index element={<CreatorStudioPage />} />
+            <Route path="dashboard" element={<CreatorStudioPage />} />
+            <Route path="marketplace" element={<CreatorStudioPage />} />
+            <Route path="showcase" element={<CreatorStudioPage />} />
+            <Route path="upload" element={<CreatorStudioPage />} />
+            <Route path="publish" element={<CreatorStudioPage />} />
+            <Route path="submissions" element={<CreatorStudioPage />} />
+            <Route path="earnings" element={<CreatorStudioPage />} />
+            <Route path="payouts" element={<CreatorStudioPage />} />
+            <Route path="profile" element={<CreatorStudioPage />} />
+            <Route path=":section" element={<CreatorStudioPage />} />
           </Route>
+
+          {/* Public Creator Profile */}
+          <Route path="/creator/:creatorId" element={<PublicCreatorProfilePage />} />
+          <Route path="/creator/view/:creatorId" element={<PublicCreatorProfilePage />} />
 
           <Route path="/seo" element={<AppShell />}>
             <Route index element={<SEOWorkspacePage />} />
+            <Route path="dashboard" element={<SEOWorkspacePage />} />
+            <Route path=":section" element={<SEOWorkspacePage />} />
           </Route>
 
           <Route path="/business" element={<AppShell />}>
             <Route index element={<BusinessWorkspacePage />} />
+            <Route path="dashboard" element={<BusinessWorkspacePage />} />
+            <Route path="overview" element={<BusinessWorkspacePage />} />
+            <Route path=":section" element={<BusinessWorkspacePage />} />
           </Route>
 
           <Route path="/ads" element={<AppShell />}>
             <Route index element={<ZunmeAdsPage />} />
+            <Route path="dashboard" element={<ZunmeAdsPage />} />
+            <Route path="overview" element={<ZunmeAdsPage />} />
+            <Route path=":section" element={<ZunmeAdsPage />} />
           </Route>
 
           <Route path="/social" element={<AppShell />}>
             <Route index element={<SocialSchedulerPage />} />
+            <Route path="dashboard" element={<SocialSchedulerPage />} />
+            <Route path=":section" element={<SocialSchedulerPage />} />
           </Route>
 
           {/* Admin Operations Console */}
           <Route path="/admin" element={<AdminShell />}>
             <Route index element={<AdminDashboardPage />} />
+            <Route path="dashboard" element={<AdminDashboardPage />} />
             <Route path="users" element={<AdminUserManagementPage />} />
             <Route path="tools" element={<AdminAIToolsPage />} />
             <Route path="warehouse" element={<AdminAIWarehousePage />} />
@@ -129,6 +172,7 @@ export const App: React.FC = () => {
           {/* Super Admin Executive Hub (Strict 5 Menu Items + Logout) */}
           <Route path="/super-admin" element={<SuperAdminShell />}>
             <Route index element={<SuperAdminDashboardPage />} />
+            <Route path="dashboard" element={<SuperAdminDashboardPage />} />
             <Route path="users" element={<SuperAdminUsersPage />} />
             <Route path="settings" element={<SuperAdminSettingsPage />} />
             <Route path="plans" element={<SuperAdminPlansPage />} />

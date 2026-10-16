@@ -36,13 +36,13 @@ export const UserHomePage: React.FC = () => {
     if (!promptInput.trim()) return;
     createNewChat();
     sendMessage(promptInput.trim());
-    navigate('/app/chat');
+    navigate('/user/chat');
   };
 
   const handleQuickPromptClick = (text: string) => {
     createNewChat();
     sendMessage(text);
-    navigate('/app/chat');
+    navigate('/user/chat');
   };
 
   return (
@@ -131,7 +131,7 @@ export const UserHomePage: React.FC = () => {
 
       {/* Quick Launch Cards */}
       <div className="cards-grid-4">
-        <NavLink to="/app/chat" className="metric-card" style={{ textDecoration: 'none', cursor: 'pointer' }}>
+        <NavLink to="/user/chat" className="metric-card" style={{ textDecoration: 'none', cursor: 'pointer' }}>
           <div className="metric-card-top">
             <div className="metric-icon-box" style={{ background: '#EFEBFC', color: '#6E56CF' }}>
               <MessageSquare size={20} />
@@ -144,7 +144,7 @@ export const UserHomePage: React.FC = () => {
           </div>
         </NavLink>
 
-        <NavLink to="/app/search" className="metric-card" style={{ textDecoration: 'none', cursor: 'pointer' }}>
+        <NavLink to="/user/search" className="metric-card" style={{ textDecoration: 'none', cursor: 'pointer' }}>
           <div className="metric-card-top">
             <div className="metric-icon-box" style={{ background: '#E0F2FE', color: '#0284C7' }}>
               <Search size={20} />
@@ -157,7 +157,7 @@ export const UserHomePage: React.FC = () => {
           </div>
         </NavLink>
 
-        <NavLink to="/app/builders" className="metric-card" style={{ textDecoration: 'none', cursor: 'pointer' }}>
+        <NavLink to="/user/builders" className="metric-card" style={{ textDecoration: 'none', cursor: 'pointer' }}>
           <div className="metric-card-top">
             <div className="metric-icon-box" style={{ background: '#E8F8F0', color: '#059669' }}>
               <PenTool size={20} />
@@ -170,7 +170,7 @@ export const UserHomePage: React.FC = () => {
           </div>
         </NavLink>
 
-        <NavLink to="/app/warehouse" className="metric-card" style={{ textDecoration: 'none', cursor: 'pointer' }}>
+        <NavLink to="/warehouse/dashboard" className="metric-card" style={{ textDecoration: 'none', cursor: 'pointer' }}>
           <div className="metric-card-top">
             <div className="metric-icon-box" style={{ background: '#FEF3E2', color: '#D97706' }}>
               <Package size={20} />
@@ -196,7 +196,7 @@ export const UserHomePage: React.FC = () => {
               </div>
               <div className="panel-subtitle">Pick up right where you left off</div>
             </div>
-            <NavLink to="/app/history" className="btn btn-ghost btn-sm" style={{ padding: '4px 8px', fontSize: '11px' }}>
+            <NavLink to="/user/history" className="btn btn-ghost btn-sm" style={{ padding: '4px 8px', fontSize: '11px' }}>
               View All History <ChevronRight size={12} />
             </NavLink>
           </div>
@@ -207,7 +207,7 @@ export const UserHomePage: React.FC = () => {
                 key={conv.id}
                 onClick={() => {
                   selectConversation(conv.id);
-                  navigate('/app/chat');
+                  navigate('/user/chat');
                 }}
                 style={{
                   display: 'flex',
@@ -246,7 +246,7 @@ export const UserHomePage: React.FC = () => {
               </div>
               <div className="panel-subtitle">Archived knowledge, extracts, and drafts</div>
             </div>
-            <NavLink to="/app/library" className="btn btn-ghost btn-sm" style={{ padding: '4px 8px', fontSize: '11px' }}>
+            <NavLink to="/user/library" className="btn btn-ghost btn-sm" style={{ padding: '4px 8px', fontSize: '11px' }}>
               Open Library <ChevronRight size={12} />
             </NavLink>
           </div>
@@ -273,7 +273,7 @@ export const UserHomePage: React.FC = () => {
                     Category: {item.contentType} • {new Date(item.createdAt).toLocaleDateString()}
                   </span>
                 </div>
-                <NavLink to="/app/library" className="btn btn-outline btn-sm" style={{ padding: '3px 8px', fontSize: '11px' }}>
+                <NavLink to="/user/library" className="btn btn-outline btn-sm" style={{ padding: '3px 8px', fontSize: '11px' }}>
                   View
                 </NavLink>
               </div>
