@@ -106,7 +106,8 @@
   flex-direction: column;
   gap: 4px;
   overflow-y: auto;
-  max-height: calc(100vh - 360px);
+  flex: 1;
+  min-height: 0;
 }
 
 .sidebar-nav-item {
@@ -209,10 +210,10 @@
 .sidebar-footer {
   padding: 14px 16px;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
-  background: #18123C;
   display: flex;
   flex-direction: column;
   gap: 8px;
+  margin-top: auto;
 }
 
 .user-mini-card {

@@ -208,6 +208,24 @@ export const AppShell: React.FC = () => {
                 <CreditCard size={17} />
                 <span>Billing & Wallet</span>
               </NavLink>
+
+              <NavLink
+                to="/app/settings"
+                className={({ isActive }) => `sidebar-nav-item ${isActive ? 'active' : ''}`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <Settings size={17} />
+                <span>Settings</span>
+              </NavLink>
+
+              <NavLink
+                to="/app/support"
+                className={({ isActive }) => `sidebar-nav-item ${isActive ? 'active' : ''}`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <LifeBuoy size={17} />
+                <span>Help & Support</span>
+              </NavLink>
             </nav>
 
             <div className="sidebar-section-divider">
@@ -325,6 +343,24 @@ export const AppShell: React.FC = () => {
                 <Users size={17} />
                 <span>Team & Access</span>
               </NavLink>
+
+              <NavLink
+                to="/business?tab=Settings"
+                className={() => `sidebar-nav-item ${location.search.includes('Settings') ? 'active' : ''}`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <Settings size={17} />
+                <span>Settings</span>
+              </NavLink>
+
+              <NavLink
+                to="/app/support"
+                className={({ isActive }) => `sidebar-nav-item ${isActive ? 'active' : ''}`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <LifeBuoy size={17} />
+                <span>Help & Support</span>
+              </NavLink>
             </nav>
 
             <div className="sidebar-section-divider">
@@ -405,6 +441,24 @@ export const AppShell: React.FC = () => {
               >
                 <Share2 size={17} />
                 <span>Connected Channels</span>
+              </NavLink>
+
+              <NavLink
+                to="/app/settings"
+                className={({ isActive }) => `sidebar-nav-item ${isActive ? 'active' : ''}`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <Settings size={17} />
+                <span>Settings</span>
+              </NavLink>
+
+              <NavLink
+                to="/app/support"
+                className={({ isActive }) => `sidebar-nav-item ${isActive ? 'active' : ''}`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <LifeBuoy size={17} />
+                <span>Help & Support</span>
               </NavLink>
             </nav>
 
@@ -526,30 +580,30 @@ export const AppShell: React.FC = () => {
                 <CreditCard size={17} />
                 <span>Usage & Plan</span>
               </NavLink>
+
+              <NavLink
+                to="/app/settings"
+                className={({ isActive }) => `sidebar-nav-item ${isActive ? 'active' : ''}`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <Settings size={17} />
+                <span>Settings</span>
+              </NavLink>
+
+              <NavLink
+                to="/app/support"
+                className={({ isActive }) => `sidebar-nav-item ${isActive ? 'active' : ''}`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <LifeBuoy size={17} />
+                <span>Help & Support</span>
+              </NavLink>
             </nav>
           </>
         )}
 
-        {/* Sidebar Footer */}
+        {/* Sidebar Footer with Logout at the Very Bottom */}
         <div className="sidebar-footer">
-          <NavLink
-            to="/app/settings"
-            className={({ isActive }) => `sidebar-nav-item ${isActive ? 'active' : ''}`}
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            <Settings size={17} />
-            <span>Settings</span>
-          </NavLink>
-
-          <NavLink
-            to="/app/support"
-            className={({ isActive }) => `sidebar-nav-item ${isActive ? 'active' : ''}`}
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            <LifeBuoy size={17} />
-            <span>Help & Support</span>
-          </NavLink>
-
           {/* Dedicated Logout Button at the Very Bottom */}
           {user ? (
             <button

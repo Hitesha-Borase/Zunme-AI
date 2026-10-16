@@ -422,7 +422,7 @@ export const LandingPage: React.FC = () => {
 
             {/* Header Right Actions */}
             <div className="header-actions">
-              <NavLink to="/login" className="btn btn-ghost btn-sm">
+              <NavLink to="/login" className="btn btn-primary btn-sm btn-glow">
                 Log In
               </NavLink>
               <NavLink
@@ -499,7 +499,7 @@ export const LandingPage: React.FC = () => {
               </NavLink>
               <NavLink
                 to="/login"
-                className="btn btn-outline btn-block"
+                className="btn btn-primary btn-block"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Log In
