@@ -68,25 +68,8 @@ export const SuperAdminPlansPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Subscription Breakdown Stats */}
-      <div className="metrics-grid">
-        {pricingPlans.map((plan) => (
-          <div key={plan.id} className="metric-card">
-            <div className="metric-card-top">
-              <span className="badge badge-primary">{plan.name}</span>
-              {plan.badge && <span className="badge badge-secondary">{plan.badge}</span>}
-            </div>
-            <div className="metric-value">{plan.price}</div>
-            <div className="metric-label">{plan.billingPeriod}</div>
-            <div style={{ fontSize: '12px', color: '#94A3B8', marginTop: '6px' }}>
-              <strong>{plan.activeSubscribers.toLocaleString()}</strong> active subscribers
-            </div>
-          </div>
-        ))}
-      </div>
-
       {/* Pricing Cards Grid */}
-      <div className="cards-grid-3">
+      <div className="plans-pricing-grid">
         {pricingPlans.map((plan) => (
           <div
             key={plan.id}
@@ -96,6 +79,7 @@ export const SuperAdminPlansPage: React.FC = () => {
               flexDirection: 'column',
               justifyContent: 'space-between',
               position: 'relative',
+              padding: '28px',
               borderColor: plan.id === 'plan_pro' ? 'rgba(124, 58, 237, 0.4)' : undefined,
               boxShadow: plan.id === 'plan_pro' ? '0 0 24px rgba(124, 58, 237, 0.15)' : undefined
             }}

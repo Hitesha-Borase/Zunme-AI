@@ -115,7 +115,7 @@ export const UserUsagePlanPage: React.FC = () => {
           <span className="badge badge-primary">Monthly Billing</span>
         </div>
 
-        <div className="cards-grid-3">
+        <div className="plans-pricing-grid">
           {pricingPlans.map((plan) => (
             <div
               key={plan.id}

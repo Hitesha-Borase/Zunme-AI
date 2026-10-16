@@ -87,6 +87,8 @@ export const AppShell: React.FC = () => {
     navigate('/?login=true');
   };
 
+  const displayName = (user?.fullName || 'User').replace(/\s*\([^)]*\)/g, '').trim();
+
   return (
     <div className="app-shell">
       {/* Mobile Backdrop */}
@@ -123,6 +125,19 @@ export const AppShell: React.FC = () => {
                 <X size={18} />
               </button>
             </div>
+
+            {/* User Profile Card (Moved to Left Top) */}
+            {user && (
+              <div className="user-mini-card" style={{ margin: '0 16px 12px' }}>
+                <div className="user-avatar-circle">
+                  {displayName.charAt(0).toUpperCase()}
+                </div>
+                <div className="user-meta-info">
+                  <div className="user-name-label">{displayName}</div>
+                  <div className="user-email-label">{user.email || 'Ads Specialist'}</div>
+                </div>
+              </div>
+            )}
 
             <div className="sidebar-new-chat-box">
               <NavLink
@@ -241,6 +256,19 @@ export const AppShell: React.FC = () => {
               </button>
             </div>
 
+            {/* User Profile Card (Moved to Left Top) */}
+            {user && (
+              <div className="user-mini-card" style={{ margin: '0 16px 12px' }}>
+                <div className="user-avatar-circle">
+                  {displayName.charAt(0).toUpperCase()}
+                </div>
+                <div className="user-meta-info">
+                  <div className="user-name-label">{displayName}</div>
+                  <div className="user-email-label">{user.email || 'Business Owner'}</div>
+                </div>
+              </div>
+            )}
+
             <div className="sidebar-new-chat-box">
               <NavLink
                 to="/business?tab=nErgy CRM Deep Sync"
@@ -358,6 +386,19 @@ export const AppShell: React.FC = () => {
               </button>
             </div>
 
+            {/* User Profile Card (Moved to Left Top) */}
+            {user && (
+              <div className="user-mini-card" style={{ margin: '0 16px 12px' }}>
+                <div className="user-avatar-circle">
+                  {displayName.charAt(0).toUpperCase()}
+                </div>
+                <div className="user-meta-info">
+                  <div className="user-name-label">{displayName}</div>
+                  <div className="user-email-label">{user.email || 'Social Creator'}</div>
+                </div>
+              </div>
+            )}
+
             <div className="sidebar-new-chat-box">
               <NavLink
                 to="/social"
@@ -433,6 +474,19 @@ export const AppShell: React.FC = () => {
                 <X size={18} />
               </button>
             </div>
+
+            {/* User Profile Card (Moved to Left Top) */}
+            {user && (
+              <div className="user-mini-card" style={{ margin: '0 16px 12px' }}>
+                <div className="user-avatar-circle">
+                  {displayName.charAt(0).toUpperCase()}
+                </div>
+                <div className="user-meta-info">
+                  <div className="user-name-label">{displayName}</div>
+                  <div className="user-email-label">{user.email || 'Platform Member'}</div>
+                </div>
+              </div>
+            )}
 
             {/* New Chat Primary Button */}
             <div className="sidebar-new-chat-box">
@@ -540,26 +594,32 @@ export const AppShell: React.FC = () => {
             <span>Help & Support</span>
           </NavLink>
 
-          {/* User mini card */}
+          {/* Dedicated Logout Button at the Very Bottom */}
           {user ? (
-            <div className="user-mini-card">
-              <div className="user-avatar-circle">
-                {user.fullName.charAt(0).toUpperCase()}
-              </div>
-              <div className="user-meta-info">
-                <div className="user-name-label">{user.fullName}</div>
-                <div className="user-email-label">{user.role} Account</div>
-              </div>
-              <button
-                className="btn-ghost"
-                onClick={handleLogout}
-                title="Sign Out"
-                aria-label="Sign out"
-                style={{ padding: '6px' }}
-              >
-                <LogOut size={16} />
-              </button>
-            </div>
+            <button
+              className="superadmin-logout-btn"
+              onClick={handleLogout}
+              title="Sign Out"
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '10px',
+                padding: '9px 14px',
+                borderRadius: 'var(--radius-full)',
+                fontSize: '13px',
+                fontWeight: '600',
+                color: '#F87171',
+                background: 'rgba(239, 68, 68, 0.12)',
+                border: '1px solid rgba(239, 68, 68, 0.25)',
+                cursor: 'pointer',
+                width: '100%',
+                transition: 'all 0.2s ease',
+                marginTop: '4px'
+              }}
+            >
+              <LogOut size={16} />
+              <span>Logout</span>
+            </button>
           ) : (
             <NavLink to="/login" className="btn btn-primary btn-sm w-full">
               Sign In

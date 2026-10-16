@@ -763,7 +763,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const loginWithRole = (role: UserRole, targetName?: string) => {
     const demoProfiles: Record<UserRole, { fullName: string; email: string }> = {
-      SUPER_ADMIN: { fullName: 'Alex Johnson (Super Admin)', email: 'superadmin@zunme.ai' },
+      SUPER_ADMIN: { fullName: 'Alex Johnson', email: 'superadmin@zunme.ai' },
       ADMIN: { fullName: 'Operations Admin', email: 'admin@zunme.ai' },
       USER: { fullName: 'Alex Creator', email: 'alex.creator@zunme.ai' }
     };
