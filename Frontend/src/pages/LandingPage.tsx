@@ -1230,8 +1230,8 @@ export const LandingPage: React.FC = () => {
       </section>
       )}
 
-      {/* FAQ Section */}
-      {activeSection === 'faq' && (
+      {/* FAQ Section (Shown on Home and FAQ nav) */}
+      {(activeSection === 'all' || activeSection === 'faq') && (
       <section id="faq" className="faq-section">
         <div className="landing-container">
           <div className="section-header">
@@ -1268,40 +1268,6 @@ export const LandingPage: React.FC = () => {
                 </div>
               );
             })}
-          </div>
-        </div>
-      </section>
-      )}
-
-      {/* Final CTA Section */}
-      {activeSection === 'all' && (
-      <section className="final-cta-section" id="cta">
-        <div className="landing-container">
-          <div className="cta-box">
-            <div className="cta-box-glow" aria-hidden="true" />
-            <div className="cta-badge">
-              <Sparkles size={14} />
-              <span>START CREATING TODAY</span>
-            </div>
-
-            {/* Headline (exact required text) */}
-            <h2 className="cta-title">Bring Your Ideas to Life with AI.</h2>
-
-            {/* Supporting text (exact required text) */}
-            <p className="cta-desc">
-              Explore AI-powered tools for searching, creating, and organizing your work.
-            </p>
-
-            <div className="cta-subtext">
-              <span>Free Starter access · No credit card required · Instant setup</span>
-            </div>
-
-            <div style={{ marginTop: '20px' }}>
-              <NavLink to="/register" className="btn btn-primary btn-glow">
-                <span>Create Account</span>
-                <ArrowRight size={15} />
-              </NavLink>
-            </div>
           </div>
         </div>
       </section>
