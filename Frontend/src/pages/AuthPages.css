@@ -261,13 +261,12 @@
 
 .energy-auth-grid {
   width: 100%;
-  max-width: 1260px;
-  height: 100%;
-  max-height: calc(100vh - 84px);
+  max-width: 1140px;
   display: grid;
-  grid-template-columns: 380px 1fr;
-  gap: 24px;
-  align-items: stretch;
+  grid-template-columns: 360px 1fr;
+  gap: 32px;
+  align-items: center;
+  margin: auto 0;
 }
 
 /* Left Login Card */
@@ -501,18 +500,19 @@
 .energy-personas-panel {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  height: 100%;
-  overflow: hidden;
+  justify-content: center;
+  gap: 10px;
+  max-width: 680px;
+  width: 100%;
 }
 
 .energy-personas-header {
-  margin-bottom: 10px;
+  margin-bottom: 6px;
 }
 
 .energy-panel-title {
   margin: 0;
-  font-size: 1.25rem;
+  font-size: 1.15rem;
   font-weight: 800;
   color: #111625;
   letter-spacing: -0.02em;
@@ -520,23 +520,21 @@
 
 .energy-panel-subtitle {
   margin: 2px 0 0 0;
-  font-size: 0.78rem;
+  font-size: 0.75rem;
   color: #5F6B85;
 }
 
 .energy-personas-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(3, 1fr);
-  gap: 12px;
-  flex: 1;
+  gap: 10px;
 }
 
 .persona-badge-tag {
-  font-size: 0.68rem;
+  font-size: 0.64rem;
   font-weight: 700;
-  padding: 3px 8px;
-  border-radius: 6px;
+  padding: 2px 7px;
+  border-radius: 5px;
   background: #F1F5F9;
   border: 1px solid #E2E8F0;
   color: #475569;
@@ -556,14 +554,15 @@
   gap: 10px;
   background: #FFFFFF;
   border: 1px solid #E8ECF5;
-  border-radius: 11px;
+  border-radius: 12px;
   padding: 8px 12px;
+  height: 54px;
+  box-sizing: border-box;
   cursor: pointer;
   text-align: left;
   transition: all 0.16s ease;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.02);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
   position: relative;
-  min-height: 0;
 }
 
 .energy-persona-card:hover {
@@ -576,13 +575,13 @@
 .energy-persona-card.is-selected {
   background: #FFFFFF;
   border-color: #6E56CF;
-  box-shadow: 0 0 0 1.5px #6E56CF, 0 6px 18px rgba(110, 86, 207, 0.14);
+  box-shadow: 0 0 0 1.5px #6E56CF, 0 4px 14px rgba(110, 86, 207, 0.12);
 }
 
 .persona-icon-box {
-  width: 34px;
-  height: 34px;
-  border-radius: 9px;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -599,7 +598,7 @@
 }
 
 .persona-name {
-  font-size: 0.82rem;
+  font-size: 0.81rem;
   font-weight: 700;
   color: #111625;
   white-space: nowrap;
@@ -608,7 +607,7 @@
 }
 
 .persona-sub {
-  font-size: 0.68rem;
+  font-size: 0.67rem;
   color: #64748B;
 }
 
@@ -628,10 +627,10 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 10px;
-  padding-top: 10px;
+  margin-top: 8px;
+  padding-top: 8px;
   border-top: 1px solid #E8ECF5;
-  font-size: 0.74rem;
+  font-size: 0.72rem;
   color: #5F6B85;
 }
 
@@ -684,17 +683,19 @@
     min-height: 100vh;
     max-height: none;
     overflow-y: auto;
+    overflow-x: hidden;
   }
 
   .energy-auth-main {
     overflow-y: visible;
-    padding: 24px 20px;
+    padding: 24px 20px 40px 20px;
   }
 
   .energy-auth-grid {
     grid-template-columns: 1fr;
     max-height: none;
     height: auto;
+    gap: 24px;
   }
 
   .energy-login-card {
@@ -726,16 +727,47 @@
   }
 
   .energy-auth-main {
-    padding: 18px 14px;
+    padding: 16px 12px 36px 12px;
+  }
+
+  .energy-auth-grid {
+    gap: 18px;
   }
 
   .energy-login-card {
-    padding: 22px 18px;
+    padding: 20px 16px;
+    border-radius: 16px;
+  }
+
+  .energy-card-title {
+    font-size: 1.15rem;
+  }
+
+  .energy-panel-title {
+    font-size: 1.05rem;
   }
 
   .energy-personas-grid {
     grid-template-columns: 1fr;
     gap: 8px;
+  }
+
+  .energy-persona-card {
+    height: 50px;
+    padding: 6px 10px;
+  }
+
+  .persona-icon-box {
+    width: 28px;
+    height: 28px;
+  }
+
+  .persona-name {
+    font-size: 0.78rem;
+  }
+
+  .persona-sub {
+    font-size: 0.65rem;
   }
 
   .energy-personas-bottom {
@@ -745,56 +777,4 @@
   }
 }
 
-/* Social Login Buttons */
-.login-social-divider {
-  display: flex;
-  align-items: center;
-  text-align: center;
-  margin: 10px 0 8px 0;
-}
 
-.login-social-divider::before,
-.login-social-divider::after {
-  content: '';
-  flex: 1;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-}
-
-.login-social-divider span {
-  padding: 0 10px;
-  font-size: 11px;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  color: #8C94A6;
-}
-
-.login-social-row {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 6px;
-}
-
-.login-social-btn {
-  flex: 1;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 8px 12px;
-  font-size: 12px;
-  font-weight: 600;
-  color: #2D3748;
-  background: #FFFFFF;
-  border: 1px solid #E2E8F0;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.login-social-btn:hover {
-  background: #F8FAFC;
-  border-color: #CBD5E1;
-  transform: translateY(-1px);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
-}
