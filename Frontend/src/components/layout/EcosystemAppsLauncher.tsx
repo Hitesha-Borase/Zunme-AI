@@ -159,11 +159,29 @@ export const EcosystemAppsLauncher: React.FC<{ variant?: 'dark' | 'light' }> = (
         type="button"
         className="ecosystem-launcher-trigger"
         onClick={() => setIsOpen(!isOpen)}
-        title="Zunme Ecosystem Apps (Google Products Style)"
+        title="Zunme Ecosystem Apps — 10 Connected Platforms (Google Products Style)"
         aria-label="Open Zunme Ecosystem Apps Launcher"
         aria-expanded={isOpen}
       >
-        <LayoutGrid size={18} />
+        <svg
+          width="19"
+          height="19"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          aria-hidden="true"
+          className="waffle-9dots-svg"
+        >
+          <circle cx="4.5" cy="4.5" r="2.2" />
+          <circle cx="12" cy="4.5" r="2.2" />
+          <circle cx="19.5" cy="4.5" r="2.2" />
+          <circle cx="4.5" cy="12" r="2.2" />
+          <circle cx="12" cy="12" r="2.2" />
+          <circle cx="19.5" cy="12" r="2.2" />
+          <circle cx="4.5" cy="19.5" r="2.2" />
+          <circle cx="12" cy="19.5" r="2.2" />
+          <circle cx="19.5" cy="19.5" r="2.2" />
+        </svg>
+        <span className="ecosystem-live-dot" title="10 Connected Ecosystem Apps Active" />
       </button>
 
       {isOpen && (

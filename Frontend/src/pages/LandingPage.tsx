@@ -621,7 +621,7 @@ Ready for Formal Attorney Trademark Registration.`;
 
             {/* Header Right Actions */}
             <div className="header-actions">
-              <EcosystemAppsLauncher variant="dark" />
+              <EcosystemAppsLauncher variant="light" />
               <NavLink
                 to="/ads"
                 className="btn btn-primary btn-sm btn-glow"
