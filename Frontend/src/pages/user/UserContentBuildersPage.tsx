@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import {
   PenTool,
   Search,
@@ -9,6 +10,7 @@ import {
   Check,
   RefreshCw,
   FileText,
+  FileSpreadsheet,
   Share2,
   Briefcase,
   SearchCheck,
@@ -49,6 +51,7 @@ import '../../styles/dashboard.css';
 import { ImageStudio } from '../../components/studio/ImageStudio';
 import { VideoScriptStudio } from '../../components/studio/VideoScriptStudio';
 import { DocumentCanvas } from '../../components/studio/DocumentCanvas';
+import { SpreadsheetStudio } from '../../components/studio/SpreadsheetStudio';
 import '../../components/studio/StudioStyles.css';
 
 import {
@@ -87,7 +90,26 @@ export const UserContentBuildersPage: React.FC = () => {
     showToast
   } = useApp();
 
-  const [activeStudioTab, setActiveStudioTab] = useState<'templates' | 'images' | 'video' | 'canvas'>('templates');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const validTabs = ['templates', 'images', 'video', 'canvas', 'spreadsheets'] as const;
+  type StudioTabType = typeof validTabs[number];
+  const urlTab = searchParams.get('tab') as StudioTabType;
+
+  const [activeStudioTab, setActiveStudioTabState] = useState<StudioTabType>(
+    urlTab && validTabs.includes(urlTab) ? urlTab : 'templates'
+  );
+
+  useEffect(() => {
+    const tabParam = searchParams.get('tab') as StudioTabType;
+    if (tabParam && validTabs.includes(tabParam) && tabParam !== activeStudioTab) {
+      setActiveStudioTabState(tabParam);
+    }
+  }, [searchParams]);
+
+  const setActiveStudioTab = (tab: StudioTabType) => {
+    setActiveStudioTabState(tab);
+    setSearchParams(tab === 'templates' ? {} : { tab });
+  };
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [selectedPlatform, setSelectedPlatform] = useState<string>('all');
@@ -253,11 +275,20 @@ export const UserContentBuildersPage: React.FC = () => {
           <FileText size={15} />
           <span>Rich Document Canvas</span>
         </button>
+
+        <button
+          className={`studio-nav-pill ${activeStudioTab === 'spreadsheets' ? 'active' : ''}`}
+          onClick={() => setActiveStudioTab('spreadsheets')}
+        >
+          <FileSpreadsheet size={15} />
+          <span>Spreadsheet &amp; Data Studio</span>
+        </button>
       </div>
 
       {activeStudioTab === 'images' && <ImageStudio />}
       {activeStudioTab === 'video' && <VideoScriptStudio />}
       {activeStudioTab === 'canvas' && <DocumentCanvas />}
+      {activeStudioTab === 'spreadsheets' && <SpreadsheetStudio />}
 
       {activeStudioTab === 'templates' && (
         <>
