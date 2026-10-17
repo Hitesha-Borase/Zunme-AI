@@ -39,6 +39,7 @@ import {
 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import { NotificationBell } from '../common/NotificationBell';
+import { EcosystemAppsLauncher } from './EcosystemAppsLauncher';
 import './AppShell.css';
 import './SuperAdminShell.css';
 
@@ -678,6 +679,7 @@ export const AppShell: React.FC = () => {
           </div>
 
           <div className="topbar-right">
+            <EcosystemAppsLauncher variant="light" />
             {user && <NotificationBell />}
             {user ? (
               <div className="superadmin-profile-menu-wrap" style={{ position: 'relative' }}>

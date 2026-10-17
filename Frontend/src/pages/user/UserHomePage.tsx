@@ -129,6 +129,69 @@ export const UserHomePage: React.FC = () => {
         </div>
       </div>
 
+      {/* MVP Platforms Accelerator Banner (Johnny's Directive: 8 Most Visited Platforms) */}
+      <div
+        className="glass-panel"
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
+          gap: '14px',
+          padding: '16px 20px',
+          marginBottom: '20px',
+          background: 'linear-gradient(135deg, rgba(110, 86, 207, 0.08) 0%, rgba(5, 150, 105, 0.05) 100%)',
+          border: '1px solid rgba(110, 86, 207, 0.2)',
+          borderRadius: '12px'
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', minWidth: '260px' }}>
+          <div
+            style={{
+              width: '42px',
+              height: '42px',
+              borderRadius: '10px',
+              background: 'linear-gradient(135deg, #6E56CF 0%, #4338CA 100%)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#FFFFFF',
+              boxShadow: '0 4px 12px rgba(110, 86, 207, 0.3)'
+            }}
+          >
+            <Layers size={22} />
+          </div>
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span style={{ fontSize: '15px', fontWeight: '800', color: '#111625' }}>
+                Most Visited Platforms (MVP) Suite
+              </span>
+              <span className="badge badge-primary" style={{ fontSize: '11px', padding: '2px 8px' }}>8 Accelerators</span>
+            </div>
+            <div style={{ fontSize: '12.5px', color: '#5F6B85', marginTop: '2px' }}>
+              Specialized AI generators for YouTube, TikTok, Amazon, LinkedIn, X, Google, Instagram &amp; Facebook.
+            </div>
+          </div>
+        </div>
+
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', gap: '4px', fontSize: '16px', marginRight: '6px' }}>
+            <span title="YouTube">▶️</span>
+            <span title="TikTok">🎵</span>
+            <span title="Instagram">📸</span>
+            <span title="LinkedIn">💼</span>
+            <span title="Amazon">📦</span>
+            <span title="X">𝕏</span>
+            <span title="Google">🔍</span>
+            <span title="Facebook">👥</span>
+          </div>
+          <NavLink to="/user/mvp" className="btn btn-primary btn-sm" style={{ padding: '8px 16px', fontSize: '13px', fontWeight: '700' }}>
+            <span>Launch MVP Suite</span>
+            <ArrowRight size={14} />
+          </NavLink>
+        </div>
+      </div>
+
       {/* Quick Launch Cards */}
       <div className="cards-grid-4">
         <NavLink to="/user/chat" className="metric-card" style={{ textDecoration: 'none', cursor: 'pointer' }}>

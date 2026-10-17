@@ -269,3 +269,197 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* ==========================================================================
+   ZBOX SECURED BUSINESS EMAIL & PRIVACY SUITE (ZUNME LETSWORK)
+   From Johnny's spec: ZBox - secured business email.docx
+   ========================================================================== */
+
+.zbox-privacy-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 10px 16px;
+  background: #F0FDF4;
+  border-bottom: 1px solid #DCFCE7;
+  font-size: 12.5px;
+  color: #166534;
+}
+
+.zbox-secure-plans-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.zbox-secure-hero {
+  background: linear-gradient(135deg, #0B0F19 0%, #171E31 100%);
+  border-radius: var(--radius-xl);
+  padding: 32px 28px;
+  color: #FFFFFF;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.15);
+}
+
+.zbox-secure-hero::after {
+  content: '';
+  position: absolute;
+  top: -60px;
+  right: -60px;
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(110, 86, 207, 0.3) 0%, rgba(16, 185, 129, 0) 70%);
+  pointer-events: none;
+}
+
+.zbox-comparison-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 18px;
+}
+
+.zbox-plan-card {
+  background: #FFFFFF;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.zbox-plan-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+
+.zbox-plan-card.featured {
+  background: linear-gradient(180deg, #FFFFFF 0%, #F5F3FF 100%);
+  border: 2px solid #6E56CF;
+  box-shadow: 0 10px 30px rgba(110, 86, 207, 0.15);
+}
+
+.zbox-plan-badge {
+  position: absolute;
+  top: -12px;
+  right: 20px;
+  background: linear-gradient(135deg, #6E56CF 0%, #4338CA 100%);
+  color: #FFFFFF;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  box-shadow: 0 2px 8px rgba(110, 86, 207, 0.4);
+}
+
+.zbox-plan-price {
+  font-size: 32px;
+  font-weight: 900;
+  color: #111625;
+  margin: 12px 0 4px;
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.zbox-plan-price small {
+  font-size: 13px;
+  font-weight: 600;
+  color: #64748B;
+}
+
+.zbox-plan-features {
+  list-style: none;
+  padding: 0;
+  margin: 18px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 13px;
+  color: #334155;
+}
+
+.zbox-plan-features li {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  line-height: 1.4;
+}
+
+/* Interactive Configurator Box */
+.zbox-configurator-box {
+  background: #FFFFFF;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: 28px;
+  box-shadow: var(--shadow-sm);
+}
+
+.zbox-config-section {
+  margin-bottom: 22px;
+}
+
+.zbox-config-label {
+  font-size: 13px;
+  font-weight: 800;
+  color: #111625;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.zbox-pills-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.zbox-pill-btn {
+  padding: 8px 16px;
+  border-radius: 10px;
+  border: 1px solid #E2E8F0;
+  background: #F8FAFC;
+  color: #475569;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.zbox-pill-btn:hover {
+  background: #EEF2F6;
+  border-color: #CBD5E1;
+  color: #1E293B;
+}
+
+.zbox-pill-btn.active {
+  background: #6E56CF;
+  border-color: #6E56CF;
+  color: #FFFFFF;
+  box-shadow: 0 4px 12px rgba(110, 86, 207, 0.3);
+}
+
+.zbox-b4b-banner {
+  background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);
+  border: 1px solid #BFDBFE;
+  border-radius: var(--radius-lg);
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px;
+}
