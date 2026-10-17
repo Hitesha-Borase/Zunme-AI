@@ -30,7 +30,12 @@ import {
   Award,
   Users,
   Calendar,
-  LayoutDashboard
+  LayoutDashboard,
+  ShoppingBag,
+  Store,
+  Mail,
+  ShieldCheck,
+  Layers
 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import { NotificationBell } from '../common/NotificationBell';
@@ -141,6 +146,24 @@ export const AppShell: React.FC = () => {
               >
                 <Plus size={17} />
                 <span>Create Campaign</span>
+              </NavLink>
+
+              <NavLink
+                to="/ads/onboarding"
+                className={() => `sidebar-nav-item ${location.pathname === '/ads/onboarding' ? 'active' : ''}`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <ShieldCheck size={17} />
+                <span>7-Step Onboarding</span>
+              </NavLink>
+
+              <NavLink
+                to="/ads/formats"
+                className={() => `sidebar-nav-item ${location.pathname === '/ads/formats' || location.pathname === '/ads/format-builders' ? 'active' : ''}`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <Layers size={17} />
+                <span>Format Builders</span>
               </NavLink>
 
               <NavLink
@@ -431,14 +454,8 @@ export const AppShell: React.FC = () => {
           /* ============================================================ */
           <>
             <div className="sidebar-brand-section">
-<<<<<<< HEAD
               <NavLink to="/app" className="brand-link" onClick={() => setMobileMenuOpen(false)}>
                 <img src="/zunme_logo_white.png" alt="Zunme AI" style={{ height: '32px', width: 'auto', display: 'block' }} />
-=======
-              <NavLink to="/user/home" className="brand-link" onClick={() => setMobileMenuOpen(false)}>
-                <img src="/zunme_icon.png" alt="Zunme AI" style={{ width: '30px', height: '30px', objectFit: 'contain' }} />
-                <span className="brand-title-text" style={{ color: '#FFFFFF', fontWeight: '800', fontSize: '16px' }}>Zunme AI</span>
->>>>>>> 0c56802995139c4d109161202f435ff0848437da
               </NavLink>
               <button
                 className="btn-ghost hide-on-desktop"
@@ -511,6 +528,33 @@ export const AppShell: React.FC = () => {
               >
                 <Bookmark size={17} />
                 <span>My Library</span>
+              </NavLink>
+
+              <NavLink
+                to="/store"
+                className={() => `sidebar-nav-item ${location.pathname.startsWith('/store') || location.pathname.startsWith('/shop') ? 'active' : ''}`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <ShoppingBag size={17} />
+                <span>Zunme Store</span>
+              </NavLink>
+
+              <NavLink
+                to="/merchant-zone"
+                className={() => `sidebar-nav-item ${location.pathname.startsWith('/merchant-zone') || location.pathname.startsWith('/merchant') ? 'active' : ''}`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <Store size={17} />
+                <span>Merchant Zone</span>
+              </NavLink>
+
+              <NavLink
+                to="/zbox"
+                className={() => `sidebar-nav-item ${location.pathname.startsWith('/zbox') ? 'active' : ''}`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <Mail size={17} />
+                <span>zBox Mail &amp; Share</span>
               </NavLink>
 
               <NavLink

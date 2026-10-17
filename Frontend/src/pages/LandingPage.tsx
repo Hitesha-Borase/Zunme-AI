@@ -308,6 +308,12 @@ export const LandingPage: React.FC = () => {
               >
                 FAQ
               </button>
+              <NavLink
+                to="/store"
+                style={{ background: 'none', border: 'none', color: '#B0B9CC', fontSize: '14px', fontWeight: 600, padding: '8px 12px', textDecoration: 'none', cursor: 'pointer', transition: 'color 0.2s' }}
+              >
+                Store
+              </NavLink>
             </nav>
 
             {/* Header Right Actions */}
@@ -377,6 +383,13 @@ export const LandingPage: React.FC = () => {
               >
                 FAQ
               </button>
+              <NavLink
+                to="/store"
+                style={{ textAlign: 'left', padding: '12px 0', border: 'none', background: 'none', color: '#111625', fontSize: '16px', fontWeight: 600, textDecoration: 'none' }}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Store
+              </NavLink>
             </nav>
             <div className="mobile-drawer-actions">
               <NavLink

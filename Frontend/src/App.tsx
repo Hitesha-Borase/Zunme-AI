@@ -35,6 +35,11 @@ import { SEOWorkspacePage } from './pages/seo/SEOWorkspacePage';
 import { BusinessWorkspacePage } from './pages/business/BusinessWorkspacePage';
 import { ZunmeAdsPage } from './pages/ads/ZunmeAdsPage';
 import { SocialSchedulerPage } from './pages/social/SocialSchedulerPage';
+import { ZunmeStorePage } from './pages/store/ZunmeStorePage';
+import { MerchantZonePage } from './pages/merchant/MerchantZonePage';
+import { ZBoxPage } from './pages/zbox/ZBoxPage';
+import { AdOnboardingWizard } from './pages/ads/AdOnboardingWizard';
+import { AdFormatBuildersPage } from './pages/ads/AdFormatBuildersPage';
 
 // Admin Operations Pages
 import { AdminDashboardPage } from './pages/admin/AdminDashboardPage';
@@ -142,10 +147,33 @@ export const App: React.FC = () => {
             <Route path=":section" element={<BusinessWorkspacePage />} />
           </Route>
 
+          {/* Zunme Store & Shop Suite */}
+          <Route path="/store" element={<AppShell />}>
+            <Route index element={<ZunmeStorePage />} />
+            <Route path=":category" element={<ZunmeStorePage />} />
+          </Route>
+          <Route path="/shop" element={<Navigate to="/store" replace />} />
+
+          {/* Zunme Merchant Zone Suite */}
+          <Route path="/merchant-zone" element={<AppShell />}>
+            <Route index element={<MerchantZonePage />} />
+            <Route path=":section" element={<MerchantZonePage />} />
+          </Route>
+          <Route path="/merchant" element={<Navigate to="/merchant-zone" replace />} />
+
+          {/* zBox Unified Webmail & Cross-Platform Sharing */}
+          <Route path="/zbox" element={<AppShell />}>
+            <Route index element={<ZBoxPage />} />
+            <Route path=":folder" element={<ZBoxPage />} />
+          </Route>
+
           <Route path="/ads" element={<AppShell />}>
             <Route index element={<ZunmeAdsPage />} />
             <Route path="dashboard" element={<ZunmeAdsPage />} />
             <Route path="overview" element={<ZunmeAdsPage />} />
+            <Route path="onboarding" element={<AdOnboardingWizard />} />
+            <Route path="formats" element={<AdFormatBuildersPage />} />
+            <Route path="format-builders" element={<AdFormatBuildersPage />} />
             <Route path=":section" element={<ZunmeAdsPage />} />
           </Route>
 
