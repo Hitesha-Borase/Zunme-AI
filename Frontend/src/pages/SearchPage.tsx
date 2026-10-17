@@ -166,6 +166,33 @@ export const SearchPage: React.FC = () => {
         </p>
       </div>
 
+      {/* Universal Plan Accessibility Bar (Johnny's Directive: Free, Plus, Pro, Business, Enterprise, Edu, Guest) */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap', marginBottom: '14px', background: '#F8FAFC', padding: '8px 14px', borderRadius: '10px', border: '1px solid #E2E8F0' }}>
+        <span style={{ fontSize: '11px', fontWeight: '800', color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+          Universal Plan Availability:
+        </span>
+        {['Free', 'Plus', 'Pro', 'Business', 'Enterprise', 'Edu', 'Guest (No Login)'].map((tier) => (
+          <span
+            key={tier}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '4px',
+              fontSize: '11px',
+              fontWeight: '600',
+              padding: '2px 8px',
+              borderRadius: '9999px',
+              background: '#FFFFFF',
+              border: '1px solid #CBD5E1',
+              color: '#334155'
+            }}
+          >
+            <CheckCircle2 size={11} color="#10B981" />
+            <span>{tier}: Active</span>
+          </span>
+        ))}
+      </div>
+
       {/* Part 10: Trigger Mode Control Bar (Manual vs Automatic) */}
       <div className="search-trigger-controls">
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -274,6 +301,36 @@ export const SearchPage: React.FC = () => {
           <span>{autoDetectNotice}</span>
         </div>
       )}
+
+      {/* TASK 21: UNIVERSAL ACCESS TIER INDICATOR (FROM ZUNME - WEB SEARCH.DOCX) */}
+      <div
+        className="universal-tier-bar"
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+          flexWrap: 'wrap',
+          padding: '8px 12px',
+          background: '#FFFFFF',
+          border: '1px solid #E5E7EB',
+          borderRadius: '8px',
+          marginBottom: '16px',
+          fontSize: '12px',
+          color: '#4B5563'
+        }}
+      >
+        <span style={{ fontWeight: '700', color: '#111827', display: 'flex', alignItems: 'center', gap: '4px' }}>
+          <ShieldCheck size={14} color="#10B981" />
+          <span>Universal Web Grounding:</span>
+        </span>
+        <span style={{ background: '#F3F4F6', padding: '2px 8px', borderRadius: '4px', fontWeight: '600' }}>Free</span>
+        <span style={{ background: '#F3F4F6', padding: '2px 8px', borderRadius: '4px', fontWeight: '600' }}>Plus</span>
+        <span style={{ background: '#F3F4F6', padding: '2px 8px', borderRadius: '4px', fontWeight: '600' }}>Pro</span>
+        <span style={{ background: '#F3F4F6', padding: '2px 8px', borderRadius: '4px', fontWeight: '600' }}>Business</span>
+        <span style={{ background: '#F3F4F6', padding: '2px 8px', borderRadius: '4px', fontWeight: '600' }}>Enterprise</span>
+        <span style={{ background: '#F3F4F6', padding: '2px 8px', borderRadius: '4px', fontWeight: '600' }}>Edu</span>
+        <span style={{ background: '#ECFDF5', color: '#059669', padding: '2px 8px', borderRadius: '4px', fontWeight: '700' }}>✓ Guest Access Enabled</span>
+      </div>
 
       {/* Suggested Query Chips */}
       <div className="query-chips-row">
