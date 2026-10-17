@@ -35,7 +35,7 @@ export const ECOSYSTEM_APPS: EcosystemAppItem[] = [
     id: 'zunme-ai',
     name: 'Zunme AI',
     tagline: 'Core Workspace & Chat',
-    icon: <Bot size={20} color="#FFFFFF" />,
+    icon: <Bot size={16} color="#FFFFFF" />,
     iconBg: 'linear-gradient(135deg, #6E56CF 0%, #4338CA 100%)',
     to: '/user/dashboard',
     badge: 'Core'
@@ -44,16 +44,16 @@ export const ECOSYSTEM_APPS: EcosystemAppItem[] = [
     id: 'zbox',
     name: 'zBox',
     tagline: 'Secured Email & MVP Share',
-    icon: <Mail size={20} color="#FFFFFF" />,
+    icon: <Mail size={16} color="#FFFFFF" />,
     iconBg: 'linear-gradient(135deg, #0284C7 0%, #0369A1 100%)',
     to: '/zbox',
-    badge: 'Secured'
+    badge: 'Email'
   },
   {
     id: 'content-studio',
     name: 'Content Studio',
     tagline: '1,000+ Blueprints',
-    icon: <PenTool size={20} color="#FFFFFF" />,
+    icon: <PenTool size={16} color="#FFFFFF" />,
     iconBg: 'linear-gradient(135deg, #C084FC 0%, #9333EA 100%)',
     to: '/user/builders'
   },
@@ -61,7 +61,7 @@ export const ECOSYSTEM_APPS: EcosystemAppItem[] = [
     id: 'zunme-store',
     name: 'Zunme Store',
     tagline: 'Digital Asset Shop',
-    icon: <Film size={20} color="#FFFFFF" />,
+    icon: <Film size={16} color="#FFFFFF" />,
     iconBg: 'linear-gradient(135deg, #EC4899 0%, #BE185D 100%)',
     to: '/store',
     badge: 'Shop'
@@ -70,7 +70,7 @@ export const ECOSYSTEM_APPS: EcosystemAppItem[] = [
     id: 'merchant-zone',
     name: 'Merchant Zone',
     tagline: 'Catalog & Shopify Sync',
-    icon: <ShoppingBag size={20} color="#FFFFFF" />,
+    icon: <ShoppingBag size={16} color="#FFFFFF" />,
     iconBg: 'linear-gradient(135deg, #F59E0B 0%, #B45309 100%)',
     to: '/merchant-zone'
   },
@@ -78,7 +78,7 @@ export const ECOSYSTEM_APPS: EcosystemAppItem[] = [
     id: 'mvp-suite',
     name: 'MVP Suite',
     tagline: '8 Platform Accelerators',
-    icon: <Layers size={20} color="#FFFFFF" />,
+    icon: <Layers size={16} color="#FFFFFF" />,
     iconBg: 'linear-gradient(135deg, #10B981 0%, #047857 100%)',
     to: '/user/mvp',
     badge: '8 MVPs'
@@ -87,7 +87,7 @@ export const ECOSYSTEM_APPS: EcosystemAppItem[] = [
     id: 'crm-nergy',
     name: 'CRM nErgy',
     tagline: 'CRM & ERP Deep Sync',
-    icon: <Briefcase size={20} color="#FFFFFF" />,
+    icon: <Briefcase size={16} color="#FFFFFF" />,
     iconBg: 'linear-gradient(135deg, #3B82F6 0%, #1D4ED8 100%)',
     to: '/business/crm'
   },
@@ -95,24 +95,24 @@ export const ECOSYSTEM_APPS: EcosystemAppItem[] = [
     id: 'b4b-america',
     name: 'B4B America',
     tagline: 'Small Business Onboarding',
-    icon: <ShieldCheck size={20} color="#FFFFFF" />,
+    icon: <ShieldCheck size={16} color="#FFFFFF" />,
     iconBg: 'linear-gradient(135deg, #2563EB 0%, #1E40AF 100%)',
     to: '/business/overview',
     badge: 'Partner'
   },
   {
     id: 'oal-marketplace',
-    name: 'OAL Marketplace',
+    name: 'OAL Market',
     tagline: 'Commercial Funding Hub',
-    icon: <Landmark size={20} color="#FFFFFF" />,
+    icon: <Landmark size={16} color="#FFFFFF" />,
     iconBg: 'linear-gradient(135deg, #F97316 0%, #C2410C 100%)',
     to: '/business/overview'
   },
   {
     id: 'oal-money-club',
-    name: 'OAL Money Club',
+    name: 'OAL Money',
     tagline: 'INV IQ AI Credit Scoring',
-    icon: <Award size={20} color="#FFFFFF" />,
+    icon: <Award size={16} color="#FFFFFF" />,
     iconBg: 'linear-gradient(135deg, #EF4444 0%, #B91C1C 100%)',
     to: '/business/overview',
     badge: 'INV IQ'
@@ -121,7 +121,7 @@ export const ECOSYSTEM_APPS: EcosystemAppItem[] = [
     id: 'omp-deals',
     name: 'OMP Deals',
     tagline: 'Commercial Trade Escrow',
-    icon: <ShoppingBag size={20} color="#FFFFFF" />,
+    icon: <ShoppingBag size={16} color="#FFFFFF" />,
     iconBg: 'linear-gradient(135deg, #14B8A6 0%, #0F766E 100%)',
     to: '/merchant-zone'
   },
@@ -129,7 +129,7 @@ export const ECOSYSTEM_APPS: EcosystemAppItem[] = [
     id: 'swmtp',
     name: 'SWMTP',
     tagline: 'Web Telemetry & SEO',
-    icon: <Activity size={20} color="#FFFFFF" />,
+    icon: <Activity size={16} color="#FFFFFF" />,
     iconBg: 'linear-gradient(135deg, #6366F1 0%, #4338CA 100%)',
     to: '/seo'
   }
@@ -189,27 +189,27 @@ export const EcosystemAppsLauncher: React.FC<{ variant?: 'dark' | 'light' }> = (
           {/* Header */}
           <div className="ecosystem-dropdown-header">
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#10B981' }} />
+              <div style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#10B981', boxShadow: '0 0 6px #10B981' }} />
               <div>
-                <h4 style={{ margin: 0, fontSize: '14px', fontWeight: 800, color: '#111625' }}>
-                  Zunme Platforms Ecosystem
+                <h4 style={{ margin: 0, fontSize: '13px', fontWeight: 800, color: '#0F172A', letterSpacing: '-0.01em' }}>
+                  Zunme Platforms
                 </h4>
-                <p style={{ margin: 0, fontSize: '11.5px', color: '#64748B' }}>
-                  Single Sign-On (SSO) • 10 Connected Apps
+                <p style={{ margin: 0, fontSize: '11px', color: '#64748B' }}>
+                  10 Connected Ecosystem Apps
                 </p>
               </div>
             </div>
             <button
               type="button"
-              className="btn-ghost"
+              className="ecosystem-close-btn"
               onClick={() => setIsOpen(false)}
-              style={{ padding: '4px', color: '#64748B' }}
+              aria-label="Close"
             >
-              <X size={16} />
+              <X size={14} />
             </button>
           </div>
 
-          {/* Grid of Apps (Google Products Style) */}
+          {/* Grid of Apps (Clean Google Products Style) */}
           <div className="ecosystem-apps-grid">
             {ECOSYSTEM_APPS.map((app) => (
               <NavLink
@@ -217,22 +217,22 @@ export const EcosystemAppsLauncher: React.FC<{ variant?: 'dark' | 'light' }> = (
                 to={app.to}
                 className="ecosystem-app-card"
                 onClick={() => setIsOpen(false)}
+                title={`${app.name} • ${app.tagline}`}
               >
                 <div className="ecosystem-app-icon" style={{ background: app.iconBg }}>
                   {app.icon}
                   {app.badge && <span className="ecosystem-app-badge">{app.badge}</span>}
                 </div>
                 <span className="ecosystem-app-name">{app.name}</span>
-                <span className="ecosystem-app-tagline">{app.tagline}</span>
               </NavLink>
             ))}
           </div>
 
           {/* Footer */}
           <div className="ecosystem-dropdown-footer">
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '11.5px', color: '#64748B' }}>
-              <ShieldCheck size={13} color="#10B981" />
-              <span>Universal credentials active across all platforms</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '5px', fontSize: '11px', color: '#64748B' }}>
+              <ShieldCheck size={12} color="#10B981" />
+              <span>Universal SSO Login</span>
             </div>
             <NavLink
               to="/#ecosystem"
@@ -240,7 +240,7 @@ export const EcosystemAppsLauncher: React.FC<{ variant?: 'dark' | 'light' }> = (
               onClick={() => setIsOpen(false)}
             >
               <span>Explore All</span>
-              <ExternalLink size={11} />
+              <ExternalLink size={10} />
             </NavLink>
           </div>
         </div>

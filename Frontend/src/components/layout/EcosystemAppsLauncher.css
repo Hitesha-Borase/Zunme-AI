@@ -79,24 +79,23 @@
 
 .ecosystem-launcher-dropdown {
   position: absolute;
-  top: calc(100% + 10px);
+  top: calc(100% + 8px);
   right: 0;
-  width: 360px;
-  max-height: 520px;
-  overflow-y: auto;
+  width: 310px;
   background: #FFFFFF;
-  border: 1px solid #E2E8F0;
-  border-radius: 16px;
-  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.16), 0 0 1px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(226, 232, 240, 0.95);
+  border-radius: 18px;
+  box-shadow: 0 16px 44px -8px rgba(15, 23, 42, 0.18), 0 0 0 1px rgba(0, 0, 0, 0.04);
   z-index: 1200;
-  padding: 16px;
-  animation: zboxFadeDown 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  padding: 12px 10px 10px;
+  animation: zboxFadeDown 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: visible;
 }
 
 @keyframes zboxFadeDown {
   from {
     opacity: 0;
-    transform: translateY(-8px);
+    transform: translateY(-6px);
   }
   to {
     opacity: 1;
@@ -108,15 +107,33 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-bottom: 12px;
-  margin-bottom: 12px;
+  padding: 0 4px 8px;
+  margin-bottom: 6px;
   border-bottom: 1px solid #F1F5F9;
+}
+
+.ecosystem-close-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #94A3B8;
+  padding: 4px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.ecosystem-close-btn:hover {
+  background: #F1F5F9;
+  color: #0F172A;
 }
 
 .ecosystem-apps-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
+  gap: 4px 2px;
 }
 
 .ecosystem-app-card {
@@ -124,77 +141,68 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: 10px 6px;
-  border-radius: 12px;
+  padding: 8px 4px 6px;
+  border-radius: 10px;
   text-decoration: none;
   background: transparent;
   border: 1px solid transparent;
-  transition: all 0.15s ease;
+  transition: all 0.16s ease;
 }
 
 .ecosystem-app-card:hover {
   background: #F8FAFC;
   border-color: #E2E8F0;
-  transform: translateY(-2px);
+  transform: translateY(-1px);
 }
 
 .ecosystem-app-icon {
-  width: 42px;
-  height: 42px;
-  border-radius: 12px;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  margin-bottom: 6px;
-  transition: transform 0.15s ease;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 4px;
+  transition: transform 0.16s ease;
 }
 
 .ecosystem-app-card:hover .ecosystem-app-icon {
-  transform: scale(1.06);
+  transform: scale(1.08);
 }
 
 .ecosystem-app-badge {
   position: absolute;
-  top: -5px;
+  top: -4px;
   right: -5px;
-  background: #111827;
+  background: #0F172A;
   color: #FFFFFF;
-  font-size: 8.5px;
+  font-size: 7.5px;
   font-weight: 800;
-  padding: 1px 5px;
+  padding: 1px 4px;
   border-radius: 9999px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.4);
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.02em;
+  line-height: 1.1;
 }
 
 .ecosystem-app-name {
-  font-size: 12px;
-  font-weight: 700;
+  font-size: 11px;
+  font-weight: 600;
   color: #1E293B;
   display: block;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 100%;
-}
-
-.ecosystem-app-tagline {
-  font-size: 10px;
-  color: #64748B;
-  display: block;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 100%;
-  margin-top: 1px;
+  max-width: 86px;
+  line-height: 1.25;
 }
 
 .ecosystem-dropdown-footer {
-  margin-top: 14px;
-  padding-top: 10px;
+  margin-top: 8px;
+  padding: 8px 4px 0;
   border-top: 1px solid #F1F5F9;
   display: flex;
   align-items: center;
@@ -204,13 +212,20 @@
 .ecosystem-footer-link {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  font-size: 11.5px;
+  gap: 3px;
+  font-size: 11px;
   font-weight: 700;
-  color: #6E56CF;
+  color: #7C3AED;
   text-decoration: none;
 }
 
 .ecosystem-footer-link:hover {
   text-decoration: underline;
+}
+
+@media (max-width: 480px) {
+  .ecosystem-launcher-dropdown {
+    width: 295px;
+    right: -10px;
+  }
 }
