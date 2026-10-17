@@ -41,10 +41,7 @@ import {
   Smile,
   Image as ImageIcon,
   Video,
-  Bot,
-  Download,
-  Eye,
-  Scale
+  Bot
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { DashboardLoginModal } from '../components/modals/DashboardLoginModal';
@@ -314,15 +311,13 @@ export const ZUNME_STORE_SHOWCASE_CATEGORIES: StoreShowcaseCategory[] = [
   }
 ];
 
-export type LandingSection = 'all' | 'agent' | 'features' | 'how-it-works' | 'showcase' | 'pricing' | 'faq' | 'ecosystem' | 'store';
+export type LandingSection = 'all' | 'features' | 'how-it-works' | 'showcase' | 'pricing' | 'faq' | 'ecosystem' | 'store';
 
 export const LandingPage: React.FC = () => {
   const { user } = useApp();
   const [searchParams, setSearchParams] = useSearchParams();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState<boolean>(false);
-  const [showTrademarkModal, setShowTrademarkModal] = useState<boolean>(false);
-  const [copiedTrademarkDossier, setCopiedTrademarkDossier] = useState<boolean>(false);
   const [activeShowcaseTab, setActiveShowcaseTab] = useState<'chat' | 'search' | 'studio' | 'library'>('chat');
   const navigate = useNavigate();
   const [askZunmeQuery, setAskZunmeQuery] = useState('');
@@ -331,24 +326,6 @@ export const LandingPage: React.FC = () => {
   const [copiedSnippet, setCopiedSnippet] = useState(false);
   const [activeSection, setActiveSection] = useState<LandingSection>('all');
   const [activeEcosystemCategory, setActiveEcosystemCategory] = useState<string>('All');
-
-  const handleCopyTrademarkDossier = () => {
-    const dossierText = `--- ZUNME — MY AI AGENT™ TRADEMARK FILING SPECIFICATION ---
-Mark Name: Zunme — My AI Agent™
-Legal Status: 100% Original Neural Artwork • Free from Third-Party IP & Copyright Encumbrances
-USPTO & Global Classes: International Class 009 (Autonomous AI Agents & Software) & Class 042 (Cloud AI SaaS)
-Applicant / Owner: Johnny Baum / Zunme AI Holdings
-Master Graphic Asset: /zunme_ai_agent_original.jpg (1536 x 1536 px, RGB Lossless)
-Hex Palette:
-- Electric Violet: #7C3AED
-- Cyber Cyan: #06B6D4
-- Neural Emerald: #10B981
-- Deep Obsidian: #0B0F19
-Ready for Formal Attorney Trademark Registration.`;
-    navigator.clipboard.writeText(dossierText);
-    setCopiedTrademarkDossier(true);
-    setTimeout(() => setCopiedTrademarkDossier(false), 2500);
-  };
 
   const handleNavClick = (section: LandingSection) => {
     setActiveSection(section);
@@ -563,13 +540,6 @@ Ready for Formal Attorney Trademark Registration.`;
             <nav className="landing-nav-links" aria-label="Main Navigation">
               <button
                 type="button"
-                className={activeSection === 'agent' ? 'active' : ''}
-                onClick={() => handleNavClick('agent')}
-              >
-                AI Agent™
-              </button>
-              <button
-                type="button"
                 className={activeSection === 'features' ? 'active' : ''}
                 onClick={() => handleNavClick('features')}
               >
@@ -665,13 +635,6 @@ Ready for Formal Attorney Trademark Registration.`;
         {mobileMenuOpen && (
           <div className="mobile-drawer" role="dialog" aria-modal="true">
             <nav className="mobile-nav-links">
-              <button
-                type="button"
-                className={activeSection === 'agent' ? 'active' : ''}
-                onClick={() => handleNavClick('agent')}
-              >
-                Zunme — My AI Agent™
-              </button>
               <button
                 type="button"
                 className={activeSection === 'features' ? 'active' : ''}
@@ -1045,147 +1008,6 @@ Ready for Formal Attorney Trademark Registration.`;
           </div>
         </div>
       </section>
-      )}
-
-      {/* Zunme — My AI Agent™ Original Trademark Visual & Showcase (Zip 24 Client Task) */}
-      {(activeSection === 'all' || activeSection === 'agent') && (
-        <section id="ai-agent" className="ai-agent-section">
-          <div className="landing-container">
-            <div className="ai-agent-grid">
-              {/* Left Column: Original Master Asset Visual Card */}
-              <div className="ai-agent-visual-card">
-                <div className="ai-agent-media-frame">
-                  <img
-                    src="/zunme_ai_agent_original.jpg"
-                    alt="Zunme — My AI Agent™ Original Trademark Asset"
-                    className="ai-agent-img"
-                  />
-                  <div className="ai-agent-media-overlay" />
-                  <div className="ai-agent-badge-top">
-                    <span className="ai-agent-pulse-dot" />
-                    <span>USPTO TRADEMARK SPEC READY</span>
-                  </div>
-                  <div className="ai-agent-badge-bottom-info">
-                    <span>100% Original Neural Artwork</span>
-                    <span className="ai-agent-resolution-pill">1536 × 1536 MASTER</span>
-                  </div>
-                </div>
-
-                <div className="ai-agent-card-controls">
-                  <button
-                    type="button"
-                    className="btn-inspect-trademark"
-                    onClick={() => setShowTrademarkModal(true)}
-                  >
-                    <Eye size={15} />
-                    <span>Inspect Trademark Asset &amp; Dossier</span>
-                  </button>
-
-                  <NavLink
-                    to="/user/chat"
-                    className="btn btn-primary btn-block btn-glow"
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      gap: '8px',
-                      padding: '11px',
-                      fontWeight: 700,
-                      borderRadius: '12px'
-                    }}
-                  >
-                    <Bot size={16} />
-                    <span>Launch Zunme AI Agent Chat</span>
-                    <ArrowRight size={14} />
-                  </NavLink>
-                </div>
-              </div>
-
-              {/* Right Column: Architectural & Legal Specifications */}
-              <div className="ai-agent-info-col">
-                <div className="ai-agent-kicker">
-                  <Sparkles size={13} />
-                  <span>ORIGINAL INTELLECTUAL PROPERTY • TRADEMARK READY</span>
-                </div>
-
-                <h2 className="ai-agent-headline">
-                  Meet <span className="ai-agent-headline-gradient">Zunme — My AI Agent™</span>
-                </h2>
-
-                <p className="ai-agent-lead-text">
-                  Bespoke, copyright-clear cybernetic neural identity designed specifically for client trademark registration with the USPTO and international trademark authorities. Free from third-party intellectual property encumbrances, engineered for autonomous multi-platform execution.
-                </p>
-
-                <div className="ai-agent-spec-cards-grid">
-                  <div className="ai-agent-spec-card" style={{ '--card-accent': '#7C3AED' } as React.CSSProperties}>
-                    <div className="ai-agent-spec-header">
-                      <div className="ai-agent-spec-icon-box" style={{ background: '#7C3AED' }}>
-                        <Scale size={16} />
-                      </div>
-                      <h4 className="ai-agent-spec-title">100% Original Trademark IP</h4>
-                    </div>
-                    <p className="ai-agent-spec-desc">
-                      Custom-crafted neural visual identity designed without infringing stock or competitor assets, enabling direct trademark filing by legal counsel.
-                    </p>
-                  </div>
-
-                  <div className="ai-agent-spec-card" style={{ '--card-accent': '#06B6D4' } as React.CSSProperties}>
-                    <div className="ai-agent-spec-header">
-                      <div className="ai-agent-spec-icon-box" style={{ background: '#06B6D4' }}>
-                        <Bot size={16} />
-                      </div>
-                      <h4 className="ai-agent-spec-title">Multi-Platform Autonomy</h4>
-                    </div>
-                    <p className="ai-agent-spec-desc">
-                      Autonomous execution coordinating workflows across all 10 Zunme connected platforms including zBox, CRM nErgy, and Content Studio.
-                    </p>
-                  </div>
-
-                  <div className="ai-agent-spec-card" style={{ '--card-accent': '#10B981' } as React.CSSProperties}>
-                    <div className="ai-agent-spec-header">
-                      <div className="ai-agent-spec-icon-box" style={{ background: '#10B981' }}>
-                        <Zap size={16} />
-                      </div>
-                      <h4 className="ai-agent-spec-title">Multimodal Neural Perception</h4>
-                    </div>
-                    <p className="ai-agent-spec-desc">
-                      Integrated voice commands, visual comprehension, real-time web grounding via Zunme nTel™, and instant sub-second response times.
-                    </p>
-                  </div>
-
-                  <div className="ai-agent-spec-card" style={{ '--card-accent': '#F59E0B' } as React.CSSProperties}>
-                    <div className="ai-agent-spec-header">
-                      <div className="ai-agent-spec-icon-box" style={{ background: '#F59E0B' }}>
-                        <ShieldCheck size={16} />
-                      </div>
-                      <h4 className="ai-agent-spec-title">Universal SSO &amp; Privacy</h4>
-                    </div>
-                    <p className="ai-agent-spec-desc">
-                      End-to-end encrypted sessions with zero training on confidential user communications, accessible instantly with your Zunme Single Sign-On account.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="ai-agent-bottom-trust">
-                  <div className="ai-agent-trust-item">
-                    <ShieldCheck size={15} color="#34D399" />
-                    <span>USPTO Class 009 &amp; 042 Registration Dossier</span>
-                  </div>
-                  <span className="ai-agent-trust-divider" />
-                  <div className="ai-agent-trust-item">
-                    <Cpu size={15} color="#38BDF8" />
-                    <span>1536×1536 Master Resolution Asset</span>
-                  </div>
-                  <span className="ai-agent-trust-divider" />
-                  <div className="ai-agent-trust-item">
-                    <Award size={15} color="#A78BFA" />
-                    <span>Attorney Filing Clearance Complete</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
       )}
 
       {/* Zunme Ecosystem & Connected Platforms Showcase (Google Products Style) */}
@@ -2257,134 +2079,6 @@ Ready for Formal Attorney Trademark Registration.`;
       </footer>
 
       {/* Dashboard Selection & Instant Access Modal */}
-      <DashboardLoginModal
-        isOpen={showLoginModal}
-        onClose={() => setShowLoginModal(false)}
-      />
-
-      {/* Attorney Trademark Specification & Inspection Modal (Zip 24) */}
-      {showTrademarkModal && (
-        <div
-          className="trademark-modal-backdrop"
-          onClick={() => setShowTrademarkModal(false)}
-          role="dialog"
-          aria-modal="true"
-        >
-          <div
-            className="trademark-modal-dialog"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="trademark-modal-header">
-              <div className="trademark-modal-header-left">
-                <Scale size={20} color="#A78BFA" />
-                <h3 className="trademark-modal-title">Zunme — My AI Agent™ Trademark Specification</h3>
-                <span className="trademark-modal-badge">LEGAL CLEARANCE READY</span>
-              </div>
-              <button
-                type="button"
-                className="trademark-modal-close-btn"
-                onClick={() => setShowTrademarkModal(false)}
-                aria-label="Close Modal"
-              >
-                <X size={16} />
-              </button>
-            </div>
-
-            <div className="trademark-modal-body">
-              <div className="trademark-modal-preview-box">
-                <img
-                  src="/zunme_ai_agent_original.jpg"
-                  alt="Zunme — My AI Agent Master Asset"
-                  className="trademark-modal-img"
-                />
-                <div className="trademark-modal-img-meta">
-                  <div><strong>Resolution:</strong> 1536 × 1536 px (Ultra-HD Master)</div>
-                  <div><strong>Color Space:</strong> sRGB 24-bit Lossless</div>
-                  <div><strong>Artwork Type:</strong> Original Bespoke Generation</div>
-                </div>
-              </div>
-
-              <div className="trademark-modal-dossier">
-                <div className="trademark-dossier-callout">
-                  <strong>Attorney Filing Guidance:</strong> This graphic asset has been custom synthesized to establish an original, uncontested visual trademark for client Johnny Baum. It contains no copyrighted characters, logos, or commercial stock iconography.
-                </div>
-
-                <table className="trademark-table">
-                  <tbody>
-                    <tr>
-                      <td className="label-col">Mark Name</td>
-                      <td className="val-col"><strong>Zunme — My AI Agent™</strong></td>
-                    </tr>
-                    <tr>
-                      <td className="label-col">USPTO Classes</td>
-                      <td className="val-col">
-                        International Class 009 (Computer software for artificial intelligence) &amp; Class 042 (Cloud software SaaS)
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="label-col">Applicant</td>
-                      <td className="val-col">Johnny Baum / Zunme AI Platform Holdings</td>
-                    </tr>
-                    <tr>
-                      <td className="label-col">IP Non-Infringement</td>
-                      <td className="val-col">
-                        <span style={{ color: '#34D399', fontWeight: 700 }}>✓ 100% Original Intellectual Property</span> (Zero Third-Party Trademark Conflicts)
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="label-col">Signature Palette</td>
-                      <td className="val-col">
-                        <div className="trademark-palettes">
-                          <span className="trademark-swatch">
-                            <span className="trademark-swatch-dot" style={{ background: '#7C3AED' }} />
-                            #7C3AED (Violet)
-                          </span>
-                          <span className="trademark-swatch">
-                            <span className="trademark-swatch-dot" style={{ background: '#06B6D4' }} />
-                            #06B6D4 (Cyan)
-                          </span>
-                          <span className="trademark-swatch">
-                            <span className="trademark-swatch-dot" style={{ background: '#10B981' }} />
-                            #10B981 (Emerald)
-                          </span>
-                          <span className="trademark-swatch">
-                            <span className="trademark-swatch-dot" style={{ background: '#0B0F19' }} />
-                            #0B0F19 (Obsidian)
-                          </span>
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-            <div className="trademark-modal-footer">
-              <button
-                type="button"
-                className="btn btn-outline"
-                onClick={handleCopyTrademarkDossier}
-                style={{ borderColor: 'rgba(255,255,255,0.2)', color: '#FFFFFF', display: 'flex', alignItems: 'center', gap: '6px' }}
-              >
-                {copiedTrademarkDossier ? <Check size={14} color="#34D399" /> : <Copy size={14} />}
-                <span>{copiedTrademarkDossier ? 'Dossier Copied!' : 'Copy Filing Spec'}</span>
-              </button>
-
-              <a
-                href="/zunme_ai_agent_original.jpg"
-                download="Zunme_My_AI_Agent_Master_Trademark_Asset.jpg"
-                className="btn btn-primary btn-glow"
-                style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '10px 18px', fontWeight: 700 }}
-              >
-                <Download size={15} />
-                <span>Download Master Graphic</span>
-              </a>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Universal Workspace Chooser Modal */}
       <DashboardLoginModal
         isOpen={showLoginModal}
         onClose={() => setShowLoginModal(false)}
