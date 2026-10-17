@@ -40,6 +40,7 @@ import { MerchantZonePage } from './pages/merchant/MerchantZonePage';
 import { ZBoxPage } from './pages/zbox/ZBoxPage';
 import { AdOnboardingWizard } from './pages/ads/AdOnboardingWizard';
 import { AdFormatBuildersPage } from './pages/ads/AdFormatBuildersPage';
+import { MVPPlatformsWorkspacePage } from './pages/mvp/MVPPlatformsWorkspacePage';
 
 // Admin Operations Pages
 import { AdminDashboardPage } from './pages/admin/AdminDashboardPage';
@@ -182,6 +183,14 @@ export const App: React.FC = () => {
             <Route path="dashboard" element={<SocialSchedulerPage />} />
             <Route path=":section" element={<SocialSchedulerPage />} />
           </Route>
+
+          {/* MVP Platforms Workspace (Tasks 1 to 8: Most Visited Platforms Suite) */}
+          <Route path="/user/mvp" element={<AppShell />}>
+            <Route index element={<MVPPlatformsWorkspacePage />} />
+            <Route path=":platform" element={<MVPPlatformsWorkspacePage />} />
+          </Route>
+          <Route path="/mvp" element={<Navigate to="/user/mvp" replace />} />
+          <Route path="/mvp-tools" element={<Navigate to="/user/mvp" replace />} />
 
           {/* Admin Operations Console */}
           <Route path="/admin" element={<AdminShell />}>

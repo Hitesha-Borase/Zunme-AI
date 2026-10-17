@@ -570,6 +570,15 @@ export const AppShell: React.FC = () => {
               </NavLink>
 
               <NavLink
+                to="/user/mvp"
+                className={() => `sidebar-nav-item ${location.pathname.startsWith('/user/mvp') || location.pathname.startsWith('/mvp') ? 'active' : ''}`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <Layers size={17} />
+                <span>MVP Platform Suite</span>
+              </NavLink>
+
+              <NavLink
                 to="/user/history"
                 className={({ isActive }) => `sidebar-nav-item ${isActive || location.pathname === '/app/history' ? 'active' : ''}`}
                 onClick={() => setMobileMenuOpen(false)}

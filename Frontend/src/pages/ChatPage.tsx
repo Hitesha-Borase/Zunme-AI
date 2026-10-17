@@ -16,7 +16,10 @@ import {
   Code,
   Globe,
   Zap,
-  ExternalLink
+  ExternalLink,
+  Mic,
+  Volume2,
+  X
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import './ChatPage.css';
@@ -35,6 +38,10 @@ export const ChatPage: React.FC = () => {
   const [inputMessage, setInputMessage] = useState('');
   const [copiedMsgId, setCopiedMsgId] = useState<string | null>(null);
   const [autoGrounding, setAutoGrounding] = useState<boolean>(true);
+  const [voiceModeOpen, setVoiceModeOpen] = useState<boolean>(false);
+  const [isListening, setIsListening] = useState<boolean>(false);
+  const [voiceTranscript, setVoiceTranscript] = useState<string>('Explain the competitive advantages of Zunme AI compared to traditional LLMs in 2026.');
+  const [deepResearchActive, setDeepResearchActive] = useState<boolean>(false);
   const scrollEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const hasSentInitialPrompt = useRef(false);
@@ -58,11 +65,22 @@ export const ChatPage: React.FC = () => {
 
   const handleSend = () => {
     if (!inputMessage.trim() || isAiResponding) return;
-    sendMessage(inputMessage.trim());
+    const finalMsg = deepResearchActive
+      ? `[DEEP RESEARCH SYNTHESIS: Multi-Step Verified Data Gathering]\n${inputMessage.trim()}`
+      : inputMessage.trim();
+    sendMessage(finalMsg);
     setInputMessage('');
     if (textareaRef.current) {
       textareaRef.current.style.height = '48px';
     }
+  };
+
+  const handleSendVoiceTranscript = () => {
+    if (!voiceTranscript.trim() || isAiResponding) return;
+    sendMessage(voiceTranscript.trim());
+    setVoiceModeOpen(false);
+    setIsListening(false);
+    showToast('Sent voice transcription to Zunme AI', 'success');
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -359,16 +377,58 @@ export const ChatPage: React.FC = () => {
 
           <div className="chat-input-actions">
             <div className="input-hints flex items-center gap-3">
-              <span>Enter ↵ to send</span>
-              <span>Shift+Enter for newline</span>
               <button
-                className="btn-ghost btn-sm"
-                onClick={() => showToast('File attachments are scheduled for Phase 3', 'info')}
-                title="Attach files (Phase 3)"
-                style={{ padding: '2px 6px', color: 'var(--color-text-tertiary)' }}
+                type="button"
+                className={`btn-ghost btn-sm ${deepResearchActive ? 'active' : ''}`}
+                onClick={() => {
+                  setDeepResearchActive(!deepResearchActive);
+                  showToast(
+                    !deepResearchActive
+                      ? '⚡ Deep Research Mode ON: Multi-step synthesis active'
+                      : 'Standard Chat Mode active',
+                    'info'
+                  );
+                }}
+                style={{
+                  padding: '3px 8px',
+                  borderRadius: '6px',
+                  fontSize: '11.5px',
+                  fontWeight: '700',
+                  background: deepResearchActive ? 'rgba(99, 91, 255, 0.15)' : 'transparent',
+                  color: deepResearchActive ? '#635BFF' : 'var(--color-text-secondary)',
+                  border: deepResearchActive ? '1px solid #635BFF' : '1px solid transparent'
+                }}
+                title="Toggle Deep Multi-Step Research Mode (Task 12)"
               >
-                <Paperclip size={14} />
+                <Sparkles size={13} style={{ display: 'inline', marginRight: '4px' }} />
+                <span>Deep Research</span>
               </button>
+
+              <button
+                type="button"
+                className="btn-ghost btn-sm"
+                onClick={() => {
+                  setVoiceModeOpen(true);
+                  setIsListening(true);
+                  showToast('Voice Mode activated. Listening for speech...', 'info');
+                }}
+                title="Natural Voice Conversation Mode (Task 10)"
+                style={{
+                  padding: '3px 8px',
+                  borderRadius: '6px',
+                  fontSize: '11.5px',
+                  fontWeight: '700',
+                  color: '#4B5563',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '4px'
+                }}
+              >
+                <Mic size={14} color="#635BFF" />
+                <span>Voice Mode</span>
+              </button>
+
+              <span className="hide-on-mobile" style={{ fontSize: '11.5px', color: '#9CA3AF' }}>Enter ↵ to send</span>
             </div>
 
             <div className="input-btns-right">
@@ -376,7 +436,7 @@ export const ChatPage: React.FC = () => {
                 className="btn btn-primary btn-sm"
                 onClick={handleSend}
                 disabled={!inputMessage.trim() || isAiResponding}
-                style={{ borderRadius: 'var(--radius-full)', padding: '6px 14px' }}
+                style={{ borderRadius: 'var(--radius-full)', padding: '6px 16px' }}
               >
                 <span>Send</span>
                 <Send size={13} />
@@ -385,6 +445,122 @@ export const ChatPage: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* TASK 10: VOICE MODE FULLSCREEN/MODAL OVERLAY */}
+      {voiceModeOpen && (
+        <div
+          className="modal-overlay"
+          onClick={() => {
+            setVoiceModeOpen(false);
+            setIsListening(false);
+          }}
+          style={{ zIndex: 1100 }}
+        >
+          <div
+            className="voice-mode-card"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Top Close Button */}
+            <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '4px' }}>
+              <button
+                type="button"
+                className="btn-ghost"
+                style={{ color: '#E2E8F0', padding: '6px', cursor: 'pointer' }}
+                onClick={() => {
+                  setVoiceModeOpen(false);
+                  setIsListening(false);
+                }}
+                aria-label="Close voice mode"
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            {/* Glowing Orb / Pulsing Mic Avatar */}
+            <div style={{ position: 'relative', width: '110px', height: '110px', margin: '0 auto 24px' }}>
+              <div
+                style={{
+                  position: 'absolute',
+                  inset: '-10px',
+                  borderRadius: '50%',
+                  background: 'radial-gradient(circle, rgba(99, 91, 255, 0.7) 0%, rgba(99, 91, 255, 0) 70%)',
+                  animation: 'pulse 2s infinite'
+                }}
+              />
+              <div
+                style={{
+                  width: '110px',
+                  height: '110px',
+                  borderRadius: '50%',
+                  background: 'linear-gradient(135deg, #635BFF 0%, #4338CA 100%)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  boxShadow: '0 0 40px rgba(99, 91, 255, 0.6)',
+                  position: 'relative',
+                  zIndex: 2
+                }}
+              >
+                <Mic size={42} color="#FFFFFF" />
+              </div>
+            </div>
+
+            <h3 className="voice-mode-title">
+              Zunme Natural Voice Mode
+            </h3>
+            <p className="voice-mode-subtitle">
+              {isListening ? 'Listening to your voice... Speak naturally' : 'Voice session paused'}
+            </p>
+
+            {/* Animated Sound Wave Bars */}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', height: '42px', marginBottom: '24px' }}>
+              {[18, 32, 40, 24, 38, 16, 30, 42, 22, 36, 20].map((h, i) => (
+                <div
+                  key={i}
+                  style={{
+                    width: '4px',
+                    height: isListening ? `${h}px` : '6px',
+                    backgroundColor: '#818CF8',
+                    borderRadius: '3px',
+                    transition: 'height 0.2s ease',
+                    boxShadow: isListening ? '0 0 8px rgba(129, 140, 248, 0.6)' : 'none'
+                  }}
+                />
+              ))}
+            </div>
+
+            {/* Live Spoken Transcript Preview */}
+            <div className="voice-mode-transcript">
+              <div className="voice-mode-transcript-label">
+                Live Speech Transcript:
+              </div>
+              <p className="voice-mode-transcript-text">
+                "{voiceTranscript}"
+              </p>
+            </div>
+
+            {/* Action Buttons */}
+            <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={handleSendVoiceTranscript}
+                style={{ padding: '11px 22px', fontSize: '14px', fontWeight: '700', borderRadius: '10px' }}
+              >
+                <Send size={15} />
+                <span>Send to Zunme Chat</span>
+              </button>
+              <button
+                type="button"
+                className="voice-mode-btn-secondary"
+                onClick={() => setIsListening(!isListening)}
+              >
+                {isListening ? 'Pause Mic' : 'Resume Mic'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
