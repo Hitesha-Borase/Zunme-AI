@@ -458,6 +458,22 @@ const INITIAL_WAREHOUSE_ASSETS: WarehouseAsset[] = [
     rating: 4.7,
     createdAt: '2026-09-28T14:40:00Z',
     isSaved: false
+  },
+  {
+    id: 'asset_6',
+    title: 'Brand Sponsorship Integration Kit & Product Placement Schema',
+    description: 'Complete contract schema, native video sponsor integration overlay, and automated conversion tracking for brand product placements in AI content.',
+    category: 'Product Placement',
+    creatorName: 'Marcus Vance',
+    isVerifiedCreator: true,
+    tags: ['ProductPlacement', 'Sponsorship', 'BrandDeals', 'Monetization'],
+    licensing: 'Commercial Pro',
+    downloads: 4120,
+    likes: 890,
+    format: 'Sponsorship Schema (.json / .md)',
+    rating: 4.97,
+    createdAt: '2026-10-14T09:30:00Z',
+    isSaved: false
   }
 ];
 

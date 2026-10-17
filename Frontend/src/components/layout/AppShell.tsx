@@ -500,6 +500,15 @@ export const AppShell: React.FC = () => {
               </NavLink>
 
               <NavLink
+                to="/creator/marketplace"
+                className={() => `sidebar-nav-item ${location.pathname.startsWith('/creator') ? 'active' : ''}`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <Sparkles size={17} />
+                <span>Creator Marketplace</span>
+              </NavLink>
+
+              <NavLink
                 to="/user/library"
                 className={({ isActive }) => `sidebar-nav-item ${isActive || location.pathname === '/app/library' ? 'active' : ''}`}
                 onClick={() => setMobileMenuOpen(false)}

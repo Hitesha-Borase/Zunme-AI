@@ -130,13 +130,20 @@ export const AdminAIWarehousePage: React.FC = () => {
           </div>
 
           <div className="filter-pills-row">
-            {['ALL', 'Templates', 'Prompts', 'Scripts', 'Copy Packs', 'Workflows'].map((cat) => (
+            {['ALL', 'Templates', 'Prompts', 'Scripts', 'Copy Packs', 'Workflows', 'Product Placement'].map((cat) => (
               <button
                 key={cat}
                 className={`filter-pill ${categoryFilter === cat ? 'active' : ''}`}
+                style={
+                  cat === 'Product Placement'
+                    ? categoryFilter === cat
+                      ? { background: 'linear-gradient(135deg, #7C3AED 0%, #DB2777 100%)', borderColor: '#7C3AED', color: '#FFFFFF' }
+                      : { border: '1px solid #A855F7', color: '#A855F7', background: 'rgba(168, 85, 247, 0.1)', fontWeight: 700 }
+                    : undefined
+                }
                 onClick={() => setCategoryFilter(cat)}
               >
-                {cat}
+                {cat === 'Product Placement' ? '🎁 Product Placement & Brand Integrations' : cat}
               </button>
             ))}
           </div>

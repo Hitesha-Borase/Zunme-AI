@@ -571,3 +571,229 @@
   }
 }
 
+/* ==========================================================================
+   PART 11: CONTENT CREATOR TIER SYSTEM STYLES
+   ========================================================================== */
+
+.creator-tier-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 9px;
+  border-radius: var(--radius-full);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.creator-tier-badge.tier-1 {
+  background: #E6FFFA;
+  color: #0D9488;
+  border: 1px solid rgba(13, 148, 136, 0.3);
+}
+
+.creator-tier-badge.tier-2 {
+  background: #EFEBFC;
+  color: #6E56CF;
+  border: 1px solid rgba(110, 86, 207, 0.3);
+}
+
+.creator-tier-badge.tier-3 {
+  background: #FEF3C7;
+  color: #B45309;
+  border: 1px solid rgba(180, 83, 9, 0.3);
+}
+
+/* Tier Progression Card in /creator/profile */
+.tier-progression-card {
+  background: #FFFFFF;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: 24px;
+  box-shadow: 0 4px 16px rgba(30, 20, 60, 0.04);
+}
+
+.tier-progression-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.tier-progress-track {
+  width: 100%;
+  height: 10px;
+  background: #F1F5F9;
+  border-radius: 6px;
+  overflow: hidden;
+  margin: 12px 0 8px 0;
+}
+
+.tier-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #6E56CF 0%, #A855F7 100%);
+  border-radius: 6px;
+  transition: width 0.5s ease;
+}
+
+/* Tier Matrix 3 Columns */
+.tier-matrix-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.tier-box {
+  background: #FAFBFD;
+  border: 1px solid #E8ECF5;
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  transition: all var(--transition-normal);
+}
+
+.tier-box.current-tier {
+  background: #FFFFFF;
+  border: 2px solid #6E56CF;
+  box-shadow: 0 8px 24px rgba(110, 86, 207, 0.12);
+}
+
+.tier-box-header {
+  margin-bottom: 14px;
+}
+
+.tier-box-perks {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 16px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 12.5px;
+  color: #475569;
+}
+
+.tier-box-perks li {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  line-height: 1.4;
+}
+
+/* ==========================================================================
+   PART 12: HIRE CREATORS DIRECTORY STYLES
+   ========================================================================== */
+
+.marketplace-view-toggle {
+  display: inline-flex;
+  background: #F1F5F9;
+  padding: 4px;
+  border-radius: var(--radius-full);
+  border: 1px solid #E2E8F0;
+  margin-bottom: 16px;
+}
+
+.marketplace-view-btn {
+  border: none;
+  background: transparent;
+  padding: 6px 16px;
+  border-radius: var(--radius-full);
+  font-size: 13px;
+  font-weight: 700;
+  color: #64748B;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all var(--transition-fast);
+}
+
+.marketplace-view-btn.active {
+  background: #FFFFFF;
+  color: var(--color-primary);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+.hire-directory-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+.hire-creator-card {
+  background: #FFFFFF;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: 22px;
+  box-shadow: 0 4px 16px rgba(30, 20, 60, 0.04);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: all var(--transition-normal);
+}
+
+.hire-creator-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(110, 86, 207, 0.35);
+  box-shadow: 0 10px 28px rgba(110, 86, 207, 0.1);
+}
+
+.hire-creator-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin-bottom: 12px;
+}
+
+.hire-creator-avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #6E56CF 0%, #A855F7 100%);
+  color: #FFFFFF;
+  font-weight: 800;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 3px 10px rgba(110, 86, 207, 0.25);
+}
+
+.hire-creator-role {
+  font-size: 13px;
+  font-weight: 700;
+  color: #111625;
+  margin: 2px 0 4px 0;
+}
+
+.hire-creator-bio {
+  font-size: 12.5px;
+  color: #5F6B85;
+  line-height: 1.5;
+  margin: 0 0 12px 0;
+}
+
+.hire-creator-meta-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  background: #FAFBFD;
+  border-radius: 8px;
+  border: 1px solid #E8ECF5;
+  margin-bottom: 14px;
+  font-size: 12px;
+}
+
+.hire-creator-actions {
+  display: flex;
+  gap: 8px;
+}
+

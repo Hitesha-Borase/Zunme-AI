@@ -32,20 +32,31 @@ import {
   FileText,
   Video,
   Hash,
-  Users
+  Users,
+  Briefcase,
+  Award,
+  Crown,
+  Zap,
+  CheckCircle,
+  Calendar,
+  Lock
 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
+import { HireCreatorModal } from '../../components/modals/HireCreatorModal';
 import '../../styles/dashboard.css';
 import './CreatorStudioPage.css';
+
+export type CreatorTierLevel = 'Tier 1' | 'Tier 2' | 'Tier 3';
 
 export interface CommunityMarketplaceAsset {
   id: string;
   title: string;
-  type: 'Prompt Pack' | 'Template' | 'Workflow' | 'Video Script';
-  category: 'Social Media' | 'SEO' | 'Branding' | 'Email' | 'Video';
+  type: 'Prompt Pack' | 'Template' | 'Workflow' | 'Video Script' | 'Product Placement';
+  category: 'Social Media' | 'SEO' | 'Branding' | 'Email' | 'Video' | 'Product Placement';
   creatorName: string;
   creatorHandle: string;
   creatorAvatar: string;
+  creatorTier: CreatorTierLevel; // Part 11: Creator Tier
   isVerifiedCreator: boolean;
   description: string;
   fullPrompt: string;
@@ -59,6 +70,24 @@ export interface CommunityMarketplaceAsset {
   recommendedModel: string;
 }
 
+// Part 12: Vetted Creators for Custom Projects Directory
+export interface VettedCreatorItem {
+  id: string;
+  name: string;
+  handle: string;
+  avatar: string;
+  tier: 'Tier 1 • Emerging Creator' | 'Tier 2 • Verified Pro' | 'Tier 3 • Master Partner';
+  tierLevel: CreatorTierLevel;
+  role: string;
+  bio: string;
+  rating: number;
+  completedProjects: number;
+  startingPrice: string;
+  turnaroundTime: string;
+  specialties: string[];
+  availableForHire: boolean;
+}
+
 const INITIAL_COMMUNITY_ASSETS: CommunityMarketplaceAsset[] = [
   {
     id: 'asset-1',
@@ -68,8 +97,10 @@ const INITIAL_COMMUNITY_ASSETS: CommunityMarketplaceAsset[] = [
     creatorName: 'Alex Johnson',
     creatorHandle: '@alex_ai_creator',
     creatorAvatar: 'AJ',
+    creatorTier: 'Tier 2',
     isVerifiedCreator: true,
-    description: 'A 4-step hyper-personalized email outreach workflow with LinkedIn soft-touch triggers, pain-point hooks, and automated objection handling.',
+    description:
+      'A 4-step hyper-personalized email outreach workflow with LinkedIn soft-touch triggers, pain-point hooks, and automated objection handling.',
     fullPrompt: `[ROLE & CONTEXT]
 You are an elite B2B enterprise SDR with a 42% reply rate on cold outbound campaigns.
 
@@ -84,7 +115,8 @@ Generate a 3-touch sequence:
 Touch 1: Ultra-short observation (<65 words) referencing their recent trigger. Avoid pitch slapping.
 Touch 2: Value-add framework (+2 days) offering a 1-page playbook addressing {{specific_bottleneck}}.
 Touch 3: Graceful permission opt-out with low-friction ask ("Worth a 4-min chat this Thursday?").`,
-    previewOutput: 'Subject: {{company_name}}\'s expansion into {{industry}} — quick observation\n\nHi {{prospect_name}},\n\nSaw your team\'s recent milestone with {{funding_or_hire}}. Most leaders at this stage hit a wall with {{specific_bottleneck}}...',
+    previewOutput:
+      'Subject: {{company_name}}\'s expansion into {{industry}} — quick observation\n\nHi {{prospect_name}},\n\nSaw your team\'s recent milestone with {{funding_or_hire}}. Most leaders at this stage hit a wall with {{specific_bottleneck}}...',
     tags: ['ColdOutreach', 'B2B', 'SalesEmail', 'LeadGen'],
     licensing: 'Commercial Pro',
     downloads: 4820,
@@ -101,8 +133,10 @@ Touch 3: Graceful permission opt-out with low-friction ask ("Worth a 4-min chat 
     creatorName: 'Elena Rostova',
     creatorHandle: '@elena_visuals',
     creatorAvatar: 'ER',
+    creatorTier: 'Tier 2',
     isVerifiedCreator: true,
-    description: 'Structure high-retention video scripts with 3-second psychological visual hooks, curiosity loops, and high-converting CTA bridges.',
+    description:
+      'Structure high-retention video scripts with 3-second psychological visual hooks, curiosity loops, and high-converting CTA bridges.',
     fullPrompt: `[OBJECTIVE]
 Write an 8-minute YouTube video script designed for 65%+ average viewer retention.
 
@@ -112,7 +146,8 @@ Write an 8-minute YouTube video script designed for 65%+ average viewer retentio
 - [1:30 - 5:00] The 3 Core Pillars with micro-re-hooks every 45 seconds.
 - [5:00 - 7:30] Proof & Real Case Study.
 - [7:30 - 8:00] Seamless End-screen Handshake CTA.`,
-    previewOutput: '[VISUAL: Extreme close-up on monitor showing crashing graph]\n\nNARRATOR: "In 2026, standard content strategies are dead. Here is why the top 1% secretly switched..."',
+    previewOutput:
+      '[VISUAL: Extreme close-up on monitor showing crashing graph]\n\nNARRATOR: "In 2026, standard content strategies are dead. Here is why the top 1% secretly switched..."',
     tags: ['YouTube', 'Storytelling', 'VideoScript', 'Retention'],
     licensing: 'Commercial Pro',
     downloads: 3650,
@@ -129,8 +164,10 @@ Write an 8-minute YouTube video script designed for 65%+ average viewer retentio
     creatorName: 'Marcus Vance',
     creatorHandle: '@marcus_seo',
     creatorAvatar: 'MV',
+    creatorTier: 'Tier 3',
     isVerifiedCreator: true,
-    description: 'Transform a single root keyword into a complete 20-article topical authority silo with internal link schema and search intent classifications.',
+    description:
+      'Transform a single root keyword into a complete 20-article topical authority silo with internal link schema and search intent classifications.',
     fullPrompt: `[SEO EXPERT DIRECTIVE]
 Analyze the target pillar entity: {{primary_entity}}
 
@@ -153,8 +190,10 @@ Analyze the target pillar entity: {{primary_entity}}
     creatorName: 'Sophia Lin',
     creatorHandle: '@sophialin_ai',
     creatorAvatar: 'SL',
+    creatorTier: 'Tier 1',
     isVerifiedCreator: true,
-    description: 'Ingest any long-form essay, video transcript, or podcast and instantly synthesize 5 high-engagement LinkedIn posts and 2 viral Twitter threads.',
+    description:
+      'Ingest any long-form essay, video transcript, or podcast and instantly synthesize 5 high-engagement LinkedIn posts and 2 viral Twitter threads.',
     fullPrompt: `[REPURPOSING SYSTEM]
 Input Raw Material: {{source_text_or_notes}}
 
@@ -179,8 +218,10 @@ Generate:
     creatorName: 'Alex Johnson',
     creatorHandle: '@alex_ai_creator',
     creatorAvatar: 'AJ',
+    creatorTier: 'Tier 2',
     isVerifiedCreator: true,
-    description: 'Defines your brand voice guidelines, vocabulary blacklist, positioning pillars, and executive communication rules for consistent AI outputs.',
+    description:
+      'Defines your brand voice guidelines, vocabulary blacklist, positioning pillars, and executive communication rules for consistent AI outputs.',
     fullPrompt: `[BRAND IDENTITY PROTOCOL]
 Define the brand voice for {{brand_name}}.
 
@@ -205,8 +246,10 @@ Sections:
     creatorName: 'David Kim',
     creatorHandle: '@davidkim_growth',
     creatorAvatar: 'DK',
+    creatorTier: 'Tier 1',
     isVerifiedCreator: false,
-    description: '30 modular ad copy variations targeting Problem-Agitate-Solve (PAS) and Before-After-Bridge (BAB) frameworks for performance marketers.',
+    description:
+      '30 modular ad copy variations targeting Problem-Agitate-Solve (PAS) and Before-After-Bridge (BAB) frameworks for performance marketers.',
     fullPrompt: `[PERFORMANCE AD CREATIVE]
 Product / Offer: {{offer_details}}
 Target Avatar: {{target_customer}}
@@ -223,6 +266,147 @@ Generate:
     reviewsCount: 84,
     createdAt: '2026-10-08',
     recommendedModel: 'Zunme Creative Pro'
+  },
+  {
+    id: 'asset-7',
+    title: 'Brand Sponsorship Integration Kit & Product Placement Schema',
+    type: 'Product Placement',
+    category: 'Product Placement',
+    creatorName: 'Marcus Vance',
+    creatorHandle: '@marcus_seo',
+    creatorAvatar: 'MV',
+    creatorTier: 'Tier 3',
+    isVerifiedCreator: true,
+    description:
+      'Complete contract schema, native video sponsor integration overlay, and automated conversion tracking for brand product placements in AI content.',
+    fullPrompt: `[SPONSORSHIP & PRODUCT PLACEMENT FRAMEWORK]
+Target Sponsor: {{sponsor_brand}}
+Product / Offering: {{product_name}}
+Content Medium: {{video_or_article_or_newsletter}}
+
+[INTEGRATION DIRECTIVE]
+1. Seamless contextual product bridge (no jarring commercial breaks).
+2. Natural mention during problem-solution demonstration.
+3. Trackable CTA handshake with verified discount code / referral webhook.`,
+    previewOutput:
+      'SPONSOR TRANSITION [03:45]: "Before we break down the algorithm, this video is powered by {{sponsor_brand}}, the tool we personally use to benchmark live server loads..."',
+    tags: ['ProductPlacement', 'Sponsorship', 'BrandDeals', 'Monetization'],
+    licensing: 'Commercial Pro',
+    downloads: 4190,
+    rating: 4.97,
+    reviewsCount: 164,
+    createdAt: '2026-10-10',
+    recommendedModel: 'Zunme Omni-4'
+  },
+  {
+    id: 'asset-8',
+    title: 'E-Commerce 3D Virtual Product Placement Reel Blueprint',
+    type: 'Product Placement',
+    category: 'Product Placement',
+    creatorName: 'Elena Rostova',
+    creatorHandle: '@elena_visuals',
+    creatorAvatar: 'ER',
+    creatorTier: 'Tier 2',
+    isVerifiedCreator: true,
+    description:
+      'Spatial anchors and visual prompts for seamlessly integrating physical merchant products into AI-generated lifestyle videos and 3D scenes.',
+    fullPrompt: `[3D SCENE PRODUCT EMBEDDING]
+Product CAD/Photo Reference: {{product_image_url}}
+Scene Context: {{modern_office_or_lifestyle_interior}}
+Camera Orbit: 360-degree smooth cinematic pan highlighting product ergonomics and brand logo.`,
+    previewOutput:
+      'Render Spec: 4K 60FPS spatial product integration with dynamic ambient occlusion matching scene illumination.',
+    tags: ['ProductPlacement', '3DVideo', 'Ecommerce', 'Reels'],
+    licensing: 'Commercial Pro',
+    downloads: 3280,
+    rating: 4.93,
+    reviewsCount: 88,
+    createdAt: '2026-10-12',
+    recommendedModel: 'Zunme Creative Pro'
+  }
+];
+
+// Part 12: Vetted Directory of Creators Available for Custom Bespoke Projects
+const VETTED_CREATORS_DIRECTORY: VettedCreatorItem[] = [
+  {
+    id: 'marcus-vance',
+    name: 'Marcus Vance',
+    handle: '@marcus_seo',
+    avatar: 'MV',
+    tier: 'Tier 3 • Master Partner',
+    tierLevel: 'Tier 3',
+    role: 'Enterprise Topical Authority SEO & Semantic Link Architect',
+    bio: 'Pioneering multimodal prompt architecture, enterprise SEO blueprints, and executive content frameworks. Trusted by 5,000+ creators on Zunme AI.',
+    rating: 4.98,
+    completedProjects: 62,
+    startingPrice: '$250',
+    turnaroundTime: '48 Hours',
+    specialties: ['Topical Clusters', 'Semantic SEO', 'Programmatic Workflows', 'Internal Link Graph'],
+    availableForHire: true
+  },
+  {
+    id: 'alex-johnson',
+    name: 'Alex Johnson',
+    handle: '@alex_ai_creator',
+    avatar: 'AJ',
+    tier: 'Tier 2 • Verified Pro',
+    tierLevel: 'Tier 2',
+    role: 'B2B Outbound SDR & Autonomous Workflow Automation Architect',
+    bio: 'Crafting high-converting B2B cold outbound sequences, automated objection handling, and lead enrichment pipelines for high-growth SaaS teams.',
+    rating: 4.95,
+    completedProjects: 38,
+    startingPrice: '$150',
+    turnaroundTime: '24–48 Hours',
+    specialties: ['Cold Outreach Sequences', 'B2B Sales Workflows', 'Copywriting', 'Zapier/Make Chaining'],
+    availableForHire: true
+  },
+  {
+    id: 'elena-rostova',
+    name: 'Elena Rostova',
+    handle: '@elena_visuals',
+    avatar: 'ER',
+    tier: 'Tier 2 • Verified Pro',
+    tierLevel: 'Tier 2',
+    role: 'High-Retention Video Scriptwriter & Storyboard Creative Director',
+    bio: 'Specializing in psychological visual hooks, YouTube audience retention loops, and short-form storytelling frameworks that convert viewers into customers.',
+    rating: 4.92,
+    completedProjects: 29,
+    startingPrice: '$180',
+    turnaroundTime: '24 Hours',
+    specialties: ['YouTube Scripting', 'Retention Hooks', 'Storyboarding', 'Short-Form Video'],
+    availableForHire: true
+  },
+  {
+    id: 'sophia-lin',
+    name: 'Sophia Lin',
+    handle: '@sophialin_ai',
+    avatar: 'SL',
+    tier: 'Tier 1 • Emerging Creator',
+    tierLevel: 'Tier 1',
+    role: 'Omnichannel Social Repurposing Specialist & Content Strategist',
+    bio: 'Transforming long-form technical essays and video transcripts into viral LinkedIn carousels, Twitter/X threads, and executive newsletter editions.',
+    rating: 4.88,
+    completedProjects: 14,
+    startingPrice: '$100',
+    turnaroundTime: '24–48 Hours',
+    specialties: ['LinkedIn Carousels', 'X/Twitter Threads', 'Newsletter Digests', 'Brand Voice'],
+    availableForHire: true
+  },
+  {
+    id: 'david-kim',
+    name: 'David Kim',
+    handle: '@davidkim_growth',
+    avatar: 'DK',
+    tier: 'Tier 1 • Emerging Creator',
+    tierLevel: 'Tier 1',
+    role: 'Performance Paid Ads Copywriter (Meta & Google Ads Engine)',
+    bio: 'Direct response copywriter building high-CTR responsive ads and conversion-tested hook frameworks for performance e-commerce and SaaS brands.',
+    rating: 4.91,
+    completedProjects: 18,
+    startingPrice: '$120',
+    turnaroundTime: '24 Hours',
+    specialties: ['Meta Paid Ads', 'Google Search Ads', 'PAS Framework', 'Conversion Copy'],
+    availableForHire: true
   }
 ];
 
@@ -235,7 +419,13 @@ export const CreatorStudioPage: React.FC = () => {
   } = useApp();
 
   // Navigation Tabs with Route Sync
-  type CreatorTabType = 'Marketplace & Showcase' | 'Upload Content' | 'My Submissions' | 'Creator Profile' | 'Earnings & Payouts';
+  type CreatorTabType =
+    | 'Marketplace & Showcase'
+    | 'Hire Creators'
+    | 'Upload Content'
+    | 'My Submissions'
+    | 'Creator Profile'
+    | 'Earnings & Payouts';
 
   const { section } = useParams<{ section?: string }>();
   const navigate = useNavigate();
@@ -245,6 +435,9 @@ export const CreatorStudioPage: React.FC = () => {
     'marketplace': 'Marketplace & Showcase',
     'showcase': 'Marketplace & Showcase',
     'dashboard': 'Marketplace & Showcase',
+    'hire': 'Hire Creators',
+    'hire-creators': 'Hire Creators',
+    'directory': 'Hire Creators',
     'upload': 'Upload Content',
     'publish': 'Upload Content',
     'submissions': 'My Submissions',
@@ -252,11 +445,13 @@ export const CreatorStudioPage: React.FC = () => {
     'earnings': 'Earnings & Payouts',
     'payouts': 'Earnings & Payouts',
     'monetization': 'Earnings & Payouts',
-    'profile': 'Creator Profile'
+    'profile': 'Creator Profile',
+    'tiers': 'Creator Profile'
   };
 
   const tabToSlug: Record<CreatorTabType, string> = {
     'Marketplace & Showcase': 'marketplace',
+    'Hire Creators': 'hire',
     'Upload Content': 'upload',
     'My Submissions': 'submissions',
     'Earnings & Payouts': 'earnings',
@@ -268,7 +463,17 @@ export const CreatorStudioPage: React.FC = () => {
       return slugToTab[section.toLowerCase()];
     }
     const tabParam = searchParams.get('tab');
-    if (tabParam && ['Marketplace & Showcase', 'Upload Content', 'My Submissions', 'Creator Profile', 'Earnings & Payouts'].includes(tabParam)) {
+    if (
+      tabParam &&
+      [
+        'Marketplace & Showcase',
+        'Hire Creators',
+        'Upload Content',
+        'My Submissions',
+        'Creator Profile',
+        'Earnings & Payouts'
+      ].includes(tabParam)
+    ) {
       return tabParam as CreatorTabType;
     }
     return 'Marketplace & Showcase';
@@ -291,8 +496,16 @@ export const CreatorStudioPage: React.FC = () => {
 
   // Filters & Search
   const [selectedCategory, setSelectedCategory] = useState<string>('ALL');
+  const [selectedTierFilter, setSelectedTierFilter] = useState<'ALL' | 'Tier 1' | 'Tier 2' | 'Tier 3'>('ALL'); // Part 11 Filter
   const [selectedSort, setSelectedSort] = useState<'Most Popular' | 'Newest' | 'Top Rated'>('Most Popular');
   const [searchQuery, setSearchQuery] = useState('');
+
+  // Part 12: Marketplace View Switcher (Blueprints vs Hire Creators Directory)
+  const [marketplaceViewMode, setMarketplaceViewMode] = useState<'BLUEPRINTS' | 'HIRE_DIRECTORY'>('BLUEPRINTS');
+
+  // Hire Creator Modal State
+  const [isHireModalOpen, setIsHireModalOpen] = useState(false);
+  const [hireModalCreator, setHireModalCreator] = useState<VettedCreatorItem | null>(null);
 
   // Selected Asset for Modal
   const [activeModalAsset, setActiveModalAsset] = useState<CommunityMarketplaceAsset | null>(null);
@@ -333,6 +546,7 @@ export const CreatorStudioPage: React.FC = () => {
       creatorName: user?.fullName || 'Alex Johnson',
       creatorHandle: `@${(user?.fullName || 'alex_creator').toLowerCase().replace(/\s+/g, '_')}`,
       creatorAvatar: (user?.fullName || 'AJ').slice(0, 2).toUpperCase(),
+      creatorTier: 'Tier 2', // Default active tier for user
       isVerifiedCreator: true,
       description: description.trim(),
       fullPrompt: fullPrompt.trim(),
@@ -345,10 +559,8 @@ export const CreatorStudioPage: React.FC = () => {
       recommendedModel
     };
 
-    // Add to community assets list
     setCommunityAssets([newAsset, ...communityAssets]);
 
-    // Also register in AppContext submissions
     addCreatorSubmission({
       title: title.trim(),
       type,
@@ -359,7 +571,6 @@ export const CreatorStudioPage: React.FC = () => {
 
     showToast(`Published "${title.trim()}" to the Creator Showcase!`, 'success');
 
-    // Reset Form
     setTitle('');
     setDescription('');
     setFullPrompt('');
@@ -379,7 +590,7 @@ export const CreatorStudioPage: React.FC = () => {
   };
 
   const handleDownloadAsset = (asset: CommunityMarketplaceAsset) => {
-    const content = `# ${asset.title}\n\n**Category**: ${asset.category} | **Type**: ${asset.type}\n**Creator**: ${asset.creatorName} (${asset.creatorHandle})\n**License**: ${asset.licensing}\n**Recommended Model**: ${asset.recommendedModel}\n\n## Description\n${asset.description}\n\n## Full Blueprint / Prompt\n\`\`\`\n${asset.fullPrompt}\n\`\`\`\n`;
+    const content = `# ${asset.title}\n\n**Category**: ${asset.category} | **Type**: ${asset.type}\n**Creator**: ${asset.creatorName} (${asset.creatorHandle}) [${asset.creatorTier}]\n**License**: ${asset.licensing}\n**Recommended Model**: ${asset.recommendedModel}\n\n## Description\n${asset.description}\n\n## Full Blueprint / Prompt\n\`\`\`\n${asset.fullPrompt}\n\`\`\`\n`;
     const blob = new Blob([content], { type: 'text/markdown' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -402,18 +613,24 @@ export const CreatorStudioPage: React.FC = () => {
     }
   };
 
-  // Filtered & Sorted Showcase Assets
+  const handleOpenHireModal = (creator: VettedCreatorItem) => {
+    setHireModalCreator(creator);
+    setIsHireModalOpen(true);
+  };
+
+  // Filtered & Sorted Showcase Assets (with Part 11 Tier Filtering)
   const filteredAssets = useMemo(() => {
     return communityAssets
       .filter((asset) => {
         const matchesCategory = selectedCategory === 'ALL' || asset.category === selectedCategory;
+        const matchesTier = selectedTierFilter === 'ALL' || asset.creatorTier === selectedTierFilter;
         const matchesSearch =
           asset.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
           asset.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
           asset.creatorName.toLowerCase().includes(searchQuery.toLowerCase()) ||
           asset.tags.some((t) => t.toLowerCase().includes(searchQuery.toLowerCase()));
 
-        return matchesCategory && matchesSearch;
+        return matchesCategory && matchesTier && matchesSearch;
       })
       .sort((a, b) => {
         if (selectedSort === 'Most Popular') return b.downloads - a.downloads;
@@ -421,7 +638,7 @@ export const CreatorStudioPage: React.FC = () => {
         if (selectedSort === 'Top Rated') return b.rating - a.rating;
         return 0;
       });
-  }, [communityAssets, selectedCategory, selectedSort, searchQuery]);
+  }, [communityAssets, selectedCategory, selectedTierFilter, selectedSort, searchQuery]);
 
   const totalMarketplaceDownloads = communityAssets.reduce((sum, a) => sum + a.downloads, 0);
 
@@ -435,11 +652,22 @@ export const CreatorStudioPage: React.FC = () => {
             Creator Studio &amp; Marketplace
           </h1>
           <p className="dashboard-subtitle">
-            Discover verified prompt packs, workflow blueprints, and creative frameworks published by the Zunme AI community.
+            Discover verified prompt packs, workflow blueprints, and hire elite vetted AI creators for custom bespoke projects.
           </p>
         </div>
 
         <div className="dashboard-header-actions">
+          <button
+            className="btn btn-outline btn-sm"
+            onClick={() => {
+              setActiveTab('Hire Creators');
+              setMarketplaceViewMode('HIRE_DIRECTORY');
+            }}
+          >
+            <Briefcase size={14} />
+            <span>Hire Creators Directory</span>
+          </button>
+
           <button
             className="btn btn-primary btn-sm"
             onClick={() => setActiveTab('Upload Content')}
@@ -467,8 +695,13 @@ export const CreatorStudioPage: React.FC = () => {
               <div className="creator-name-row">
                 <h2>{user?.fullName || 'Alex Johnson'}</h2>
                 <span className="creator-handle">@alex_ai_creator</span>
+                {/* Part 11: Official Creator Tier Badge */}
+                <span className="creator-tier-badge tier-2">
+                  <ShieldCheck size={12} />
+                  <span>Tier 2 • Verified Pro</span>
+                </span>
                 <span className="creator-verified-tag">
-                  <ShieldCheck size={13} />
+                  <Award size={13} />
                   Verified Prompt Architect
                 </span>
               </div>
@@ -565,14 +798,23 @@ export const CreatorStudioPage: React.FC = () => {
         <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
           {[
             { key: 'Marketplace & Showcase', label: 'Public Asset Showcase' },
+            { key: 'Hire Creators', label: 'Part 12: Hire Creators Directory' },
             { key: 'Upload Content', label: 'Publish New Blueprint' },
             { key: 'My Submissions', label: 'Submission Reviews' },
+            { key: 'Creator Profile', label: 'Part 11: Creator Tier & Progression' },
             { key: 'Earnings & Payouts', label: 'Monetization Status' }
           ].map((tab) => (
             <button
               key={tab.key}
               className={`filter-pill ${activeTab === tab.key ? 'active' : ''}`}
-              onClick={() => setActiveTab(tab.key as any)}
+              onClick={() => {
+                setActiveTab(tab.key as any);
+                if (tab.key === 'Hire Creators') {
+                  setMarketplaceViewMode('HIRE_DIRECTORY');
+                } else if (tab.key === 'Marketplace & Showcase') {
+                  setMarketplaceViewMode('BLUEPRINTS');
+                }
+              }}
             >
               {tab.label}
             </button>
@@ -580,167 +822,636 @@ export const CreatorStudioPage: React.FC = () => {
         </div>
       </div>
 
-      {/* TAB 1: PUBLIC ASSET SHOWCASE & MARKETPLACE */}
-      {activeTab === 'Marketplace & Showcase' && (
+      {/* TAB 1: PUBLIC ASSET SHOWCASE & MARKETPLACE (Part 11 & Part 12) */}
+      {(activeTab === 'Marketplace & Showcase' || activeTab === 'Hire Creators') && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
-          {/* Filtering, Search & Sorting Bar */}
-          <div className="marketplace-filter-bar">
-            {/* Category Pills */}
-            <div className="categories-pill-group">
-              {['ALL', 'Social Media', 'SEO', 'Branding', 'Email', 'Video'].map((cat) => (
-                <button
-                  key={cat}
-                  className={`cat-pill ${selectedCategory === cat ? 'active' : ''}`}
-                  onClick={() => setSelectedCategory(cat)}
-                >
-                  {cat === 'ALL' ? 'All Categories' : cat}
-                </button>
-              ))}
+          {/* Part 12: Marketplace View Switcher Toggle */}
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '10px' }}>
+            <div className="marketplace-view-toggle">
+              <button
+                type="button"
+                className={`marketplace-view-btn ${marketplaceViewMode === 'BLUEPRINTS' ? 'active' : ''}`}
+                onClick={() => setMarketplaceViewMode('BLUEPRINTS')}
+              >
+                <Package size={14} />
+                <span>Asset Blueprints ({filteredAssets.length})</span>
+              </button>
+
+              <button
+                type="button"
+                className={`marketplace-view-btn ${marketplaceViewMode === 'HIRE_DIRECTORY' ? 'active' : ''}`}
+                onClick={() => setMarketplaceViewMode('HIRE_DIRECTORY')}
+              >
+                <Briefcase size={14} />
+                <span>Part 12: Hire Creators Directory ({VETTED_CREATORS_DIRECTORY.length})</span>
+              </button>
             </div>
 
-            {/* Search & Sort Controls */}
-            <div className="filter-controls-right">
-              <div className="marketplace-search">
-                <Search size={15} className="marketplace-search-icon" />
-                <input
-                  type="text"
-                  placeholder="Search prompts, blueprints, tags..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="marketplace-search-input"
-                />
-              </div>
-
-              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <SlidersHorizontal size={14} color="#8C97B0" />
-                <select
-                  className="sort-select-box"
-                  value={selectedSort}
-                  onChange={(e) => setSelectedSort(e.target.value as any)}
-                >
-                  <option value="Most Popular">Most Popular</option>
-                  <option value="Newest">Newest First</option>
-                  <option value="Top Rated">Top Rated</option>
-                </select>
-              </div>
+            {/* Quick banner notice */}
+            <div style={{ fontSize: '12px', color: '#5F6B85', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <ShieldCheck size={14} color="#059669" />
+              <span>All Tier 2 &amp; Tier 3 creators are verified for custom project delivery</span>
             </div>
           </div>
 
-          {/* Asset Grid */}
-          <div className="marketplace-grid">
-            {filteredAssets.length === 0 ? (
-              <div style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '64px', color: '#5F6B85', background: '#FFFFFF', borderRadius: 'var(--radius-xl)', border: '1px solid #E8ECF5' }}>
-                <Package size={36} color="#8C97B0" style={{ margin: '0 auto 12px' }} />
-                <h3 style={{ fontSize: '16px', fontWeight: '800', color: '#111625', marginBottom: '6px' }}>
-                  No Blueprints Found
-                </h3>
-                <p style={{ fontSize: '13px', color: '#5F6B85' }}>
-                  Try relaxing your search query or switching to another category.
-                </p>
-              </div>
-            ) : (
-              filteredAssets.map((asset) => (
-                <div key={asset.id} className="marketplace-asset-card">
-                  <div>
-                    {/* Top Row: Type & License */}
-                    <div className="asset-card-top-row">
-                      <span className="asset-type-badge">
-                        {asset.type === 'Video Script' ? (
-                          <Video size={12} />
-                        ) : asset.type === 'Workflow' ? (
-                          <Layers size={12} />
-                        ) : (
-                          <FileText size={12} />
-                        )}
-                        <span>{asset.type}</span>
-                      </span>
-                      <span className="asset-license-badge">{asset.licensing}</span>
-                    </div>
-
-                    {/* Title */}
-                    <h3
-                      className="asset-card-title"
-                      onClick={() => setActiveModalAsset(asset)}
+          {/* VIEW A: ASSET BLUEPRINTS SHOWCASE (with Part 11 Tier Badges & Filter) */}
+          {marketplaceViewMode === 'BLUEPRINTS' && (
+            <>
+              {/* Filtering, Search & Sorting Bar */}
+              <div className="marketplace-filter-bar">
+                {/* Category Pills */}
+                <div className="categories-pill-group">
+                  {['ALL', 'Social Media', 'SEO', 'Branding', 'Email', 'Video', 'Product Placement'].map((cat) => (
+                    <button
+                      key={cat}
+                      className={`cat-pill ${selectedCategory === cat ? 'active' : ''}`}
+                      style={cat === 'Product Placement' && selectedCategory === cat ? { background: '#9333EA', borderColor: '#9333EA' } : undefined}
+                      onClick={() => setSelectedCategory(cat)}
                     >
-                      {asset.title}
-                    </h3>
+                      {cat === 'ALL' ? 'All Categories' : cat === 'Product Placement' ? '🎁 Product Placement & Brand Deals' : cat}
+                    </button>
+                  ))}
+                </div>
 
-                    {/* Excerpt */}
-                    <p className="asset-card-desc">{asset.description}</p>
-
-                    {/* Tags */}
-                    <div className="asset-tags-wrap">
-                      {asset.tags.map((tag, idx) => (
-                        <span key={idx} className="asset-tag-pill">
-                          #{tag}
-                        </span>
-                      ))}
-                    </div>
+                {/* Part 11: Creator Tier Filter & Sort Controls */}
+                <div className="filter-controls-right">
+                  {/* Creator Tier Selector */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <Award size={14} color="#6E56CF" />
+                    <select
+                      className="sort-select-box"
+                      value={selectedTierFilter}
+                      onChange={(e) => setSelectedTierFilter(e.target.value as any)}
+                      title="Filter by Creator Tier"
+                    >
+                      <option value="ALL">All Creator Tiers</option>
+                      <option value="Tier 3">Tier 3 (Master Partner)</option>
+                      <option value="Tier 2">Tier 2 (Verified Pro)</option>
+                      <option value="Tier 1">Tier 1 (Emerging Creator)</option>
+                    </select>
                   </div>
 
-                  <div>
-                    {/* Creator & Metrics */}
-                    <div className="asset-card-creator-row">
-                      <div className="creator-mini-meta">
-                        <div className="creator-mini-avatar">{asset.creatorAvatar}</div>
-                        <div className="creator-mini-name">
-                          <span>{asset.creatorName}</span>
-                          {asset.isVerifiedCreator && (
-                            <span title="Verified Creator">
-                              <ShieldCheck size={12} color="#059669" />
+                  <div className="marketplace-search">
+                    <Search size={15} className="marketplace-search-icon" />
+                    <input
+                      type="text"
+                      placeholder="Search prompts, blueprints, tags..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="marketplace-search-input"
+                    />
+                  </div>
+
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <SlidersHorizontal size={14} color="#8C97B0" />
+                    <select
+                      className="sort-select-box"
+                      value={selectedSort}
+                      onChange={(e) => setSelectedSort(e.target.value as any)}
+                    >
+                      <option value="Most Popular">Most Popular</option>
+                      <option value="Newest">Newest First</option>
+                      <option value="Top Rated">Top Rated</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              {/* Asset Grid */}
+              <div className="marketplace-grid">
+                {filteredAssets.length === 0 ? (
+                  <div
+                    style={{
+                      gridColumn: '1 / -1',
+                      textAlign: 'center',
+                      padding: '64px',
+                      color: '#5F6B85',
+                      background: '#FFFFFF',
+                      borderRadius: 'var(--radius-xl)',
+                      border: '1px solid #E8ECF5'
+                    }}
+                  >
+                    <Package size={36} color="#8C97B0" style={{ margin: '0 auto 12px' }} />
+                    <h3 style={{ fontSize: '16px', fontWeight: '800', color: '#111625', marginBottom: '6px' }}>
+                      No Blueprints Found
+                    </h3>
+                    <p style={{ fontSize: '13px', color: '#5F6B85' }}>
+                      Try relaxing your search query or switching creator tier filter.
+                    </p>
+                  </div>
+                ) : (
+                  filteredAssets.map((asset) => (
+                    <div key={asset.id} className="marketplace-asset-card">
+                      <div>
+                        {/* Top Row: Type & License */}
+                        <div className="asset-card-top-row">
+                          <span className="asset-type-badge">
+                            {asset.type === 'Video Script' ? (
+                              <Video size={12} />
+                            ) : asset.type === 'Workflow' ? (
+                              <Layers size={12} />
+                            ) : (
+                              <FileText size={12} />
+                            )}
+                            <span>{asset.type}</span>
+                          </span>
+                          <span className="asset-license-badge">{asset.licensing}</span>
+                        </div>
+
+                        {/* Title */}
+                        <h3
+                          className="asset-card-title"
+                          onClick={() => setActiveModalAsset(asset)}
+                        >
+                          {asset.title}
+                        </h3>
+
+                        {/* Excerpt */}
+                        <p className="asset-card-desc">{asset.description}</p>
+
+                        {/* Tags */}
+                        <div className="asset-tags-wrap">
+                          {asset.tags.map((tag, idx) => (
+                            <span key={idx} className="asset-tag-pill">
+                              #{tag}
                             </span>
-                          )}
+                          ))}
                         </div>
                       </div>
 
-                      <div className="asset-metric-indicators">
-                        <span className="metric-indicator-item" title="Rating">
-                          <Star size={12} color="#D97706" fill="#D97706" />
-                          <span>{asset.rating}</span>
-                        </span>
-                        <span className="metric-indicator-item" title="Downloads">
-                          <Download size={12} />
-                          <span>{asset.downloads.toLocaleString()}</span>
-                        </span>
+                      <div>
+                        {/* Creator & Metrics with Part 11 Tier Badge */}
+                        <div className="asset-card-creator-row">
+                          <div className="creator-mini-meta">
+                            <div className="creator-mini-avatar">{asset.creatorAvatar}</div>
+                            <div className="creator-mini-name">
+                              <span>{asset.creatorName}</span>
+                              {/* Part 11: Tier Badge pill */}
+                              <span
+                                className={`creator-tier-badge ${
+                                  asset.creatorTier === 'Tier 3'
+                                    ? 'tier-3'
+                                    : asset.creatorTier === 'Tier 2'
+                                    ? 'tier-2'
+                                    : 'tier-1'
+                                }`}
+                              >
+                                {asset.creatorTier === 'Tier 3' && <Crown size={10} />}
+                                {asset.creatorTier === 'Tier 2' && <ShieldCheck size={10} />}
+                                {asset.creatorTier === 'Tier 1' && <Award size={10} />}
+                                <span>
+                                  {asset.creatorTier === 'Tier 3'
+                                    ? 'Tier 3'
+                                    : asset.creatorTier === 'Tier 2'
+                                    ? 'Tier 2 Pro'
+                                    : 'Tier 1'}
+                                </span>
+                              </span>
+                            </div>
+                          </div>
+
+                          <div className="asset-metric-indicators">
+                            <span className="metric-indicator-item" title="Rating">
+                              <Star size={12} color="#D97706" fill="#D97706" />
+                              <span>{asset.rating}</span>
+                            </span>
+                            <span className="metric-indicator-item" title="Downloads">
+                              <Download size={12} />
+                              <span>{asset.downloads.toLocaleString()}</span>
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Action Buttons */}
+                        <div className="asset-card-actions">
+                          <button
+                            className="btn btn-primary btn-sm"
+                            style={{ flex: 1 }}
+                            onClick={() => setActiveModalAsset(asset)}
+                          >
+                            <Eye size={13} />
+                            <span>Inspect Blueprint</span>
+                          </button>
+
+                          <button
+                            className="btn btn-outline btn-sm"
+                            onClick={() => handleCopyPrompt(asset)}
+                            title="Quick Copy Prompt"
+                          >
+                            {copiedPromptId === asset.id ? <Check size={14} color="#059669" /> : <Copy size={14} />}
+                          </button>
+
+                          <button
+                            className="btn btn-outline btn-sm"
+                            onClick={() => handleForkToLibrary(asset)}
+                            title="Fork to My Library"
+                          >
+                            <Bookmark size={14} />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            </>
+          )}
+
+          {/* VIEW B: PART 12 — HIRE CREATORS FOR SPECIAL CUSTOM PROJECTS DIRECTORY */}
+          {marketplaceViewMode === 'HIRE_DIRECTORY' && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
+              {/* Directory Banner */}
+              <div
+                style={{
+                  padding: '24px',
+                  background: 'linear-gradient(135deg, #1E1B4B 0%, #31104B 100%)',
+                  borderRadius: 'var(--radius-xl)',
+                  color: '#FFFFFF',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  flexWrap: 'wrap',
+                  gap: '16px'
+                }}
+              >
+                <div style={{ maxWidth: '640px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                    <span
+                      style={{
+                        fontSize: '11px',
+                        fontWeight: '800',
+                        color: '#FBBF24',
+                        background: 'rgba(251,191,36,0.15)',
+                        padding: '3px 8px',
+                        borderRadius: '6px',
+                        textTransform: 'uppercase'
+                      }}
+                    >
+                      Part 12 — Direct Client Commissions
+                    </span>
+                    <span style={{ fontSize: '12px', color: '#A5B4FC' }}>Escrow Guaranteed</span>
+                  </div>
+                  <h2 style={{ fontSize: '20px', fontWeight: '900', color: '#FFFFFF', marginBottom: '6px' }}>
+                    Hire Verified AI Creators for Custom Projects
+                  </h2>
+                  <p style={{ fontSize: '13px', color: '#C7D2FE', lineHeight: '1.5', margin: 0 }}>
+                    Commission vetted Tier 2 and Tier 3 creators for specialized prompt engineering, bespoke multi-agent workflows, video scripts, and custom brand AI model tuning.
+                  </p>
+                </div>
+
+                <button
+                  className="btn btn-primary"
+                  style={{ background: '#F59E0B', borderColor: '#F59E0B', color: '#1E1B4B', fontWeight: '800' }}
+                  onClick={() => {
+                    handleOpenHireModal(VETTED_CREATORS_DIRECTORY[0]);
+                  }}
+                >
+                  <Briefcase size={15} />
+                  <span>Post Custom Project Brief</span>
+                </button>
+              </div>
+
+              {/* Creators Directory Grid */}
+              <div className="hire-directory-grid">
+                {VETTED_CREATORS_DIRECTORY.map((c) => (
+                  <div key={c.id} className="hire-creator-card">
+                    <div>
+                      {/* Top Creator Meta */}
+                      <div className="hire-creator-top">
+                        <div className="hire-creator-avatar">{c.avatar}</div>
+                        <div style={{ flex: 1 }}>
+                          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '6px' }}>
+                            <h3 style={{ fontSize: '16px', fontWeight: '800', color: '#111625', margin: 0 }}>
+                              {c.name}
+                            </h3>
+                            {/* Tier Badge */}
+                            <span
+                              className={`creator-tier-badge ${
+                                c.tierLevel === 'Tier 3'
+                                  ? 'tier-3'
+                                  : c.tierLevel === 'Tier 2'
+                                  ? 'tier-2'
+                                  : 'tier-1'
+                              }`}
+                            >
+                              {c.tierLevel === 'Tier 3' && <Crown size={11} />}
+                              {c.tierLevel === 'Tier 2' && <ShieldCheck size={11} />}
+                              {c.tierLevel === 'Tier 1' && <Award size={11} />}
+                              <span>{c.tier}</span>
+                            </span>
+                          </div>
+                          <span style={{ fontSize: '12px', color: '#64748B', display: 'block' }}>{c.handle}</span>
+                        </div>
+                      </div>
+
+                      <div className="hire-creator-role">{c.role}</div>
+                      <p className="hire-creator-bio">{c.bio}</p>
+
+                      {/* Specialties Tags */}
+                      <div style={{ display: 'flex', gap: '5px', flexWrap: 'wrap', marginBottom: '14px' }}>
+                        {c.specialties.map((spec, i) => (
+                          <span
+                            key={i}
+                            style={{
+                              fontSize: '11px',
+                              background: '#F1F5F9',
+                              color: '#475569',
+                              padding: '2px 8px',
+                              borderRadius: '4px',
+                              fontWeight: '600'
+                            }}
+                          >
+                            {spec}
+                          </span>
+                        ))}
                       </div>
                     </div>
 
-                    {/* Action Buttons */}
-                    <div className="asset-card-actions">
-                      <button
-                        className="btn btn-primary btn-sm"
-                        style={{ flex: 1 }}
-                        onClick={() => setActiveModalAsset(asset)}
-                      >
-                        <Eye size={13} />
-                        <span>Inspect Blueprint</span>
-                      </button>
+                    <div>
+                      {/* Meta Rates & Turnaround Strip */}
+                      <div className="hire-creator-meta-strip">
+                        <div>
+                          <span style={{ fontSize: '10.5px', color: '#8C97B0', display: 'block' }}>Starting At</span>
+                          <strong style={{ fontSize: '14px', color: '#059669' }}>{c.startingPrice}</strong>
+                        </div>
+                        <div>
+                          <span style={{ fontSize: '10.5px', color: '#8C97B0', display: 'block' }}>Turnaround</span>
+                          <strong style={{ fontSize: '12px', color: '#111625' }}>{c.turnaroundTime}</strong>
+                        </div>
+                        <div style={{ textAlign: 'right' }}>
+                          <span style={{ fontSize: '10.5px', color: '#8C97B0', display: 'block' }}>Completed</span>
+                          <strong style={{ fontSize: '12px', color: '#6E56CF' }}>
+                            ⭐ {c.rating} ({c.completedProjects})
+                          </strong>
+                        </div>
+                      </div>
 
-                      <button
-                        className="btn btn-outline btn-sm"
-                        onClick={() => handleCopyPrompt(asset)}
-                        title="Quick Copy Prompt"
-                      >
-                        {copiedPromptId === asset.id ? <Check size={14} color="#059669" /> : <Copy size={14} />}
-                      </button>
+                      {/* Action Buttons */}
+                      <div className="hire-creator-actions">
+                        <button
+                          className="btn btn-primary btn-sm"
+                          style={{ flex: 1, justifyContent: 'center' }}
+                          onClick={() => handleOpenHireModal(c)}
+                        >
+                          <Briefcase size={13} />
+                          <span>Hire for Custom Project</span>
+                        </button>
 
-                      <button
-                        className="btn btn-outline btn-sm"
-                        onClick={() => handleForkToLibrary(asset)}
-                        title="Fork to My Library"
-                      >
-                        <Bookmark size={14} />
-                      </button>
+                        <button
+                          className="btn btn-outline btn-sm"
+                          onClick={() => navigate(`/creator/${c.id}`)}
+                          title="View Public Profile"
+                        >
+                          <Eye size={13} />
+                        </button>
+                      </div>
                     </div>
                   </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* TAB 2: PART 11 — CREATOR PROFILE & CONTENT CREATOR TIER SYSTEM */}
+      {activeTab === 'Creator Profile' && (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-5)' }}>
+          {/* Progression Overview Banner */}
+          <div className="tier-progression-card">
+            <div className="tier-progression-header">
+              <div>
+                <span
+                  style={{
+                    fontSize: '11.5px',
+                    fontWeight: '800',
+                    color: '#6E56CF',
+                    background: '#EFEBFC',
+                    padding: '3px 8px',
+                    borderRadius: '6px',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.04em'
+                  }}
+                >
+                  Part 11 — Progression Level System
+                </span>
+                <h2 style={{ fontSize: '20px', fontWeight: '900', color: '#111625', margin: '6px 0 2px 0' }}>
+                  Content Creator Progression &amp; Tier Status
+                </h2>
+                <p style={{ fontSize: '13px', color: '#5F6B85', margin: 0 }}>
+                  Publish verified blueprints and complete client custom projects to advance through creator tiers and unlock higher revenue splits.
+                </p>
+              </div>
+
+              {/* Current Active Badge */}
+              <div style={{ textAlign: 'right' }}>
+                <span style={{ fontSize: '11px', color: '#8C97B0', display: 'block' }}>Current Tier Status</span>
+                <span className="creator-tier-badge tier-2" style={{ padding: '6px 14px', fontSize: '13px' }}>
+                  <ShieldCheck size={14} />
+                  <span>Tier 2 • Verified Pro</span>
+                </span>
+              </div>
+            </div>
+
+            {/* Progression Progress Bar towards Tier 3 */}
+            <div style={{ background: '#FAFBFD', padding: '16px', borderRadius: '12px', border: '1px solid #E8ECF5' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span style={{ fontSize: '13px', fontWeight: '700', color: '#111625' }}>
+                  Progress to <strong>Tier 3 • Master Partner</strong>
+                </span>
+                <span style={{ fontSize: '13px', fontWeight: '900', color: '#6E56CF' }}>
+                  48.2% Completed
+                </span>
+              </div>
+
+              <div className="tier-progress-track">
+                <div className="tier-progress-fill" style={{ width: '48.2%' }} />
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px', marginTop: '12px', fontSize: '12px', color: '#64748B' }}>
+                <div>
+                  <span style={{ display: 'block', color: '#8C97B0', fontSize: '11px' }}>Published Blueprints:</span>
+                  <strong style={{ color: '#111625' }}>6 / 15 Blueprints</strong> (9 more needed)
                 </div>
-              ))
-            )}
+                <div>
+                  <span style={{ display: 'block', color: '#8C97B0', fontSize: '11px' }}>Community Downloads:</span>
+                  <strong style={{ color: '#111625' }}>4,820 / 10,000</strong> (5,180 needed)
+                </div>
+                <div style={{ textAlign: 'right' }}>
+                  <span style={{ display: 'block', color: '#8C97B0', fontSize: '11px' }}>Average Rating:</span>
+                  <strong style={{ color: '#059669' }}>4.92 ★ (Target: &gt;4.80)</strong>
+                </div>
+              </div>
+            </div>
+
+            {/* 3-Tier Side-by-Side Breakdown Matrix */}
+            <div className="tier-matrix-grid">
+              {/* Tier 1 */}
+              <div className="tier-box">
+                <div className="tier-box-header">
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                    <span className="creator-tier-badge tier-1">
+                      <Award size={12} />
+                      <span>Tier 1 • Emerging</span>
+                    </span>
+                    <span style={{ fontSize: '11px', color: '#059669', fontWeight: '700' }}>Unlocked</span>
+                  </div>
+                  <h3 style={{ fontSize: '16px', fontWeight: '800', color: '#111625', margin: '4px 0' }}>
+                    Emerging Creator
+                  </h3>
+                  <p style={{ fontSize: '12px', color: '#64748B', margin: 0 }}>
+                    Entry level for creators sharing their first prompt collections with the community.
+                  </p>
+                </div>
+
+                <div>
+                  <div style={{ padding: '8px 10px', background: '#FFFFFF', borderRadius: '8px', border: '1px solid #E2E8F0', marginBottom: '12px', fontSize: '11.5px' }}>
+                    <strong>Requirements:</strong> 0–5 Assets • &lt;1,000 Downloads
+                  </div>
+
+                  <ul className="tier-box-perks">
+                    <li>
+                      <CheckCircle2 size={14} color="#059669" />
+                      <span>70% Community Royalties Revenue Split</span>
+                    </li>
+                    <li>
+                      <CheckCircle2 size={14} color="#059669" />
+                      <span>Standard Community Asset Showcase Listing</span>
+                    </li>
+                    <li>
+                      <CheckCircle2 size={14} color="#059669" />
+                      <span>Free Community Distribution Licensing</span>
+                    </li>
+                    <li style={{ opacity: 0.5 }}>
+                      <Lock size={14} color="#94A3B8" />
+                      <span>Priority 12h Editorial Review (Locked)</span>
+                    </li>
+                    <li style={{ opacity: 0.5 }}>
+                      <Lock size={14} color="#94A3B8" />
+                      <span>Hire Directory Client Inquiries (Locked)</span>
+                    </li>
+                  </ul>
+                </div>
+
+                <div style={{ padding: '6px 10px', background: '#E6FFFA', borderRadius: '6px', fontSize: '11px', color: '#0D9488', fontWeight: '700', textAlign: 'center' }}>
+                  ✓ Baseline Active Status
+                </div>
+              </div>
+
+              {/* Tier 2 (Current Active) */}
+              <div className="tier-box current-tier">
+                <div className="tier-box-header">
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                    <span className="creator-tier-badge tier-2">
+                      <ShieldCheck size={12} />
+                      <span>Tier 2 • Verified Pro</span>
+                    </span>
+                    <span className="badge badge-primary">Your Active Tier</span>
+                  </div>
+                  <h3 style={{ fontSize: '16px', fontWeight: '800', color: '#111625', margin: '4px 0' }}>
+                    Verified Pro Creator
+                  </h3>
+                  <p style={{ fontSize: '12px', color: '#64748B', margin: 0 }}>
+                    Established AI architects with proven community downloads and verified high-quality reviews.
+                  </p>
+                </div>
+
+                <div>
+                  <div style={{ padding: '8px 10px', background: '#F5F3FF', borderRadius: '8px', border: '1px solid #DDD6FE', marginBottom: '12px', fontSize: '11.5px', color: '#5B21B6' }}>
+                    <strong>Requirements:</strong> 5–15 Assets • 1k–10k Downloads • 4.5+ Rating
+                  </div>
+
+                  <ul className="tier-box-perks">
+                    <li>
+                      <CheckCircle2 size={14} color="#6E56CF" />
+                      <span><strong>75% Royalties Revenue Split (+5% Boost)</strong></span>
+                    </li>
+                    <li>
+                      <CheckCircle2 size={14} color="#6E56CF" />
+                      <span>Priority 12-Hour Automated Moderation Queue</span>
+                    </li>
+                    <li>
+                      <CheckCircle2 size={14} color="#6E56CF" />
+                      <span><strong>Eligible to receive custom client project commissions in Hire Directory</strong></span>
+                    </li>
+                    <li>
+                      <CheckCircle2 size={14} color="#6E56CF" />
+                      <span>Verified Author Shield badge on all published blueprints</span>
+                    </li>
+                    <li style={{ opacity: 0.5 }}>
+                      <Lock size={14} color="#94A3B8" />
+                      <span>Dedicated concierge &amp; homepage banner spotlight</span>
+                    </li>
+                  </ul>
+                </div>
+
+                <div style={{ padding: '6px 10px', background: '#EFEBFC', borderRadius: '6px', fontSize: '11.5px', color: '#6E56CF', fontWeight: '800', textAlign: 'center' }}>
+                  ★ Active Tier Benefits Operational
+                </div>
+              </div>
+
+              {/* Tier 3 (Master Partner) */}
+              <div className="tier-box">
+                <div className="tier-box-header">
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                    <span className="creator-tier-badge tier-3">
+                      <Crown size={12} />
+                      <span>Tier 3 • Master Partner</span>
+                    </span>
+                    <span style={{ fontSize: '11px', color: '#B45309', fontWeight: '700' }}>Next Milestone</span>
+                  </div>
+                  <h3 style={{ fontSize: '16px', fontWeight: '800', color: '#111625', margin: '4px 0' }}>
+                    Master Partner
+                  </h3>
+                  <p style={{ fontSize: '12px', color: '#64748B', margin: 0 }}>
+                    Top 1% elite prompt engineers and enterprise workflow creators shaping the platform ecosystem.
+                  </p>
+                </div>
+
+                <div>
+                  <div style={{ padding: '8px 10px', background: '#FFFBEB', borderRadius: '8px', border: '1px solid #FDE68A', marginBottom: '12px', fontSize: '11.5px', color: '#92400E' }}>
+                    <strong>Requirements:</strong> 15+ Assets • 10k+ Downloads • 4.8+ Rating
+                  </div>
+
+                  <ul className="tier-box-perks">
+                    <li>
+                      <CheckCircle2 size={14} color="#D97706" />
+                      <span><strong>80% Maximum Royalties Split (+10% Maximum Payout)</strong></span>
+                    </li>
+                    <li>
+                      <CheckCircle2 size={14} color="#D97706" />
+                      <span>Top Priority Ranking in "Hire Creators Directory"</span>
+                    </li>
+                    <li>
+                      <CheckCircle2 size={14} color="#D97706" />
+                      <span>Custom project pricing freedom ($500+ commissions)</span>
+                    </li>
+                    <li>
+                      <CheckCircle2 size={14} color="#D97706" />
+                      <span>Dedicated Partner Concierge &amp; instant payout settlement</span>
+                    </li>
+                    <li>
+                      <CheckCircle2 size={14} color="#D97706" />
+                      <span>Featured Homepage Banner &amp; Editorial Spotlight</span>
+                    </li>
+                  </ul>
+                </div>
+
+                <button
+                  className="btn btn-outline btn-sm"
+                  style={{ width: '100%', justifyContent: 'center', borderColor: '#F59E0B', color: '#B45309' }}
+                  onClick={() => showToast('9 more blueprints needed to unlock Tier 3 Master Partner!', 'info')}
+                >
+                  <Crown size={13} />
+                  <span>Reach Tier 3 Criteria</span>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       )}
 
-      {/* TAB 2: UPLOAD & PUBLISH WITH LIVE PREVIEW */}
+      {/* TAB 3: UPLOAD & PUBLISH WITH LIVE PREVIEW */}
       {activeTab === 'Upload Content' && (
         <div className="glass-panel">
           <div className="panel-header">
@@ -748,219 +1459,148 @@ export const CreatorStudioPage: React.FC = () => {
               <UploadCloud size={18} color="#6E56CF" />
               Publish Community Blueprint &amp; Prompt Pack
             </div>
-            <span className="badge badge-primary">Creator Marketplace Submission</span>
+            <span className="badge badge-primary">Tier 2 Pro Creator Review (12h)</span>
           </div>
 
-          <div className="upload-preview-container">
-            {/* Form Column */}
-            <form onSubmit={handleUploadSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          <form onSubmit={handleUploadSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            <div className="form-grid-2">
               <div>
                 <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#111625', marginBottom: '6px' }}>
-                  Blueprint Title *
+                  Blueprint Title
                 </label>
                 <input
                   type="text"
                   className="input-field"
-                  placeholder="e.g., Omnichannel B2B Cold Outreach Engine"
+                  placeholder="e.g. B2B Cold Outreach Sequence Engine"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   required
                 />
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-                <div>
-                  <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#111625', marginBottom: '6px' }}>
-                    Asset Format Type
-                  </label>
-                  <select
-                    className="input-field"
-                    value={type}
-                    onChange={(e) => setType(e.target.value as any)}
-                  >
-                    <option value="Prompt Pack">Prompt Pack</option>
-                    <option value="Template">Template</option>
-                    <option value="Workflow">Workflow Blueprint</option>
-                    <option value="Video Script">Video Script</option>
-                  </select>
-                </div>
+              <div>
+                <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#111625', marginBottom: '6px' }}>
+                  Asset Type
+                </label>
+                <select
+                  className="input-field"
+                  value={type}
+                  onChange={(e) => setType(e.target.value as any)}
+                >
+                  <option value="Prompt Pack">Prompt Pack (Multiple modular prompts)</option>
+                  <option value="Workflow">Workflow (Multi-step chained process)</option>
+                  <option value="Template">Template (Structured document/copy preset)</option>
+                  <option value="Video Script">Video Script (Visual hooks &amp; retention story)</option>
+                </select>
+              </div>
+            </div>
 
-                <div>
-                  <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#111625', marginBottom: '6px' }}>
-                    Category
-                  </label>
-                  <select
-                    className="input-field"
-                    value={category}
-                    onChange={(e) => setCategory(e.target.value as any)}
-                  >
-                    <option value="Social Media">Social Media</option>
-                    <option value="SEO">SEO &amp; Content</option>
-                    <option value="Branding">Branding</option>
-                    <option value="Email">Email Marketing</option>
-                    <option value="Video">Video Scripts</option>
-                  </select>
-                </div>
+            <div className="form-grid-2">
+              <div>
+                <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#111625', marginBottom: '6px' }}>
+                  Primary Category
+                </label>
+                <select
+                  className="input-field"
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value as any)}
+                >
+                  <option value="Social Media">Social Media</option>
+                  <option value="SEO">SEO &amp; Search Grounding</option>
+                  <option value="Branding">Branding &amp; Executive Voice</option>
+                  <option value="Email">Email &amp; Outbound Marketing</option>
+                  <option value="Video">Video Scripts &amp; Hooks</option>
+                </select>
               </div>
 
               <div>
                 <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#111625', marginBottom: '6px' }}>
-                  Short Summary / Value Proposition *
+                  Licensing Agreement
+                </label>
+                <select
+                  className="input-field"
+                  value={licensing}
+                  onChange={(e) => setLicensing(e.target.value as any)}
+                >
+                  <option value="Commercial Pro">Commercial Pro (Free with Creator Attribution)</option>
+                  <option value="Standard Community">Standard Community (Non-commercial CC BY)</option>
+                  <option value="MIT Open Source">MIT Open Source (Full unrestricted fork)</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#111625', marginBottom: '6px' }}>
+                Summary Pitch &amp; Description
+              </label>
+              <textarea
+                className="input-field"
+                rows={3}
+                placeholder="Explain what problem this blueprint solves and how creators/businesses should utilize it..."
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                required
+              />
+            </div>
+
+            <div>
+              <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#111625', marginBottom: '6px' }}>
+                Full Blueprint / Prompt Instructions
+              </label>
+              <textarea
+                className="input-field"
+                rows={7}
+                placeholder="Paste the full, ready-to-run prompt instructions including [ROLE], [INPUTS], and [FORMAT]..."
+                value={fullPrompt}
+                onChange={(e) => setFullPrompt(e.target.value)}
+                required
+                style={{ fontFamily: 'monospace', fontSize: '12.5px' }}
+              />
+            </div>
+
+            <div className="form-grid-2">
+              <div>
+                <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#111625', marginBottom: '6px' }}>
+                  Tags (Comma separated)
                 </label>
                 <input
                   type="text"
                   className="input-field"
-                  placeholder="What makes this prompt unique and who is it designed for?"
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  required
+                  value={tagsInput}
+                  onChange={(e) => setTagsInput(e.target.value)}
+                  placeholder="B2B, ColdEmail, LeadGen"
                 />
               </div>
 
               <div>
                 <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#111625', marginBottom: '6px' }}>
-                  Full Prompt &amp; Execution Directives *
+                  Recommended Model Engine
                 </label>
-                <textarea
+                <select
                   className="input-field"
-                  rows={6}
-                  placeholder="Paste your system prompt, input placeholders like {{topic}}, and step-by-step instructions..."
-                  value={fullPrompt}
-                  onChange={(e) => setFullPrompt(e.target.value)}
-                  required
-                />
-              </div>
-
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-                <div>
-                  <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#111625', marginBottom: '6px' }}>
-                    Tags (Comma-separated)
-                  </label>
-                  <input
-                    type="text"
-                    className="input-field"
-                    value={tagsInput}
-                    onChange={(e) => setTagsInput(e.target.value)}
-                  />
-                </div>
-
-                <div>
-                  <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#111625', marginBottom: '6px' }}>
-                    Licensing Terms
-                  </label>
-                  <select
-                    className="input-field"
-                    value={licensing}
-                    onChange={(e) => setLicensing(e.target.value as any)}
-                  >
-                    <option value="Commercial Pro">Commercial Pro (Community &amp; Commercial)</option>
-                    <option value="Standard Community">Standard Community (Attribution)</option>
-                    <option value="MIT Open Source">MIT Open Source</option>
-                  </select>
-                </div>
-              </div>
-
-              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', marginTop: '8px' }}>
-                <button
-                  type="button"
-                  className="btn btn-outline btn-sm"
-                  onClick={() => setActiveTab('Marketplace & Showcase')}
+                  value={recommendedModel}
+                  onChange={(e) => setRecommendedModel(e.target.value)}
                 >
-                  Cancel
-                </button>
-                <button type="submit" className="btn btn-primary btn-sm">
-                  <Send size={14} />
-                  <span>Publish to Showcase</span>
-                </button>
+                  <option value="Zunme Omni-4">Zunme Omni-4 (Multi-step reasoning)</option>
+                  <option value="Zunme Creative Pro">Zunme Creative Pro (Nuanced tone &amp; voice)</option>
+                  <option value="Zunme Turbo">Zunme Turbo (High-velocity drafting)</option>
+                </select>
               </div>
-            </form>
-
-            {/* Live Card Preview Column */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              <div style={{ fontSize: '12px', fontWeight: '800', color: '#6E56CF', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-                Live Marketplace Card Preview
-              </div>
-
-              <div className="marketplace-asset-card" style={{ borderColor: '#6E56CF', boxShadow: '0 8px 24px -4px rgba(110, 86, 207, 0.15)' }}>
-                <div>
-                  <div className="asset-card-top-row">
-                    <span className="asset-type-badge">
-                      <Sparkles size={12} />
-                      <span>{type}</span>
-                    </span>
-                    <span className="asset-license-badge">{licensing}</span>
-                  </div>
-
-                  <h3 className="asset-card-title">
-                    {title || 'Untitled Community Blueprint'}
-                  </h3>
-
-                  <p className="asset-card-desc">
-                    {description || 'Provide a compelling description of what this workflow solves to see it formatted here in real time.'}
-                  </p>
-
-                  <div className="asset-tags-wrap">
-                    {tagsInput
-                      .split(',')
-                      .map((t) => t.trim().replace(/^#/, ''))
-                      .filter(Boolean)
-                      .map((tag, idx) => (
-                        <span key={idx} className="asset-tag-pill">
-                          #{tag}
-                        </span>
-                      ))}
-                  </div>
-                </div>
-
-                <div>
-                  <div className="asset-card-creator-row">
-                    <div className="creator-mini-meta">
-                      <div className="creator-mini-avatar">
-                        {(user?.fullName || 'AJ').slice(0, 2).toUpperCase()}
-                      </div>
-                      <div className="creator-mini-name">
-                        <span>{user?.fullName || 'Alex Johnson'}</span>
-                        <ShieldCheck size={12} color="#059669" />
-                      </div>
-                    </div>
-
-                    <div className="asset-metric-indicators">
-                      <span className="metric-indicator-item">
-                        <Star size={12} color="#D97706" fill="#D97706" />
-                        <span>5.0</span>
-                      </span>
-                      <span className="metric-indicator-item">
-                        <Download size={12} />
-                        <span>New</span>
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="asset-card-actions">
-                    <button className="btn btn-primary btn-sm" style={{ flex: 1 }} disabled>
-                      <Eye size={13} />
-                      <span>Inspect Blueprint</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              {fullPrompt && (
-                <div style={{ marginTop: '8px' }}>
-                  <div style={{ fontSize: '11px', fontWeight: '700', color: '#5F6B85', marginBottom: '4px' }}>
-                    Prompt Output Preview:
-                  </div>
-                  <pre className="prompt-code-box" style={{ maxHeight: '180px' }}>
-                    {fullPrompt}
-                  </pre>
-                </div>
-              )}
             </div>
-          </div>
+
+            <button
+              type="submit"
+              className="btn btn-primary"
+              style={{ justifyContent: 'center', marginTop: '6px' }}
+            >
+              <UploadCloud size={16} />
+              <span>Publish Blueprint to Showcase</span>
+            </button>
+          </form>
         </div>
       )}
 
-      {/* TAB 3: SUBMISSION REVIEWS & EDITORIAL STATUS */}
+      {/* TAB 4: SUBMISSION REVIEWS & EDITORIAL STATUS */}
       {activeTab === 'My Submissions' && (
         <div className="glass-panel" style={{ padding: 0, overflow: 'hidden' }}>
           <div className="panel-header" style={{ padding: 'var(--space-4) var(--space-5)', margin: 0 }}>
@@ -1005,7 +1645,7 @@ export const CreatorStudioPage: React.FC = () => {
         </div>
       )}
 
-      {/* TAB 4: EARNINGS & PAYOUTS */}
+      {/* TAB 5: EARNINGS & PAYOUTS */}
       {activeTab === 'Earnings & Payouts' && (
         <div className="glass-panel">
           <div className="future-module-banner" style={{ margin: 0 }}>
@@ -1014,10 +1654,10 @@ export const CreatorStudioPage: React.FC = () => {
             </div>
             <div>
               <h3 style={{ fontSize: '16px', fontWeight: '800', color: '#FFFFFF', marginBottom: '4px' }}>
-                Creator Marketplace Monetization &amp; Revenue Sharing — Phase 2 In Progress
+                Creator Marketplace Monetization &amp; Revenue Sharing (75% Royalties on Tier 2)
               </h3>
               <p style={{ fontSize: '13px', color: 'rgba(255, 255, 255, 0.9)', lineHeight: '1.5' }}>
-                All current community uploads are distributed freely with creator attribution under your specified licensing agreement. Direct creator tips, paid prompt subscriptions, and enterprise blueprint licensing payouts will activate in the next release.
+                As a Verified Pro (Tier 2 Creator), you earn 75% gross royalties on paid blueprint downloads and direct client commission projects. Payouts execute automatically via Stripe on the 1st of every month.
               </p>
             </div>
           </div>
@@ -1032,7 +1672,6 @@ export const CreatorStudioPage: React.FC = () => {
             style={{ maxWidth: '780px', width: '92%' }}
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Modal Header */}
             <div className="modal-header">
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <span className="badge badge-primary">{activeModalAsset.category}</span>
@@ -1048,7 +1687,6 @@ export const CreatorStudioPage: React.FC = () => {
               </button>
             </div>
 
-            {/* Modal Content */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
               <div>
                 <h2 style={{ fontSize: '22px', fontWeight: '900', color: '#111625', marginBottom: '6px' }}>
@@ -1063,6 +1701,9 @@ export const CreatorStudioPage: React.FC = () => {
                     {activeModalAsset.isVerifiedCreator && (
                       <ShieldCheck size={13} color="#059669" />
                     )}
+                    <span className="creator-tier-badge tier-2" style={{ padding: '1px 6px', fontSize: '10px' }}>
+                      {activeModalAsset.creatorTier}
+                    </span>
                   </div>
                   <span>•</span>
                   <span>Rating: ⭐ {activeModalAsset.rating} ({activeModalAsset.reviewsCount} reviews)</span>
@@ -1073,12 +1714,10 @@ export const CreatorStudioPage: React.FC = () => {
                 </div>
               </div>
 
-              {/* Description */}
               <div style={{ padding: '14px', borderRadius: '10px', background: '#FAFBFD', border: '1px solid #E8ECF5', fontSize: '13.5px', lineHeight: '1.6', color: '#272F3E' }}>
                 {activeModalAsset.description}
               </div>
 
-              {/* Prompt Block */}
               <div>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
                   <div style={{ fontSize: '12px', fontWeight: '800', color: '#6E56CF', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
@@ -1098,7 +1737,6 @@ export const CreatorStudioPage: React.FC = () => {
                 </pre>
               </div>
 
-              {/* Tags */}
               <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
                 {activeModalAsset.tags.map((tag, idx) => (
                   <span key={idx} className="asset-tag-pill">
@@ -1107,7 +1745,6 @@ export const CreatorStudioPage: React.FC = () => {
                 ))}
               </div>
 
-              {/* Footer Actions: Copy, Fork, Download */}
               <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', marginTop: '10px', paddingTop: '14px', borderTop: '1px solid #F0F3FA' }}>
                 <button
                   className="btn btn-outline btn-sm"
@@ -1137,6 +1774,22 @@ export const CreatorStudioPage: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* PART 12: HIRE CREATOR MODAL */}
+      {isHireModalOpen && hireModalCreator && (
+        <HireCreatorModal
+          isOpen={isHireModalOpen}
+          onClose={() => {
+            setIsHireModalOpen(false);
+            setHireModalCreator(null);
+          }}
+          creatorName={hireModalCreator.name}
+          creatorTier={hireModalCreator.tier}
+          creatorRole={hireModalCreator.role}
+        />
+      )}
     </div>
   );
 };
+
+export default CreatorStudioPage;

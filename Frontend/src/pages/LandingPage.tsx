@@ -26,7 +26,8 @@ import {
   FileText,
   Star,
   Compass,
-  ArrowUpRight
+  ArrowUpRight,
+  Megaphone
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { DashboardLoginModal } from '../components/modals/DashboardLoginModal';
@@ -417,6 +418,21 @@ export const LandingPage: React.FC = () => {
 
             {/* Header Right Actions */}
             <div className="header-actions">
+              <NavLink
+                to="/ads"
+                className="btn btn-outline btn-sm"
+                style={{
+                  borderColor: 'rgba(168, 85, 247, 0.45)',
+                  color: '#E9D5FF',
+                  fontWeight: '700',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '5px'
+                }}
+              >
+                <Megaphone size={13} color="#C084FC" />
+                <span>Advertise</span>
+              </NavLink>
               <NavLink to="/login" className="btn btn-primary btn-sm btn-glow">
                 Log In
               </NavLink>
@@ -484,6 +500,24 @@ export const LandingPage: React.FC = () => {
               </button>
             </nav>
             <div className="mobile-drawer-actions">
+              <NavLink
+                to="/ads"
+                className="btn btn-outline btn-block"
+                style={{
+                  borderColor: 'rgba(168, 85, 247, 0.45)',
+                  color: '#C084FC',
+                  fontWeight: '800',
+                  marginBottom: '10px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '6px'
+                }}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <Megaphone size={15} color="#C084FC" />
+                <span>Advertise on Zunme (PPC / PPV)</span>
+              </NavLink>
               <NavLink
                 to="/register"
                 className="btn btn-primary btn-block"
@@ -584,6 +618,59 @@ export const LandingPage: React.FC = () => {
               <CheckCircle2 size={14} className="signal-icon text-success" />
               <span>Personal library repository</span>
             </div>
+          </div>
+
+          {/* Hero CTAs & Gap 3: Fast-Track Advertiser Onboarding Button */}
+          <div
+            className="hero-cta-group"
+            style={{
+              display: 'flex',
+              gap: '14px',
+              justifyContent: 'center',
+              alignItems: 'center',
+              flexWrap: 'wrap',
+              margin: '22px 0 26px 0'
+            }}
+          >
+            <NavLink
+              to="/register"
+              className="btn btn-primary btn-glow"
+              style={{ padding: '12px 28px', fontSize: '15px', fontWeight: '800' }}
+            >
+              <span>Get Started Free</span>
+              <ArrowRight size={15} />
+            </NavLink>
+            <NavLink
+              to="/ads/create-campaign"
+              className="btn btn-outline"
+              style={{
+                borderColor: 'rgba(168, 85, 247, 0.5)',
+                background: 'linear-gradient(135deg, rgba(168, 85, 247, 0.12) 0%, rgba(126, 34, 206, 0.08) 100%)',
+                color: '#E9D5FF',
+                padding: '12px 24px',
+                fontSize: '14.5px',
+                fontWeight: '800',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px'
+              }}
+            >
+              <Megaphone size={16} color="#C084FC" />
+              <span>Advertise on Zunme (From $10/day)</span>
+              <span
+                style={{
+                  background: 'linear-gradient(135deg, #059669 0%, #047857 100%)',
+                  color: '#FFFFFF',
+                  fontSize: '10px',
+                  fontWeight: '800',
+                  padding: '2px 7px',
+                  borderRadius: '999px',
+                  letterSpacing: '0.04em'
+                }}
+              >
+                PPC / PPV
+              </span>
+            </NavLink>
           </div>
 
           {/* Ask Zunme Interactive Search Bar directly in Hero */}
@@ -1559,6 +1646,12 @@ export const LandingPage: React.FC = () => {
                   </li>
                   <li>
                     <a href="#features" onClick={(e) => { e.preventDefault(); handleNavClick('features'); }}>SEO Workspace</a>
+                  </li>
+                  <li>
+                    <NavLink to="/ads" style={{ color: '#C084FC', fontWeight: '700', display: 'inline-flex', alignItems: 'center', gap: '5px' }}>
+                      <Megaphone size={12} color="#C084FC" />
+                      <span>Zunme Ads Platform (PPC/PPV)</span>
+                    </NavLink>
                   </li>
                 </ul>
               </div>

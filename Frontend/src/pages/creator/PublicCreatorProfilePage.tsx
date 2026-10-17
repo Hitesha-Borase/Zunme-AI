@@ -55,8 +55,12 @@ export const PublicCreatorProfilePage: React.FC = () => {
     id: creatorId || 'marcus-vance',
     name: creatorId === 'sarah-chen' ? 'Sarah Chen' : formattedName,
     handle: creatorId ? `@${creatorId.replace(/-/g, '_')}` : '@marcus_vance',
-    tier: 'Tier 1 • Elite Creator',
-    badge: 'Verified Master Creator',
+    tier: creatorId === 'sophia-lin' || creatorId === 'david-kim'
+      ? 'Tier 1 • Emerging Creator'
+      : creatorId === 'marcus-vance' || !creatorId
+      ? 'Tier 3 • Master Partner'
+      : 'Tier 2 • Verified Pro',
+    badge: 'Verified Creator',
     bio: creatorId === 'sarah-chen'
       ? 'Specializing in LLM reasoning chains, autonomous agent workflows, and programmatic SEO.'
       : 'Pioneering multimodal prompt architecture, enterprise SEO blueprints, and executive content frameworks. Trusted by 5,000+ creators on Zunme AI.',

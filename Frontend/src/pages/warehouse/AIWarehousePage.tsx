@@ -199,6 +199,22 @@ const INITIAL_WAREHOUSE_ASSETS: WarehouseManagedAsset[] = [
     isVerifiedCreator: true,
     createdAt: '2026-10-12',
     content: 'Headline variations: Urgency, exclusivity, FOMO, proof.'
+  },
+  {
+    id: 'wh-9',
+    title: 'Brand Sponsorship Integration Kit & Product Placement Schema',
+    description: 'Complete contract schema, native video sponsor integration overlay, and automated conversion tracking for brand product placements.',
+    type: 'Prompt Pack',
+    category: 'Product Placement',
+    collection: 'Client Pitches',
+    sizeKb: 68,
+    tags: ['ProductPlacement', 'Sponsorship', 'BrandDeals', 'Monetization'],
+    licensing: 'Commercial Pro',
+    downloads: 4120,
+    creatorName: 'Marcus Vance',
+    isVerifiedCreator: true,
+    createdAt: '2026-10-14',
+    content: '[SPONSORSHIP & PRODUCT PLACEMENT FRAMEWORK]\nTarget Sponsor: {{sponsor_brand}}\nProduct / Offering: {{product_name}}\nContent Medium: {{video_or_article}}\n\n1. Seamless contextual product bridge\n2. Natural problem-solution demo\n3. Trackable CTA handshake with verified discount webhook.'
   }
 ];
 
@@ -266,6 +282,7 @@ export const AIWarehousePage: React.FC = () => {
 
   // Search, Filters & View Mode
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedWarehouseCategory, setSelectedWarehouseCategory] = useState<string>('ALL');
   const [viewMode, setViewMode] = useState<'grid' | 'table'>('grid');
 
   // Multi-select Batch Actions State
@@ -297,22 +314,26 @@ export const AIWarehousePage: React.FC = () => {
   const activeCategories = useMemo(() => Array.from(new Set(assets.map((a) => a.category))), [assets]);
   const activeTags = useMemo(() => Array.from(new Set(assets.flatMap((a) => a.tags))), [assets]);
 
-  // Filtered Assets based on collection and search
+  // Filtered Assets based on collection, category, and search
   const filteredAssets = useMemo(() => {
     return assets.filter((asset) => {
       const matchesCollection =
         activeCollection === 'All Assets' || asset.collection === activeCollection;
+
+      const matchesCategory =
+        selectedWarehouseCategory === 'ALL' || asset.category === selectedWarehouseCategory;
 
       const matchesSearch =
         asset.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         asset.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
         asset.tags.some((t) => t.toLowerCase().includes(searchQuery.toLowerCase())) ||
         asset.type.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        asset.collection.toLowerCase().includes(searchQuery.toLowerCase());
+        asset.collection.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        asset.category.toLowerCase().includes(searchQuery.toLowerCase());
 
-      return matchesCollection && matchesSearch;
+      return matchesCollection && matchesCategory && matchesSearch;
     });
-  }, [assets, activeCollection, searchQuery]);
+  }, [assets, activeCollection, selectedWarehouseCategory, searchQuery]);
 
   // Checkbox Selection Logic
   const isAllVisibleSelected =
@@ -558,6 +579,36 @@ export const AIWarehousePage: React.FC = () => {
           <FolderPlus size={14} />
           <span>New Collection</span>
         </button>
+      </div>
+
+      {/* 2.5 Dedicated Category & Product Placement Filter Pills */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap', padding: '2px 0' }}>
+        <span style={{ fontSize: '11px', fontWeight: '800', color: '#5F6B85', textTransform: 'uppercase', letterSpacing: '0.04em', marginRight: '4px' }}>
+          Asset Category:
+        </span>
+        {['ALL', 'Social Media', 'SEO', 'Branding', 'Email Marketing', 'Video', 'Product Placement'].map((cat) => {
+          const isSelected = selectedWarehouseCategory === cat;
+          const count = cat === 'ALL' ? assets.length : assets.filter((a) => a.category === cat).length;
+          const isProductPlacement = cat === 'Product Placement';
+
+          return (
+            <button
+              key={cat}
+              className={`collection-folder-pill ${isSelected ? 'active' : ''}`}
+              style={
+                isProductPlacement && isSelected
+                  ? { background: 'linear-gradient(135deg, #7C3AED 0%, #DB2777 100%)', borderColor: '#7C3AED', color: '#FFFFFF', boxShadow: '0 4px 14px rgba(124,58,237,0.3)' }
+                  : isProductPlacement
+                  ? { border: '1px solid #C084FC', color: '#7E22CE', background: '#FAF5FF', fontWeight: 700 }
+                  : undefined
+              }
+              onClick={() => setSelectedWarehouseCategory(cat)}
+            >
+              <span>{cat === 'ALL' ? 'All Categories' : isProductPlacement ? '🎁 Product Placement & Brand Integrations' : cat}</span>
+              <span className="collection-badge-count">{count}</span>
+            </button>
+          );
+        })}
       </div>
 
       {/* 3. Search Bar, Quick Tagging & View Mode Toggle */}

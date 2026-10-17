@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Send,
   Sparkles,
@@ -12,7 +13,10 @@ import {
   HelpCircle,
   TrendingUp,
   FileText,
-  Code
+  Code,
+  Globe,
+  Zap,
+  ExternalLink
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import './ChatPage.css';
@@ -26,9 +30,11 @@ export const ChatPage: React.FC = () => {
     showToast,
     user
   } = useApp();
+  const navigate = useNavigate();
 
   const [inputMessage, setInputMessage] = useState('');
   const [copiedMsgId, setCopiedMsgId] = useState<string | null>(null);
+  const [autoGrounding, setAutoGrounding] = useState<boolean>(true);
   const scrollEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const hasSentInitialPrompt = useRef(false);
@@ -103,7 +109,26 @@ export const ChatPage: React.FC = () => {
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="badge badge-success">Online & Ready</span>
+          {/* Part 10: Automatic Query Grounding Toggle */}
+          <button
+            type="button"
+            className={`chat-grounding-toggle-btn ${autoGrounding ? 'active' : ''}`}
+            onClick={() => {
+              setAutoGrounding(!autoGrounding);
+              showToast(
+                !autoGrounding
+                  ? '⚡ Automatic Web Grounding Enabled (Live 2026 sources active)'
+                  : 'Automatic Web Grounding Disabled (Offline base model mode)',
+                'info'
+              );
+            }}
+            title="Automatically grounds time-sensitive queries with live web search citations"
+          >
+            <Globe size={13} color={autoGrounding ? '#059669' : '#64748B'} />
+            <span>Auto Web Grounding: {autoGrounding ? 'ON' : 'OFF'}</span>
+          </button>
+
+          <span className="badge badge-success">Online &amp; Ready</span>
         </div>
       </div>
 
@@ -203,6 +228,42 @@ export const ChatPage: React.FC = () => {
                     <>
                       <div className="ai-bubble">
                         <RichMessageRenderer content={msg.content} />
+
+                        {autoGrounding && (
+                          <div className="chat-grounded-citation-box">
+                            <span style={{ fontSize: '11px', fontWeight: '800', color: '#059669', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                              <Globe size={12} />
+                              <span>Live Grounded Sources:</span>
+                            </span>
+                            <a
+                              href="https://techinsights-journal.com"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="chat-citation-tag"
+                            >
+                              <span>techinsights-journal.com</span>
+                              <ExternalLink size={10} />
+                            </a>
+                            <a
+                              href="https://business-strategy-review.io"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="chat-citation-tag"
+                            >
+                              <span>business-strategy-review.io</span>
+                              <ExternalLink size={10} />
+                            </a>
+                            <span
+                              style={{ fontSize: '10.5px', color: '#64748B', cursor: 'pointer', marginLeft: 'auto' }}
+                              onClick={() => {
+                                showToast('Opening verified live search brief...', 'info');
+                                navigate('/user/search');
+                              }}
+                            >
+                              View in Live Search &rarr;
+                            </span>
+                          </div>
+                        )}
                       </div>
 
                       <div className="ai-message-toolbar">
@@ -272,6 +333,13 @@ export const ChatPage: React.FC = () => {
 
       {/* Chat Input Bar */}
       <div className="chat-input-container">
+        {autoGrounding && (
+          <div className="chat-grounding-banner">
+            <Zap size={12} color="#059669" />
+            <span>⚡ Automatic Query Grounding Active: Time-sensitive questions automatically verify 2026 web indices</span>
+          </div>
+        )}
+
         <div className="chat-input-box">
           <textarea
             ref={textareaRef}

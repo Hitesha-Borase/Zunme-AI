@@ -124,7 +124,7 @@ export interface WarehouseAsset {
   id: string;
   title: string;
   description: string;
-  category: 'Prompts' | 'Templates' | 'Workflows' | 'Copy Packs' | 'Scripts';
+  category: 'Prompts' | 'Templates' | 'Workflows' | 'Copy Packs' | 'Scripts' | 'Product Placement';
   creatorName: string;
   creatorAvatar?: string;
   isVerifiedCreator?: boolean;
