@@ -185,7 +185,13 @@ export const EcosystemAppsLauncher: React.FC<{ variant?: 'dark' | 'light' }> = (
       </button>
 
       {isOpen && (
-        <div className="ecosystem-launcher-dropdown">
+        <>
+          <div
+            className="ecosystem-mobile-backdrop"
+            onClick={() => setIsOpen(false)}
+            aria-hidden="true"
+          />
+          <div className="ecosystem-launcher-dropdown">
           {/* Header */}
           <div className="ecosystem-dropdown-header">
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -244,6 +250,7 @@ export const EcosystemAppsLauncher: React.FC<{ variant?: 'dark' | 'light' }> = (
             </NavLink>
           </div>
         </div>
+      </>
       )}
     </div>
   );

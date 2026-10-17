@@ -2200,9 +2200,23 @@ Ready for Formal Attorney Trademark Registration.`;
                     <a href="#faq" onClick={(e) => { e.preventDefault(); handleNavClick('faq'); }}>FAQ</a>
                   </li>
                   <li>
-                    <NavLink to="/login" className="footer-modal-trigger-btn">
+                    <button
+                      type="button"
+                      onClick={() => setShowLoginModal(true)}
+                      className="footer-modal-trigger-btn"
+                      style={{
+                        background: 'none',
+                        border: 'none',
+                        padding: 0,
+                        margin: 0,
+                        font: 'inherit',
+                        color: 'inherit',
+                        cursor: 'pointer',
+                        textAlign: 'left'
+                      }}
+                    >
                       Sign In / Workspaces
-                    </NavLink>
+                    </button>
                   </li>
                   <li>
                     <NavLink to="/register">Create Account</NavLink>
@@ -2369,6 +2383,12 @@ Ready for Formal Attorney Trademark Registration.`;
           </div>
         </div>
       )}
+
+      {/* Universal Workspace Chooser Modal */}
+      <DashboardLoginModal
+        isOpen={showLoginModal}
+        onClose={() => setShowLoginModal(false)}
+      />
     </div>
   );
 };
