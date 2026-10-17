@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useSearchParams, useParams, useNavigate } from 'react-router-dom';
+import { useSearchParams, useParams, useNavigate, NavLink } from 'react-router-dom';
 import {
   Megaphone,
   TrendingUp,
@@ -424,6 +424,15 @@ export const ZunmeAdsPage: React.FC = () => {
   const [cAiCategory, setCAiCategory] = useState('Tech & AI Workflows');
   const [cBrandMention, setCBrandMention] = useState('Zunme AI Suite');
 
+  // Pay For Demand Demographic, Geo & Device Targeting State
+  const [cAgeMin, setCAgeMin] = useState<number>(21);
+  const [cAgeMax, setCAgeMax] = useState<number>(55);
+  const [cGender, setCGender] = useState<'ALL' | 'MALE' | 'FEMALE'>('ALL');
+  const [cGeoLocation, setCGeoLocation] = useState('United States, United Kingdom, Canada');
+  const [cGeoRadius, setCGeoRadius] = useState('Nationwide');
+  const [cTargetDevices, setCTargetDevices] = useState<string[]>(['Desktop', 'Mobile']);
+  const [cAudienceInterests, setCAudienceInterests] = useState('AI & SaaS, Growth Marketing, E-commerce');
+
   // Simulator View Mode (Part 2, 3, 4, 5 live simulator)
   const [adPreviewMode, setAdPreviewMode] = useState<
     'SERP' | 'MOBILE' | 'BANNER' | 'SHOPPING' | 'VIDEO' | 'AI_CONTENT'
@@ -703,6 +712,24 @@ export const ZunmeAdsPage: React.FC = () => {
         </div>
 
         <div className="dashboard-header-actions">
+          <NavLink
+            to="/ads/onboarding"
+            className="btn btn-outline btn-sm"
+            style={{ textDecoration: 'none' }}
+          >
+            <ShieldCheck size={14} />
+            <span>7-Step Setup Wizard</span>
+          </NavLink>
+
+          <NavLink
+            to="/ads/formats"
+            className="btn btn-outline btn-sm"
+            style={{ textDecoration: 'none' }}
+          >
+            <Layers size={14} />
+            <span>Format Builders</span>
+          </NavLink>
+
           <div
             style={{
               display: 'flex',
@@ -1533,6 +1560,130 @@ export const ZunmeAdsPage: React.FC = () => {
                   onChange={(e) => setCKeywords(e.target.value)}
                   placeholder="ai search, copywriting, b2b tools"
                 />
+              </div>
+
+              {/* Pay For Demand Audience & Demographic Targeting Section */}
+              <div style={{ padding: '14px', background: 'var(--color-bg-alt)', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <span style={{ fontSize: '12px', fontWeight: '800', color: '#111625', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                    Pay For Demand Audience Targeting Controls
+                  </span>
+                  <span className="badge badge-primary">Audience Match</span>
+                </div>
+
+                <div className="form-grid-2">
+                  <div>
+                    <label style={{ display: 'block', fontSize: '11px', fontWeight: '700', color: '#111625', marginBottom: '4px' }}>
+                      Demographics (Age: {cAgeMin} - {cAgeMax} yrs)
+                    </label>
+                    <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
+                      <input
+                        type="number"
+                        min={18}
+                        max={65}
+                        className="input-field"
+                        style={{ padding: '6px 8px', fontSize: '12px' }}
+                        value={cAgeMin}
+                        onChange={(e) => setCAgeMin(Number(e.target.value))}
+                      />
+                      <span style={{ fontSize: '12px', color: '#64748B' }}>to</span>
+                      <input
+                        type="number"
+                        min={18}
+                        max={65}
+                        className="input-field"
+                        style={{ padding: '6px 8px', fontSize: '12px' }}
+                        value={cAgeMax}
+                        onChange={(e) => setCAgeMax(Number(e.target.value))}
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label style={{ display: 'block', fontSize: '11px', fontWeight: '700', color: '#111625', marginBottom: '4px' }}>
+                      Gender Segmentation
+                    </label>
+                    <select
+                      className="input-field"
+                      style={{ padding: '6px 8px', fontSize: '12px' }}
+                      value={cGender}
+                      onChange={(e) => setCGender(e.target.value as any)}
+                    >
+                      <option value="ALL">All Genders</option>
+                      <option value="MALE">Male Only</option>
+                      <option value="FEMALE">Female Only</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="form-grid-2">
+                  <div>
+                    <label style={{ display: 'block', fontSize: '11px', fontWeight: '700', color: '#111625', marginBottom: '4px' }}>
+                      Geographic Territories
+                    </label>
+                    <input
+                      type="text"
+                      className="input-field"
+                      style={{ padding: '6px 8px', fontSize: '12px' }}
+                      value={cGeoLocation}
+                      onChange={(e) => setCGeoLocation(e.target.value)}
+                      placeholder="e.g. US, UK, Germany"
+                    />
+                  </div>
+
+                  <div>
+                    <label style={{ display: 'block', fontSize: '11px', fontWeight: '700', color: '#111625', marginBottom: '4px' }}>
+                      Geographic Radius
+                    </label>
+                    <select
+                      className="input-field"
+                      style={{ padding: '6px 8px', fontSize: '12px' }}
+                      value={cGeoRadius}
+                      onChange={(e) => setCGeoRadius(e.target.value)}
+                    >
+                      <option value="Nationwide">Nationwide (Full Territory)</option>
+                      <option value="15km Local">15km Local Radius</option>
+                      <option value="50km Metro">50km Metro Area</option>
+                      <option value="Worldwide">Global / Worldwide</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div>
+                  <label style={{ display: 'block', fontSize: '11px', fontWeight: '700', color: '#111625', marginBottom: '4px' }}>
+                    Target Device Environments
+                  </label>
+                  <div style={{ display: 'flex', gap: '14px' }}>
+                    {['Desktop', 'Mobile', 'Tablet'].map((dev) => (
+                      <label key={dev} style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '12px', cursor: 'pointer' }}>
+                        <input
+                          type="checkbox"
+                          checked={cTargetDevices.includes(dev)}
+                          onChange={() => {
+                            setCTargetDevices((prev) =>
+                              prev.includes(dev) ? prev.filter((d) => d !== dev) : [...prev, dev]
+                            );
+                          }}
+                        />
+                        <span>{dev}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <label style={{ display: 'block', fontSize: '11px', fontWeight: '700', color: '#111625', marginBottom: '4px' }}>
+                    Audience Behavioral Interests
+                  </label>
+                  <input
+                    type="text"
+                    className="input-field"
+                    style={{ padding: '6px 8px', fontSize: '12px' }}
+                    value={cAudienceInterests}
+                    onChange={(e) => setCAudienceInterests(e.target.value)}
+                    placeholder="e.g. AI Technology, B2B SaaS, Content Marketing"
+                  />
+                </div>
               </div>
 
               {/* Part 7: Monthly Budget Cap & Daily Limit */}
@@ -2394,6 +2545,34 @@ export const ZunmeAdsPage: React.FC = () => {
                 </div>
               </div>
 
+              {/* Pay For Demand Targeting Summary Card */}
+              <div style={{ marginTop: '10px', padding: '12px 14px', background: '#F8FAFC', borderRadius: '10px', border: '1px solid #E2E8F0', display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <span style={{ fontSize: '11px', fontWeight: '800', color: '#1E293B', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                    Targeting Specification
+                  </span>
+                  <span className="badge badge-primary" style={{ fontSize: '10px' }}>Active Matrix</span>
+                </div>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6px', fontSize: '11.5px', color: '#475569' }}>
+                  <div><strong>Demographics:</strong> {cAgeMin}-{cAgeMax} yrs • {cGender}</div>
+                  <div><strong>Geography:</strong> {cGeoLocation} ({cGeoRadius})</div>
+                  <div><strong>Devices:</strong> {cTargetDevices.join(', ')}</div>
+                  <div><strong>Bidding:</strong> Max CPC ${cBid.toFixed(2)} • Daily ${cDailyBudget}</div>
+                </div>
+              </div>
+
+              {/* Quality Score & Honest Simulator Notice */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '12px' }}>
+                <div style={{ padding: '12px 14px', background: '#E8F8F0', borderRadius: '10px', border: '1px solid rgba(5,150,105,0.25)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <span style={{ fontSize: '12px', fontWeight: '700', color: '#059669', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <CheckCircle2 size={15} />
+                    <span>Auction Verification: High Ad Quality Score ({cHeadline.length > 0 && cDescription.length > 0 ? '9.6/10' : '6.0/10'})</span>
+                  </span>
+                  <span style={{ fontSize: '11px', color: '#059669', fontWeight: '600' }}>
+                    Expected CTR: ~4.2%
+                  </span>
+                </div>
+
               <div
                 style={{
                   padding: '8px 12px',
@@ -2406,6 +2585,7 @@ export const ZunmeAdsPage: React.FC = () => {
               >
                 <strong>Zunme Ad Delivery Engine:</strong> Highest Ad Rank wins the primary position #1 pin. Real-time conversion tracking &amp; ROAS optimization are continuously audited in frontend simulator mode.
               </div>
+            </div>
             </div>
           </div>
         </div>

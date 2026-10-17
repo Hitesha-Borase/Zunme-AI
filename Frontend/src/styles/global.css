@@ -518,5 +518,59 @@ textarea.input-field {
     flex-direction: column;
     gap: 12px;
   }
+
+  .dashboard-header-actions {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .dashboard-header-actions > .btn {
+    flex: 1;
+    min-width: 140px;
+    justify-content: center;
+  }
+}
+
+/* Extra small screens (iPhone SE, 320px - 380px) */
+@media (max-width: 380px) {
+  .landing-container,
+  .dashboard-page-container {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
+
+  .hero-title {
+    font-size: 24px !important;
+  }
+
+  .section-title {
+    font-size: 21px !important;
+  }
+
+  .btn {
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+}
+
+/* Universal Media and Overflow Protection */
+img, video, canvas {
+  max-width: 100%;
+  height: auto;
+}
+
+pre, code {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.table-responsive,
+.table-container,
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 

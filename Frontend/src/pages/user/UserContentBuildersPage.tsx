@@ -277,7 +277,7 @@ export const UserContentBuildersPage: React.FC = () => {
               </div>
 
               {/* Live Search Input */}
-              <div className="search-box-wrap" style={{ minWidth: '320px', margin: 0 }}>
+              <div className="search-box-wrap" style={{ minWidth: 'min(100%, 320px)', margin: 0 }}>
                 <Search size={16} />
                 <input
                   type="text"

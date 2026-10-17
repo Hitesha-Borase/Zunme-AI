@@ -434,3 +434,38 @@
   align-items: center;
   gap: 4px;
 }
+
+/* Responsive Overrides for Tablet and Mobile */
+@media (max-width: 768px) {
+  .calendar-grid-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .calendar-grid-container {
+    min-width: 640px;
+  }
+
+  .calendar-day-cell {
+    min-height: 75px;
+  }
+
+  .calendar-month-title {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .calendar-grid-container {
+    min-width: 580px;
+  }
+
+  .calendar-weekday-cell {
+    font-size: 10px;
+    padding: 6px 2px;
+  }
+
+  .social-calendar-toolbar {
+    padding: 10px 12px;
+  }
+}

@@ -55,11 +55,8 @@ export const AdminShell: React.FC = () => {
       {/* Admin Sidebar with the exact approved 9 Operational Items + Logout */}
       <aside className={`admin-sidebar ${mobileMenuOpen ? 'open' : ''}`}>
         <div className="admin-brand-section">
-          <NavLink to="/admin/dashboard" className="admin-brand-link">
-            <img src="/zunme_icon.png" alt="Zunme AI" style={{ width: '30px', height: '30px', objectFit: 'contain' }} />
-            <div className="admin-brand-text">
-              <span className="brand-title">ZUNME AI</span>
-            </div>
+          <NavLink to="/admin" className="admin-brand-link">
+            <img src="/zunme_logo_white.png" alt="Zunme AI" style={{ height: '32px', width: 'auto', display: 'block' }} />
           </NavLink>
           <button
             className="btn-ghost hide-on-desktop"
