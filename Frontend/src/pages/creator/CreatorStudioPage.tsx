@@ -798,11 +798,11 @@ export const CreatorStudioPage: React.FC = () => {
         <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
           {[
             { key: 'Marketplace & Showcase', label: 'Public Asset Showcase' },
-            { key: 'Hire Creators', label: 'Part 12: Hire Creators Directory' },
+            { key: 'Hire Creators', label: 'Hire Creators Directory' },
             { key: 'Upload Content', label: 'Publish New Blueprint' },
             { key: 'My Submissions', label: 'Submission Reviews' },
-            { key: 'Creator Profile', label: 'Part 11: Creator Tier & Progression' },
-            { key: 'Earnings & Payouts', label: 'Monetization Status' }
+            { key: 'Creator Profile', label: 'Creator Tier & Progression' },
+            { key: 'Earnings & Payouts', label: '💰 Wallet & Payouts ($3,420)' }
           ].map((tab) => (
             <button
               key={tab.key}
@@ -1645,9 +1645,10 @@ export const CreatorStudioPage: React.FC = () => {
         </div>
       )}
 
-      {/* TAB 5: EARNINGS & PAYOUTS */}
+      {/* TAB 5: EARNINGS & PAYOUTS (TASK 17: CREATOR REVENUE SHARING & WALLET PAYOUTS) */}
       {activeTab === 'Earnings & Payouts' && (
-        <div className="glass-panel">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          {/* Top Royalty Highlight Banner */}
           <div className="future-module-banner" style={{ margin: 0 }}>
             <div className="future-module-icon">
               <DollarSign size={24} />
@@ -1657,8 +1658,114 @@ export const CreatorStudioPage: React.FC = () => {
                 Creator Marketplace Monetization &amp; Revenue Sharing (75% Royalties on Tier 2)
               </h3>
               <p style={{ fontSize: '13px', color: 'rgba(255, 255, 255, 0.9)', lineHeight: '1.5' }}>
-                As a Verified Pro (Tier 2 Creator), you earn 75% gross royalties on paid blueprint downloads and direct client commission projects. Payouts execute automatically via Stripe on the 1st of every month.
+                As a Verified Pro (Tier 2 Creator), you earn 75% gross royalties on paid blueprint downloads, recurring template licenses, and custom bespoke client commission projects.
               </p>
+            </div>
+          </div>
+
+          {/* Wallet KPI Cards Row */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '16px' }}>
+            <div className="glass-panel" style={{ padding: '20px' }}>
+              <div style={{ fontSize: '12px', fontWeight: '700', color: '#5F6B85', textTransform: 'uppercase' }}>Available for Payout</div>
+              <div style={{ fontSize: '28px', fontWeight: '900', color: '#10B981', marginTop: '6px' }}>$3,420.00</div>
+              <div style={{ fontSize: '12px', color: '#059669', marginTop: '4px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                <CheckCircle2 size={13} /> Cleared &amp; Ready to Withdraw
+              </div>
+            </div>
+
+            <div className="glass-panel" style={{ padding: '20px' }}>
+              <div style={{ fontSize: '12px', fontWeight: '700', color: '#5F6B85', textTransform: 'uppercase' }}>Pending Clearance</div>
+              <div style={{ fontSize: '28px', fontWeight: '900', color: '#F59E0B', marginTop: '6px' }}>$640.00</div>
+              <div style={{ fontSize: '12px', color: '#D97706', marginTop: '4px' }}>
+                Expected clearance on 1st of next month
+              </div>
+            </div>
+
+            <div className="glass-panel" style={{ padding: '20px' }}>
+              <div style={{ fontSize: '12px', fontWeight: '700', color: '#5F6B85', textTransform: 'uppercase' }}>Lifetime Gross Earnings</div>
+              <div style={{ fontSize: '28px', fontWeight: '900', color: '#6E56CF', marginTop: '6px' }}>$14,890.00</div>
+              <div style={{ fontSize: '12px', color: '#5F6B85', marginTop: '4px' }}>
+                Across 142 blueprint downloads &amp; 8 custom projects
+              </div>
+            </div>
+
+            <div className="glass-panel" style={{ padding: '20px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+              <button
+                type="button"
+                className="btn btn-primary"
+                style={{ width: '100%', justifyContent: 'center', padding: '12px 18px', fontSize: '14px', fontWeight: '800' }}
+                onClick={() => showToast('Payout request of $3,420.00 submitted via Stripe Connect! Estimated arrival: 2 business days.', 'success')}
+              >
+                <DollarSign size={16} />
+                <span>Request Payout ($3,420.00)</span>
+              </button>
+              <div style={{ fontSize: '11px', color: '#5F6B85', textAlign: 'center', marginTop: '8px' }}>
+                Pmt Method: Connected Stripe Account (ending in •••• 4242)
+              </div>
+            </div>
+          </div>
+
+          {/* Revenue Breakdown by Stream */}
+          <div className="glass-panel" style={{ padding: 0, overflow: 'hidden' }}>
+            <div className="panel-header" style={{ padding: '16px 20px', margin: 0, borderBottom: '1px solid #E5E7EB' }}>
+              <div>
+                <h3 style={{ fontSize: '16px', fontWeight: '800', color: '#111625', margin: 0 }}>
+                  Recent Revenue Sharing &amp; Commission Statements
+                </h3>
+                <p style={{ fontSize: '12.5px', color: '#5F6B85', margin: '4px 0 0 0' }}>
+                  Audited royalty streams from Zunme Store, Community Marketplace, and Direct Client Hiring.
+                </p>
+              </div>
+              <span className="badge badge-success">Royalty Rate: 75% Verified</span>
+            </div>
+
+            <div className="table-responsive">
+              <table className="dashboard-table">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Activity / Product</th>
+                    <th>Revenue Stream</th>
+                    <th>Gross Sale</th>
+                    <th>Your Royalty (75%)</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style={{ fontWeight: '600' }}>Oct 16, 2026</td>
+                    <td style={{ fontWeight: '700', color: '#111625' }}>Enterprise B2B Cold Outreach Sequence</td>
+                    <td>Community Marketplace License</td>
+                    <td>$120.00</td>
+                    <td style={{ color: '#10B981', fontWeight: '800' }}>+$90.00</td>
+                    <td><span className="status-chip success">Cleared</span></td>
+                  </tr>
+                  <tr>
+                    <td style={{ fontWeight: '600' }}>Oct 14, 2026</td>
+                    <td style={{ fontWeight: '700', color: '#111625' }}>Custom Topical SEO Map (Hired Project)</td>
+                    <td>Direct Client Hire</td>
+                    <td>$400.00</td>
+                    <td style={{ color: '#10B981', fontWeight: '800' }}>+$300.00</td>
+                    <td><span className="status-chip success">Cleared</span></td>
+                  </tr>
+                  <tr>
+                    <td style={{ fontWeight: '600' }}>Oct 11, 2026</td>
+                    <td style={{ fontWeight: '700', color: '#111625' }}>Viral YouTube Script Architecture</td>
+                    <td>Community Marketplace License</td>
+                    <td>$80.00</td>
+                    <td style={{ color: '#10B981', fontWeight: '800' }}>+$60.00</td>
+                    <td><span className="status-chip success">Cleared</span></td>
+                  </tr>
+                  <tr>
+                    <td style={{ fontWeight: '600' }}>Oct 08, 2026</td>
+                    <td style={{ fontWeight: '700', color: '#111625' }}>3D Product Placement Reel Blueprint</td>
+                    <td>Zunme Store Digital Asset</td>
+                    <td>$240.00</td>
+                    <td style={{ color: '#10B981', fontWeight: '800' }}>+$180.00</td>
+                    <td><span className="status-chip warning">Pending Clear</span></td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
