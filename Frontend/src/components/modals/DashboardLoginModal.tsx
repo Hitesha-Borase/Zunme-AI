@@ -154,6 +154,15 @@ export const DashboardLoginModal: React.FC<DashboardLoginModalProps> = ({ isOpen
           </button>
         </div>
 
+        {/* Universal Single Sign-On (SSO) Banner (Client Doc Lines 226-230) */}
+        <div className="modal-sso-banner">
+          <ShieldCheck size={16} color="#059669" style={{ flexShrink: 0 }} />
+          <div>
+            <strong>Universal Single Sign-On (SSO):</strong>
+            <span> Users have an option to use one password to access all Zunme platforms.</span>
+          </div>
+        </div>
+
         {/* Buttons List / Grid */}
         <div className="compact-buttons-grid">
           {dashboardButtons.map((btn) => (

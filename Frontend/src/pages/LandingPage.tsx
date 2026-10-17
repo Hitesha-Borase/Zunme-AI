@@ -9,6 +9,7 @@ import {
   ArrowRight,
   CheckCircle2,
   Shield,
+  ShieldCheck,
   Zap,
   Layers,
   Database,
@@ -27,7 +28,20 @@ import {
   Star,
   Compass,
   ArrowUpRight,
-  Megaphone
+  Megaphone,
+  Mail,
+  Server,
+  Briefcase,
+  Landmark,
+  Activity,
+  Award,
+  Film,
+  ShoppingBag,
+  Store,
+  Smile,
+  Image as ImageIcon,
+  Video,
+  Bot
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { DashboardLoginModal } from '../components/modals/DashboardLoginModal';
@@ -57,7 +71,246 @@ interface FaqItem {
   answer: string;
 }
 
-export type LandingSection = 'all' | 'features' | 'how-it-works' | 'showcase' | 'pricing' | 'faq';
+export interface EcosystemProduct {
+  id: string;
+  name: string;
+  tagline: string;
+  category: 'AI & Intelligence' | 'Communication & Cloud' | 'Commerce & Capital' | 'Media & Creative';
+  badge: string;
+  description: string;
+  highlights: string[];
+  icon: React.ReactNode;
+  iconBg: string;
+  accentColor: string;
+  linkTo: string;
+  linkText: string;
+}
+
+export const ZUNME_ECOSYSTEM_PRODUCTS: EcosystemProduct[] = [
+  {
+    id: 'zunme-ai',
+    name: 'Zunme AI',
+    tagline: 'Voice Agent & Multimodal Assistant',
+    category: 'AI & Intelligence',
+    badge: 'Flagship Assistant',
+    description: 'Conversational voice intelligence and autonomous reasoning engine tailored for personal and business inquiries.',
+    highlights: ['Voice & conversational dialogue', 'Real-time grounding', 'Multimodal analysis'],
+    icon: <Sparkles size={22} color="#FFFFFF" />,
+    iconBg: 'linear-gradient(135deg, #8B5CF6 0%, #6D28D9 100%)',
+    accentColor: '#8B5CF6',
+    linkTo: '/user/chat',
+    linkText: 'Launch AI Assistant'
+  },
+  {
+    id: 'zbox',
+    name: 'zBox',
+    tagline: 'Communication & MVP Content Sharing',
+    category: 'Communication & Cloud',
+    badge: 'Universal Inbox (Gmail-Style)',
+    description: 'Gmail-style internal mail suite with eBOX cross-platform sharing to Google, Facebook, Instagram, YouTube, TikTok, LinkedIn, Amazon & X.',
+    highlights: ['eBOX cross-platform dispatch', 'Integrated mailbox & drafts', 'One-click AI asset attachments'],
+    icon: <Mail size={22} color="#FFFFFF" />,
+    iconBg: 'linear-gradient(135deg, #0284C7 0%, #0369A1 100%)',
+    accentColor: '#0284C7',
+    linkTo: '/zbox',
+    linkText: 'Open zBox Hub'
+  },
+  {
+    id: 'content-studio',
+    name: 'AI Content Studio',
+    tagline: 'CRM nErgy Integrated Copy Engine',
+    category: 'AI & Intelligence',
+    badge: 'Enterprise Drafting',
+    description: 'High-velocity marketing copy, email outreach funnels, and executive content drafting linked directly with CRM nErgy pipelines.',
+    highlights: ['Deep CRM nErgy sync', '30+ marketing formats', 'Tone & persona calibration'],
+    icon: <PenTool size={22} color="#FFFFFF" />,
+    iconBg: 'linear-gradient(135deg, #C084FC 0%, #9333EA 100%)',
+    accentColor: '#C084FC',
+    linkTo: '/user/builders',
+    linkText: 'Launch Content Studio'
+  },
+  {
+    id: 'zunme-content',
+    name: 'Zunme Content',
+    tagline: 'AI Content, Images, Photos & Videos',
+    category: 'Media & Creative',
+    badge: 'Creative Media Suite',
+    description: 'All-in-one AI visual generation and licensing hub covering 3D animations, cartoons, photorealistic images, and cinematic video reels.',
+    highlights: ['Animation & cartoon engines', 'Ultra-HD photo synthesis', 'Cinematic video creator'],
+    icon: <Film size={22} color="#FFFFFF" />,
+    iconBg: 'linear-gradient(135deg, #EC4899 0%, #BE185D 100%)',
+    accentColor: '#EC4899',
+    linkTo: '/store',
+    linkText: 'Explore Creative Store'
+  },
+  {
+    id: 'zunme-cloud',
+    name: 'Zunme Cloud',
+    tagline: 'Hosting, Storage & Server Management',
+    category: 'Communication & Cloud',
+    badge: 'Cloud Infrastructure',
+    description: 'High-performance cloud hosting, edge-cached prompt warehouses, and distributed server architecture powering all Zunme microservices.',
+    highlights: ['10 GB base cloud quota', 'Encrypted asset repository', 'Edge compute delivery'],
+    icon: <Server size={22} color="#FFFFFF" />,
+    iconBg: 'linear-gradient(135deg, #6366F1 0%, #4338CA 100%)',
+    accentColor: '#6366F1',
+    linkTo: '/warehouse',
+    linkText: 'Manage Cloud Warehouse'
+  },
+  {
+    id: 'crm-nergy',
+    name: 'CRM nErgy',
+    tagline: 'CRM & ERP AI Business Platform',
+    category: 'Commerce & Capital',
+    badge: 'Business Automation',
+    description: 'Intelligent business operating system synchronizing customer management, pipeline stages, and enterprise resource planning.',
+    highlights: ['Omnichannel lead capture', 'AI sales forecasting', 'Automated follow-up workflows'],
+    icon: <Briefcase size={22} color="#FFFFFF" />,
+    iconBg: 'linear-gradient(135deg, #10B981 0%, #047857 100%)',
+    accentColor: '#10B981',
+    linkTo: '/business',
+    linkText: 'Launch CRM nErgy'
+  },
+  {
+    id: 'oal-marketplace',
+    name: 'OAL Marketplace',
+    tagline: 'Online Money & Financing Marketplace',
+    category: 'Commerce & Capital',
+    badge: 'Funding & Loans',
+    description: 'Premier capital marketplace connecting small business owners, startup founders, and real estate investors with institutional funding and credit lines.',
+    highlights: ['SBA & commercial loans', 'Real estate project financing', 'Direct lending syndication'],
+    icon: <Landmark size={22} color="#FFFFFF" />,
+    iconBg: 'linear-gradient(135deg, #F59E0B 0%, #B45309 100%)',
+    accentColor: '#F59E0B',
+    linkTo: '/business/overview',
+    linkText: 'Explore Financing'
+  },
+  {
+    id: 'oal-money-club',
+    name: 'OAL Money Club [INV IQ]',
+    tagline: 'AI Investor Scoring & Credit Tool',
+    category: 'Commerce & Capital',
+    badge: 'INV IQ AI Engine',
+    description: 'Proprietary AI scoring algorithm analyzing financial metrics to identify and certify credit-worthy investors and low-risk project deals.',
+    highlights: ['Proprietary INV IQ score', 'Automated underwriting check', 'Verified investor network'],
+    icon: <Award size={22} color="#FFFFFF" />,
+    iconBg: 'linear-gradient(135deg, #EF4444 0%, #B91C1C 100%)',
+    accentColor: '#EF4444',
+    linkTo: '/business/overview',
+    linkText: 'Check INV IQ Matrix'
+  },
+  {
+    id: 'omp-deals',
+    name: 'OMP Deals',
+    tagline: 'Online Commercial Marketplace',
+    category: 'Commerce & Capital',
+    badge: 'Sellers & Buyers Hub',
+    description: 'Integrated commercial trade hub directly connecting suppliers, e-commerce brands, and wholesale buyers with verified transaction escrow.',
+    highlights: ['Verified merchant directory', 'Escrow deal settlement', 'Direct buyer-seller RFQs'],
+    icon: <ShoppingBag size={22} color="#FFFFFF" />,
+    iconBg: 'linear-gradient(135deg, #14B8A6 0%, #0F766E 100%)',
+    accentColor: '#14B8A6',
+    linkTo: '/merchant-zone',
+    linkText: 'Visit OMP Deals'
+  },
+  {
+    id: 'swmtp',
+    name: 'SWMTP',
+    tagline: 'Super Web Mastering & Tracking Platform',
+    category: 'AI & Intelligence',
+    badge: 'Telemetry & Analytics',
+    description: 'Comprehensive website telemetry platform for real-time tracking, conversion funnels, SERP rank analytics, and comprehensive site health reporting.',
+    highlights: ['Real-time traffic telemetry', 'Conversion attribution audit', 'Automated SEO rank tracking'],
+    icon: <Activity size={22} color="#FFFFFF" />,
+    iconBg: 'linear-gradient(135deg, #3B82F6 0%, #1D4ED8 100%)',
+    accentColor: '#3B82F6',
+    linkTo: '/seo',
+    linkText: 'Open SWMTP Platform'
+  }
+];
+
+export interface StoreShowcaseCategory {
+  id: string;
+  name: string;
+  tag: string;
+  description: string;
+  icon: React.ReactNode;
+  accentColor: string;
+  stats: string;
+  thumbnail: string;
+  linkTo: string;
+}
+
+export const ZUNME_STORE_SHOWCASE_CATEGORIES: StoreShowcaseCategory[] = [
+  {
+    id: 'ai-content',
+    name: 'AI Content',
+    tag: 'Prompts & Frameworks',
+    description: 'High-converting marketing frameworks, viral hook sequences, and executive prompt engineering libraries.',
+    icon: <Sparkles size={18} />,
+    accentColor: '#8B5CF6',
+    stats: '3,400+ Downloads • 4.9★',
+    thumbnail: 'https://images.unsplash.com/photo-1455849318743-b2233052fcff?auto=format&fit=crop&w=600&q=80',
+    linkTo: '/store/ai-content'
+  },
+  {
+    id: 'animation',
+    name: 'Animation',
+    tag: 'Motion Graphics',
+    description: 'Cyberpunk HUD overlays, kinetic typography sequences, and seamless 60fps loopable motion graphics.',
+    icon: <Film size={18} />,
+    accentColor: '#EC4899',
+    stats: '1,420+ Downloads • 4.9★',
+    thumbnail: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=600&q=80',
+    linkTo: '/store/animation'
+  },
+  {
+    id: 'cartoon',
+    name: 'Cartoon',
+    tag: '3D Character Design',
+    description: 'Rigged 3D Pixar-style character kits, expressive avatars, and comic asset packs ready for animation.',
+    icon: <Smile size={18} />,
+    accentColor: '#F59E0B',
+    stats: '860+ Downloads • 4.9★',
+    thumbnail: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80',
+    linkTo: '/store/cartoon'
+  },
+  {
+    id: 'images-photos',
+    name: 'Images / Photos',
+    tag: '8K Photorealistic',
+    description: 'Pristine 8K photorealistic studio environments, commercial editorial scenes, and e-commerce podium mockups.',
+    icon: <ImageIcon size={18} />,
+    accentColor: '#06B6D4',
+    stats: '5,120+ Downloads • 5.0★',
+    thumbnail: 'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=600&q=80',
+    linkTo: '/store/images'
+  },
+  {
+    id: 'videos-ai-videos',
+    name: 'Videos / AI Videos',
+    tag: 'Spatial 4K B-Roll',
+    description: 'Breathtaking 4K spatial AI drone footage, futuristic metropolis reels, and commercial advertising b-roll.',
+    icon: <Video size={18} />,
+    accentColor: '#3B82F6',
+    stats: '3,200+ Downloads • 4.9★',
+    thumbnail: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=600&q=80',
+    linkTo: '/store/videos'
+  },
+  {
+    id: 'ai-builder',
+    name: 'AI Builder',
+    tag: 'Autonomous Agents',
+    description: 'Pre-trained retrieval agents, CRM automation pipelines, and custom persona bot architectures.',
+    icon: <Bot size={18} />,
+    accentColor: '#10B981',
+    stats: '2,950+ Downloads • 4.9★',
+    thumbnail: 'https://images.unsplash.com/photo-1531746790731-6c087fecd65a?auto=format&fit=crop&w=600&q=80',
+    linkTo: '/store/ai-builder'
+  }
+];
+
+export type LandingSection = 'all' | 'features' | 'how-it-works' | 'showcase' | 'pricing' | 'faq' | 'ecosystem' | 'store';
 
 export const LandingPage: React.FC = () => {
   const { user } = useApp();
@@ -71,6 +324,7 @@ export const LandingPage: React.FC = () => {
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
   const [copiedSnippet, setCopiedSnippet] = useState(false);
   const [activeSection, setActiveSection] = useState<LandingSection>('all');
+  const [activeEcosystemCategory, setActiveEcosystemCategory] = useState<string>('All');
 
   const handleNavClick = (section: LandingSection) => {
     setActiveSection(section);
@@ -187,12 +441,21 @@ export const LandingPage: React.FC = () => {
     }
   ];
 
+  const heroQuickLaunchers = [
+    { id: 'chat', label: 'AI Chat', to: '/user/chat', icon: <MessageSquare size={13} />, accent: '#8B5CF6' },
+    { id: 'search', label: 'Web Search', to: '/user/search', icon: <Search size={13} />, accent: '#0284C7' },
+    { id: 'builders', label: 'AI Content Builders', to: '/user/builders', icon: <PenTool size={13} />, accent: '#9333EA' },
+    { id: 'warehouse', label: 'AI Warehouse', to: '/warehouse', icon: <Database size={13} />, accent: '#6366F1' },
+    { id: 'creator', label: 'Creator Tools', to: '/creator', icon: <Wand2 size={13} />, accent: '#EC4899' },
+    { id: 'seo', label: 'SEO Workspace', to: '/seo', icon: <TrendingUp size={13} />, accent: '#10B981' }
+  ];
+
   const workflowSteps: StepItem[] = [
     {
       number: '01',
       title: 'Discover',
-      action: 'Query & Verify',
-      description: 'Search the web or converse with AI to gather verified facts, live citations, and competitive data points.',
+      action: 'Query & Verify (Zunme nTel™)',
+      description: 'Zunme nTel crawlers (Smartphones & Desktop) browse live web nodes to gather verified facts, live citations, and zero-hallucination data.',
       icon: <Search size={20} />,
       accent: '#38BDF8'
     },
@@ -297,6 +560,13 @@ export const LandingPage: React.FC = () => {
               </button>
               <button
                 type="button"
+                className={activeSection === 'ecosystem' ? 'active' : ''}
+                onClick={() => handleNavClick('ecosystem')}
+              >
+                Ecosystem
+              </button>
+              <button
+                type="button"
                 className={activeSection === 'pricing' ? 'active' : ''}
                 onClick={() => handleNavClick('pricing')}
               >
@@ -309,29 +579,28 @@ export const LandingPage: React.FC = () => {
               >
                 FAQ
               </button>
-              <NavLink
-                to="/store"
-                style={{ background: 'none', border: 'none', color: '#B0B9CC', fontSize: '14px', fontWeight: 600, padding: '8px 12px', textDecoration: 'none', cursor: 'pointer', transition: 'color 0.2s' }}
+              <button
+                type="button"
+                className={activeSection === 'store' ? 'active' : ''}
+                onClick={() => handleNavClick('store')}
               >
                 Store
-              </NavLink>
+              </button>
             </nav>
 
             {/* Header Right Actions */}
             <div className="header-actions">
               <NavLink
                 to="/ads"
-                className="btn btn-outline btn-sm"
+                className="btn btn-primary btn-sm btn-glow"
                 style={{
-                  borderColor: 'rgba(168, 85, 247, 0.45)',
-                  color: '#E9D5FF',
-                  fontWeight: '700',
                   display: 'inline-flex',
                   alignItems: 'center',
-                  gap: '5px'
+                  gap: '6px',
+                  fontWeight: '700'
                 }}
               >
-                <Megaphone size={13} color="#C084FC" />
+                <Megaphone size={13} color="#FFFFFF" />
                 <span>Advertise</span>
               </NavLink>
               <NavLink to="/login" className="btn btn-primary btn-sm btn-glow">
@@ -387,6 +656,13 @@ export const LandingPage: React.FC = () => {
               </button>
               <button
                 type="button"
+                className={activeSection === 'ecosystem' ? 'active' : ''}
+                onClick={() => handleNavClick('ecosystem')}
+              >
+                Zunme Ecosystem (10 Platforms)
+              </button>
+              <button
+                type="button"
                 className={activeSection === 'pricing' ? 'active' : ''}
                 onClick={() => handleNavClick('pricing')}
               >
@@ -399,31 +675,29 @@ export const LandingPage: React.FC = () => {
               >
                 FAQ
               </button>
-              <NavLink
-                to="/store"
-                style={{ textAlign: 'left', padding: '12px 0', border: 'none', background: 'none', color: '#111625', fontSize: '16px', fontWeight: 600, textDecoration: 'none' }}
-                onClick={() => setMobileMenuOpen(false)}
+              <button
+                type="button"
+                className={activeSection === 'store' ? 'active' : ''}
+                onClick={() => handleNavClick('store')}
               >
-                Store
-              </NavLink>
+                Store (Zunme Shop)
+              </button>
             </nav>
             <div className="mobile-drawer-actions">
               <NavLink
                 to="/ads"
-                className="btn btn-outline btn-block"
+                className="btn btn-primary btn-block btn-glow"
                 style={{
-                  borderColor: 'rgba(168, 85, 247, 0.45)',
-                  color: '#C084FC',
-                  fontWeight: '800',
                   marginBottom: '10px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  gap: '6px'
+                  gap: '6px',
+                  fontWeight: '800'
                 }}
                 onClick={() => setMobileMenuOpen(false)}
               >
-                <Megaphone size={15} color="#C084FC" />
+                <Megaphone size={15} color="#FFFFFF" />
                 <span>Advertise on Zunme (PPC / PPV)</span>
               </NavLink>
               <NavLink
@@ -445,43 +719,6 @@ export const LandingPage: React.FC = () => {
           </div>
         )}
       </header>
-
-      {/* Focused Section Indicator Banner when section is directly opened */}
-      {activeSection !== 'all' && (
-        <div className="section-active-banner">
-          <div
-            className="landing-container"
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              padding: '12px 0',
-              flexWrap: 'wrap',
-              gap: '10px'
-            }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <span
-                className="badge badge-primary"
-                style={{ textTransform: 'uppercase', fontSize: '11px', letterSpacing: '0.04em' }}
-              >
-                {activeSection === 'showcase' ? 'Product' : activeSection.replace('-', ' ')}
-              </span>
-              <span style={{ fontSize: '13px', color: '#5F6B85' }}>
-                Section view active • Direct access
-              </span>
-            </div>
-            <button
-              type="button"
-              className="btn btn-ghost btn-sm"
-              onClick={() => handleNavClick('all')}
-              style={{ fontSize: '12.5px', fontWeight: 700, color: '#6E56CF' }}
-            >
-              <span>← Show Full Page Overview</span>
-            </button>
-          </div>
-        </div>
-      )}
 
       {/* Hero Section */}
       {activeSection === 'all' && (
@@ -509,6 +746,36 @@ export const LandingPage: React.FC = () => {
           <p className="hero-description">
             Search the web, create compelling content, and organize your work with AI-powered tools in one connected workspace.
           </p>
+
+          {/* Client Signature Branding: "Make AI Your Best Friend" & 6 Quick Workspace Launchers */}
+          <div className="hero-best-friend-block">
+            <div className="hero-best-friend-header">
+              <Sparkles size={14} className="hero-best-friend-sparkle" />
+              <span className="hero-best-friend-tagline">Make AI Your Best Friend</span>
+              <span className="hero-best-friend-dot">•</span>
+              <span className="hero-best-friend-subtag">Direct Workspace Launchers</span>
+            </div>
+
+            <div className="hero-launcher-pills-row">
+              {heroQuickLaunchers.map((item) => (
+                <NavLink
+                  key={item.id}
+                  to={item.to}
+                  className="hero-launcher-pill"
+                  style={{ '--pill-accent': item.accent } as React.CSSProperties}
+                  title={`Open ${item.label}`}
+                >
+                  <span className="launcher-pill-icon-wrap">{item.icon}</span>
+                  <span className="launcher-pill-name">{item.label}</span>
+                  <ArrowUpRight size={13} className="launcher-pill-arrow" />
+                </NavLink>
+              ))}
+            </div>
+
+            <p className="hero-launcher-caption">
+              Dedicated AI capabilities organized into one seamless workspace. No tab hopping, no disconnected tools.
+            </p>
+          </div>
 
           {/* Micro trust indicators */}
           <div className="hero-micro-signals">
@@ -550,35 +817,18 @@ export const LandingPage: React.FC = () => {
             </NavLink>
             <NavLink
               to="/ads/create-campaign"
-              className="btn btn-outline"
-              style={{
-                borderColor: 'rgba(168, 85, 247, 0.5)',
-                background: 'linear-gradient(135deg, rgba(168, 85, 247, 0.12) 0%, rgba(126, 34, 206, 0.08) 100%)',
-                color: '#E9D5FF',
-                padding: '12px 24px',
-                fontSize: '14.5px',
-                fontWeight: '800',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '8px'
-              }}
+              className="hero-ads-ppc-btn"
             >
-              <Megaphone size={16} color="#C084FC" />
+              <Megaphone size={16} color="#7C3AED" />
               <span>Advertise on Zunme (From $10/day)</span>
-              <span
-                style={{
-                  background: 'linear-gradient(135deg, #059669 0%, #047857 100%)',
-                  color: '#FFFFFF',
-                  fontSize: '10px',
-                  fontWeight: '800',
-                  padding: '2px 7px',
-                  borderRadius: '999px',
-                  letterSpacing: '0.04em'
-                }}
-              >
-                PPC / PPV
-              </span>
+              <span className="hero-ads-ppc-badge">PPC / PPV</span>
             </NavLink>
+          </div>
+
+          {/* Universal SSO Protected Signal (Client Doc Lines 226-230) */}
+          <div className="hero-sso-trust-strip">
+            <ShieldCheck size={14} className="text-emerald" />
+            <span>Single Sign-On (SSO): Users have the option to use one password to access all Zunme platforms</span>
           </div>
 
           {/* Ask Zunme Interactive Search Bar directly in Hero */}
@@ -695,11 +945,24 @@ export const LandingPage: React.FC = () => {
                   </div>
                 </div>
 
+                <div className="bento-crawler-pill">
+                  <span className="zntel-pulse-dot" />
+                  <span>Powered by Zunme nTel™ Crawler Engine</span>
+                </div>
+
                 <div className="bento-card-footer">
-                  <NavLink to="/register" className="bento-action-link">
-                    <span>Explore Live Search</span>
+                  <button
+                    type="button"
+                    className="bento-action-link"
+                    onClick={() => {
+                      setActiveShowcaseTab('search');
+                      handleNavClick('showcase');
+                    }}
+                    style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
+                  >
+                    <span>View Zunme nTel Crawler Telemetry</span>
                     <ArrowRight size={13} />
-                  </NavLink>
+                  </button>
                 </div>
               </div>
 
@@ -743,6 +1006,176 @@ export const LandingPage: React.FC = () => {
           </div>
         </div>
       </section>
+      )}
+
+      {/* Zunme Ecosystem & Connected Platforms Showcase (Google Products Style) */}
+      {(activeSection === 'all' || activeSection === 'ecosystem') && (
+        <section id="ecosystem" className="ecosystem-section">
+          <div className="landing-container">
+            <div className="section-header">
+              <div className="section-badge">ZUNME ECOSYSTEM • 10 CONNECTED PLATFORMS</div>
+              <h2 className="section-title">One Unified Ecosystem. Infinite Capability.</h2>
+              <p className="section-description">
+                Explore Zunme's family of interconnected platforms, specialized AI tools, and enterprise engines — all accessible with your single Zunme Universal Account.
+              </p>
+            </div>
+
+            {/* Filter Bar */}
+            <div className="ecosystem-filter-bar">
+              {['All', 'AI & Intelligence', 'Communication & Cloud', 'Commerce & Capital', 'Media & Creative'].map((cat) => (
+                <button
+                  key={cat}
+                  type="button"
+                  className={`ecosystem-filter-btn ${activeEcosystemCategory === cat ? 'active' : ''}`}
+                  onClick={() => setActiveEcosystemCategory(cat)}
+                >
+                  {cat === 'All' ? '⚡ All 10 Platforms' : cat}
+                </button>
+              ))}
+            </div>
+
+            {/* Products Grid */}
+            <div className="ecosystem-grid">
+              {ZUNME_ECOSYSTEM_PRODUCTS
+                .filter((p) => activeEcosystemCategory === 'All' || p.category === activeEcosystemCategory)
+                .map((product) => (
+                  <div
+                    key={product.id}
+                    className="ecosystem-card"
+                    style={{ '--card-accent': product.accentColor } as React.CSSProperties}
+                  >
+                    <div className="ecosystem-card-top">
+                      <div className="ecosystem-icon-box" style={{ background: product.iconBg }}>
+                        {product.icon}
+                      </div>
+                      <span className="ecosystem-badge">{product.badge}</span>
+                    </div>
+
+                    <h3 className="ecosystem-name">{product.name}</h3>
+                    <p className="ecosystem-tagline">{product.tagline}</p>
+                    <p className="ecosystem-desc">{product.description}</p>
+
+                    <ul className="ecosystem-highlights">
+                      {product.highlights.map((h, i) => (
+                        <li key={i} className="ecosystem-highlight-item">
+                          <span className="ecosystem-highlight-dot" />
+                          <span>{h}</span>
+                        </li>
+                      ))}
+                    </ul>
+
+                    <div className="ecosystem-card-footer">
+                      <span className="ecosystem-sso-badge">✓ Single Sign-On</span>
+                      <NavLink to={product.linkTo} className="ecosystem-action-link">
+                        <span>{product.linkText}</span>
+                        <ArrowRight size={13} />
+                      </NavLink>
+                    </div>
+                  </div>
+                ))}
+            </div>
+
+            {/* Universal SSO Callout Banner */}
+            <div className="ecosystem-sso-callout-banner">
+              <div className="ecosystem-sso-content">
+                <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                  <span style={{ background: '#7C3AED', color: '#FFFFFF', fontSize: '11px', fontWeight: 800, padding: '3px 9px', borderRadius: '12px', letterSpacing: '0.04em' }}>
+                    UNIVERSAL SSO
+                  </span>
+                  <span style={{ color: '#DDD6FE', fontSize: '12.5px', fontWeight: 600 }}>One Login For Everything</span>
+                </div>
+                <h3 className="ecosystem-sso-title">One Universal Account Across All 10 Zunme Platforms</h3>
+                <p className="ecosystem-sso-desc">
+                  Switch effortlessly between AI Voice Assistant, zBox Communication, CRM nErgy, OAL Marketplace, and Cloud Storage without multiple logins or data silos.
+                </p>
+              </div>
+              <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+                <NavLink to="/register" className="btn btn-primary" style={{ background: '#7C3AED', borderColor: '#8B5CF6', padding: '10px 22px', fontWeight: 700 }}>
+                  <span>Create Universal Account</span>
+                  <ArrowRight size={15} />
+                </NavLink>
+                <NavLink to="/login" className="btn btn-outline" style={{ borderColor: 'rgba(255,255,255,0.25)', color: '#FFFFFF', padding: '10px 20px', fontWeight: 600 }}>
+                  Sign In to Ecosystem
+                </NavLink>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Zunme Store & Creative Asset Shop Showcase */}
+      {(activeSection === 'all' || activeSection === 'store') && (
+        <section id="store-showcase" className="store-showcase-section">
+          <div className="landing-container">
+            <div className="section-header">
+              <div className="section-badge">
+                <Store size={13} />
+                <span>ZUNME SHOP • CREATIVE DIGITAL ASSET STORE</span>
+              </div>
+              <h2 className="section-title">Production-Ready AI Assets &amp; Creative Media</h2>
+              <p className="section-description">
+                Explore thousands of verified prompts, 4K spatial videos, 3D animations, cartoon characters, and pre-trained AI builders in the Zunme Shop.
+              </p>
+            </div>
+
+            {/* 6 Store Category Cards Grid */}
+            <div className="store-showcase-grid">
+              {ZUNME_STORE_SHOWCASE_CATEGORIES.map((cat) => (
+                <NavLink
+                  key={cat.id}
+                  to={cat.linkTo}
+                  className="store-showcase-card"
+                  style={{ '--card-accent': cat.accentColor } as React.CSSProperties}
+                >
+                  <div className="store-card-img-wrap">
+                    <img src={cat.thumbnail} alt={cat.name} className="store-card-img" loading="lazy" />
+                    <div className="store-card-overlay" />
+                    <span className="store-card-tag">{cat.tag}</span>
+                    <div className="store-card-icon-badge" style={{ background: cat.accentColor }}>
+                      {cat.icon}
+                    </div>
+                  </div>
+
+                  <div className="store-card-body">
+                    <div className="store-card-meta">
+                      <h3 className="store-card-name">{cat.name}</h3>
+                      <span className="store-card-stats">{cat.stats}</span>
+                    </div>
+                    <p className="store-card-desc">{cat.description}</p>
+                    <div className="store-card-action">
+                      <span>Explore {cat.name}</span>
+                      <ArrowRight size={13} className="store-card-arrow" />
+                    </div>
+                  </div>
+                </NavLink>
+              ))}
+            </div>
+
+            {/* Bottom Callout Banner */}
+            <div className="store-showcase-bottom-strip">
+              <div className="store-bottom-info">
+                <div className="store-bottom-badge">
+                  <ShoppingBag size={14} />
+                  <span>COMMERCIAL CLEARANCE INCLUDED</span>
+                </div>
+                <h3 className="store-bottom-title">All Zunme Shop Assets Ready for Enterprise &amp; Creator Monetization</h3>
+                <p className="store-bottom-desc">
+                  Every asset is commercially cleared for YouTube, advertising campaigns, client deliverables, and e-commerce product placements.
+                </p>
+              </div>
+              <div className="store-bottom-actions">
+                <NavLink to="/store" className="btn btn-primary btn-glow" style={{ padding: '12px 24px', fontWeight: 800 }}>
+                  <Store size={16} />
+                  <span>Open Full Zunme Shop</span>
+                  <ArrowRight size={15} />
+                </NavLink>
+                <NavLink to="/creator" className="btn btn-outline" style={{ borderColor: '#CBD5E1', color: '#1E293B', fontWeight: 700, padding: '12px 20px', background: '#FFFFFF' }}>
+                  <span>Sell as Creator</span>
+                </NavLink>
+              </div>
+            </div>
+          </div>
+        </section>
       )}
 
       {/* Core Capabilities Section */}
@@ -1009,6 +1442,114 @@ export const LandingPage: React.FC = () => {
                       <p className="source-snippet">
                         Safety inspections reveal zero thermal runaway triggers under mechanical puncture, clearing key regulatory hurdles for aerospace deployment.
                       </p>
+                    </div>
+                  </div>
+
+                  {/* Zunme nTel Web Crawler & SEO Grounding Transparency Card (Doc Lines 147-202) */}
+                  <div className="zntel-crawler-transparency-card">
+                    <div className="zntel-card-header">
+                      <div className="zntel-badge-row">
+                        <div className="zntel-status-pill">
+                          <span className="zntel-pulse-dot" />
+                          <span>ZUNME nTel™ CRAWLER TELEMETRY</span>
+                        </div>
+                        <span className="zntel-engine-tag">Mobile-First &amp; DOM Indexer</span>
+                      </div>
+                      <h4 className="zntel-card-title">
+                        Powered by Zunme nTel™ Intelligent Web Crawler Architecture
+                      </h4>
+                      <p className="zntel-card-subtitle">
+                        Zunme discovers, analyzes, and grounds live web intelligence through four specialized crawler bots with full DOM rendering and alt-text extraction.
+                      </p>
+                    </div>
+
+                    {/* 4 Crawler Bots Grid */}
+                    <div className="zntel-bots-grid">
+                      <div className="zntel-bot-item">
+                        <div className="zntel-bot-top">
+                          <span className="zntel-bot-icon">📱</span>
+                          <span className="zntel-bot-type">Mobile-First Indexer</span>
+                        </div>
+                        <h5 className="zntel-bot-name">Zunme nTel for Smartphones</h5>
+                        <p className="zntel-bot-desc">
+                          Simulates mobile user-agents to crawl responsive layouts and dynamic viewport assets, reflecting modern mobile-first search indexing standards.
+                        </p>
+                        <span className="zntel-bot-stat">Primary Crawl Volume: 78%</span>
+                      </div>
+
+                      <div className="zntel-bot-item">
+                        <div className="zntel-bot-top">
+                          <span className="zntel-bot-icon">🖥️</span>
+                          <span className="zntel-bot-type">Full DOM &amp; Script Renderer</span>
+                        </div>
+                        <h5 className="zntel-bot-name">Zunme nTel for Desktop</h5>
+                        <p className="zntel-bot-desc">
+                          Executes dynamic JavaScript and renders complex multi-frame desktop applications to discover deep backlinks and verify source citations.
+                        </p>
+                        <span className="zntel-bot-stat">Full Headless Chromium</span>
+                      </div>
+
+                      <div className="zntel-bot-item">
+                        <div className="zntel-bot-top">
+                          <span className="zntel-bot-icon">🎯</span>
+                          <span className="zntel-bot-type">Focused Topic Crawler</span>
+                        </div>
+                        <h5 className="zntel-bot-name">Zunme Types</h5>
+                        <p className="zntel-bot-desc">
+                          Targeted crawler engineered to scan specific topics, academic papers, technical documentation, and real-time news based on predefined criteria.
+                        </p>
+                        <span className="zntel-bot-stat">Vertical Domain Scanners</span>
+                      </div>
+
+                      <div className="zntel-bot-item">
+                        <div className="zntel-bot-top">
+                          <span className="zntel-bot-icon">🏢</span>
+                          <span className="zntel-bot-type">Enterprise &amp; B2B Crawler</span>
+                        </div>
+                        <h5 className="zntel-bot-name">Zunme Eco (Economic)</h5>
+                        <p className="zntel-bot-desc">
+                          Enterprise crawler designed to index internal business intranets, private data feeds, and commercial product catalogs for secure AI synthesis.
+                        </p>
+                        <span className="zntel-bot-stat">Internal Enterprise Indexing</span>
+                      </div>
+                    </div>
+
+                    {/* Image & Metadata Extraction Process (Doc Lines 153-168) */}
+                    <div className="zntel-extraction-process">
+                      <div className="zntel-process-header">
+                        <Sparkles size={14} className="text-cyan" />
+                        <strong>Automated Image &amp; Metadata Extraction Pipeline</strong>
+                      </div>
+                      <div className="zntel-pipeline-steps">
+                        <div className="zntel-pipeline-step">
+                          <span className="pipeline-num">01</span>
+                          <div>
+                            <strong>Scan &lt;img&gt; Tags</strong>
+                            <p>Scans web pages to detect image URLs and visual assets.</p>
+                          </div>
+                        </div>
+                        <div className="zntel-pipeline-step">
+                          <span className="pipeline-num">02</span>
+                          <div>
+                            <strong>Alt-Text &amp; File Names</strong>
+                            <p>Extracts descriptive alt tags, surrounding context &amp; file metadata.</p>
+                          </div>
+                        </div>
+                        <div className="zntel-pipeline-step">
+                          <span className="pipeline-num">03</span>
+                          <div>
+                            <strong>Computer Vision AI</strong>
+                            <p>Evaluates visual features for zero-hallucination factual grounding.</p>
+                          </div>
+                        </div>
+                        <div className="zntel-pipeline-step">
+                          <span className="pipeline-num">04</span>
+                          <div>
+                            <strong>Live Source Links</strong>
+                            <p>Indexes source URLs with publisher verification for 100% transparency.</p>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -1465,6 +2006,12 @@ export const LandingPage: React.FC = () => {
                 <ul>
                   <li>
                     <a href="#hero" onClick={(e) => { e.preventDefault(); handleNavClick('all'); }}>About Zunme AI</a>
+                  </li>
+                  <li>
+                    <a href="#ecosystem" onClick={(e) => { e.preventDefault(); handleNavClick('ecosystem'); }}>Zunme Ecosystem (10 Platforms)</a>
+                  </li>
+                  <li>
+                    <NavLink to="/store">Zunme Shop &amp; Store</NavLink>
                   </li>
                   <li>
                     <a href="#how-it-works" onClick={(e) => { e.preventDefault(); handleNavClick('how-it-works'); }}>How It Works</a>

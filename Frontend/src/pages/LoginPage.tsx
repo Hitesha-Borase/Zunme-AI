@@ -177,6 +177,10 @@ export const LoginPage: React.FC = () => {
               </div>
               <p className="energy-card-meta">Next-Gen Unified AI Platform</p>
               <p className="energy-card-desc">Sign in to continue to your workspace.</p>
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: '#F0FDF4', border: '1px solid #BBF7D0', padding: '5px 12px', borderRadius: '8px', fontSize: '11.5px', color: '#166534', fontWeight: 600, marginTop: '10px' }}>
+                <ShieldCheck size={13} color="#15803D" />
+                <span>Single Sign-On (SSO): One password to access all Zunme platforms</span>
+              </div>
             </div>
 
             {error && (

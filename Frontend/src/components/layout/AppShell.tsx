@@ -76,11 +76,14 @@ export const AppShell: React.FC = () => {
     navigate('/login', { replace: true });
   };
 
-  if (!user) {
+  // Allow public access to store and shop
+  const isPublicRoute = location.pathname.startsWith('/store') || location.pathname.startsWith('/shop');
+
+  if (!user && !isPublicRoute) {
     return <Navigate to="/login" replace />;
   }
 
-  const displayName = (user?.fullName || 'User').replace(/\s*\([^)]*\)/g, '').trim();
+  const displayName = (user?.fullName || 'Guest').replace(/\s*\([^)]*\)/g, '').trim();
 
   return (
     <div className="app-shell">
