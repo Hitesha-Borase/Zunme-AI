@@ -20,6 +20,7 @@ import {
   Star
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
+import { SSOPlatformsCallout } from '../components/auth/SSOPlatformsCallout';
 import './RegisterPage.css';
 
 export const RegisterPage: React.FC = () => {
@@ -221,10 +222,7 @@ export const RegisterPage: React.FC = () => {
             <p className="register-card-subtitle">
               Get full access to all verified models, live web search, and content builders in 15 seconds.
             </p>
-            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: '#F0FDF4', border: '1px solid #BBF7D0', padding: '6px 14px', borderRadius: '8px', fontSize: '12px', color: '#166534', fontWeight: 600, marginTop: '10px' }}>
-              <ShieldCheck size={14} color="#15803D" />
-              <span>Universal Single Sign-On (SSO): One password to access all Zunme platforms</span>
-            </div>
+            <SSOPlatformsCallout />
           </div>
 
           {error && (

@@ -570,6 +570,15 @@ export const AppShell: React.FC = () => {
               </NavLink>
 
               <NavLink
+                to="/seo/crawler"
+                className={() => `sidebar-nav-item ${location.pathname.startsWith('/seo') ? 'active' : ''}`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <SearchCheck size={17} />
+                <span>SEO &amp; Web Crawler</span>
+              </NavLink>
+
+              <NavLink
                 to="/user/mvp"
                 className={() => `sidebar-nav-item ${location.pathname.startsWith('/user/mvp') || location.pathname.startsWith('/mvp') ? 'active' : ''}`}
                 onClick={() => setMobileMenuOpen(false)}
