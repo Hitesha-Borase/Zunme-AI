@@ -15,6 +15,10 @@ import { ForgotPasswordPage } from './pages/ForgotPasswordPage';
 import { TermsPage } from './pages/TermsPage';
 import { PrivacyPage } from './pages/PrivacyPage';
 import { ContactPage } from './pages/ContactPage';
+import { MakeAIWorkPage } from './pages/MakeAIWorkPage';
+import { SearchSettingsPage } from './pages/SearchSettingsPage';
+import { PublicAdvertisingPage } from './pages/PublicAdvertisingPage';
+import { PublicBusinessPage } from './pages/PublicBusinessPage';
 import { PublicCreatorProfilePage } from './pages/creator/PublicCreatorProfilePage';
 
 // General User Pages
@@ -73,7 +77,13 @@ export const App: React.FC = () => {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
 
-          {/* Legal & Contact Suite */}
+          {/* Public Standalone Product Showcase, Legal & Vision Suite (Client Specification) */}
+          <Route path="/ads" element={<PublicAdvertisingPage />} />
+          <Route path="/advertising" element={<PublicAdvertisingPage />} />
+          <Route path="/business" element={<PublicBusinessPage />} />
+          <Route path="/business/solutions" element={<PublicBusinessPage />} />
+          <Route path="/make-ai-work" element={<MakeAIWorkPage />} />
+          <Route path="/settings" element={<SearchSettingsPage />} />
           <Route path="/terms" element={<TermsPage />} />
           <Route path="/privacy" element={<PrivacyPage />} />
           <Route path="/contact" element={<ContactPage />} />
@@ -110,6 +120,13 @@ export const App: React.FC = () => {
           <Route path="/app/settings" element={<Navigate to="/user/settings" replace />} />
           <Route path="/app/support" element={<Navigate to="/user/support" replace />} />
 
+          {/* Top-Level Quick Shortcuts */}
+          <Route path="/chat" element={<Navigate to="/user/chat" replace />} />
+          <Route path="/search" element={<Navigate to="/user/search" replace />} />
+          <Route path="/builders" element={<Navigate to="/user/builders" replace />} />
+          <Route path="/studio" element={<Navigate to="/user/builders" replace />} />
+          <Route path="/library" element={<Navigate to="/user/library" replace />} />
+
           {/* Specialist Workspaces (Under AppShell) */}
           <Route path="/warehouse" element={<AppShell />}>
             <Route index element={<AIWarehousePage />} />
@@ -141,10 +158,14 @@ export const App: React.FC = () => {
             <Route path=":section" element={<SEOWorkspacePage />} />
           </Route>
 
-          <Route path="/business" element={<AppShell />}>
+          {/* Authenticated Business Dashboard Workspace */}
+          <Route path="/business/dashboard" element={<AppShell />}>
             <Route index element={<BusinessWorkspacePage />} />
-            <Route path="dashboard" element={<BusinessWorkspacePage />} />
             <Route path="overview" element={<BusinessWorkspacePage />} />
+            <Route path=":section" element={<BusinessWorkspacePage />} />
+          </Route>
+          <Route path="/user/business" element={<AppShell />}>
+            <Route index element={<BusinessWorkspacePage />} />
             <Route path=":section" element={<BusinessWorkspacePage />} />
           </Route>
 
@@ -168,13 +189,17 @@ export const App: React.FC = () => {
             <Route path=":folder" element={<ZBoxPage />} />
           </Route>
 
-          <Route path="/ads" element={<AppShell />}>
+          {/* Authenticated Ads Manager Workspace */}
+          <Route path="/ads/dashboard" element={<AppShell />}>
             <Route index element={<ZunmeAdsPage />} />
-            <Route path="dashboard" element={<ZunmeAdsPage />} />
             <Route path="overview" element={<ZunmeAdsPage />} />
             <Route path="onboarding" element={<AdOnboardingWizard />} />
             <Route path="formats" element={<AdFormatBuildersPage />} />
             <Route path="format-builders" element={<AdFormatBuildersPage />} />
+            <Route path=":section" element={<ZunmeAdsPage />} />
+          </Route>
+          <Route path="/user/ads" element={<AppShell />}>
+            <Route index element={<ZunmeAdsPage />} />
             <Route path=":section" element={<ZunmeAdsPage />} />
           </Route>
 

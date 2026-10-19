@@ -83,12 +83,10 @@ export const AppShell: React.FC = () => {
     navigate('/login', { replace: true });
   };
 
-  // Allow public access to store, shop, ads platform, and zbox
+  // Only public store catalog is viewable as guest; internal workspace dashboards require login
   const isPublicRoute =
     location.pathname.startsWith('/store') ||
-    location.pathname.startsWith('/shop') ||
-    location.pathname.startsWith('/ads') ||
-    location.pathname.startsWith('/zbox');
+    location.pathname.startsWith('/shop');
 
   if (!user && !isPublicRoute) {
     return <Navigate to="/login" replace />;

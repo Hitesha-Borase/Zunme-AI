@@ -63,6 +63,18 @@ export const PrivacyPage: React.FC = () => {
                   You hold complete control over your generated content. You may delete conversations from History, clear search logs, or export your saved Personal Library assets at any time.
                 </p>
               </section>
+
+              <section className="legal-section">
+                <h2>5. Confidential Business Communication &amp; Anti-Harvesting Guarantee (zBox)</h2>
+                <p>
+                  In accordance with the founding charter for <strong>zBox Secured Business Email</strong>, Zunme was engineered to provide small business owners, creators, and entrepreneurs with a trustworthy alternative to big tech platforms that monetize user data.
+                </p>
+                <ul>
+                  <li><strong>Zero Email Scraping:</strong> Zunme zBox communications, draft proposals, and attachments are strictly private and never mined to train foundation models or serve third-party ads.</li>
+                  <li><strong>Private eBOX Vault:</strong> Files and creative assets stored in your personal eBOX repository remain your exclusive property with tenant-level cryptographic isolation.</li>
+                  <li><strong>No Third-Party Data Brokering:</strong> We never sell, rent, or disclose your client databases, CRM records, or communications to advertisers.</li>
+                </ul>
+              </section>
             </div>
 
             <div className="legal-card-footer">
