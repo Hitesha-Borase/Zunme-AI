@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { NavLink, useSearchParams } from 'react-router-dom';
 import {
   Mail,
   Send,
@@ -43,6 +43,7 @@ import {
   Copy
 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
+import { EcosystemAppsLauncher } from '../../components/layout/EcosystemAppsLauncher';
 import './ZBoxPage.css';
 
 interface ZBoxMessage {
@@ -131,12 +132,28 @@ const INITIAL_MESSAGES: ZBoxMessage[] = [
 ];
 
 export const ZBoxPage: React.FC = () => {
-  const { showToast } = useApp();
+  const { user, showToast } = useApp();
 
   type ModeType = 'webmail' | 'sharing' | 'secured-plans';
   type FolderType = 'inbox' | 'sent' | 'scheduled' | 'drafts' | 'shared';
 
-  const [activeMode, setActiveMode] = useState<ModeType>('webmail');
+  const [searchParams] = useSearchParams();
+  const initialMode: ModeType = (searchParams.get('tab') === 'webmail') ? 'webmail' : 
+                               (searchParams.get('tab') === 'sharing') ? 'sharing' : 'secured-plans';
+  const [activeMode, setActiveMode] = useState<ModeType>(initialMode);
+  const [comparisonViewMode, setComparisonViewMode] = useState<'table' | 'cards'>('table');
+
+  useEffect(() => {
+    const tab = searchParams.get('tab');
+    if (tab === 'secured-plans' || tab === 'plans') {
+      setActiveMode('secured-plans');
+    } else if (tab === 'webmail') {
+      setActiveMode('webmail');
+    } else if (tab === 'sharing') {
+      setActiveMode('sharing');
+    }
+  }, [searchParams]);
+
   const [activeFolder, setActiveFolder] = useState<FolderType>('inbox');
   const [messages, setMessages] = useState<ZBoxMessage[]>(INITIAL_MESSAGES);
   const [selectedMessage, setSelectedMessage] = useState<ZBoxMessage | null>(INITIAL_MESSAGES[0]);
@@ -176,6 +193,112 @@ export const ZBoxPage: React.FC = () => {
   const [freeEmailPrefix, setFreeEmailPrefix] = useState('');
   const [isActivatingFree, setIsActivatingFree] = useState(false);
   const [freeClaimSuccess, setFreeClaimSuccess] = useState(false);
+
+  // 3. Solopreneur Secure Package Modal State (Doc Line 7)
+  const [isSoloModalOpen, setIsSoloModalOpen] = useState(false);
+  const [soloFounderName, setSoloFounderName] = useState('');
+  const [soloBusinessName, setSoloBusinessName] = useState('');
+  const [soloEmailPrefix, setSoloEmailPrefix] = useState('');
+  const [isActivatingSolo, setIsActivatingSolo] = useState(false);
+  const [soloClaimSuccess, setSoloClaimSuccess] = useState(false);
+
+  const handleActivateSoloPackage = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!soloBusinessName.trim() || !soloEmailPrefix.trim()) {
+      showToast('Please enter your business name and email handle.', 'error');
+      return;
+    }
+    setIsActivatingSolo(true);
+    setTimeout(() => {
+      setIsActivatingSolo(false);
+      setSoloClaimSuccess(true);
+      const emailDomain = activeCustomDomain ? `@${activeCustomDomain}` : '@zunme.ai';
+      const fullEmail = `${soloEmailPrefix.trim().toLowerCase()}${emailDomain}`;
+
+      const soloMsg: ZBoxMessage = {
+        id: `msg-solo-${Date.now()}`,
+        sender: 'ZBox Solopreneur Vault Services',
+        email: 'vault@zbox.zunme.ai',
+        subject: `🛡️ Solopreneur Secure Vault Active: ${fullEmail} ($9.99/mo)`,
+        snippet: `Welcome ${soloFounderName || 'Founder'}! Your high-security Solopreneur vault (50 GB) is configured...`,
+        body: `Dear ${soloFounderName || 'Founder'},\n\nYour Solopreneur Secure Package is officially active under "${soloBusinessName}".\n\nPackage Specifications (Doc Line 7):\n- Email Address: ${fullEmail}\n- Target Group: Solopreneur (No Employees • 78-82% of small businesses)\n- Storage Vault: 50 GB High-Speed Encrypted Cloud Storage\n- Video & Asset Protection: High-bitrate 4K streaming & attachment upload buffers\n- Surveillance Shield: 100% Zero third-party telemetry, no metadata scanning\n- B4B America Support: Dedicated small business onboarding specialist assigned\n\nStay private,\nZBox Security & Architecture Team`,
+        timestamp: 'Just now',
+        folder: 'inbox',
+        unread: true,
+        starred: true,
+        hasAttachment: false
+      };
+      setMessages(prev => [soloMsg, ...prev]);
+      showToast('🎉 Solopreneur Secure Vault ($9.99/mo) activated!', 'success');
+    }, 1000);
+  };
+
+  // 4. Custom Deployment Modal State (Doc Lines 8-11, 24)
+  const [isDeployModalOpen, setIsDeployModalOpen] = useState(false);
+  const [deploySuccess, setDeploySuccess] = useState(false);
+  const [deployCompanyName, setDeployCompanyName] = useState('');
+  const [isDeploying, setIsDeploying] = useState(false);
+
+  // 5. B4B America Onboarding Advisor State (Doc Line 3)
+  const [isB4BModalOpen, setIsB4BModalOpen] = useState(false);
+  const [b4bBusinessName, setB4bBusinessName] = useState('');
+  const [b4bContactName, setB4bContactName] = useState('');
+  const [b4bPhone, setB4bPhone] = useState('');
+  const [b4bCurrentProvider, setB4bCurrentProvider] = useState('Google Workspace');
+  const [b4bSubmitted, setB4bSubmitted] = useState(false);
+
+  const handleDeployConfiguration = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!deployCompanyName.trim()) {
+      showToast('Please enter your company or organization name.', 'error');
+      return;
+    }
+    setIsDeploying(true);
+    setTimeout(() => {
+      setIsDeploying(false);
+      setDeploySuccess(true);
+      const pricing = calculateConfigCost();
+      const deployMsg: ZBoxMessage = {
+        id: `msg-deploy-${Date.now()}`,
+        sender: 'ZBox Enterprise Provisioning Cluster',
+        email: 'provisioning@zbox.zunme.ai',
+        subject: `⚡ Mailbox Cluster Provisioned: ${deployCompanyName} (${selectedAccountsTier} Accounts)`,
+        snippet: `Your tailored deployment (${selectedAccountsTier} accounts, ${selectedStorageTier} storage) is active...`,
+        body: `Dear Administrator,\n\nYour custom ZBox Secured Business Email deployment has been provisioned successfully.\n\nCluster Details (Doc Lines 8–11, 24 Spec):\n- Organization: ${deployCompanyName}\n- Inboxes: ${selectedAccountsTier} Accounts\n- Storage Allocation: ${selectedStorageTier} per mailbox\n- Video & Media CDN Buffer: ${isMediaHeavy ? 'Enabled (Optimized for frequent 4K/raw media)' : 'Standard'}\n- Monthly Rate: ${pricing.isFree ? 'FREE' : `$${pricing.cost.toFixed(2)}/user/mo`}\n- Sales & Onboarding Partner: B4B America (Dedicated engineer assigned)\n\nWelcome to trusted, surveillance-free communication!\nZBox Enterprise Operations`,
+        timestamp: 'Just now',
+        folder: 'inbox',
+        unread: true,
+        starred: true,
+        hasAttachment: false
+      };
+      setMessages(prev => [deployMsg, ...prev]);
+      showToast('⚡ Custom ZBox deployment successfully provisioned!', 'success');
+    }, 1000);
+  };
+
+  const handleB4BSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!b4bBusinessName.trim() || !b4bContactName.trim()) {
+      showToast('Please enter your business and contact name.', 'error');
+      return;
+    }
+    setB4bSubmitted(true);
+    const b4bMsg: ZBoxMessage = {
+      id: `msg-b4b-${Date.now()}`,
+      sender: 'B4B America Small Business Advisory',
+      email: 'advisors@b4bamerica.org',
+      subject: `🤝 B4B America Onboarding Advisor Assigned for ${b4bBusinessName}`,
+      snippet: `Hello ${b4bContactName}! Your dedicated onboarding specialist from B4B America has been assigned...`,
+      body: `Hello ${b4bContactName},\n\nThank you for reaching out to B4B America, official small business sales and onboarding partner for Zunme ZBox.\n\nWe have received your migration request from ${b4bCurrentProvider}.\n\nNext Steps:\n1. A dedicated B4B America specialist will contact you within 24 hours at ${b4bPhone || 'your registered contact'}.\n2. We will handle seamless MX DNS cutover with zero downtime and no lost emails.\n3. Your team will receive full privacy training on ZBox and AI Warehouse integrations.\n\nBest regards,\nB4B America Small Business Support Team`,
+      timestamp: 'Just now',
+      folder: 'inbox',
+      unread: true,
+      starred: true,
+      hasAttachment: false
+    };
+    setMessages(prev => [b4bMsg, ...prev]);
+    showToast('✓ B4B America Advisor assigned! Confirmation sent to your inbox.', 'success');
+  };
 
   const handleCopyText = (text: string, label: string) => {
     if (navigator.clipboard) {
@@ -323,54 +446,71 @@ export const ZBoxPage: React.FC = () => {
   };
 
   return (
-    <div className="zbox-container">
-      {/* Top Banner */}
-      <div className="zbox-header">
-        <div className="zbox-header-left">
-          <div className="zbox-header-icon">
-            <Mail size={24} />
-          </div>
-          <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <h1 style={{ fontSize: '22px', fontWeight: 800, margin: 0, color: 'var(--color-text-primary)' }}>
-                zBox
-              </h1>
-              <span className="badge badge-primary">Unified Communications &amp; Syndication</span>
+    <div className="zbox-page-wrapper">
+      {/* Top Public Navigation Bar (Google Workspace / Ecosystem Architecture) */}
+      <header className="zbox-public-navbar">
+        <div className="zbox-public-nav-container">
+          <div className="zbox-public-nav-brand">
+            <NavLink to="/" className="zbox-brand-link" title="Zunme AI Homepage">
+              <img src="/zunme_logo.png" alt="Zunme" style={{ height: '30px', width: 'auto' }} />
+            </NavLink>
+            <div className="zbox-brand-divider" />
+            <div className="zbox-brand-pill">
+              <ShieldCheck size={14} color="#10B981" />
+              <span>ZBox Business Email</span>
             </div>
-            <p style={{ fontSize: '13px', color: 'var(--color-text-secondary)', margin: '4px 0 0 0' }}>
-              Private webmail client, zero-knowledge security vault, and cross-platform syndication hub.
-            </p>
+          </div>
+
+          {/* Mode Switcher Tabs */}
+          <div className="zbox-mode-tabs">
+            <button
+              type="button"
+              className={`zbox-mode-btn ${activeMode === 'secured-plans' ? 'active' : ''}`}
+              onClick={() => setActiveMode('secured-plans')}
+            >
+              <ShieldCheck size={15} color={activeMode === 'secured-plans' ? '#10B981' : '#64748B'} />
+              <span>Secured Business Email (Plans &amp; Privacy)</span>
+            </button>
+            <button
+              type="button"
+              className={`zbox-mode-btn ${activeMode === 'webmail' ? 'active' : ''}`}
+              onClick={() => setActiveMode('webmail')}
+            >
+              <Mail size={15} />
+              <span>zBox Webmail Client</span>
+            </button>
+            <button
+              type="button"
+              className={`zbox-mode-btn ${activeMode === 'sharing' ? 'active' : ''}`}
+              onClick={() => setActiveMode('sharing')}
+            >
+              <Share2 size={15} />
+              <span>Cross-Platform Sharing</span>
+            </button>
+          </div>
+
+          {/* Right Actions */}
+          <div className="zbox-public-nav-actions">
+            <EcosystemAppsLauncher />
+            {user ? (
+              <NavLink to="/user/home" className="btn btn-outline btn-sm" style={{ fontWeight: 700 }}>
+                Workspace Dashboard
+              </NavLink>
+            ) : (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <NavLink to="/login" className="btn btn-ghost btn-sm" style={{ fontWeight: 700 }}>
+                  Sign In
+                </NavLink>
+                <NavLink to="/register" className="btn btn-primary btn-sm" style={{ fontWeight: 800 }}>
+                  Create Account
+                </NavLink>
+              </div>
+            )}
           </div>
         </div>
+      </header>
 
-        {/* Mode Switcher */}
-        <div className="zbox-mode-tabs">
-          <button
-            type="button"
-            className={`zbox-mode-btn ${activeMode === 'webmail' ? 'active' : ''}`}
-            onClick={() => setActiveMode('webmail')}
-          >
-            <Mail size={15} />
-            <span>zBox Webmail</span>
-          </button>
-          <button
-            type="button"
-            className={`zbox-mode-btn ${activeMode === 'sharing' ? 'active' : ''}`}
-            onClick={() => setActiveMode('sharing')}
-          >
-            <Share2 size={15} />
-            <span>Cross-Platform Sharing</span>
-          </button>
-          <button
-            type="button"
-            className={`zbox-mode-btn ${activeMode === 'secured-plans' ? 'active' : ''}`}
-            onClick={() => setActiveMode('secured-plans')}
-          >
-            <ShieldCheck size={15} color="#10B981" />
-            <span>Secured Business Email (Plans &amp; Privacy)</span>
-          </button>
-        </div>
-      </div>
+      <div className="zbox-container">
 
       {/* MODE 1: GMAIL-LIKE WEBMAIL CLIENT */}
       {activeMode === 'webmail' && (
@@ -785,167 +925,404 @@ export const ZBoxPage: React.FC = () => {
             </div>
           </div>
 
-          {/* Market Comparison Table / Cards (Johnny's Direct Comparison) */}
+          {/* Market Comparison Table / Cards (Johnny's Direct Comparison - Doc Lines 28-48) */}
           <div>
-            <div style={{ marginBottom: '14px' }}>
-              <h3 style={{ fontSize: '18px', fontWeight: 800, color: 'var(--color-text-primary)', margin: 0 }}>
-                Competitive Market Positioning
-              </h3>
-              <p style={{ fontSize: '13px', color: 'var(--color-text-secondary)', margin: '4px 0 0' }}>
-                ZBox is engineered as the 3rd most trusted business email provider alongside Microsoft and Google.
-              </p>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px', marginBottom: '16px' }}>
+              <div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <span className="badge badge-primary">Market Benchmark Analysis</span>
+                  <span className="badge badge-success" style={{ background: '#ECFDF5', color: '#059669', borderColor: '#A7F3D0' }}>
+                    Top-Tier Surveillance-Free Alternative
+                  </span>
+                </div>
+                <h3 style={{ fontSize: '20px', fontWeight: 800, color: 'var(--color-text-primary)', margin: '6px 0 2px' }}>
+                  Comparison of Business Email Providers
+                </h3>
+                <p style={{ fontSize: '13px', color: 'var(--color-text-secondary)', margin: 0 }}>
+                  Strategic market analysis benchmarked against Google Workspace ($22), Microsoft 365 ($19.90), Proton ($7.99), and Zoho ($1–$3).
+                </p>
+              </div>
+
+              {/* View Switcher: Table View vs Cards View */}
+              <div style={{ display: 'flex', alignItems: 'center', background: '#F1F5F9', padding: '3px', borderRadius: '10px' }}>
+                <button
+                  type="button"
+                  className={`zbox-view-toggle-btn ${comparisonViewMode === 'table' ? 'active' : ''}`}
+                  onClick={() => setComparisonViewMode('table')}
+                >
+                  Table View
+                </button>
+                <button
+                  type="button"
+                  className={`zbox-view-toggle-btn ${comparisonViewMode === 'cards' ? 'active' : ''}`}
+                  onClick={() => setComparisonViewMode('cards')}
+                >
+                  Card View
+                </button>
+              </div>
             </div>
 
-            <div className="zbox-comparison-grid">
-              {/* Google Workspace */}
-              <div className="zbox-plan-card" style={{ opacity: 0.9 }}>
-                <div>
-                  <div style={{ fontSize: '12px', fontWeight: 800, color: '#64748B', textTransform: 'uppercase' }}>
-                    Google Workspace
-                  </div>
-                  <div style={{ fontSize: '14px', fontWeight: 700, color: '#1E293B', marginTop: '2px' }}>
-                    Business Plus
-                  </div>
-                  <div className="zbox-plan-price">
-                    $22.00 <small>/user/mo</small>
-                  </div>
-                  <div style={{ fontSize: '11px', color: '#DC2626', fontWeight: 600, background: '#FEF2F2', padding: '4px 8px', borderRadius: '6px', marginTop: '6px' }}>
-                    ⚠️ Scrutinized for 3rd-Party Data Sharing &amp; Telemetry
-                  </div>
-                  <ul className="zbox-plan-features">
-                    <li><Check size={14} color="#64748B" /> <span>5 TB pooled cloud storage</span></li>
-                    <li><Check size={14} color="#64748B" /> <span>Google Meet 500 participants</span></li>
-                    <li><Check size={14} color="#64748B" /> <span>Bundled productivity lock-in</span></li>
-                    <li><X size={14} color="#DC2626" /> <span>High per-user scaling cost</span></li>
-                  </ul>
-                </div>
-                <div style={{ fontSize: '11.5px', color: '#64748B', textAlign: 'center', marginTop: '10px' }}>
-                  Industry's most expensive tier
-                </div>
-              </div>
+            {/* View Option 1: Official Comparison Table */}
+            {comparisonViewMode === 'table' && (
+              <div className="zbox-comparison-table-wrapper">
+                <table className="zbox-official-table">
+                  <thead>
+                    <tr>
+                      <th style={{ width: '22%' }}>Provider</th>
+                      <th style={{ width: '16%' }}>Monthly Cost (per user)</th>
+                      <th style={{ width: '16%' }}>Market Hierarchy</th>
+                      <th style={{ width: '34%' }}>Features Included</th>
+                      <th style={{ width: '12%', textAlign: 'right' }}>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {/* Google Workspace */}
+                    <tr>
+                      <td>
+                        <div style={{ fontWeight: 800, color: '#1E293B', fontSize: '14px' }}>Google Workspace</div>
+                        <div style={{ fontSize: '11.5px', color: '#64748B' }}>Business Plus Plan</div>
+                        <div style={{ fontSize: '10.5px', color: '#DC2626', fontWeight: 600, marginTop: '2px' }}>
+                          ⚠️ Scrutinized for 3rd-Party Data Sharing
+                        </div>
+                      </td>
+                      <td>
+                        <div className="zbox-table-price">$22.00 <small>/user/mo</small></div>
+                      </td>
+                      <td>
+                        <span style={{ fontSize: '11px', fontWeight: 700, background: '#FEE2E2', color: '#B91C1C', padding: '3px 8px', borderRadius: '6px' }}>
+                          #1 Most Expensive
+                        </span>
+                      </td>
+                      <td>
+                        <div style={{ fontSize: '12.5px', color: '#334155', lineHeight: 1.5 }}>
+                          Custom domain email, 5 TB storage, advanced security features, video meetings with 1000 participants
+                        </div>
+                      </td>
+                      <td style={{ textAlign: 'right' }}>
+                        <span style={{ fontSize: '11.5px', color: '#94A3B8', fontWeight: 600 }}>External Tier</span>
+                      </td>
+                    </tr>
 
-              {/* Microsoft 365 */}
-              <div className="zbox-plan-card" style={{ opacity: 0.9 }}>
-                <div>
-                  <div style={{ fontSize: '12px', fontWeight: 800, color: '#64748B', textTransform: 'uppercase' }}>
-                    Microsoft 365
-                  </div>
-                  <div style={{ fontSize: '14px', fontWeight: 700, color: '#1E293B', marginTop: '2px' }}>
-                    Business Standard
-                  </div>
-                  <div className="zbox-plan-price">
-                    $19.90 <small>/user/mo</small>
-                  </div>
-                  <div style={{ fontSize: '11px', color: '#D97706', fontWeight: 600, background: '#FFFBEB', padding: '4px 8px', borderRadius: '6px', marginTop: '6px' }}>
-                    ⚠️ Complex Desktop Licensing &amp; Monitored Apps
-                  </div>
-                  <ul className="zbox-plan-features">
-                    <li><Check size={14} color="#64748B" /> <span>1 TB OneDrive storage</span></li>
-                    <li><Check size={14} color="#64748B" /> <span>Office Desktop Applications</span></li>
-                    <li><Check size={14} color="#64748B" /> <span>Data loss prevention policies</span></li>
-                    <li><X size={14} color="#DC2626" /> <span>No built-in creative AI warehouse</span></li>
-                  </ul>
-                </div>
-                <div style={{ fontSize: '11.5px', color: '#64748B', textAlign: 'center', marginTop: '10px' }}>
-                  Second most expensive provider
-                </div>
-              </div>
+                    {/* Microsoft 365 */}
+                    <tr>
+                      <td>
+                        <div style={{ fontWeight: 800, color: '#1E293B', fontSize: '14px' }}>Microsoft 365</div>
+                        <div style={{ fontSize: '11.5px', color: '#64748B' }}>Business Standard</div>
+                        <div style={{ fontSize: '10.5px', color: '#D97706', fontWeight: 600, marginTop: '2px' }}>
+                          ⚠️ App Surveillance &amp; Telemetry
+                        </div>
+                      </td>
+                      <td>
+                        <div className="zbox-table-price">$19.90 <small>/user/mo</small></div>
+                      </td>
+                      <td>
+                        <span style={{ fontSize: '11px', fontWeight: 700, background: '#FEF3C7', color: '#92400E', padding: '3px 8px', borderRadius: '6px' }}>
+                          #2 Most Expensive
+                        </span>
+                      </td>
+                      <td>
+                        <div style={{ fontSize: '12.5px', color: '#334155', lineHeight: 1.5 }}>
+                          Hosted email, 1 TB storage, access to Office apps, data loss prevention
+                        </div>
+                      </td>
+                      <td style={{ textAlign: 'right' }}>
+                        <span style={{ fontSize: '11.5px', color: '#94A3B8', fontWeight: 600 }}>External Tier</span>
+                      </td>
+                    </tr>
 
-              {/* Zunme LetsWork / ZBox Secure (Featured) */}
-              <div className="zbox-plan-card featured">
-                <span className="zbox-plan-badge">Top Recommendation</span>
-                <div>
-                  <div style={{ fontSize: '12px', fontWeight: 800, color: '#6E56CF', textTransform: 'uppercase' }}>
-                    Zunme LetsWork
+                    {/* Zunme ZBox (Highlighted #3 Position) */}
+                    <tr className="highlighted-row">
+                      <td>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                          <span style={{ fontWeight: 900, color: '#6E56CF', fontSize: '15px' }}>Zunme ZBox</span>
+                          <span className="badge badge-primary" style={{ fontSize: '9.5px', padding: '2px 6px' }}>TOP PICK</span>
+                        </div>
+                        <div style={{ fontSize: '11.5px', color: '#4338CA', fontWeight: 600 }}>Zunme LetsWork Suite</div>
+                        <div style={{ fontSize: '11px', color: '#059669', fontWeight: 700, marginTop: '3px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                          <ShieldCheck size={13} />
+                          <span>100% Zero Surveillance Vault</span>
+                        </div>
+                      </td>
+                      <td>
+                        <div className="zbox-table-price" style={{ color: '#6E56CF', fontSize: '18px' }}>
+                          $18.00 <small>/user/mo</small>
+                        </div>
+                        <div style={{ fontSize: '10.5px', color: '#059669', fontWeight: 700 }}>
+                          $0.00 for &lt; 3 Employees
+                        </div>
+                      </td>
+                      <td>
+                        <span style={{ fontSize: '11px', fontWeight: 800, background: '#DDD6FE', color: '#5B21B6', padding: '4px 9px', borderRadius: '6px' }}>
+                          ⭐ #3 Strategic Position
+                        </span>
+                        <div style={{ fontSize: '10.5px', color: '#6E56CF', marginTop: '3px', fontWeight: 600 }}>
+                          Surveillance-Free Enterprise Alternative
+                        </div>
+                      </td>
+                      <td>
+                        <div style={{ fontSize: '12.5px', color: '#1E293B', lineHeight: 1.5, fontWeight: 500 }}>
+                          <strong>Custom domain email, 5 TB storage, video meetings with 1000 participants, data loss prevention</strong>
+                        </div>
+                        <div style={{ fontSize: '11.5px', color: '#059669', marginTop: '4px' }}>
+                          ✓ Integrated AI Warehouse asset dispatch • B4B America personal onboarding • Free starter tier
+                        </div>
+                      </td>
+                      <td style={{ textAlign: 'right' }}>
+                        <button
+                          type="button"
+                          className="btn btn-primary btn-sm"
+                          style={{ padding: '6px 12px', fontSize: '12px' }}
+                          onClick={() => {
+                            setFreeClaimSuccess(false);
+                            setIsFreeClaimModalOpen(true);
+                          }}
+                        >
+                          Select ZBox
+                        </button>
+                      </td>
+                    </tr>
+
+                    {/* Proton Mail */}
+                    <tr>
+                      <td>
+                        <div style={{ fontWeight: 800, color: '#1E293B', fontSize: '14px' }}>Proton Mail</div>
+                        <div style={{ fontSize: '11.5px', color: '#64748B' }}>Mail Professional</div>
+                        <div style={{ fontSize: '10.5px', color: '#7C3AED', fontWeight: 600, marginTop: '2px' }}>
+                          🔒 Encrypted Protocol
+                        </div>
+                      </td>
+                      <td>
+                        <div className="zbox-table-price">$7.99 <small>/user/mo</small></div>
+                      </td>
+                      <td>
+                        <span style={{ fontSize: '11px', fontWeight: 600, background: '#F1F5F9', color: '#475569', padding: '3px 8px', borderRadius: '6px' }}>
+                          Budget Encrypted Tier
+                        </span>
+                      </td>
+                      <td>
+                        <div style={{ fontSize: '12.5px', color: '#334155', lineHeight: 1.5 }}>
+                          Encrypted email, custom domains, 15 GB storage (capped capacity)
+                        </div>
+                      </td>
+                      <td style={{ textAlign: 'right' }}>
+                        <span style={{ fontSize: '11.5px', color: '#94A3B8', fontWeight: 600 }}>External Tier</span>
+                      </td>
+                    </tr>
+
+                    {/* Zoho Mail */}
+                    <tr>
+                      <td>
+                        <div style={{ fontWeight: 800, color: '#1E293B', fontSize: '14px' }}>Zoho Mail</div>
+                        <div style={{ fontSize: '11.5px', color: '#64748B' }}>Workplace Standard</div>
+                        <div style={{ fontSize: '10.5px', color: '#0284C7', fontWeight: 600, marginTop: '2px' }}>
+                          💼 Budget Hosting
+                        </div>
+                      </td>
+                      <td>
+                        <div className="zbox-table-price">$1.00 – $3.00 <small>/user/mo</small></div>
+                      </td>
+                      <td>
+                        <span style={{ fontSize: '11px', fontWeight: 600, background: '#F1F5F9', color: '#475569', padding: '3px 8px', borderRadius: '6px' }}>
+                          Entry Budget Tier
+                        </span>
+                      </td>
+                      <td>
+                        <div style={{ fontSize: '12.5px', color: '#334155', lineHeight: 1.5 }}>
+                          Custom domain email, varying storage options (5 GB – 30 GB)
+                        </div>
+                      </td>
+                      <td style={{ textAlign: 'right' }}>
+                        <span style={{ fontSize: '11.5px', color: '#94A3B8', fontWeight: 600 }}>External Tier</span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            )}
+
+            {/* View Option 2: Visual Cards Grid */}
+            {comparisonViewMode === 'cards' && (
+              <div className="zbox-comparison-grid">
+                {/* Google Workspace */}
+                <div className="zbox-plan-card" style={{ opacity: 0.9 }}>
+                  <div>
+                    <div style={{ fontSize: '12px', fontWeight: 800, color: '#64748B', textTransform: 'uppercase' }}>
+                      Google Workspace
+                    </div>
+                    <div style={{ fontSize: '14px', fontWeight: 700, color: '#1E293B', marginTop: '2px' }}>
+                      Business Plus
+                    </div>
+                    <div className="zbox-plan-price">
+                      $22.00 <small>/user/mo</small>
+                    </div>
+                    <div style={{ fontSize: '11px', color: '#DC2626', fontWeight: 600, background: '#FEF2F2', padding: '4px 8px', borderRadius: '6px', marginTop: '6px' }}>
+                      ⚠️ Scrutinized for 3rd-Party Data Sharing &amp; Telemetry
+                    </div>
+                    <ul className="zbox-plan-features">
+                      <li><Check size={14} color="#64748B" /> <span>5 TB pooled cloud storage</span></li>
+                      <li><Check size={14} color="#64748B" /> <span>Google Meet 500 participants</span></li>
+                      <li><Check size={14} color="#64748B" /> <span>Bundled productivity lock-in</span></li>
+                      <li><X size={14} color="#DC2626" /> <span>High per-user scaling cost</span></li>
+                    </ul>
                   </div>
-                  <div style={{ fontSize: '15px', fontWeight: 800, color: '#111625', marginTop: '2px' }}>
-                    Secured Business Email
+                  <div style={{ fontSize: '11.5px', color: '#64748B', textAlign: 'center', marginTop: '10px' }}>
+                    #1 Most expensive provider
                   </div>
-                  <div className="zbox-plan-price" style={{ color: '#6E56CF' }}>
-                    $18.00 <small>/user/mo</small>
+                </div>
+
+                {/* Microsoft 365 */}
+                <div className="zbox-plan-card" style={{ opacity: 0.9 }}>
+                  <div>
+                    <div style={{ fontSize: '12px', fontWeight: 800, color: '#64748B', textTransform: 'uppercase' }}>
+                      Microsoft 365
+                    </div>
+                    <div style={{ fontSize: '14px', fontWeight: 700, color: '#1E293B', marginTop: '2px' }}>
+                      Business Standard
+                    </div>
+                    <div className="zbox-plan-price">
+                      $19.90 <small>/user/mo</small>
+                    </div>
+                    <div style={{ fontSize: '11px', color: '#D97706', fontWeight: 600, background: '#FFFBEB', padding: '4px 8px', borderRadius: '6px', marginTop: '6px' }}>
+                      ⚠️ Complex Desktop Licensing &amp; Monitored Apps
+                    </div>
+                    <ul className="zbox-plan-features">
+                      <li><Check size={14} color="#64748B" /> <span>1 TB OneDrive storage</span></li>
+                      <li><Check size={14} color="#64748B" /> <span>Office Desktop Applications</span></li>
+                      <li><Check size={14} color="#64748B" /> <span>Data loss prevention policies</span></li>
+                      <li><X size={14} color="#DC2626" /> <span>No built-in creative AI warehouse</span></li>
+                    </ul>
                   </div>
-                  <div
-                    style={{ fontSize: '11px', color: '#059669', fontWeight: 700, background: '#ECFDF5', padding: '4px 8px', borderRadius: '6px', marginTop: '6px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer' }}
+                  <div style={{ fontSize: '11.5px', color: '#64748B', textAlign: 'center', marginTop: '10px' }}>
+                    #2 Second most expensive provider
+                  </div>
+                </div>
+
+                {/* Zunme LetsWork / ZBox Secure (Featured) */}
+                <div className="zbox-plan-card featured">
+                  <span className="zbox-plan-badge">⭐ Top Recommendation</span>
+                  <div>
+                    <div style={{ fontSize: '12px', fontWeight: 800, color: '#6E56CF', textTransform: 'uppercase', marginTop: '6px' }}>
+                      Zunme LetsWork
+                    </div>
+                    <div style={{ fontSize: '15px', fontWeight: 800, color: '#111625', marginTop: '2px' }}>
+                      Secured Business Email
+                    </div>
+                    <div className="zbox-plan-price" style={{ color: '#6E56CF' }}>
+                      $18.00 <small>/user/mo</small>
+                    </div>
+                    <div
+                      style={{ fontSize: '11px', color: '#059669', fontWeight: 700, background: '#ECFDF5', padding: '4px 8px', borderRadius: '6px', marginTop: '6px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer' }}
+                      onClick={() => {
+                        setFreeClaimSuccess(false);
+                        setIsFreeClaimModalOpen(true);
+                      }}
+                      title="Click to claim free email account"
+                    >
+                      <span>✓ 100% Free for Businesses with &lt; 3 Employees</span>
+                      <span style={{ textDecoration: 'underline', fontWeight: 800 }}>Claim Free &rarr;</span>
+                    </div>
+                    <ul className="zbox-plan-features">
+                      <li><Check size={14} color="#10B981" /> <span><strong>Zero Third-Party Monitoring:</strong> True confidentiality</span></li>
+                      <li><Check size={14} color="#10B981" /> <span><strong>5 TB Cloud Vault:</strong> Heavy video &amp; raw media attachments</span></li>
+                      <li><Check size={14} color="#10B981" /> <span><strong>Integrated AI Warehouse:</strong> One-click asset dispatch</span></li>
+                      <li><Check size={14} color="#10B981" /> <span><strong>Meetings for 1,000 Participants:</strong> High-definition video</span></li>
+                      <li><Check size={14} color="#10B981" /> <span><strong>B4B America Support:</strong> Free onboarding &amp; staff training</span></li>
+                    </ul>
+                  </div>
+                  <button
+                    type="button"
+                    className="btn btn-primary"
+                    style={{ width: '100%', justifyContent: 'center', marginTop: '14px', padding: '10px' }}
                     onClick={() => {
                       setFreeClaimSuccess(false);
                       setIsFreeClaimModalOpen(true);
                     }}
-                    title="Click to claim free email account"
                   >
-                    <span>✓ 100% Free for Businesses with &lt; 3 Employees</span>
-                    <span style={{ textDecoration: 'underline', fontWeight: 800 }}>Claim Free &rarr;</span>
-                  </div>
-                  <ul className="zbox-plan-features">
-                    <li><Check size={14} color="#10B981" /> <span><strong>Zero Third-Party Monitoring:</strong> True confidentiality</span></li>
-                    <li><Check size={14} color="#10B981" /> <span><strong>5 TB Cloud Vault:</strong> Heavy video &amp; raw media attachments</span></li>
-                    <li><Check size={14} color="#10B981" /> <span><strong>Integrated AI Warehouse:</strong> One-click asset dispatch</span></li>
-                    <li><Check size={14} color="#10B981" /> <span><strong>Meetings for 1,000 Participants:</strong> High-definition video</span></li>
-                    <li><Check size={14} color="#10B981" /> <span><strong>B4B America Support:</strong> Free onboarding &amp; staff training</span></li>
-                  </ul>
+                    Get Started with ZBox
+                  </button>
                 </div>
-                <button
-                  type="button"
-                  className="btn btn-primary"
-                  style={{ width: '100%', justifyContent: 'center', marginTop: '14px', padding: '10px' }}
-                  onClick={() => showToast('Claimed ZBox Business Account trial. B4B America advisor assigned.', 'success')}
-                >
-                  Get Started with ZBox
-                </button>
-              </div>
 
-              {/* Proton Mail (From Doc Line 38-40) */}
-              <div className="zbox-plan-card" style={{ opacity: 0.9 }}>
-                <div>
-                  <div style={{ fontSize: '12px', fontWeight: 800, color: '#64748B', textTransform: 'uppercase' }}>
-                    Proton Mail
+                {/* Proton Mail (From Doc Line 38-40) */}
+                <div className="zbox-plan-card" style={{ opacity: 0.9 }}>
+                  <div>
+                    <div style={{ fontSize: '12px', fontWeight: 800, color: '#64748B', textTransform: 'uppercase' }}>
+                      Proton Mail
+                    </div>
+                    <div style={{ fontSize: '14px', fontWeight: 700, color: '#1E293B', marginTop: '2px' }}>
+                      Mail Professional
+                    </div>
+                    <div className="zbox-plan-price">
+                      $7.99 <small>/user/mo</small>
+                    </div>
+                    <div style={{ fontSize: '11px', color: '#6D28D9', fontWeight: 600, background: '#F5F3FF', padding: '4px 8px', borderRadius: '6px', marginTop: '6px' }}>
+                      🔒 Encrypted Email &amp; Custom Domains
+                    </div>
+                    <ul className="zbox-plan-features">
+                      <li><Check size={14} color="#64748B" /> <span>End-to-end encrypted email</span></li>
+                      <li><Check size={14} color="#64748B" /> <span>Custom domain support</span></li>
+                      <li><Check size={14} color="#64748B" /> <span>15 GB storage capacity</span></li>
+                      <li><X size={14} color="#DC2626" /> <span>Limited 15 GB storage (No 5 TB video vault)</span></li>
+                      <li><X size={14} color="#DC2626" /> <span>No integrated creative AI studio</span></li>
+                    </ul>
                   </div>
-                  <div style={{ fontSize: '14px', fontWeight: 700, color: '#1E293B', marginTop: '2px' }}>
-                    Mail Professional
+                  <div style={{ fontSize: '11.5px', color: '#64748B', textAlign: 'center', marginTop: '10px' }}>
+                    Privacy-first with storage limits
                   </div>
-                  <div className="zbox-plan-price">
-                    $7.99 <small>/user/mo</small>
-                  </div>
-                  <div style={{ fontSize: '11px', color: '#6D28D9', fontWeight: 600, background: '#F5F3FF', padding: '4px 8px', borderRadius: '6px', marginTop: '6px' }}>
-                    🔒 Encrypted Email &amp; Custom Domains
-                  </div>
-                  <ul className="zbox-plan-features">
-                    <li><Check size={14} color="#64748B" /> <span>End-to-end encrypted email</span></li>
-                    <li><Check size={14} color="#64748B" /> <span>Custom domain support</span></li>
-                    <li><Check size={14} color="#64748B" /> <span>15 GB storage capacity</span></li>
-                    <li><X size={14} color="#DC2626" /> <span>Limited 15 GB storage (No 5 TB video vault)</span></li>
-                    <li><X size={14} color="#DC2626" /> <span>No integrated creative AI studio</span></li>
-                  </ul>
                 </div>
-                <div style={{ fontSize: '11.5px', color: '#64748B', textAlign: 'center', marginTop: '10px' }}>
-                  Privacy-first with storage limits
+
+                {/* Zoho Mail (From Doc Line 41-43) */}
+                <div className="zbox-plan-card" style={{ opacity: 0.9 }}>
+                  <div>
+                    <div style={{ fontSize: '12px', fontWeight: 800, color: '#64748B', textTransform: 'uppercase' }}>
+                      Zoho Mail
+                    </div>
+                    <div style={{ fontSize: '14px', fontWeight: 700, color: '#1E293B', marginTop: '2px' }}>
+                      Workplace Standard
+                    </div>
+                    <div className="zbox-plan-price">
+                      $1.00 – $3.00 <small>/user/mo</small>
+                    </div>
+                    <div style={{ fontSize: '11px', color: '#0369A1', fontWeight: 600, background: '#F0F9FF', padding: '4px 8px', borderRadius: '6px', marginTop: '6px' }}>
+                      💼 Budget Custom Domain Suite
+                    </div>
+                    <ul className="zbox-plan-features">
+                      <li><Check size={14} color="#64748B" /> <span>Custom domain email hosting</span></li>
+                      <li><Check size={14} color="#64748B" /> <span>Varying storage options (5 GB – 30 GB)</span></li>
+                      <li><Check size={14} color="#64748B" /> <span>Affordable entry pricing</span></li>
+                      <li><X size={14} color="#DC2626" /> <span>No zero-knowledge encryption architecture</span></li>
+                      <li><X size={14} color="#DC2626" /> <span>No high-throughput video CDN sharing</span></li>
+                    </ul>
+                  </div>
+                  <div style={{ fontSize: '11.5px', color: '#64748B', textAlign: 'center', marginTop: '10px' }}>
+                    Budget tier with basic feature set
+                  </div>
                 </div>
               </div>
+            )}
 
-              {/* Zoho Mail (From Doc Line 41-43) */}
-              <div className="zbox-plan-card" style={{ opacity: 0.9 }}>
-                <div>
-                  <div style={{ fontSize: '12px', fontWeight: 800, color: '#64748B', textTransform: 'uppercase' }}>
-                    Zoho Mail
-                  </div>
-                  <div style={{ fontSize: '14px', fontWeight: 700, color: '#1E293B', marginTop: '2px' }}>
-                    Workplace Standard
-                  </div>
-                  <div className="zbox-plan-price">
-                    $1.00 – $3.00 <small>/user/mo</small>
-                  </div>
-                  <div style={{ fontSize: '11px', color: '#0369A1', fontWeight: 600, background: '#F0F9FF', padding: '4px 8px', borderRadius: '6px', marginTop: '6px' }}>
-                    💼 Budget Custom Domain Suite
-                  </div>
-                  <ul className="zbox-plan-features">
-                    <li><Check size={14} color="#64748B" /> <span>Custom domain email hosting</span></li>
-                    <li><Check size={14} color="#64748B" /> <span>Varying storage options (5 GB – 30 GB)</span></li>
-                    <li><Check size={14} color="#64748B" /> <span>Affordable entry pricing</span></li>
-                    <li><X size={14} color="#DC2626" /> <span>No zero-knowledge encryption architecture</span></li>
-                    <li><X size={14} color="#DC2626" /> <span>No high-throughput video CDN sharing</span></li>
-                  </ul>
+            {/* Key Points (Johnny's Exact Document Notes - Doc Lines 44-48) */}
+            <div className="zbox-keypoints-box">
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
+                <Award size={18} color="#6E56CF" />
+                <h4 style={{ margin: 0, fontSize: '14.5px', fontWeight: 800, color: '#1E293B' }}>
+                  Key Points &amp; Strategic Market Dynamics
+                </h4>
+              </div>
+              <div className="zbox-keypoints-grid">
+                <div className="zbox-keypoint-item">
+                  <strong>• Google Workspace Business Plus ($22/mo):</strong> Currently the most expensive option at $22 per user per month. This plan includes extensive features such as advanced security and high storage capacity, but small businesses are concerned about third-party email data monitoring.
                 </div>
-                <div style={{ fontSize: '11.5px', color: '#64748B', textAlign: 'center', marginTop: '10px' }}>
-                  Budget tier with basic feature set
+                <div className="zbox-keypoint-item">
+                  <strong>• Microsoft 365 ($19.90/mo):</strong> Follows closely with a monthly cost of $19.90, offering a comprehensive suite of Office applications alongside email services under strict per-user licensing.
+                </div>
+                <div className="zbox-keypoint-item highlighted">
+                  <strong>• Zunme ZBox (#3 Strategic Position - $18/mo):</strong> Positioned as the 3rd most expensive provider. Gives business owners equal technology power (5 TB vault, 1000 participant meetings, custom domain) without feeling monitored, plus 100% Free Starter mailboxes for businesses with &lt; 3 employees.
+                </div>
+                <div className="zbox-keypoint-item">
+                  <strong>• Proton Mail &amp; Zoho Mail ($1.00 – $7.99/mo):</strong> Offer more affordable options with costs starting significantly lower, but lack multi-terabyte raw video vaults and integrated creative AI workflows.
+                </div>
+                <div className="zbox-keypoint-item">
+                  <strong>• Premium Features &amp; Small Business ROI:</strong> These costs reflect the premium features and services that come with higher-tier plans, making them suitable for businesses that require robust, reliable email solutions.
                 </div>
               </div>
             </div>
@@ -956,7 +1333,7 @@ export const ZBoxPage: React.FC = () => {
             <div className="zbox-breakdown-header">
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <span className="badge badge-primary">Market Research Breakdown</span>
-                <span style={{ fontSize: '12px', fontWeight: 700, color: '#6E56CF' }}>Doc Lines 12–21 Spec</span>
+                <span style={{ fontSize: '12px', fontWeight: 700, color: '#6E56CF' }}>US Census &amp; SBA Benchmark Data</span>
               </div>
               <h3 style={{ fontSize: '18px', fontWeight: 800, color: '#111625', margin: '6px 0 2px' }}>
                 Small Businesses with Employees — Breakdown by Size
@@ -968,7 +1345,15 @@ export const ZBoxPage: React.FC = () => {
 
             <div className="zbox-breakdown-grid">
               {/* Tier 1: No Employees (78-82%) */}
-              <div className="zbox-breakdown-item primary">
+              <div
+                className="zbox-breakdown-item primary"
+                style={{ cursor: 'pointer', transition: 'transform 0.2s ease, box-shadow 0.2s ease' }}
+                onClick={() => {
+                  setSoloClaimSuccess(false);
+                  setIsSoloModalOpen(true);
+                }}
+                title="Click to view & activate Solopreneur Package ($9.99/mo)"
+              >
                 <div className="breakdown-stat-header">
                   <span className="breakdown-tag-badge">Primary Target</span>
                   <span className="breakdown-percentage">78% – 82%</span>
@@ -983,12 +1368,20 @@ export const ZBoxPage: React.FC = () => {
                   </p>
                 </div>
                 <div className="breakdown-feature-pill">
-                  ✓ Protected against Google/Microsoft surveillance
+                  ✓ Protected against Google/Microsoft surveillance • Click to Activate &rarr;
                 </div>
               </div>
 
               {/* Tier 2: 1-19 Employees (18-22%) */}
-              <div className="zbox-breakdown-item success">
+              <div
+                className="zbox-breakdown-item success"
+                style={{ cursor: 'pointer', transition: 'transform 0.2s ease, box-shadow 0.2s ease' }}
+                onClick={() => {
+                  setFreeClaimSuccess(false);
+                  setIsFreeClaimModalOpen(true);
+                }}
+                title="Click to claim 100% Free Starter account (< 3 employees)"
+              >
                 <div className="breakdown-stat-header">
                   <span className="breakdown-tag-badge success">Micro-Teams</span>
                   <span className="breakdown-percentage success">18% – 22%</span>
@@ -1003,7 +1396,7 @@ export const ZBoxPage: React.FC = () => {
                   </p>
                 </div>
                 <div className="breakdown-feature-pill success">
-                  ✓ 100% Free for &lt; 3 Employees starter tier
+                  ✓ 100% Free for &lt; 3 Employees starter tier • Claim Free &rarr;
                 </div>
               </div>
 
@@ -1085,11 +1478,50 @@ export const ZBoxPage: React.FC = () => {
                 <button
                   type="button"
                   className="btn btn-primary btn-sm"
-                  onClick={() => showToast('Activated Solopreneur Secure Package.', 'success')}
+                  onClick={() => {
+                    setSoloClaimSuccess(false);
+                    setIsSoloModalOpen(true);
+                  }}
                 >
                   Activate Solopreneur Vault
                 </button>
               </div>
+            </div>
+          </div>
+
+          {/* Custom Business Domain Connection Status Bar (Doc Lines 24, 34) */}
+          <div style={{ background: '#FFFFFF', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-xl)', padding: '18px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '14px', marginBottom: '18px', boxShadow: 'var(--shadow-sm)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+              <div style={{ width: '42px', height: '42px', borderRadius: '10px', background: activeCustomDomain ? '#ECFDF5' : '#F1F5F9', color: activeCustomDomain ? '#059669' : '#64748B', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Globe size={22} />
+              </div>
+              <div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <h4 style={{ fontSize: '15px', fontWeight: 800, color: '#111625', margin: 0 }}>
+                    Custom Business Domain Connection
+                  </h4>
+                  <span className={`badge ${activeCustomDomain ? 'badge-success' : 'badge-primary'}`} style={{ fontSize: '10.5px' }}>
+                    {activeCustomDomain ? '✓ Active & Verified' : 'Standard Default'}
+                  </span>
+                </div>
+                <p style={{ fontSize: '12.5px', color: '#64748B', margin: '3px 0 0' }}>
+                  {activeCustomDomain
+                    ? `Your mailboxes are transmitting via verified custom DNS MX/SPF records on @${activeCustomDomain}.`
+                    : 'Connect your corporate domain (e.g. @yourcompany.com) via automated DNS MX, SPF, DKIM & DMARC records.'}
+                </p>
+              </div>
+            </div>
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <button
+                type="button"
+                className="btn btn-primary btn-sm"
+                style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '8px 16px' }}
+                onClick={() => setIsDomainModalOpen(true)}
+              >
+                <Globe size={14} />
+                <span>{activeCustomDomain ? 'Manage DNS / Aliases' : '+ Connect Custom Domain'}</span>
+              </button>
             </div>
           </div>
 
@@ -1106,7 +1538,7 @@ export const ZBoxPage: React.FC = () => {
               </div>
               <span className="badge badge-primary" style={{ padding: '6px 12px', fontSize: '12px' }}>
                 <SlidersHorizontal size={13} style={{ display: 'inline', marginRight: '6px' }} />
-                Johnny's Enterprise Spec
+                Custom Architecture Deployment
               </span>
             </div>
 
@@ -1204,7 +1636,8 @@ export const ZBoxPage: React.FC = () => {
                           setFreeClaimSuccess(false);
                           setIsFreeClaimModalOpen(true);
                         } else {
-                          showToast(`Configured ${selectedAccountsTier} with ${selectedStorageTier}. Ready to provision!`, 'success');
+                          setDeploySuccess(false);
+                          setIsDeployModalOpen(true);
                         }
                       }}
                       style={{ padding: '10px 18px', fontSize: '13px', fontWeight: 800 }}
@@ -1236,7 +1669,10 @@ export const ZBoxPage: React.FC = () => {
               type="button"
               className="btn btn-outline btn-sm"
               style={{ background: '#FFFFFF', borderColor: '#93C5FD', color: '#1E40AF', fontWeight: 700 }}
-              onClick={() => showToast('B4B America Advisor Request submitted. An onboarding specialist will contact you.', 'success')}
+              onClick={() => {
+                setB4bSubmitted(false);
+                setIsB4BModalOpen(true);
+              }}
             >
               Contact B4B America Advisor
             </button>
@@ -1666,7 +2102,7 @@ export const ZBoxPage: React.FC = () => {
                   <span>Claim 100% Free Business Email</span>
                 </h3>
                 <p style={{ fontSize: '12px', color: '#64748B', margin: '3px 0 0' }}>
-                  Complimentary email for small businesses with &lt; 3 employees (Doc Line 6)
+                  Complimentary email for small businesses with &lt; 3 employees
                 </p>
               </div>
               <button
@@ -1738,7 +2174,7 @@ export const ZBoxPage: React.FC = () => {
                       <ShieldCheck size={20} color="#059669" style={{ flexShrink: 0, marginTop: '2px' }} />
                       <div>
                         <div style={{ fontSize: '13px', fontWeight: 800, color: '#065F46' }}>
-                          Doc Line 6 Guarantee: 100% Free Forever for &lt; 3 Employees
+                          Small Business Privacy Guarantee: 100% Free Forever for &lt; 3 Employees
                         </div>
                         <div style={{ fontSize: '12px', color: '#047857', marginTop: '2px', lineHeight: 1.4 }}>
                           Zero credit card required. Includes 5 GB secure mailbox, B4B America training, and instant option to upgrade as your business expands.
@@ -1898,6 +2334,593 @@ export const ZBoxPage: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* 3. Solopreneur Secure Package Modal (Doc Line 7) */}
+      {isSoloModalOpen && (
+        <div className="store-modal-backdrop" onClick={() => setIsSoloModalOpen(false)}>
+          <div className="store-modal-container" style={{ maxWidth: '560px' }} onClick={(e) => e.stopPropagation()}>
+            <div className="store-modal-header">
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <div style={{ width: '38px', height: '38px', borderRadius: '10px', background: '#F5F3FF', color: '#6E56CF', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Shield size={20} />
+                </div>
+                <div>
+                  <h3 style={{ fontSize: '17px', fontWeight: 800, margin: 0, color: 'var(--color-text-primary)' }}>
+                    Solopreneur Secure Document &amp; Video Package
+                  </h3>
+                  <span style={{ fontSize: '11px', color: '#6E56CF', fontWeight: 700 }}>
+                    Doc Line 7 Spec • 78% – 82% of Small Businesses (No Employees)
+                  </span>
+                </div>
+              </div>
+              <button
+                type="button"
+                className="store-modal-close-btn"
+                onClick={() => setIsSoloModalOpen(false)}
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            <div className="store-modal-body">
+              {soloClaimSuccess ? (
+                <div style={{ textAlign: 'center', padding: '10px 0 6px' }}>
+                  <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: '#F5F3FF', color: '#6E56CF', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }}>
+                    <CheckCircle2 size={36} />
+                  </div>
+                  <h3 style={{ fontSize: '20px', fontWeight: 900, color: '#111625', margin: '0 0 6px' }}>
+                    Solopreneur Secure Vault Activated!
+                  </h3>
+                  <p style={{ fontSize: '13.5px', color: '#475569', margin: '0 0 16px' }}>
+                    Your high-security private mailbox and 50 GB video/document vault is now live.
+                  </p>
+
+                  <div style={{ background: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: '12px', padding: '16px', textAlign: 'left', marginBottom: '20px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span style={{ fontSize: '12px', color: '#64748B' }}>Business / Project:</span>
+                      <strong style={{ fontSize: '13px', color: '#1E293B' }}>{soloBusinessName}</strong>
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span style={{ fontSize: '12px', color: '#64748B' }}>Solo Email Address:</span>
+                      <strong style={{ fontSize: '13px', color: '#6E56CF' }}>
+                        {`${soloEmailPrefix.trim().toLowerCase()}${activeCustomDomain ? `@${activeCustomDomain}` : '@zunme.ai'}`}
+                      </strong>
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span style={{ fontSize: '12px', color: '#64748B' }}>Storage Allocation:</span>
+                      <strong style={{ fontSize: '13px', color: '#059669' }}>50 GB Encrypted Video Vault</strong>
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span style={{ fontSize: '12px', color: '#64748B' }}>Surveillance Protection:</span>
+                      <strong style={{ fontSize: '13px', color: '#10B981' }}>100% Zero Surveillance Active</strong>
+                    </div>
+                  </div>
+
+                  <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
+                    <button
+                      type="button"
+                      className="btn btn-primary"
+                      onClick={() => {
+                        setIsSoloModalOpen(false);
+                        setActiveMode('webmail');
+                      }}
+                    >
+                      <Inbox size={15} />
+                      <span>Open Solopreneur Inbox</span>
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <form onSubmit={handleActivateSoloPackage} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                  {/* Doc Line 7 Banner */}
+                  <div style={{ padding: '12px 16px', background: '#F5F3FF', border: '1px solid #DDD6FE', borderRadius: '10px' }}>
+                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
+                      <ShieldCheck size={20} color="#6E56CF" style={{ flexShrink: 0, marginTop: '2px' }} />
+                      <div>
+                        <div style={{ fontSize: '13px', fontWeight: 800, color: '#5B21B6' }}>
+                          Confidential Solo Suite: Safe Sharing for High-Def Video &amp; Critical Documents
+                        </div>
+                        <div style={{ fontSize: '12px', color: '#6D28D9', marginTop: '2px', lineHeight: 1.4 }}>
+                          For business owners with NO employees (78%–82% of all small businesses). Package includes 50 GB private storage, fast CDN upload buffers, and zero tracking.
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Founder Name & Business Name */}
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                    <div>
+                      <label style={{ display: 'block', fontSize: '12.5px', fontWeight: 700, color: '#334155', marginBottom: '6px' }}>
+                        Founder / Owner Name:
+                      </label>
+                      <input
+                        type="text"
+                        className="input"
+                        placeholder="e.g. Alex Mercer"
+                        value={soloFounderName}
+                        onChange={(e) => setSoloFounderName(e.target.value)}
+                        required
+                        style={{ width: '100%' }}
+                      />
+                    </div>
+                    <div>
+                      <label style={{ display: 'block', fontSize: '12.5px', fontWeight: 700, color: '#334155', marginBottom: '6px' }}>
+                        Business / Project Name:
+                      </label>
+                      <input
+                        type="text"
+                        className="input"
+                        placeholder="e.g. Apex Visual Studio"
+                        value={soloBusinessName}
+                        onChange={(e) => setSoloBusinessName(e.target.value)}
+                        required
+                        style={{ width: '100%' }}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Desired Email Address */}
+                  <div>
+                    <label style={{ display: 'block', fontSize: '12.5px', fontWeight: 700, color: '#334155', marginBottom: '6px' }}>
+                      Choose Solopreneur Email Handle:
+                    </label>
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                      <input
+                        type="text"
+                        className="input"
+                        placeholder="founder or alex"
+                        value={soloEmailPrefix}
+                        onChange={(e) => setSoloEmailPrefix(e.target.value.replace(/[^a-zA-Z0-9._-]/g, ''))}
+                        required
+                        style={{ flex: 1, borderTopRightRadius: 0, borderBottomRightRadius: 0 }}
+                      />
+                      <span style={{ background: '#F1F5F9', border: '1px solid var(--color-border)', borderLeft: 'none', padding: '10px 14px', fontSize: '13px', fontWeight: 700, color: '#475569', borderTopRightRadius: 'var(--radius-md)', borderBottomRightRadius: 'var(--radius-md)' }}>
+                        {activeCustomDomain ? `@${activeCustomDomain}` : '@zunme.ai'}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Features included */}
+                  <div style={{ background: '#F8FAFC', borderRadius: '10px', padding: '12px 14px', border: '1px solid #E2E8F0', fontSize: '12px', color: '#475569', display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <Check size={14} color="#6E56CF" />
+                      <span><strong>50 GB Encrypted Vault:</strong> Dedicated bandwidth for 4K video &amp; raw creative assets</span>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <Check size={14} color="#6E56CF" />
+                      <span><strong>Zero Surveillance:</strong> No Google/Microsoft telemetry or third-party sharing</span>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <Check size={14} color="#6E56CF" />
+                      <span><strong>B4B America Onboarding:</strong> Dedicated advisory specialist</span>
+                    </div>
+                  </div>
+
+                  {/* Pricing line & Action */}
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: '10px', borderTop: '1px solid #E2E8F0' }}>
+                    <div>
+                      <div style={{ fontSize: '18px', fontWeight: 900, color: '#6E56CF' }}>
+                        $9.99 <small style={{ fontSize: '12px', color: '#64748B' }}>/ month</small>
+                      </div>
+                      <div style={{ fontSize: '11px', color: '#059669', fontWeight: 600 }}>
+                        Cancel anytime • 30-day money-back guarantee
+                      </div>
+                    </div>
+                    <div style={{ display: 'flex', gap: '10px' }}>
+                      <button
+                        type="button"
+                        className="btn btn-outline"
+                        onClick={() => setIsSoloModalOpen(false)}
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        type="submit"
+                        className="btn btn-primary"
+                        disabled={isActivatingSolo}
+                        style={{ minWidth: '180px', justifyContent: 'center' }}
+                      >
+                        {isActivatingSolo ? (
+                          <>
+                            <RefreshCw size={14} className="spin" />
+                            <span>Provisioning Vault...</span>
+                          </>
+                        ) : (
+                          <>
+                            <ShieldCheck size={15} />
+                            <span>Activate Solopreneur ($9.99)</span>
+                          </>
+                        )}
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 4. Custom Deployment Modal (Doc Lines 8-11, 24) */}
+      {isDeployModalOpen && (
+        <div className="store-modal-backdrop" onClick={() => setIsDeployModalOpen(false)}>
+          <div className="store-modal-container" style={{ maxWidth: '560px' }} onClick={(e) => e.stopPropagation()}>
+            <div className="store-modal-header">
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <div style={{ width: '38px', height: '38px', borderRadius: '10px', background: '#F5F3FF', color: '#6E56CF', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <HardDrive size={20} />
+                </div>
+                <div>
+                  <h3 style={{ fontSize: '17px', fontWeight: 800, margin: 0, color: 'var(--color-text-primary)' }}>
+                    Deploy Tailored Mailbox Cluster
+                  </h3>
+                  <span style={{ fontSize: '11px', color: '#6E56CF', fontWeight: 700 }}>
+                    Enterprise Custom Deployment • Tailored Architecture
+                  </span>
+                </div>
+              </div>
+              <button
+                type="button"
+                className="store-modal-close-btn"
+                onClick={() => setIsDeployModalOpen(false)}
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            <div className="store-modal-body">
+              {deploySuccess ? (
+                <div style={{ textAlign: 'center', padding: '10px 0 6px' }}>
+                  <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: '#ECFDF5', color: '#059669', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }}>
+                    <CheckCircle2 size={36} />
+                  </div>
+                  <h3 style={{ fontSize: '20px', fontWeight: 900, color: '#111625', margin: '0 0 6px' }}>
+                    Mailbox Cluster Provisioned!
+                  </h3>
+                  <p style={{ fontSize: '13.5px', color: '#475569', margin: '0 0 16px' }}>
+                    Your custom ZBox deployment is configured and provisioned with B4B America advisor support.
+                  </p>
+
+                  <div style={{ background: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: '12px', padding: '16px', textAlign: 'left', marginBottom: '20px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span style={{ fontSize: '12px', color: '#64748B' }}>Organization:</span>
+                      <strong style={{ fontSize: '13px', color: '#1E293B' }}>{deployCompanyName}</strong>
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span style={{ fontSize: '12px', color: '#64748B' }}>Inboxes Provisioned:</span>
+                      <strong style={{ fontSize: '13px', color: '#6E56CF' }}>{selectedAccountsTier} Accounts</strong>
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span style={{ fontSize: '12px', color: '#64748B' }}>Storage per Mailbox:</span>
+                      <strong style={{ fontSize: '13px', color: '#059669' }}>{selectedStorageTier}</strong>
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span style={{ fontSize: '12px', color: '#64748B' }}>Video CDN Pipeline:</span>
+                      <strong style={{ fontSize: '13px', color: isMediaHeavy ? '#6E56CF' : '#64748B' }}>
+                        {isMediaHeavy ? 'Optimized (4K Buffers)' : 'Standard'}
+                      </strong>
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span style={{ fontSize: '12px', color: '#64748B' }}>Onboarding Lead:</span>
+                      <strong style={{ fontSize: '13px', color: '#2563EB' }}>B4B America Dedicated Specialist</strong>
+                    </div>
+                  </div>
+
+                  <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
+                    <button
+                      type="button"
+                      className="btn btn-primary"
+                      onClick={() => {
+                        setIsDeployModalOpen(false);
+                        setActiveMode('webmail');
+                      }}
+                    >
+                      <Inbox size={15} />
+                      <span>Open Workspace Inbox</span>
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <form onSubmit={handleDeployConfiguration} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                  {/* Summary Callout */}
+                  <div style={{ background: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: '12px', padding: '16px' }}>
+                    <div style={{ fontSize: '12px', fontWeight: 800, color: '#6E56CF', textTransform: 'uppercase', marginBottom: '8px' }}>
+                      Selected Configuration Summary
+                    </div>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', fontSize: '12.5px' }}>
+                      <div>Accounts: <strong>{selectedAccountsTier}</strong></div>
+                      <div>Storage: <strong>{selectedStorageTier} / box</strong></div>
+                      <div>Video Optimization: <strong>{isMediaHeavy ? 'Active (4K Attachments)' : 'Standard'}</strong></div>
+                      <div>Domain: <strong>{activeCustomDomain ? `@${activeCustomDomain}` : '@zunme.ai'}</strong></div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label style={{ display: 'block', fontSize: '12.5px', fontWeight: 700, color: '#334155', marginBottom: '6px' }}>
+                      Organization or Company Name:
+                    </label>
+                    <input
+                      type="text"
+                      className="input"
+                      placeholder="e.g. Apex Global Ventures"
+                      value={deployCompanyName}
+                      onChange={(e) => setDeployCompanyName(e.target.value)}
+                      required
+                      style={{ width: '100%' }}
+                    />
+                  </div>
+
+                  {/* Pricing Overview */}
+                  {(() => {
+                    const pricing = calculateConfigCost();
+                    return (
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 16px', background: '#F5F3FF', border: '1px solid #DDD6FE', borderRadius: '10px' }}>
+                        <div>
+                          <div style={{ fontSize: '12px', color: '#6E56CF', fontWeight: 700 }}>
+                            Calculated Rate:
+                          </div>
+                          <div style={{ fontSize: '20px', fontWeight: 900, color: '#111625' }}>
+                            {pricing.isFree ? 'FREE' : `$${pricing.cost.toFixed(2)}`} <small style={{ fontSize: '11px', color: '#64748B' }}>/user/mo</small>
+                          </div>
+                        </div>
+                        <div style={{ fontSize: '11.5px', color: '#059669', fontWeight: 700 }}>
+                          ✓ B4B America Free Onboarding
+                        </div>
+                      </div>
+                    );
+                  })()}
+
+                  <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', paddingTop: '10px', borderTop: '1px solid #E2E8F0' }}>
+                    <button
+                      type="button"
+                      className="btn btn-outline"
+                      onClick={() => setIsDeployModalOpen(false)}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      className="btn btn-primary"
+                      disabled={isDeploying}
+                      style={{ minWidth: '180px', justifyContent: 'center' }}
+                    >
+                      {isDeploying ? (
+                        <>
+                          <RefreshCw size={14} className="spin" />
+                          <span>Deploying Cluster...</span>
+                        </>
+                      ) : (
+                        <>
+                          <HardDrive size={15} />
+                          <span>Confirm &amp; Provision</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+                </form>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 5. B4B America Onboarding Advisor Modal (Doc Line 3) */}
+      {isB4BModalOpen && (
+        <div className="store-modal-backdrop" onClick={() => setIsB4BModalOpen(false)}>
+          <div className="store-modal-container" style={{ maxWidth: '560px' }} onClick={(e) => e.stopPropagation()}>
+            <div className="store-modal-header">
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <div style={{ width: '38px', height: '38px', borderRadius: '10px', background: '#EFF6FF', color: '#2563EB', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Building2 size={20} />
+                </div>
+                <div>
+                  <h3 style={{ fontSize: '17px', fontWeight: 800, margin: 0, color: 'var(--color-text-primary)' }}>
+                    B4B America Small Business Onboarding
+                  </h3>
+                  <span style={{ fontSize: '11px', color: '#2563EB', fontWeight: 700 }}>
+                    Official Small Business Sales &amp; Migration Partner
+                  </span>
+                </div>
+              </div>
+              <button
+                type="button"
+                className="store-modal-close-btn"
+                onClick={() => setIsB4BModalOpen(false)}
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            <div className="store-modal-body">
+              {b4bSubmitted ? (
+                <div style={{ textAlign: 'center', padding: '10px 0 6px' }}>
+                  <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: '#EFF6FF', color: '#2563EB', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }}>
+                    <CheckCircle2 size={36} />
+                  </div>
+                  <h3 style={{ fontSize: '20px', fontWeight: 900, color: '#111625', margin: '0 0 6px' }}>
+                    B4B America Specialist Assigned!
+                  </h3>
+                  <p style={{ fontSize: '13.5px', color: '#475569', margin: '0 0 16px' }}>
+                    A dedicated small business advisor will contact you within 24 hours to guide your migration.
+                  </p>
+
+                  <div style={{ background: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: '12px', padding: '16px', textAlign: 'left', marginBottom: '20px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span style={{ fontSize: '12px', color: '#64748B' }}>Company Name:</span>
+                      <strong style={{ fontSize: '13px', color: '#1E293B' }}>{b4bBusinessName}</strong>
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span style={{ fontSize: '12px', color: '#64748B' }}>Contact Lead:</span>
+                      <strong style={{ fontSize: '13px', color: '#1E293B' }}>{b4bContactName}</strong>
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span style={{ fontSize: '12px', color: '#64748B' }}>Migrating From:</span>
+                      <strong style={{ fontSize: '13px', color: '#2563EB' }}>{b4bCurrentProvider}</strong>
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span style={{ fontSize: '12px', color: '#64748B' }}>Migration Service:</span>
+                      <strong style={{ fontSize: '13px', color: '#059669' }}>100% Free Zero-Downtime Guarantee</strong>
+                    </div>
+                  </div>
+
+                  <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
+                    <button
+                      type="button"
+                      className="btn btn-primary"
+                      onClick={() => {
+                        setIsB4BModalOpen(false);
+                        setActiveMode('webmail');
+                      }}
+                    >
+                      <Inbox size={15} />
+                      <span>View Confirmation in Inbox</span>
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <form onSubmit={handleB4BSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                  <div style={{ padding: '12px 16px', background: '#EFF6FF', border: '1px solid #BFDBFE', borderRadius: '10px' }}>
+                    <div style={{ fontSize: '13px', fontWeight: 800, color: '#1E40AF' }}>
+                      Doc Line 3 Guarantee: Dedicated Personal Support for Small Businesses
+                    </div>
+                    <div style={{ fontSize: '12px', color: '#2563EB', marginTop: '2px', lineHeight: 1.4 }}>
+                      B4B America creates personal relationships with small business owners to train staff, migrate mailboxes from Google Workspace / Microsoft 365, and ensure zero downtime.
+                    </div>
+                  </div>
+
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                    <div>
+                      <label style={{ display: 'block', fontSize: '12.5px', fontWeight: 700, color: '#334155', marginBottom: '6px' }}>
+                        Business Name:
+                      </label>
+                      <input
+                        type="text"
+                        className="input"
+                        placeholder="e.g. Sterling Logistics"
+                        value={b4bBusinessName}
+                        onChange={(e) => setB4bBusinessName(e.target.value)}
+                        required
+                        style={{ width: '100%' }}
+                      />
+                    </div>
+                    <div>
+                      <label style={{ display: 'block', fontSize: '12.5px', fontWeight: 700, color: '#334155', marginBottom: '6px' }}>
+                        Contact Person:
+                      </label>
+                      <input
+                        type="text"
+                        className="input"
+                        placeholder="e.g. Michael Vance"
+                        value={b4bContactName}
+                        onChange={(e) => setB4bContactName(e.target.value)}
+                        required
+                        style={{ width: '100%' }}
+                      />
+                    </div>
+                  </div>
+
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                    <div>
+                      <label style={{ display: 'block', fontSize: '12.5px', fontWeight: 700, color: '#334155', marginBottom: '6px' }}>
+                        Phone / Contact Number:
+                      </label>
+                      <input
+                        type="tel"
+                        className="input"
+                        placeholder="e.g. +1 (555) 234-5678"
+                        value={b4bPhone}
+                        onChange={(e) => setB4bPhone(e.target.value)}
+                        style={{ width: '100%' }}
+                      />
+                    </div>
+                    <div>
+                      <label style={{ display: 'block', fontSize: '12.5px', fontWeight: 700, color: '#334155', marginBottom: '6px' }}>
+                        Current Provider:
+                      </label>
+                      <select
+                        className="input"
+                        value={b4bCurrentProvider}
+                        onChange={(e) => setB4bCurrentProvider(e.target.value)}
+                        style={{ width: '100%' }}
+                      >
+                        <option value="Google Workspace">Google Workspace ($22/mo)</option>
+                        <option value="Microsoft 365">Microsoft 365 ($19.90/mo)</option>
+                        <option value="GoDaddy">GoDaddy Webmail</option>
+                        <option value="Other / New Business">Other / Brand New Business</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', paddingTop: '10px', borderTop: '1px solid #E2E8F0' }}>
+                    <button
+                      type="button"
+                      className="btn btn-outline"
+                      onClick={() => setIsB4BModalOpen(false)}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      className="btn btn-primary"
+                      style={{ minWidth: '190px', justifyContent: 'center' }}
+                    >
+                      <Building2 size={15} />
+                      <span>Request Free Advisor</span>
+                    </button>
+                  </div>
+                </form>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+      </div>
+
+      {/* Public Footer */}
+      <footer className="zbox-public-footer">
+        <div className="zbox-footer-container">
+          <div className="zbox-footer-brand">
+            <NavLink to="/" className="zbox-brand-link">
+              <img src="/zunme_logo.png" alt="Zunme" style={{ height: '24px', width: 'auto' }} />
+            </NavLink>
+            <p style={{ fontSize: '12px', color: '#64748B', margin: '8px 0 0', maxWidth: '320px', lineHeight: 1.5 }}>
+              ZBox is part of the Zunme AI Ecosystem. Surveillance-free confidential communications, 5 TB storage vaults, and B4B America small business onboarding.
+            </p>
+          </div>
+          <div className="zbox-footer-links-grid">
+            <div>
+              <strong style={{ fontSize: '12px', color: '#1E293B', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Ecosystem</strong>
+              <ul style={{ listStyle: 'none', padding: 0, margin: '8px 0 0', display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '13px' }}>
+                <li><NavLink to="/" style={{ color: '#64748B', textDecoration: 'none' }}>Home</NavLink></li>
+                <li><NavLink to="/store" style={{ color: '#64748B', textDecoration: 'none' }}>Store &amp; Shop</NavLink></li>
+                <li><NavLink to="/ads" style={{ color: '#64748B', textDecoration: 'none' }}>Advertising</NavLink></li>
+                <li><NavLink to="/merchant-zone" style={{ color: '#64748B', textDecoration: 'none' }}>Merchant Zone</NavLink></li>
+              </ul>
+            </div>
+            <div>
+              <strong style={{ fontSize: '12px', color: '#1E293B', textTransform: 'uppercase', letterSpacing: '0.04em' }}>ZBox Suite</strong>
+              <ul style={{ listStyle: 'none', padding: 0, margin: '8px 0 0', display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '13px' }}>
+                <li><button type="button" onClick={() => setActiveMode('secured-plans')} style={{ background: 'none', border: 'none', padding: 0, color: '#64748B', cursor: 'pointer', fontSize: '13px' }}>Business Plans</button></li>
+                <li><button type="button" onClick={() => setActiveMode('webmail')} style={{ background: 'none', border: 'none', padding: 0, color: '#64748B', cursor: 'pointer', fontSize: '13px' }}>Webmail Client</button></li>
+                <li><button type="button" onClick={() => setActiveMode('sharing')} style={{ background: 'none', border: 'none', padding: 0, color: '#64748B', cursor: 'pointer', fontSize: '13px' }}>MVP Syndication</button></li>
+                <li><button type="button" onClick={() => setIsDomainModalOpen(true)} style={{ background: 'none', border: 'none', padding: 0, color: '#64748B', cursor: 'pointer', fontSize: '13px' }}>Custom Domain DNS</button></li>
+              </ul>
+            </div>
+            <div>
+              <strong style={{ fontSize: '12px', color: '#1E293B', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Trust &amp; Legal</strong>
+              <ul style={{ listStyle: 'none', padding: 0, margin: '8px 0 0', display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '13px' }}>
+                <li><NavLink to="/privacy" style={{ color: '#64748B', textDecoration: 'none' }}>Privacy Policy</NavLink></li>
+                <li><NavLink to="/terms" style={{ color: '#64748B', textDecoration: 'none' }}>Terms of Service</NavLink></li>
+                <li><span style={{ color: '#059669', fontWeight: 600 }}>Zero Data Tracking Guarantee</span></li>
+                <li><span style={{ color: '#2563EB', fontWeight: 600 }}>B4B America Certified</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div style={{ borderTop: '1px solid #E2E8F0', padding: '16px 24px', textAlign: 'center', fontSize: '12px', color: '#94A3B8' }}>
+          &copy; 2026 Zunme AI Inc. All rights reserved. ZBox Secured Business Email Suite benchmarked alongside Google Workspace and Microsoft 365.
+        </div>
+      </footer>
     </div>
   );
 };

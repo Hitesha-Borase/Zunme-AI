@@ -183,11 +183,9 @@ export const App: React.FC = () => {
           </Route>
           <Route path="/merchant" element={<Navigate to="/merchant-zone" replace />} />
 
-          {/* zBox Unified Webmail & Cross-Platform Sharing */}
-          <Route path="/zbox" element={<AppShell />}>
-            <Route index element={<ZBoxPage />} />
-            <Route path=":folder" element={<ZBoxPage />} />
-          </Route>
+          {/* zBox Standalone Product & Secured Business Email Suite */}
+          <Route path="/zbox" element={<ZBoxPage />} />
+          <Route path="/zbox/:folder" element={<ZBoxPage />} />
 
           {/* Authenticated Ads Manager Workspace */}
           <Route path="/ads/dashboard" element={<AppShell />}>
