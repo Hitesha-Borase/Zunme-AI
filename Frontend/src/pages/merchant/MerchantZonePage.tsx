@@ -376,7 +376,7 @@ export const MerchantZonePage: React.FC = () => {
           </div>
         </div>
 
-        <div style={{ display: 'flex', gap: '10px' }}>
+        <div className="merchant-header-actions">
           <button
             type="button"
             className="btn btn-primary"
@@ -505,7 +505,7 @@ export const MerchantZonePage: React.FC = () => {
           </div>
 
           {/* Quick Actions & Educational Callout */}
-          <div className="glass-panel" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
+          <div className="glass-panel merchant-callout-panel">
             <div>
               <h3 style={{ fontSize: '16px', fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: '4px' }}>
                 Free Organic Placement vs. Paid Shopping Ads
@@ -514,7 +514,7 @@ export const MerchantZonePage: React.FC = () => {
                 All approved products are automatically indexed organically in the Zunme Store at zero cost. To feature your items at the top of AI Search queries and across the Zunme Display Network, activate a Shopping Ad Boost.
               </p>
             </div>
-            <div style={{ display: 'flex', gap: '10px' }}>
+            <div className="merchant-callout-actions">
               <button
                 type="button"
                 className="btn btn-outline"

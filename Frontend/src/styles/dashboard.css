@@ -505,11 +505,75 @@
   flex-shrink: 0;
 }
 
+/* Operational Activity List */
+.admin-activity-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.admin-activity-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: #FAFBFD;
+  border: 1px solid #E8ECF5;
+  font-size: 12px;
+  gap: 12px;
+}
+
+.admin-activity-main {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+}
+
+.admin-activity-desc {
+  color: #111625;
+  line-height: 1.4;
+}
+
+.admin-activity-time {
+  color: #5F6B85;
+  font-size: 11px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
 /* Responsive Overrides */
 @media (max-width: 768px) {
   .dashboard-page-container {
     padding: var(--space-4);
     gap: var(--space-4);
+  }
+
+  .admin-activity-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 12px 14px;
+  }
+
+  .admin-activity-main {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    width: 100%;
+  }
+
+  .admin-activity-desc {
+    font-size: 13px;
+    line-height: 1.45;
+  }
+
+  .admin-activity-time {
+    align-self: flex-start;
+    color: #94A3B8;
+    font-size: 11px;
   }
 
   .metrics-grid {

@@ -230,31 +230,19 @@ export const AdminDashboardPage: React.FC = () => {
           <span className="badge badge-neutral">Live Telemetry</span>
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        <div className="admin-activity-list">
           {[
             { action: 'Creator Submission Approved', desc: 'Viral Hooks 2026 published to Community Warehouse', time: '12 mins ago', badge: 'success' },
             { action: 'User Suspended for Rate Limit Abuse', desc: 'usr_3 flagged by automated anomaly monitor', time: '1 hour ago', badge: 'warning' },
             { action: 'Tavily Search Engine Benchmark', desc: '180ms p95 response time validated across 1,200 queries', time: '3 hours ago', badge: 'info' },
             { action: 'New Content Studio Preset Deployed', desc: 'Added "LinkedIn Carousel Strategy" to 1,000+ catalog', time: '6 hours ago', badge: 'success' }
           ].map((act, i) => (
-            <div
-              key={i}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                padding: '10px 14px',
-                borderRadius: '8px',
-                background: '#FAFBFD',
-                border: '1px solid #E8ECF5',
-                fontSize: '12px'
-              }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <div key={i} className="admin-activity-item">
+              <div className="admin-activity-main">
                 <span className={`status-chip ${act.badge}`}>{act.action}</span>
-                <span style={{ color: '#111625' }}>{act.desc}</span>
+                <span className="admin-activity-desc">{act.desc}</span>
               </div>
-              <span style={{ color: '#5F6B85', fontSize: '11px' }}>{act.time}</span>
+              <span className="admin-activity-time">{act.time}</span>
             </div>
           ))}
         </div>

@@ -39,7 +39,8 @@ import {
   DollarSign,
   SlidersHorizontal,
   Zap,
-  Award
+  Award,
+  Copy
 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import './ZBoxPage.css';
@@ -158,6 +159,76 @@ export const ZBoxPage: React.FC = () => {
     if (selectedStorageTier === '500 GB' || selectedStorageTier === '5 TB') base += 6.0;
     if (isMediaHeavy) base += 4.0;
     return { cost: base, isFree: false, note: 'Zunme LetsWork Secured Business Tier (Positioned alongside Google & Microsoft)' };
+  };
+
+  // 1. Custom Business Domain Connection State (Doc Lines 24, 34, 43)
+  const [isDomainModalOpen, setIsDomainModalOpen] = useState(false);
+  const [customDomainInput, setCustomDomainInput] = useState('');
+  const [activeCustomDomain, setActiveCustomDomain] = useState<string | null>(null);
+  const [isVerifyingDomain, setIsVerifyingDomain] = useState(false);
+  const [domainVerified, setDomainVerified] = useState(false);
+
+  // 2. Free Starter Tier (< 3 Employees) Dedicated Claim State (Doc Line 6)
+  const [isFreeClaimModalOpen, setIsFreeClaimModalOpen] = useState(false);
+  const [freeBusinessName, setFreeBusinessName] = useState('');
+  const [freeEmployeeCount, setFreeEmployeeCount] = useState<'solo' | '1' | '2'>('solo');
+  const [freeAdminName, setFreeAdminName] = useState('');
+  const [freeEmailPrefix, setFreeEmailPrefix] = useState('');
+  const [isActivatingFree, setIsActivatingFree] = useState(false);
+  const [freeClaimSuccess, setFreeClaimSuccess] = useState(false);
+
+  const handleCopyText = (text: string, label: string) => {
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(text);
+      showToast(`Copied ${label} to clipboard.`, 'success');
+    }
+  };
+
+  const handleVerifyDomain = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!customDomainInput.trim()) {
+      showToast('Please enter your business domain name.', 'error');
+      return;
+    }
+    const cleanDomain = customDomainInput.trim().toLowerCase().replace(/^https?:\/\//, '').replace(/\/.*$/, '');
+    setIsVerifyingDomain(true);
+    setTimeout(() => {
+      setIsVerifyingDomain(false);
+      setDomainVerified(true);
+      setActiveCustomDomain(cleanDomain);
+      showToast(`✓ Domain ${cleanDomain} verified! MX & SPF records active.`, 'success');
+    }, 1200);
+  };
+
+  const handleActivateFreeTier = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!freeBusinessName.trim() || !freeEmailPrefix.trim()) {
+      showToast('Please fill in your business name and desired email prefix.', 'error');
+      return;
+    }
+    setIsActivatingFree(true);
+    setTimeout(() => {
+      setIsActivatingFree(false);
+      setFreeClaimSuccess(true);
+      const emailDomain = activeCustomDomain ? `@${activeCustomDomain}` : '@zunme.ai';
+      const fullEmail = `${freeEmailPrefix.trim().toLowerCase()}${emailDomain}`;
+
+      const freeWelcomeMsg: ZBoxMessage = {
+        id: `msg-free-${Date.now()}`,
+        sender: 'ZBox Provisioning Gateway',
+        email: 'accounts@zbox.zunme.ai',
+        subject: `🎉 100% Free Business Email Activated: ${fullEmail}`,
+        snippet: `Welcome ${freeBusinessName}! Your complimentary starter mailbox (< 3 employees) is now operational...`,
+        body: `Dear ${freeAdminName || 'Business Owner'},\n\nCongratulations! Your 100% Free Business Email account for "${freeBusinessName}" is officially live and ready for use.\n\nActivated Package Details (Doc Line 6 Specification):\n- Email Address: ${fullEmail}\n- Team Size: ${freeEmployeeCount === 'solo' ? 'Solopreneur (No Employees)' : freeEmployeeCount + ' Employee(s)'}\n- Tier: Small Business Starter (Free Forever • < 3 Employees)\n- Storage: 5 GB High-Security Cloud Mailbox\n- Encryption: Zero-Knowledge End-to-End Vault Enabled\n- Zero Ads, Zero Surveillance, Zero Data Scrutiny\n\nWhen your business grows beyond 3 employees or requires additional high-definition media vault storage (up to 5 TB), you can upgrade your plan at any time through the Secured Business Email dashboard.\n\nBest regards,\nZBox Business Provisioning & B4B America`,
+        timestamp: 'Just now',
+        folder: 'inbox',
+        unread: true,
+        starred: true,
+        hasAttachment: false
+      };
+      setMessages(prev => [freeWelcomeMsg, ...prev]);
+      showToast('🎉 Free Business Email successfully activated!', 'success');
+    }, 1000);
   };
 
   // Compose Modal State
@@ -311,14 +382,25 @@ export const ZBoxPage: React.FC = () => {
                 <strong>ZBox Zero-Knowledge Privacy Active:</strong> Unlike Google ($22/mo) and Microsoft ($19.90/mo), your emails and attachments are private and never monetized or scanned for ads.
               </span>
             </div>
-            <button
-              type="button"
-              className="btn btn-outline btn-sm"
-              onClick={() => setActiveMode('secured-plans')}
-              style={{ padding: '3px 10px', fontSize: '11px', background: '#FFFFFF', borderColor: '#86EFAC', color: '#166534', fontWeight: 700 }}
-            >
-              Explore Business Email Plans
-            </button>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+              <button
+                type="button"
+                className="btn btn-outline btn-sm"
+                onClick={() => setIsDomainModalOpen(true)}
+                style={{ padding: '4px 10px', fontSize: '11px', background: '#FFFFFF', borderColor: '#C7D2FE', color: '#4338CA', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '5px' }}
+              >
+                <Globe size={13} color="#4338CA" />
+                <span>{activeCustomDomain ? `Domain: @${activeCustomDomain}` : 'Connect Custom Domain'}</span>
+              </button>
+              <button
+                type="button"
+                className="btn btn-outline btn-sm"
+                onClick={() => setActiveMode('secured-plans')}
+                style={{ padding: '4px 10px', fontSize: '11px', background: '#FFFFFF', borderColor: '#86EFAC', color: '#166534', fontWeight: 700 }}
+              >
+                Explore Business Email Plans
+              </button>
+            </div>
           </div>
 
           <div className="zbox-mail-layout">
@@ -383,6 +465,32 @@ export const ZBoxPage: React.FC = () => {
                   <span>Drafts</span>
                 </div>
               </button>
+            </div>
+
+            {/* Custom Domain Connection Card in Sidebar (Doc Lines 24, 34, 43) */}
+            <div style={{ marginTop: 'auto', paddingTop: '16px', borderTop: '1px solid var(--color-border)' }}>
+              <div style={{ background: '#F8FAFC', padding: '10px 12px', borderRadius: '10px', border: '1px solid #E2E8F0', display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <span style={{ fontSize: '10.5px', fontWeight: 800, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                    Active Mailbox Domain
+                  </span>
+                  <span className={`badge ${activeCustomDomain ? 'badge-success' : 'badge-primary'}`} style={{ fontSize: '10px', padding: '1px 6px' }}>
+                    {activeCustomDomain ? 'Custom' : 'Default'}
+                  </span>
+                </div>
+                <div style={{ fontSize: '12px', fontWeight: 700, color: '#1E293B', display: 'flex', alignItems: 'center', gap: '6px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  <Globe size={13} color="#6E56CF" />
+                  <span>{activeCustomDomain ? `@${activeCustomDomain}` : '@zunme.ai'}</span>
+                </div>
+                <button
+                  type="button"
+                  className="btn btn-outline btn-sm"
+                  style={{ fontSize: '11px', padding: '4px 8px', width: '100%', justifyContent: 'center', marginTop: '2px', background: '#FFFFFF' }}
+                  onClick={() => setIsDomainModalOpen(true)}
+                >
+                  {activeCustomDomain ? 'Manage DNS / Aliases' : '+ Connect Custom Domain'}
+                </button>
+              </div>
             </div>
           </div>
 
@@ -756,8 +864,16 @@ export const ZBoxPage: React.FC = () => {
                   <div className="zbox-plan-price" style={{ color: '#6E56CF' }}>
                     $18.00 <small>/user/mo</small>
                   </div>
-                  <div style={{ fontSize: '11px', color: '#059669', fontWeight: 700, background: '#ECFDF5', padding: '4px 8px', borderRadius: '6px', marginTop: '6px' }}>
-                    ✓ 100% Free for Businesses with &lt; 3 Employees
+                  <div
+                    style={{ fontSize: '11px', color: '#059669', fontWeight: 700, background: '#ECFDF5', padding: '4px 8px', borderRadius: '6px', marginTop: '6px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer' }}
+                    onClick={() => {
+                      setFreeClaimSuccess(false);
+                      setIsFreeClaimModalOpen(true);
+                    }}
+                    title="Click to claim free email account"
+                  >
+                    <span>✓ 100% Free for Businesses with &lt; 3 Employees</span>
+                    <span style={{ textDecoration: 'underline', fontWeight: 800 }}>Claim Free &rarr;</span>
                   </div>
                   <ul className="zbox-plan-features">
                     <li><Check size={14} color="#10B981" /> <span><strong>Zero Third-Party Monitoring:</strong> True confidentiality</span></li>
@@ -776,6 +892,151 @@ export const ZBoxPage: React.FC = () => {
                   Get Started with ZBox
                 </button>
               </div>
+
+              {/* Proton Mail (From Doc Line 38-40) */}
+              <div className="zbox-plan-card" style={{ opacity: 0.9 }}>
+                <div>
+                  <div style={{ fontSize: '12px', fontWeight: 800, color: '#64748B', textTransform: 'uppercase' }}>
+                    Proton Mail
+                  </div>
+                  <div style={{ fontSize: '14px', fontWeight: 700, color: '#1E293B', marginTop: '2px' }}>
+                    Mail Professional
+                  </div>
+                  <div className="zbox-plan-price">
+                    $7.99 <small>/user/mo</small>
+                  </div>
+                  <div style={{ fontSize: '11px', color: '#6D28D9', fontWeight: 600, background: '#F5F3FF', padding: '4px 8px', borderRadius: '6px', marginTop: '6px' }}>
+                    🔒 Encrypted Email &amp; Custom Domains
+                  </div>
+                  <ul className="zbox-plan-features">
+                    <li><Check size={14} color="#64748B" /> <span>End-to-end encrypted email</span></li>
+                    <li><Check size={14} color="#64748B" /> <span>Custom domain support</span></li>
+                    <li><Check size={14} color="#64748B" /> <span>15 GB storage capacity</span></li>
+                    <li><X size={14} color="#DC2626" /> <span>Limited 15 GB storage (No 5 TB video vault)</span></li>
+                    <li><X size={14} color="#DC2626" /> <span>No integrated creative AI studio</span></li>
+                  </ul>
+                </div>
+                <div style={{ fontSize: '11.5px', color: '#64748B', textAlign: 'center', marginTop: '10px' }}>
+                  Privacy-first with storage limits
+                </div>
+              </div>
+
+              {/* Zoho Mail (From Doc Line 41-43) */}
+              <div className="zbox-plan-card" style={{ opacity: 0.9 }}>
+                <div>
+                  <div style={{ fontSize: '12px', fontWeight: 800, color: '#64748B', textTransform: 'uppercase' }}>
+                    Zoho Mail
+                  </div>
+                  <div style={{ fontSize: '14px', fontWeight: 700, color: '#1E293B', marginTop: '2px' }}>
+                    Workplace Standard
+                  </div>
+                  <div className="zbox-plan-price">
+                    $1.00 – $3.00 <small>/user/mo</small>
+                  </div>
+                  <div style={{ fontSize: '11px', color: '#0369A1', fontWeight: 600, background: '#F0F9FF', padding: '4px 8px', borderRadius: '6px', marginTop: '6px' }}>
+                    💼 Budget Custom Domain Suite
+                  </div>
+                  <ul className="zbox-plan-features">
+                    <li><Check size={14} color="#64748B" /> <span>Custom domain email hosting</span></li>
+                    <li><Check size={14} color="#64748B" /> <span>Varying storage options (5 GB – 30 GB)</span></li>
+                    <li><Check size={14} color="#64748B" /> <span>Affordable entry pricing</span></li>
+                    <li><X size={14} color="#DC2626" /> <span>No zero-knowledge encryption architecture</span></li>
+                    <li><X size={14} color="#DC2626" /> <span>No high-throughput video CDN sharing</span></li>
+                  </ul>
+                </div>
+                <div style={{ fontSize: '11.5px', color: '#64748B', textAlign: 'center', marginTop: '10px' }}>
+                  Budget tier with basic feature set
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Small Business Size Breakdown Infographic (Doc Lines 12-21) */}
+          <div className="zbox-breakdown-card">
+            <div className="zbox-breakdown-header">
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span className="badge badge-primary">Market Research Breakdown</span>
+                <span style={{ fontSize: '12px', fontWeight: 700, color: '#6E56CF' }}>Doc Lines 12–21 Spec</span>
+              </div>
+              <h3 style={{ fontSize: '18px', fontWeight: 800, color: '#111625', margin: '6px 0 2px' }}>
+                Small Businesses with Employees — Breakdown by Size
+              </h3>
+              <p style={{ fontSize: '13px', color: '#5F6B85', margin: 0 }}>
+                Why ZBox is specifically targeted at the underserved 98%+ of small businesses that don't need expensive corporate bundles.
+              </p>
+            </div>
+
+            <div className="zbox-breakdown-grid">
+              {/* Tier 1: No Employees (78-82%) */}
+              <div className="zbox-breakdown-item primary">
+                <div className="breakdown-stat-header">
+                  <span className="breakdown-tag-badge">Primary Target</span>
+                  <span className="breakdown-percentage">78% – 82%</span>
+                </div>
+                <div className="breakdown-progress-track">
+                  <div className="breakdown-progress-fill" style={{ width: '80%', background: 'linear-gradient(90deg, #6E56CF 0%, #8B5CF6 100%)' }} />
+                </div>
+                <div className="breakdown-meta">
+                  <h4 className="breakdown-title">No Employees (Solopreneurs)</h4>
+                  <p className="breakdown-desc">
+                    Solo creators, consultants, and independent founders. ZBox provides the Solopreneur Secure Package ($9.99/mo) for private client communication and heavy document/video transfer.
+                  </p>
+                </div>
+                <div className="breakdown-feature-pill">
+                  ✓ Protected against Google/Microsoft surveillance
+                </div>
+              </div>
+
+              {/* Tier 2: 1-19 Employees (18-22%) */}
+              <div className="zbox-breakdown-item success">
+                <div className="breakdown-stat-header">
+                  <span className="breakdown-tag-badge success">Micro-Teams</span>
+                  <span className="breakdown-percentage success">18% – 22%</span>
+                </div>
+                <div className="breakdown-progress-track">
+                  <div className="breakdown-progress-fill" style={{ width: '20%', background: 'linear-gradient(90deg, #059669 0%, #10B981 100%)' }} />
+                </div>
+                <div className="breakdown-meta">
+                  <h4 className="breakdown-title">1 – 19 Employees (Micro-Teams)</h4>
+                  <p className="breakdown-desc">
+                    Small agencies, boutique firms, and startups. Eligible for 100% Free starter accounts (&lt; 3 employees) with zero tracking, scaling up to 20 seats as team grows.
+                  </p>
+                </div>
+                <div className="breakdown-feature-pill success">
+                  ✓ 100% Free for &lt; 3 Employees starter tier
+                </div>
+              </div>
+
+              {/* Tier 3: 20+ Employees (< 2%) */}
+              <div className="zbox-breakdown-item muted">
+                <div className="breakdown-stat-header">
+                  <span className="breakdown-tag-badge muted">Large Scale</span>
+                  <span className="breakdown-percentage muted">&lt; 2%</span>
+                </div>
+                <div className="breakdown-progress-track">
+                  <div className="breakdown-progress-fill" style={{ width: '2%', background: '#94A3B8' }} />
+                </div>
+                <div className="breakdown-meta">
+                  <h4 className="breakdown-title">20+ Employees (Large Scale)</h4>
+                  <p className="breakdown-desc">
+                    Mid-to-large enterprises typically locked into expensive $22/user Google Workspace contracts. ZBox provides custom 20 to 200+ seat packages with volume savings.
+                  </p>
+                </div>
+                <div className="breakdown-feature-pill muted">
+                  ✓ Custom 20–200+ seat deployment
+                </div>
+              </div>
+            </div>
+
+            {/* Bottom Strategic Market Insight */}
+            <div className="zbox-breakdown-insight">
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#1E293B', fontWeight: 700, fontSize: '13px' }}>
+                <Users size={16} color="#6E56CF" />
+                <span>Strategic Market Insight:</span>
+              </div>
+              <p style={{ margin: 0, fontSize: '12.5px', color: '#475569', lineHeight: 1.5 }}>
+                Over <strong>98% of all small businesses have fewer than 20 employees</strong> (with 80%+ being solo operations). While Google ($22/mo) and Microsoft ($19.90/mo) enforce high per-user models with bundled bloatware, ZBox delivers pure confidential email, large file security, and free access for micro-teams.
+              </p>
             </div>
           </div>
 
@@ -797,7 +1058,11 @@ export const ZBoxPage: React.FC = () => {
                 <button
                   type="button"
                   className="btn btn-outline btn-sm"
-                  onClick={() => showToast('Free starter account verified for <3 employees.', 'success')}
+                  style={{ borderColor: '#10B981', color: '#047857', fontWeight: 700 }}
+                  onClick={() => {
+                    setFreeClaimSuccess(false);
+                    setIsFreeClaimModalOpen(true);
+                  }}
                 >
                   Claim Free Account
                 </button>
@@ -934,7 +1199,14 @@ export const ZBoxPage: React.FC = () => {
                     <button
                       type="button"
                       className="btn btn-primary"
-                      onClick={() => showToast(`Configured ${selectedAccountsTier} with ${selectedStorageTier}. Ready to provision!`, 'success')}
+                      onClick={() => {
+                        if (pricing.isFree) {
+                          setFreeClaimSuccess(false);
+                          setIsFreeClaimModalOpen(true);
+                        } else {
+                          showToast(`Configured ${selectedAccountsTier} with ${selectedStorageTier}. Ready to provision!`, 'success');
+                        }
+                      }}
                       style={{ padding: '10px 18px', fontSize: '13px', fontWeight: 800 }}
                     >
                       {pricing.isFree ? 'Claim Free Mailbox' : 'Deploy Secure Mailbox'}
@@ -992,6 +1264,15 @@ export const ZBoxPage: React.FC = () => {
             </div>
 
             <form onSubmit={handleSendCompose} className="store-modal-body">
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 12px', background: '#F8FAFC', borderRadius: '8px', border: '1px solid #E2E8F0', fontSize: '12px', marginBottom: '4px' }}>
+                <span style={{ color: 'var(--color-text-muted)', fontWeight: 600 }}>From Address:</span>
+                <span style={{ fontWeight: 700, color: 'var(--color-primary)', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <Globe size={13} />
+                  <span>you{activeCustomDomain ? `@${activeCustomDomain}` : '@zunme.ai'}</span>
+                  {activeCustomDomain && <span className="badge badge-success" style={{ fontSize: '9.5px', padding: '1px 5px' }}>Custom Domain</span>}
+                </span>
+              </div>
+
               <div>
                 <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, marginBottom: '6px' }}>
                   To (Recipient Email or Team Member) *
@@ -1117,6 +1398,502 @@ export const ZBoxPage: React.FC = () => {
               >
                 Done
               </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL 1: CUSTOM BUSINESS DOMAIN CONNECTION (Doc Lines 24, 34, 43) */}
+      {isDomainModalOpen && (
+        <div className="store-modal-backdrop" onClick={() => setIsDomainModalOpen(false)}>
+          <div className="store-modal-container" style={{ maxWidth: '640px' }} onClick={(e) => e.stopPropagation()}>
+            <div className="store-modal-header">
+              <div>
+                <h3 style={{ fontSize: '17px', fontWeight: 800, margin: 0, display: 'flex', alignItems: 'center', gap: '8px', color: '#111625' }}>
+                  <Globe size={18} color="#6E56CF" />
+                  <span>Connect Custom Business Domain</span>
+                </h3>
+                <p style={{ fontSize: '12px', color: '#64748B', margin: '3px 0 0' }}>
+                  Send &amp; receive confidential emails as <strong style={{ color: '#1E293B' }}>name@{customDomainInput.trim() || 'yourbusiness.com'}</strong> (Doc Lines 24, 34, 43)
+                </p>
+              </div>
+              <button
+                type="button"
+                className="btn-ghost"
+                onClick={() => setIsDomainModalOpen(false)}
+                style={{ padding: '4px' }}
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            <div className="store-modal-body" style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
+              {/* If already active and verified */}
+              {activeCustomDomain && domainVerified && (
+                <div style={{ background: '#ECFDF5', border: '1px solid #A7F3D0', borderRadius: '10px', padding: '14px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <CheckCircle2 size={22} color="#059669" />
+                    <div>
+                      <div style={{ fontSize: '13.5px', fontWeight: 800, color: '#065F46' }}>
+                        Custom Domain Active: @{activeCustomDomain}
+                      </div>
+                      <div style={{ fontSize: '11.5px', color: '#047857' }}>
+                        Zero-Knowledge MX, SPF, &amp; DKIM routing authenticated. Outbound mail sends as @{activeCustomDomain}.
+                      </div>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    className="btn btn-outline btn-sm"
+                    style={{ background: '#FFFFFF', borderColor: '#FCA5A5', color: '#DC2626', fontSize: '11px', padding: '3px 8px' }}
+                    onClick={() => {
+                      setActiveCustomDomain(null);
+                      setDomainVerified(false);
+                      showToast('Custom domain disconnected. Defaulting to @zunme.ai', 'info');
+                    }}
+                  >
+                    Disconnect
+                  </button>
+                </div>
+              )}
+
+              {/* Domain Input Form */}
+              <form onSubmit={handleVerifyDomain} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                <div>
+                  <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, marginBottom: '6px', color: '#1E293B' }}>
+                    1. Enter Your Registered Business Domain
+                  </label>
+                  <div style={{ display: 'flex', gap: '8px' }}>
+                    <input
+                      type="text"
+                      className="input-field"
+                      placeholder="e.g. acmecorp.com or yourbusiness.org"
+                      value={customDomainInput}
+                      onChange={(e) => {
+                        setCustomDomainInput(e.target.value);
+                        if (domainVerified) setDomainVerified(false);
+                      }}
+                      style={{ flex: 1 }}
+                    />
+                    <button
+                      type="submit"
+                      className="btn btn-primary"
+                      disabled={isVerifyingDomain || !customDomainInput.trim()}
+                      style={{ minWidth: '130px', justifyContent: 'center' }}
+                    >
+                      {isVerifyingDomain ? (
+                        <>
+                          <RefreshCw size={14} className="spin" />
+                          <span>Checking DNS...</span>
+                        </>
+                      ) : (
+                        <>
+                          <Check size={14} />
+                          <span>Verify DNS</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+                  <span style={{ fontSize: '11.5px', color: '#64748B', marginTop: '4px', display: 'block' }}>
+                    Compatible with GoDaddy, Namecheap, Cloudflare, Google Domains, AWS Route 53, or any registrar.
+                  </span>
+                </div>
+
+                {/* DNS Configuration Table */}
+                <div>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
+                    <label style={{ fontSize: '12px', fontWeight: 700, color: '#1E293B', margin: 0 }}>
+                      2. Add Required DNS Records to Your Domain Host
+                    </label>
+                    <span style={{ fontSize: '11px', color: '#6E56CF', fontWeight: 600 }}>
+                      Doc Lines 24, 34, 43
+                    </span>
+                  </div>
+
+                  <div style={{ overflowX: 'auto' }}>
+                    <table className="zbox-dns-table">
+                      <thead>
+                        <tr>
+                          <th>Type</th>
+                          <th>Host / Name</th>
+                          <th>Target Value</th>
+                          <th>Priority</th>
+                          <th style={{ textAlign: 'center' }}>Copy</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {/* MX Record */}
+                        <tr>
+                          <td>
+                            <span className="badge badge-primary" style={{ fontSize: '10.5px' }}>MX</span>
+                          </td>
+                          <td><code>@</code></td>
+                          <td>
+                            <span className="zbox-code-badge">mail.zbox.zunme.ai</span>
+                          </td>
+                          <td>10</td>
+                          <td style={{ textAlign: 'center' }}>
+                            <button
+                              type="button"
+                              className="btn-ghost"
+                              style={{ padding: '3px 6px', fontSize: '11px', color: '#6E56CF' }}
+                              onClick={() => handleCopyText('mail.zbox.zunme.ai', 'MX Record')}
+                              title="Copy MX value"
+                            >
+                              <Copy size={13} />
+                            </button>
+                          </td>
+                        </tr>
+
+                        {/* TXT SPF Record */}
+                        <tr>
+                          <td>
+                            <span className="badge badge-success" style={{ fontSize: '10.5px' }}>TXT (SPF)</span>
+                          </td>
+                          <td><code>@</code></td>
+                          <td>
+                            <span className="zbox-code-badge">v=spf1 include:spf.zbox.zunme.ai ~all</span>
+                          </td>
+                          <td>—</td>
+                          <td style={{ textAlign: 'center' }}>
+                            <button
+                              type="button"
+                              className="btn-ghost"
+                              style={{ padding: '3px 6px', fontSize: '11px', color: '#6E56CF' }}
+                              onClick={() => handleCopyText('v=spf1 include:spf.zbox.zunme.ai ~all', 'SPF Record')}
+                              title="Copy SPF value"
+                            >
+                              <Copy size={13} />
+                            </button>
+                          </td>
+                        </tr>
+
+                        {/* CNAME DKIM Record */}
+                        <tr>
+                          <td>
+                            <span className="badge" style={{ fontSize: '10.5px', background: '#F3E8FF', color: '#7E22CE' }}>CNAME (DKIM)</span>
+                          </td>
+                          <td><code>zunme._domainkey</code></td>
+                          <td>
+                            <span className="zbox-code-badge">dkim.zbox.zunme.ai</span>
+                          </td>
+                          <td>—</td>
+                          <td style={{ textAlign: 'center' }}>
+                            <button
+                              type="button"
+                              className="btn-ghost"
+                              style={{ padding: '3px 6px', fontSize: '11px', color: '#6E56CF' }}
+                              onClick={() => handleCopyText('dkim.zbox.zunme.ai', 'DKIM Record')}
+                              title="Copy DKIM value"
+                            >
+                              <Copy size={13} />
+                            </button>
+                          </td>
+                        </tr>
+
+                        {/* TXT DMARC Record */}
+                        <tr>
+                          <td>
+                            <span className="badge badge-outline" style={{ fontSize: '10.5px' }}>TXT (DMARC)</span>
+                          </td>
+                          <td><code>_dmarc</code></td>
+                          <td>
+                            <span className="zbox-code-badge">v=DMARC1; p=quarantine;</span>
+                          </td>
+                          <td>—</td>
+                          <td style={{ textAlign: 'center' }}>
+                            <button
+                              type="button"
+                              className="btn-ghost"
+                              style={{ padding: '3px 6px', fontSize: '11px', color: '#6E56CF' }}
+                              onClick={() => handleCopyText('v=DMARC1; p=quarantine;', 'DMARC Record')}
+                              title="Copy DMARC value"
+                            >
+                              <Copy size={13} />
+                            </button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <div style={{ background: '#F8FAFC', borderRadius: '10px', padding: '12px 14px', border: '1px solid #E2E8F0', display: 'flex', alignItems: 'center', gap: '10px', fontSize: '12px', color: '#475569' }}>
+                  <Lock size={16} color="#10B981" />
+                  <span>
+                    Zero-Knowledge encryption certificates are automatically provisioned upon DNS validation.
+                  </span>
+                </div>
+
+                <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', paddingTop: '10px', borderTop: '1px solid #E2E8F0' }}>
+                  <button
+                    type="button"
+                    className="btn btn-outline"
+                    onClick={() => setIsDomainModalOpen(false)}
+                  >
+                    Close
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-primary"
+                    onClick={() => {
+                      if (!activeCustomDomain && customDomainInput.trim()) {
+                        const clean = customDomainInput.trim().toLowerCase().replace(/^https?:\/\//, '').replace(/\/.*$/, '');
+                        setActiveCustomDomain(clean);
+                        setDomainVerified(true);
+                        showToast(`Domain @${clean} activated for your ZBox mailbox!`, 'success');
+                      }
+                      setIsDomainModalOpen(false);
+                    }}
+                  >
+                    Save &amp; Use Domain
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL 2: FREE STARTER TIER (< 3 EMPLOYEES) DEDICATED CLAIM FLOW (Doc Line 6) */}
+      {isFreeClaimModalOpen && (
+        <div className="store-modal-backdrop" onClick={() => setIsFreeClaimModalOpen(false)}>
+          <div className="store-modal-container" style={{ maxWidth: '580px' }} onClick={(e) => e.stopPropagation()}>
+            <div className="store-modal-header">
+              <div>
+                <h3 style={{ fontSize: '17px', fontWeight: 800, margin: 0, display: 'flex', alignItems: 'center', gap: '8px', color: '#111625' }}>
+                  <Sparkles size={18} color="#059669" />
+                  <span>Claim 100% Free Business Email</span>
+                </h3>
+                <p style={{ fontSize: '12px', color: '#64748B', margin: '3px 0 0' }}>
+                  Complimentary email for small businesses with &lt; 3 employees (Doc Line 6)
+                </p>
+              </div>
+              <button
+                type="button"
+                className="btn-ghost"
+                onClick={() => setIsFreeClaimModalOpen(false)}
+                style={{ padding: '4px' }}
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            <div className="store-modal-body">
+              {freeClaimSuccess ? (
+                <div style={{ textAlign: 'center', padding: '10px 0 6px' }}>
+                  <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: '#ECFDF5', color: '#059669', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }}>
+                    <CheckCircle2 size={36} />
+                  </div>
+                  <h3 style={{ fontSize: '20px', fontWeight: 900, color: '#111625', margin: '0 0 6px' }}>
+                    Free Business Email Activated!
+                  </h3>
+                  <p style={{ fontSize: '13.5px', color: '#475569', margin: '0 0 16px' }}>
+                    Your small business mailbox is now live with zero surveillance and 5 GB encrypted vault.
+                  </p>
+
+                  <div style={{ background: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: '12px', padding: '16px', textAlign: 'left', marginBottom: '20px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span style={{ fontSize: '12px', color: '#64748B' }}>Business:</span>
+                      <strong style={{ fontSize: '13px', color: '#1E293B' }}>{freeBusinessName}</strong>
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span style={{ fontSize: '12px', color: '#64748B' }}>Mailbox Address:</span>
+                      <strong style={{ fontSize: '13px', color: '#059669' }}>
+                        {freeEmailPrefix.trim().toLowerCase()}{activeCustomDomain ? `@${activeCustomDomain}` : '@zunme.ai'}
+                      </strong>
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span style={{ fontSize: '12px', color: '#64748B' }}>Team Tier:</span>
+                      <strong style={{ fontSize: '13px', color: '#1E293B' }}>
+                        {freeEmployeeCount === 'solo' ? 'Solopreneur (0 Employees)' : freeEmployeeCount + ' Employee(s)'} (&lt; 3 Cap)
+                      </strong>
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span style={{ fontSize: '12px', color: '#64748B' }}>Monthly Cost:</span>
+                      <strong style={{ fontSize: '14px', color: '#059669' }}>$0.00 / month (Free Forever)</strong>
+                    </div>
+                  </div>
+
+                  <div style={{ display: 'flex', gap: '10px' }}>
+                    <button
+                      type="button"
+                      className="btn btn-primary"
+                      style={{ flex: 1, justifyContent: 'center' }}
+                      onClick={() => {
+                        setIsFreeClaimModalOpen(false);
+                        setActiveMode('webmail');
+                      }}
+                    >
+                      <Inbox size={15} />
+                      <span>Open My Free Webmail Inbox</span>
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <form onSubmit={handleActivateFreeTier} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                  {/* Doc Line 6 Policy Guarantee Banner */}
+                  <div className="zbox-free-guarantee-card">
+                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
+                      <ShieldCheck size={20} color="#059669" style={{ flexShrink: 0, marginTop: '2px' }} />
+                      <div>
+                        <div style={{ fontSize: '13px', fontWeight: 800, color: '#065F46' }}>
+                          Doc Line 6 Guarantee: 100% Free Forever for &lt; 3 Employees
+                        </div>
+                        <div style={{ fontSize: '12px', color: '#047857', marginTop: '2px', lineHeight: 1.4 }}>
+                          Zero credit card required. Includes 5 GB secure mailbox, B4B America training, and instant option to upgrade as your business expands.
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Business Name */}
+                  <div>
+                    <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, marginBottom: '6px', color: '#1E293B' }}>
+                      Business / Studio Name *
+                    </label>
+                    <input
+                      type="text"
+                      className="input-field"
+                      placeholder="e.g. Apex Design Agency or Studio Bloom"
+                      value={freeBusinessName}
+                      onChange={(e) => setFreeBusinessName(e.target.value)}
+                      required
+                    />
+                  </div>
+
+                  {/* Team Size Selection (< 3 employees) */}
+                  <div>
+                    <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, marginBottom: '6px', color: '#1E293B' }}>
+                      Team Size / Employee Count (Select to Qualify) *
+                    </label>
+                    <div className="zbox-employee-radio-group">
+                      <div
+                        className={`zbox-employee-radio-btn ${freeEmployeeCount === 'solo' ? 'selected' : ''}`}
+                        onClick={() => setFreeEmployeeCount('solo')}
+                      >
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                          <span style={{ fontSize: '13px', fontWeight: 800, color: '#111625' }}>Solo Founder</span>
+                          <span className="badge badge-primary" style={{ fontSize: '10px' }}>78-82%</span>
+                        </div>
+                        <span style={{ fontSize: '11.5px', color: '#64748B' }}>0 Employees • Independent</span>
+                      </div>
+
+                      <div
+                        className={`zbox-employee-radio-btn ${freeEmployeeCount === '1' ? 'selected' : ''}`}
+                        onClick={() => setFreeEmployeeCount('1')}
+                      >
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                          <span style={{ fontSize: '13px', fontWeight: 800, color: '#111625' }}>1 Employee</span>
+                          <span className="badge badge-success" style={{ fontSize: '10px' }}>Eligible</span>
+                        </div>
+                        <span style={{ fontSize: '11.5px', color: '#64748B' }}>2 Members Total</span>
+                      </div>
+
+                      <div
+                        className={`zbox-employee-radio-btn ${freeEmployeeCount === '2' ? 'selected' : ''}`}
+                        onClick={() => setFreeEmployeeCount('2')}
+                      >
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                          <span style={{ fontSize: '13px', fontWeight: 800, color: '#111625' }}>2 Employees</span>
+                          <span className="badge badge-success" style={{ fontSize: '10px' }}>Max Free Cap</span>
+                        </div>
+                        <span style={{ fontSize: '11.5px', color: '#64748B' }}>3 Members Total (&lt; 3)</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Primary Admin Full Name */}
+                  <div>
+                    <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, marginBottom: '6px', color: '#1E293B' }}>
+                      Account Owner / Admin Name
+                    </label>
+                    <input
+                      type="text"
+                      className="input-field"
+                      placeholder="e.g. Alex Morgan"
+                      value={freeAdminName}
+                      onChange={(e) => setFreeAdminName(e.target.value)}
+                    />
+                  </div>
+
+                  {/* Desired Business Email Address */}
+                  <div>
+                    <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, marginBottom: '6px', color: '#1E293B' }}>
+                      Desired Business Email Address *
+                    </label>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <input
+                        type="text"
+                        className="input-field"
+                        placeholder="e.g. contact, hello, or alex"
+                        value={freeEmailPrefix}
+                        onChange={(e) => setFreeEmailPrefix(e.target.value)}
+                        required
+                        style={{ flex: 1 }}
+                      />
+                      <div style={{ background: '#F1F5F9', border: '1px solid #CBD5E1', padding: '10px 14px', borderRadius: '8px', fontSize: '13px', fontWeight: 800, color: '#334155', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <Globe size={14} color="#6E56CF" />
+                        <span>{activeCustomDomain ? `@${activeCustomDomain}` : '@zunme.ai'}</span>
+                      </div>
+                    </div>
+                    {activeCustomDomain ? (
+                      <span style={{ fontSize: '11.5px', color: '#059669', marginTop: '4px', display: 'block', fontWeight: 600 }}>
+                        ✓ Using your connected custom domain (@{activeCustomDomain})
+                      </span>
+                    ) : (
+                      <span style={{ fontSize: '11.5px', color: '#64748B', marginTop: '4px', display: 'block' }}>
+                        Defaulting to @zunme.ai. You can connect a custom domain (e.g. name@yourbusiness.com) anytime.
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Features included */}
+                  <div style={{ background: '#F8FAFC', borderRadius: '10px', padding: '12px 14px', border: '1px solid #E2E8F0', fontSize: '12px', color: '#475569', display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <Check size={14} color="#10B981" />
+                      <span><strong>Zero Surveillance:</strong> 0 third-party scanning or telemetry</span>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <Check size={14} color="#10B981" />
+                      <span><strong>5 GB Secure Mailbox:</strong> Encrypted storage for attachments</span>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <Check size={14} color="#10B981" />
+                      <span><strong>B4B America Support:</strong> Free onboarding guidance</span>
+                    </div>
+                  </div>
+
+                  {/* Footer actions */}
+                  <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', paddingTop: '10px', borderTop: '1px solid #E2E8F0' }}>
+                    <button
+                      type="button"
+                      className="btn btn-outline"
+                      onClick={() => setIsFreeClaimModalOpen(false)}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      className="btn btn-primary"
+                      disabled={isActivatingFree}
+                      style={{ minWidth: '180px', justifyContent: 'center' }}
+                    >
+                      {isActivatingFree ? (
+                        <>
+                          <RefreshCw size={14} className="spin" />
+                          <span>Activating Mailbox...</span>
+                        </>
+                      ) : (
+                        <>
+                          <CheckCircle2 size={15} />
+                          <span>Activate 100% Free Email</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+                </form>
+              )}
             </div>
           </div>
         </div>

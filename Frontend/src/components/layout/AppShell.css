@@ -369,5 +369,44 @@
     gap: 6px;
     flex-shrink: 0;
   }
+
+  .topbar-auth-group {
+    gap: 5px;
+  }
+
+  .topbar-auth-signin {
+    padding: 5px 8px;
+    font-size: 11.5px;
+  }
+
+  .topbar-auth-signup {
+    padding: 5px 9px;
+    font-size: 11.5px;
+  }
+}
+
+/* Public Topbar Auth Group */
+.topbar-auth-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.topbar-auth-signin {
+  border-radius: 999px;
+  font-weight: 700;
+  padding: 6px 14px;
+  border-color: #E2E8F0;
+  color: #334155;
+  font-size: 12.5px;
+  white-space: nowrap;
+}
+
+.topbar-auth-signup {
+  border-radius: 999px;
+  font-weight: 700;
+  padding: 6px 14px;
+  font-size: 12.5px;
+  white-space: nowrap;
 }
 

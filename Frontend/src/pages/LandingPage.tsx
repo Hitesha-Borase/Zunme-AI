@@ -41,7 +41,10 @@ import {
   Smile,
   Image as ImageIcon,
   Video,
-  Bot
+  Bot,
+  Eye,
+  Lock,
+  Share2
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { DashboardLoginModal } from '../components/modals/DashboardLoginModal';
@@ -99,8 +102,8 @@ export const ZUNME_ECOSYSTEM_PRODUCTS: EcosystemProduct[] = [
     icon: <Sparkles size={22} color="#FFFFFF" />,
     iconBg: 'linear-gradient(135deg, #8B5CF6 0%, #6D28D9 100%)',
     accentColor: '#8B5CF6',
-    linkTo: '/user/chat',
-    linkText: 'Launch AI Assistant'
+    linkTo: '#showcase',
+    linkText: 'Explore AI Assistant'
   },
   {
     id: 'zbox',
@@ -113,7 +116,7 @@ export const ZUNME_ECOSYSTEM_PRODUCTS: EcosystemProduct[] = [
     icon: <Mail size={22} color="#FFFFFF" />,
     iconBg: 'linear-gradient(135deg, #0284C7 0%, #0369A1 100%)',
     accentColor: '#0284C7',
-    linkTo: '/zbox',
+    linkTo: '#zbox-showcase',
     linkText: 'Open zBox Hub'
   },
   {
@@ -127,8 +130,8 @@ export const ZUNME_ECOSYSTEM_PRODUCTS: EcosystemProduct[] = [
     icon: <PenTool size={22} color="#FFFFFF" />,
     iconBg: 'linear-gradient(135deg, #C084FC 0%, #9333EA 100%)',
     accentColor: '#C084FC',
-    linkTo: '/user/builders',
-    linkText: 'Launch Content Studio'
+    linkTo: '#showcase',
+    linkText: 'Explore Content Studio'
   },
   {
     id: 'zunme-content',
@@ -141,7 +144,7 @@ export const ZUNME_ECOSYSTEM_PRODUCTS: EcosystemProduct[] = [
     icon: <Film size={22} color="#FFFFFF" />,
     iconBg: 'linear-gradient(135deg, #EC4899 0%, #BE185D 100%)',
     accentColor: '#EC4899',
-    linkTo: '/store',
+    linkTo: '#store-showcase',
     linkText: 'Explore Creative Store'
   },
   {
@@ -155,7 +158,7 @@ export const ZUNME_ECOSYSTEM_PRODUCTS: EcosystemProduct[] = [
     icon: <Server size={22} color="#FFFFFF" />,
     iconBg: 'linear-gradient(135deg, #6366F1 0%, #4338CA 100%)',
     accentColor: '#6366F1',
-    linkTo: '/warehouse',
+    linkTo: '#store-showcase',
     linkText: 'Manage Cloud Warehouse'
   },
   {
@@ -169,8 +172,8 @@ export const ZUNME_ECOSYSTEM_PRODUCTS: EcosystemProduct[] = [
     icon: <Briefcase size={22} color="#FFFFFF" />,
     iconBg: 'linear-gradient(135deg, #10B981 0%, #047857 100%)',
     accentColor: '#10B981',
-    linkTo: '/business',
-    linkText: 'Launch CRM nErgy'
+    linkTo: '#features',
+    linkText: 'Explore Business Features'
   },
   {
     id: 'oal-marketplace',
@@ -183,7 +186,7 @@ export const ZUNME_ECOSYSTEM_PRODUCTS: EcosystemProduct[] = [
     icon: <Landmark size={22} color="#FFFFFF" />,
     iconBg: 'linear-gradient(135deg, #F59E0B 0%, #B45309 100%)',
     accentColor: '#F59E0B',
-    linkTo: '/business/overview',
+    linkTo: '#features',
     linkText: 'Explore Financing'
   },
   {
@@ -197,7 +200,7 @@ export const ZUNME_ECOSYSTEM_PRODUCTS: EcosystemProduct[] = [
     icon: <Award size={22} color="#FFFFFF" />,
     iconBg: 'linear-gradient(135deg, #EF4444 0%, #B91C1C 100%)',
     accentColor: '#EF4444',
-    linkTo: '/business/overview',
+    linkTo: '#features',
     linkText: 'Check INV IQ Matrix'
   },
   {
@@ -211,8 +214,8 @@ export const ZUNME_ECOSYSTEM_PRODUCTS: EcosystemProduct[] = [
     icon: <ShoppingBag size={22} color="#FFFFFF" />,
     iconBg: 'linear-gradient(135deg, #14B8A6 0%, #0F766E 100%)',
     accentColor: '#14B8A6',
-    linkTo: '/merchant-zone',
-    linkText: 'Visit OMP Deals'
+    linkTo: '#store-showcase',
+    linkText: 'Visit Commercial Deals'
   },
   {
     id: 'swmtp',
@@ -225,7 +228,7 @@ export const ZUNME_ECOSYSTEM_PRODUCTS: EcosystemProduct[] = [
     icon: <Activity size={22} color="#FFFFFF" />,
     iconBg: 'linear-gradient(135deg, #3B82F6 0%, #1D4ED8 100%)',
     accentColor: '#3B82F6',
-    linkTo: '/seo',
+    linkTo: '#features',
     linkText: 'Open SWMTP Platform'
   }
 ];
@@ -311,7 +314,7 @@ export const ZUNME_STORE_SHOWCASE_CATEGORIES: StoreShowcaseCategory[] = [
   }
 ];
 
-export type LandingSection = 'all' | 'features' | 'how-it-works' | 'showcase' | 'pricing' | 'faq' | 'ecosystem' | 'store';
+export type LandingSection = 'all' | 'features' | 'how-it-works' | 'showcase' | 'pricing' | 'faq' | 'ecosystem' | 'store' | 'about' | 'business' | 'advertising' | 'zbox';
 
 export const LandingPage: React.FC = () => {
   const { user } = useApp();
@@ -326,11 +329,43 @@ export const LandingPage: React.FC = () => {
   const [copiedSnippet, setCopiedSnippet] = useState(false);
   const [activeSection, setActiveSection] = useState<LandingSection>('all');
   const [activeEcosystemCategory, setActiveEcosystemCategory] = useState<string>('All');
+  const [openDropdown, setOpenDropdown] = useState<'about' | 'business' | null>(null);
+  const [mobileAboutOpen, setMobileAboutOpen] = useState(false);
+  const [mobileBusinessOpen, setMobileBusinessOpen] = useState(false);
 
-  const handleNavClick = (section: LandingSection) => {
-    setActiveSection(section);
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (!target.closest('.nav-dropdown-wrap')) {
+        setOpenDropdown(null);
+      }
+    };
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, []);
+
+  const handleNavClick = (sectionTarget: string) => {
+    setActiveSection('all');
     setMobileMenuOpen(false);
-    window.scrollTo({ top: 0, behavior: 'instant' });
+    setOpenDropdown(null);
+    if (sectionTarget === 'all' || sectionTarget === 'top') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+    const resolvedId =
+      sectionTarget === 'store' ? 'store-showcase' :
+      sectionTarget === 'advertising' ? 'advertising-showcase' :
+      sectionTarget === 'zbox' ? 'zbox-showcase' :
+      sectionTarget;
+
+    setTimeout(() => {
+      const el = document.getElementById(resolvedId);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }, 80);
   };
 
   const handleAskZunmeSubmit = (e: React.FormEvent) => {
@@ -536,56 +571,402 @@ export const LandingPage: React.FC = () => {
               <img src="/zunme_logo.png" alt="Zunme AI" style={{ height: '33px', width: 'auto', display: 'block' }} />
             </NavLink>
 
-            {/* Desktop Navigation */}
+            {/* Desktop Navigation (Client Document Entry Architecture) */}
             <nav className="landing-nav-links" aria-label="Main Navigation">
+              {/* 1. About Dropdown (Pillars from Doc Lines 57-67) */}
+              <div className="nav-dropdown-wrap">
+                <button
+                  type="button"
+                  className={`nav-dropdown-trigger ${openDropdown === 'about' ? 'active' : ''}`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setOpenDropdown(openDropdown === 'about' ? null : 'about');
+                  }}
+                  aria-expanded={openDropdown === 'about'}
+                >
+                  <span>About</span>
+                  <ChevronDown size={13} className={`nav-chevron ${openDropdown === 'about' ? 'rotate' : ''}`} />
+                </button>
+
+                {openDropdown === 'about' && (
+                  <div className="nav-dropdown-menu about-mega-menu" onClick={(e) => e.stopPropagation()}>
+                    <div className="about-mega-grid">
+                      {/* Column 1: Product */}
+                      <div className="mega-col">
+                        <div className="mega-col-heading">Product</div>
+                        <ul className="mega-links-list">
+                          <li>
+                            <button
+                              type="button"
+                              className="mega-link-btn"
+                              onClick={() => {
+                                handleNavClick('showcase');
+                                setActiveShowcaseTab('chat');
+                              }}
+                            >
+                              <MessageSquare size={14} className="mega-link-icon text-purple" />
+                              <div>
+                                <span className="mega-link-title">AI Assistant</span>
+                                <span className="mega-link-sub">Conversational AI Chat</span>
+                              </div>
+                            </button>
+                          </li>
+                          <li>
+                            <button
+                              type="button"
+                              className="mega-link-btn"
+                              onClick={() => {
+                                handleNavClick('showcase');
+                                setActiveShowcaseTab('search');
+                              }}
+                            >
+                              <Search size={14} className="mega-link-icon text-blue" />
+                              <div>
+                                <span className="mega-link-title">Live Web Search</span>
+                                <span className="mega-link-sub">Real-time cited answers</span>
+                              </div>
+                            </button>
+                          </li>
+                          <li>
+                            <button
+                              type="button"
+                              className="mega-link-btn"
+                              onClick={() => {
+                                handleNavClick('showcase');
+                                setActiveShowcaseTab('studio');
+                              }}
+                            >
+                              <PenTool size={14} className="mega-link-icon text-indigo" />
+                              <div>
+                                <span className="mega-link-title">Content Studio</span>
+                                <span className="mega-link-sub">1,000+ AI blueprints</span>
+                              </div>
+                            </button>
+                          </li>
+                          <li>
+                            <button
+                              type="button"
+                              className="mega-link-btn"
+                              onClick={() => {
+                                handleNavClick('showcase');
+                                setActiveShowcaseTab('library');
+                              }}
+                            >
+                              <Bookmark size={14} className="mega-link-icon text-amber" />
+                              <div>
+                                <span className="mega-link-title">Personal Library</span>
+                                <span className="mega-link-sub">Saved prompts &amp; files</span>
+                              </div>
+                            </button>
+                          </li>
+                          <li>
+                            <button
+                              type="button"
+                              className="mega-link-btn"
+                              onClick={() => handleNavClick('pricing')}
+                            >
+                              <Zap size={14} className="mega-link-icon text-pink" />
+                              <div>
+                                <span className="mega-link-title">Plans &amp; Pricing</span>
+                                <span className="mega-link-sub">Subscription tiers</span>
+                              </div>
+                            </button>
+                          </li>
+                          <li>
+                            <button
+                              type="button"
+                              className="mega-link-btn"
+                              onClick={() => handleNavClick('features')}
+                            >
+                              <TrendingUp size={14} className="mega-link-icon text-emerald" />
+                              <div>
+                                <span className="mega-link-title">SEO Workspace</span>
+                                <span className="mega-link-sub">SWMTP &amp; Zunme nTel</span>
+                              </div>
+                            </button>
+                          </li>
+                        </ul>
+                      </div>
+
+                      {/* Column 2: Capabilities */}
+                      <div className="mega-col">
+                        <div className="mega-col-heading">Capabilities</div>
+                        <ul className="mega-links-list">
+                          <li>
+                            <button
+                              type="button"
+                              className="mega-link-btn"
+                              onClick={() => handleNavClick('features')}
+                            >
+                              <Bot size={14} className="mega-link-icon text-purple" />
+                              <div>
+                                <span className="mega-link-title">AI Chat</span>
+                                <span className="mega-link-sub">Multi-turn reasoning</span>
+                              </div>
+                            </button>
+                          </li>
+                          <li>
+                            <button
+                              type="button"
+                              className="mega-link-btn"
+                              onClick={() => handleNavClick('features')}
+                            >
+                              <Globe size={14} className="mega-link-icon text-blue" />
+                              <div>
+                                <span className="mega-link-title">Web Search</span>
+                                <span className="mega-link-sub">Zero-hallucination nodes</span>
+                              </div>
+                            </button>
+                          </li>
+                          <li>
+                            <button
+                              type="button"
+                              className="mega-link-btn"
+                              onClick={() => handleNavClick('features')}
+                            >
+                              <Layers size={14} className="mega-link-icon text-violet" />
+                              <div>
+                                <span className="mega-link-title">AI Content Builders</span>
+                                <span className="mega-link-sub">Automated generators</span>
+                              </div>
+                            </button>
+                          </li>
+                          <li>
+                            <button
+                              type="button"
+                              className="mega-link-btn"
+                              onClick={() => handleNavClick('store-showcase')}
+                            >
+                              <Database size={14} className="mega-link-icon text-indigo" />
+                              <div>
+                                <span className="mega-link-title">AI Warehouse</span>
+                                <span className="mega-link-sub">Verified assets &amp; 3D</span>
+                              </div>
+                            </button>
+                          </li>
+                          <li>
+                            <button
+                              type="button"
+                              className="mega-link-btn"
+                              onClick={() => handleNavClick('store-showcase')}
+                            >
+                              <Wand2 size={14} className="mega-link-icon text-pink" />
+                              <div>
+                                <span className="mega-link-title">Creator Tools</span>
+                                <span className="mega-link-sub">Monetization &amp; payouts</span>
+                              </div>
+                            </button>
+                          </li>
+                        </ul>
+                      </div>
+
+                      {/* Column 3: Company */}
+                      <div className="mega-col">
+                        <div className="mega-col-heading">Company</div>
+                        <ul className="mega-links-list">
+                          <li>
+                            <button
+                              type="button"
+                              className="mega-link-btn"
+                              onClick={() => handleNavClick('all')}
+                            >
+                              <Sparkles size={14} className="mega-link-icon text-purple" />
+                              <div>
+                                <span className="mega-link-title">About Zunme AI</span>
+                                <span className="mega-link-sub">Vision &amp; technology</span>
+                              </div>
+                            </button>
+                          </li>
+                          <li>
+                            <button
+                              type="button"
+                              className="mega-link-btn"
+                              onClick={() => handleNavClick('how-it-works')}
+                            >
+                              <Activity size={14} className="mega-link-icon text-blue" />
+                              <div>
+                                <span className="mega-link-title">How It Works</span>
+                                <span className="mega-link-sub">3-step intelligence flow</span>
+                              </div>
+                            </button>
+                          </li>
+                          <li>
+                            <button
+                              type="button"
+                              className="mega-link-btn"
+                              onClick={() => handleNavClick('faq')}
+                            >
+                              <FileText size={14} className="mega-link-icon text-amber" />
+                              <div>
+                                <span className="mega-link-title">FAQ</span>
+                                <span className="mega-link-sub">Answers &amp; telemetry</span>
+                              </div>
+                            </button>
+                          </li>
+                          <li>
+                            <NavLink
+                              to="/login"
+                              className="mega-link-btn"
+                              onClick={() => setOpenDropdown(null)}
+                              style={{ textDecoration: 'none' }}
+                            >
+                              <Briefcase size={14} className="mega-link-icon text-emerald" />
+                              <div>
+                                <span className="mega-link-title">Sign In</span>
+                                <span className="mega-link-sub">Access your personal workspace</span>
+                              </div>
+                            </NavLink>
+                          </li>
+                          <li>
+                            <NavLink to="/register" onClick={() => setOpenDropdown(null)}>
+                              <ArrowRight size={14} className="mega-link-icon text-pink" />
+                              <div>
+                                <span className="mega-link-title">Create Account</span>
+                                <span className="mega-link-sub">Start free today</span>
+                              </div>
+                            </NavLink>
+                          </li>
+                        </ul>
+                      </div>
+
+                      {/* Column 4: Trust & Support */}
+                      <div className="mega-col">
+                        <div className="mega-col-heading">Trust &amp; Support</div>
+                        <ul className="mega-links-list">
+                          <li>
+                            <NavLink to="/contact" onClick={() => setOpenDropdown(null)}>
+                              <Mail size={14} className="mega-link-icon text-blue" />
+                              <div>
+                                <span className="mega-link-title">Support Center</span>
+                                <span className="mega-link-sub">Help desk &amp; contact</span>
+                              </div>
+                            </NavLink>
+                          </li>
+                          <li>
+                            <NavLink to="/privacy" onClick={() => setOpenDropdown(null)}>
+                              <ShieldCheck size={14} className="mega-link-icon text-emerald" />
+                              <div>
+                                <span className="mega-link-title">Privacy Policy</span>
+                                <span className="mega-link-sub">Zero surveillance model</span>
+                              </div>
+                            </NavLink>
+                          </li>
+                          <li>
+                            <NavLink to="/terms" onClick={() => setOpenDropdown(null)}>
+                              <FileText size={14} className="mega-link-icon text-slate" />
+                              <div>
+                                <span className="mega-link-title">Terms of Service</span>
+                                <span className="mega-link-sub">Legal &amp; copyright rules</span>
+                              </div>
+                            </NavLink>
+                          </li>
+                          <li>
+                            <button
+                              type="button"
+                              className="mega-link-btn"
+                              onClick={() => handleNavClick('faq')}
+                            >
+                              <Shield size={14} className="mega-link-icon text-indigo" />
+                              <div>
+                                <span className="mega-link-title">Security Architecture</span>
+                                <span className="mega-link-sub">Encrypted data vault</span>
+                              </div>
+                            </button>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* 2. Business Dropdown (Items from Doc Line 82) */}
+              <div className="nav-dropdown-wrap">
+                <button
+                  type="button"
+                  className={`nav-dropdown-trigger ${openDropdown === 'business' ? 'active' : ''}`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setOpenDropdown(openDropdown === 'business' ? null : 'business');
+                  }}
+                  aria-expanded={openDropdown === 'business'}
+                >
+                  <span>Business</span>
+                  <ChevronDown size={13} className={`nav-chevron ${openDropdown === 'business' ? 'rotate' : ''}`} />
+                </button>
+
+                {openDropdown === 'business' && (
+                  <div className="nav-dropdown-menu business-dropdown-menu" onClick={(e) => e.stopPropagation()}>
+                    <div className="business-links-col">
+                      <button type="button" className="biz-link-item" onClick={() => handleNavClick('features')}>
+                        <Layers size={14} className="biz-link-icon text-purple" />
+                        <span>Features</span>
+                      </button>
+                      <button type="button" className="biz-link-item" onClick={() => handleNavClick('showcase')}>
+                        <Sparkles size={14} className="biz-link-icon text-indigo" />
+                        <span>Product</span>
+                      </button>
+                      <button type="button" className="biz-link-item" onClick={() => handleNavClick('how-it-works')}>
+                        <Activity size={14} className="biz-link-icon text-blue" />
+                        <span>How It Works</span>
+                      </button>
+                      <button type="button" className="biz-link-item" onClick={() => handleNavClick('how-it-works')}>
+                        <Zap size={14} className="biz-link-icon text-amber" />
+                        <span>The Workflow</span>
+                      </button>
+                      <button type="button" className="biz-link-item" onClick={() => handleNavClick('showcase')}>
+                        <Compass size={14} className="biz-link-icon text-pink" />
+                        <span>Platform Showcase</span>
+                      </button>
+                      <button type="button" className="biz-link-item" onClick={() => handleNavClick('pricing')}>
+                        <Star size={14} className="biz-link-icon text-emerald" />
+                        <span>Pricing</span>
+                      </button>
+                      <button type="button" className="biz-link-item" onClick={() => handleNavClick('faq')}>
+                        <FileText size={14} className="biz-link-icon text-slate" />
+                        <span>FAQ</span>
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* 3. Store (Doc Line 1 & 69) */}
               <button
                 type="button"
-                className={activeSection === 'features' ? 'active' : ''}
-                onClick={() => handleNavClick('features')}
+                className={`landing-nav-item ${activeSection === 'store' ? 'active' : ''}`}
+                onClick={() => handleNavClick('store-showcase')}
               >
-                Features
+                <span>Store</span>
               </button>
+
+              {/* 4. Advertising (Doc Line 43 & 96) */}
               <button
                 type="button"
-                className={activeSection === 'how-it-works' ? 'active' : ''}
-                onClick={() => handleNavClick('how-it-works')}
+                className={`landing-nav-item ${activeSection === 'advertising' ? 'active' : ''}`}
+                onClick={() => handleNavClick('advertising-showcase')}
               >
-                How It Works
+                <span>Advertising</span>
               </button>
+
+              {/* 5. zBox (Doc Line 45 & 297) */}
               <button
                 type="button"
-                className={activeSection === 'showcase' ? 'active' : ''}
-                onClick={() => handleNavClick('showcase')}
+                className={`landing-nav-item ${activeSection === 'zbox' ? 'active' : ''}`}
+                onClick={() => handleNavClick('zbox-showcase')}
               >
-                Product
+                <span>zBox</span>
               </button>
+
+              {/* 6. Make AI Work (Doc Line 43 & 119) */}
               <button
                 type="button"
-                className={activeSection === 'ecosystem' ? 'active' : ''}
-                onClick={() => handleNavClick('ecosystem')}
+                className="nav-make-ai-work-btn"
+                onClick={() => handleNavClick('all')}
+                title="Explore AI Workspace & Tools"
               >
-                Ecosystem
-              </button>
-              <button
-                type="button"
-                className={activeSection === 'pricing' ? 'active' : ''}
-                onClick={() => handleNavClick('pricing')}
-              >
-                Pricing
-              </button>
-              <button
-                type="button"
-                className={activeSection === 'faq' ? 'active' : ''}
-                onClick={() => handleNavClick('faq')}
-              >
-                FAQ
-              </button>
-              <button
-                type="button"
-                className={activeSection === 'store' ? 'active' : ''}
-                onClick={() => handleNavClick('store')}
-              >
-                Store
+                <Sparkles size={12} />
+                <span>Make AI Work</span>
               </button>
             </nav>
 
@@ -593,20 +974,17 @@ export const LandingPage: React.FC = () => {
             <div className="header-actions">
               <EcosystemAppsLauncher variant="light" />
               <NavLink
-                to="/ads"
-                className="btn btn-primary btn-sm btn-glow"
+                to="/login"
+                className="btn btn-outline btn-sm"
                 style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '6px',
-                  fontWeight: '700'
+                  borderRadius: '999px',
+                  fontWeight: '700',
+                  padding: '7px 15px',
+                  borderColor: '#E2E8F0',
+                  color: '#334155'
                 }}
               >
-                <Megaphone size={13} color="#FFFFFF" />
-                <span>Advertise</span>
-              </NavLink>
-              <NavLink to="/login" className="btn btn-primary btn-sm btn-glow">
-                Log In
+                Sign In
               </NavLink>
               <NavLink
                 to="/register"
@@ -631,77 +1009,120 @@ export const LandingPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Mobile Navigation Drawer */}
+        {/* Mobile Navigation Drawer (Client Document Grouped) */}
         {mobileMenuOpen && (
           <div className="mobile-drawer" role="dialog" aria-modal="true">
             <nav className="mobile-nav-links">
+              {/* Group 1: About Accordion */}
+              <div className="mobile-nav-group">
+                <button
+                  type="button"
+                  className="mobile-group-header"
+                  onClick={() => setMobileAboutOpen(!mobileAboutOpen)}
+                >
+                  <span>About Zunme (4 Pillars)</span>
+                  <ChevronDown size={16} className={`nav-chevron ${mobileAboutOpen ? 'rotate' : ''}`} />
+                </button>
+                {mobileAboutOpen && (
+                  <div className="mobile-group-content">
+                    <NavLink to="/user/chat" className="mobile-group-link" onClick={() => setMobileMenuOpen(false)}>
+                      <MessageSquare size={13} className="text-purple" /> AI Assistant &amp; Chat
+                    </NavLink>
+                    <NavLink to="/user/search" className="mobile-group-link" onClick={() => setMobileMenuOpen(false)}>
+                      <Search size={13} className="text-blue" /> Live Web Search
+                    </NavLink>
+                    <NavLink to="/user/builders" className="mobile-group-link" onClick={() => setMobileMenuOpen(false)}>
+                      <PenTool size={13} className="text-indigo" /> Content Studio
+                    </NavLink>
+                    <NavLink to="/warehouse" className="mobile-group-link" onClick={() => setMobileMenuOpen(false)}>
+                      <Database size={13} className="text-emerald" /> AI Warehouse
+                    </NavLink>
+                    <NavLink to="/creator" className="mobile-group-link" onClick={() => setMobileMenuOpen(false)}>
+                      <Wand2 size={13} className="text-pink" /> Creator Tools
+                    </NavLink>
+                    <NavLink to="/seo" className="mobile-group-link" onClick={() => setMobileMenuOpen(false)}>
+                      <TrendingUp size={13} className="text-amber" /> SEO Workspace
+                    </NavLink>
+                  </div>
+                )}
+              </div>
+
+              {/* Group 2: Business Accordion */}
+              <div className="mobile-nav-group">
+                <button
+                  type="button"
+                  className="mobile-group-header"
+                  onClick={() => setMobileBusinessOpen(!mobileBusinessOpen)}
+                >
+                  <span>Business Suite</span>
+                  <ChevronDown size={16} className={`nav-chevron ${mobileBusinessOpen ? 'rotate' : ''}`} />
+                </button>
+                {mobileBusinessOpen && (
+                  <div className="mobile-group-content">
+                    <button type="button" className="mobile-group-link" onClick={() => handleNavClick('features')}>
+                      <Layers size={13} className="text-purple" /> Features
+                    </button>
+                    <button type="button" className="mobile-group-link" onClick={() => handleNavClick('how-it-works')}>
+                      <Activity size={13} className="text-blue" /> How It Works &amp; Workflow
+                    </button>
+                    <button type="button" className="mobile-group-link" onClick={() => handleNavClick('showcase')}>
+                      <Compass size={13} className="text-pink" /> Platform Showcase
+                    </button>
+                    <button type="button" className="mobile-group-link" onClick={() => handleNavClick('pricing')}>
+                      <Star size={13} className="text-amber" /> Pricing
+                    </button>
+                    <button type="button" className="mobile-group-link" onClick={() => handleNavClick('faq')}>
+                      <FileText size={13} className="text-slate" /> FAQ
+                    </button>
+                    <NavLink to="/business" className="mobile-group-link" onClick={() => setMobileMenuOpen(false)}>
+                      <Briefcase size={13} className="text-emerald" /> CRM nErgy Workspace
+                    </NavLink>
+                  </div>
+                )}
+              </div>
+
               <button
                 type="button"
-                className={activeSection === 'features' ? 'active' : ''}
-                onClick={() => handleNavClick('features')}
+                className="mobile-group-link"
+                style={{ fontSize: '16px', fontWeight: 700, padding: '10px 0', borderBottom: '1px solid #F0F3FA' }}
+                onClick={() => handleNavClick('store-showcase')}
               >
-                Features
+                <Store size={15} className="text-indigo" /> Store (Zunme Shop)
               </button>
+
               <button
                 type="button"
-                className={activeSection === 'how-it-works' ? 'active' : ''}
-                onClick={() => handleNavClick('how-it-works')}
+                className="mobile-group-link"
+                style={{ fontSize: '16px', fontWeight: 700, padding: '10px 0', borderBottom: '1px solid #F0F3FA' }}
+                onClick={() => handleNavClick('advertising-showcase')}
               >
-                How It Works
+                <Megaphone size={15} className="text-purple" /> Advertising (PPC / PPV)
               </button>
+
               <button
                 type="button"
-                className={activeSection === 'showcase' ? 'active' : ''}
-                onClick={() => handleNavClick('showcase')}
+                className="mobile-group-link"
+                style={{ fontSize: '16px', fontWeight: 700, padding: '10px 0', borderBottom: '1px solid #F0F3FA' }}
+                onClick={() => handleNavClick('zbox-showcase')}
               >
-                Product Showcase
+                <Mail size={15} className="text-blue" /> zBox (Email &amp; MVP)
               </button>
+
               <button
                 type="button"
-                className={activeSection === 'ecosystem' ? 'active' : ''}
-                onClick={() => handleNavClick('ecosystem')}
+                className="mobile-group-link"
+                style={{ fontSize: '16px', fontWeight: 700, padding: '10px 0', borderBottom: '1px solid #F0F3FA', color: '#7C3AED' }}
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  const el = document.getElementById('hero');
+                  if (el) el.scrollIntoView({ behavior: 'smooth' });
+                }}
               >
-                Zunme Ecosystem (10 Platforms)
-              </button>
-              <button
-                type="button"
-                className={activeSection === 'pricing' ? 'active' : ''}
-                onClick={() => handleNavClick('pricing')}
-              >
-                Pricing
-              </button>
-              <button
-                type="button"
-                className={activeSection === 'faq' ? 'active' : ''}
-                onClick={() => handleNavClick('faq')}
-              >
-                FAQ
-              </button>
-              <button
-                type="button"
-                className={activeSection === 'store' ? 'active' : ''}
-                onClick={() => handleNavClick('store')}
-              >
-                Store (Zunme Shop)
+                <Sparkles size={15} className="text-violet" /> Make AI Work
               </button>
             </nav>
+
             <div className="mobile-drawer-actions">
-              <NavLink
-                to="/ads"
-                className="btn btn-primary btn-block btn-glow"
-                style={{
-                  marginBottom: '10px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '6px',
-                  fontWeight: '800'
-                }}
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                <Megaphone size={15} color="#FFFFFF" />
-                <span>Advertise on Zunme (PPC / PPV)</span>
-              </NavLink>
               <NavLink
                 to="/register"
                 className="btn btn-primary btn-block"
@@ -712,10 +1133,11 @@ export const LandingPage: React.FC = () => {
               </NavLink>
               <NavLink
                 to="/login"
-                className="btn btn-primary btn-block"
+                className="btn btn-outline btn-block"
                 onClick={() => setMobileMenuOpen(false)}
+                style={{ fontWeight: 700 }}
               >
-                Log In
+                Sign In
               </NavLink>
             </div>
           </div>
@@ -817,14 +1239,15 @@ export const LandingPage: React.FC = () => {
               <span>Get Started Free</span>
               <ArrowRight size={15} />
             </NavLink>
-            <NavLink
-              to="/ads/create-campaign"
+            <button
+              type="button"
               className="hero-ads-ppc-btn"
+              onClick={() => handleNavClick('advertising-showcase')}
             >
               <Megaphone size={16} color="#7C3AED" />
               <span>Advertise on Zunme (From $10/day)</span>
               <span className="hero-ads-ppc-badge">PPC / PPV</span>
-            </NavLink>
+            </button>
           </div>
 
           {/* Universal SSO Protected Signal (Client Doc Lines 226-230) */}
@@ -1068,10 +1491,31 @@ export const LandingPage: React.FC = () => {
 
                     <div className="ecosystem-card-footer">
                       <span className="ecosystem-sso-badge">✓ Single Sign-On</span>
-                      <NavLink to={product.linkTo} className="ecosystem-action-link">
-                        <span>{product.linkText}</span>
-                        <ArrowRight size={13} />
-                      </NavLink>
+                      {product.linkTo.startsWith('#') ? (
+                        <button
+                          type="button"
+                          className="ecosystem-action-link"
+                          onClick={() => handleNavClick(product.linkTo.replace('#', ''))}
+                          style={{
+                            background: 'none',
+                            border: 'none',
+                            cursor: 'pointer',
+                            font: 'inherit',
+                            padding: 0,
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '6px'
+                          }}
+                        >
+                          <span>{product.linkText}</span>
+                          <ArrowRight size={13} />
+                        </button>
+                      ) : (
+                        <NavLink to={product.linkTo} className="ecosystem-action-link">
+                          <span>{product.linkText}</span>
+                          <ArrowRight size={13} />
+                        </NavLink>
+                      )}
                     </div>
                   </div>
                 ))}
@@ -1180,8 +1624,296 @@ export const LandingPage: React.FC = () => {
         </section>
       )}
 
+      {/* Zunme Advertising Showcase Section (Client Doc Lines 110-250) */}
+      {(activeSection === 'all' || activeSection === 'advertising') && (
+        <section id="advertising-showcase" className="advertising-showcase-section">
+          <div className="landing-container">
+            <div className="section-header">
+              <div className="section-badge">
+                <Megaphone size={13} />
+                <span>ZUNME ADS • CONTEXTUAL PPC &amp; PPV PLATFORM</span>
+              </div>
+              <h2 className="section-title">High-Intent Advertising Across the Zunme Ecosystem</h2>
+              <p className="section-description">
+                Reach highly engaged audiences across AI Web Search, interactive chat citations, Zunme Shop, and syndicated creator networks starting from $10/day.
+              </p>
+            </div>
+
+            {/* 3 Pillars Grid */}
+            <div className="ads-showcase-grid">
+              <div className="ads-showcase-card" style={{ '--card-accent': '#7C3AED' } as React.CSSProperties}>
+                <div className="ads-card-header">
+                  <div className="ads-card-icon-box" style={{ background: 'linear-gradient(135deg, #7C3AED 0%, #6D28D9 100%)' }}>
+                    <Search size={22} />
+                  </div>
+                  <span className="ads-card-tag">PPC • From $10/day</span>
+                </div>
+                <h3 className="ads-card-title">PPC Search Intent Ads</h3>
+                <p className="ads-card-desc">
+                  Bid dynamically on user query intent and prompt keywords. Display sponsored cards directly beneath cited AI search syntheses.
+                </p>
+                <ul className="ads-card-highlights">
+                  <li>
+                    <span className="ads-highlight-dot" />
+                    <span>Real-time keyword bidding &amp; negative match</span>
+                  </li>
+                  <li>
+                    <span className="ads-highlight-dot" />
+                    <span>Cost-per-click tracking with conversion pixels</span>
+                  </li>
+                  <li>
+                    <span className="ads-highlight-dot" />
+                    <span>Contextual prompt grounding integration</span>
+                  </li>
+                </ul>
+                <div className="ads-card-footer">
+                  <span className="ads-card-stat">3.4x Higher Intent • $0.18 Avg CPC</span>
+                  <NavLink to="/ads/create-campaign" className="btn btn-outline btn-sm" style={{ fontWeight: 700 }}>
+                    Build PPC Ad
+                  </NavLink>
+                </div>
+              </div>
+
+              <div className="ads-showcase-card" style={{ '--card-accent': '#EC4899' } as React.CSSProperties}>
+                <div className="ads-card-header">
+                  <div className="ads-card-icon-box" style={{ background: 'linear-gradient(135deg, #EC4899 0%, #BE185D 100%)' }}>
+                    <Eye size={22} />
+                  </div>
+                  <span className="ads-card-tag" style={{ background: '#FCE7F3', color: '#BE185D' }}>PPV • Video Placements</span>
+                </div>
+                <h3 className="ads-card-title">PPV Immersive Video Ads</h3>
+                <p className="ads-card-desc">
+                  Showcase high-definition video assets across the Creator Marketplace, Shop product feeds, and multimedia exploration streams.
+                </p>
+                <ul className="ads-card-highlights">
+                  <li>
+                    <span className="ads-highlight-dot" style={{ background: '#EC4899' }} />
+                    <span>Sub-second 1080p stream start with zero buffering</span>
+                  </li>
+                  <li>
+                    <span className="ads-highlight-dot" style={{ background: '#EC4899' }} />
+                    <span>Interactive CTA overlays and custom end-cards</span>
+                  </li>
+                  <li>
+                    <span className="ads-highlight-dot" style={{ background: '#EC4899' }} />
+                    <span>View-through attribution and completion audits</span>
+                  </li>
+                </ul>
+                <div className="ads-card-footer">
+                  <span className="ads-card-stat">87% Completion Rate • 1080p HD</span>
+                  <NavLink to="/ads/formats" className="btn btn-outline btn-sm" style={{ fontWeight: 700 }}>
+                    Ad Specs
+                  </NavLink>
+                </div>
+              </div>
+
+              <div className="ads-showcase-card" style={{ '--card-accent': '#10B981' } as React.CSSProperties}>
+                <div className="ads-card-header">
+                  <div className="ads-card-icon-box" style={{ background: 'linear-gradient(135deg, #10B981 0%, #047857 100%)' }}>
+                    <TrendingUp size={22} />
+                  </div>
+                  <span className="ads-card-tag" style={{ background: '#D1FAE5', color: '#047857' }}>Merchant &amp; CRM Sync</span>
+                </div>
+                <h3 className="ads-card-title">Universal Merchant Catalog Sync</h3>
+                <p className="ads-card-desc">
+                  Connect e-commerce feeds directly with CRM nErgy and Zunme Shop to run automated product catalog ad campaigns.
+                </p>
+                <ul className="ads-card-highlights">
+                  <li>
+                    <span className="ads-highlight-dot" style={{ background: '#10B981' }} />
+                    <span>Real-time stock inventory and pricing synchronization</span>
+                  </li>
+                  <li>
+                    <span className="ads-highlight-dot" style={{ background: '#10B981' }} />
+                    <span>Automated multi-variant dynamic creative testing</span>
+                  </li>
+                  <li>
+                    <span className="ads-highlight-dot" style={{ background: '#10B981' }} />
+                    <span>Single Sign-On merchant billing &amp; unified invoices</span>
+                  </li>
+                </ul>
+                <div className="ads-card-footer">
+                  <span className="ads-card-stat">Zero-Latency Sync • 1-Click Connect</span>
+                  <NavLink to="/merchant-zone" className="btn btn-outline btn-sm" style={{ fontWeight: 700 }}>
+                    Merchant Zone
+                  </NavLink>
+                </div>
+              </div>
+            </div>
+
+            {/* Bottom Callout Banner */}
+            <div className="store-showcase-bottom-strip" style={{ marginTop: '36px' }}>
+              <div className="store-bottom-info">
+                <div className="store-bottom-badge" style={{ background: '#F3E8FF', color: '#7C3AED' }}>
+                  <Megaphone size={14} />
+                  <span>SELF-SERVE ADS CONSOLE</span>
+                </div>
+                <h3 className="store-bottom-title">Start Advertising in 3 Simple Steps</h3>
+                <p className="store-bottom-desc">
+                  Define your objective, allocate a daily budget starting at $10/day, choose your keywords and creative formats, and launch immediately.
+                </p>
+              </div>
+              <div className="store-bottom-actions">
+                <NavLink to="/ads/create-campaign" className="btn btn-primary btn-glow" style={{ padding: '12px 24px', fontWeight: 800 }}>
+                  <Megaphone size={16} />
+                  <span>Launch Campaign Wizard</span>
+                  <ArrowRight size={15} />
+                </NavLink>
+                <NavLink to="/ads/formats" className="btn btn-outline" style={{ borderColor: '#CBD5E1', color: '#1E293B', fontWeight: 700, padding: '12px 20px', background: '#FFFFFF' }}>
+                  <span>Explore Formats &amp; Specs</span>
+                </NavLink>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* zBox Private Webmail & MVP Syndication Showcase (Client Doc Lines 297-311) */}
+      {(activeSection === 'all' || activeSection === 'zbox') && (
+        <section id="zbox-showcase" className="zbox-showcase-section">
+          <div className="landing-container">
+            <div className="section-header">
+              <div className="section-badge">
+                <Mail size={13} />
+                <span>ZBOX • ENCRYPTED WEBMAIL &amp; MVP SYNDICATION HUB</span>
+              </div>
+              <h2 className="section-title">Encrypted Communication &amp; 1-Click Omnichannel Sharing</h2>
+              <p className="section-description">
+                Experience Gmail-style productivity engineered with zero telemetry harvesting, private AI drafting, and instant cross-platform syndication across the world's most visited networks.
+              </p>
+            </div>
+
+            {/* 3 zBox Feature Cards Grid */}
+            <div className="zbox-showcase-grid">
+              <div className="zbox-showcase-card" style={{ '--card-accent': '#3B82F6' } as React.CSSProperties}>
+                <div className="zbox-card-header">
+                  <div className="zbox-card-icon-box" style={{ background: 'linear-gradient(135deg, #3B82F6 0%, #1D4ED8 100%)' }}>
+                    <ShieldCheck size={22} />
+                  </div>
+                  <span className="zbox-card-tag">Zero Telemetry Harvesting</span>
+                </div>
+                <h3 className="zbox-card-title">Encrypted Webmail &amp; Smart Inbox</h3>
+                <p className="zbox-card-desc">
+                  A private, clean inbox with zero advertising tracking. Automated email summaries and intelligent contextual reply drafts.
+                </p>
+                <ul className="zbox-card-highlights">
+                  <li>
+                    <span className="ads-highlight-dot" style={{ background: '#3B82F6' }} />
+                    <span>256-bit AES encrypted correspondence</span>
+                  </li>
+                  <li>
+                    <span className="ads-highlight-dot" style={{ background: '#3B82F6' }} />
+                    <span>AI auto-summarize long email threads in 1 click</span>
+                  </li>
+                  <li>
+                    <span className="ads-highlight-dot" style={{ background: '#3B82F6' }} />
+                    <span>Zero spam tolerance with built-in SPF/DKIM verification</span>
+                  </li>
+                </ul>
+                <div className="zbox-card-footer">
+                  <span className="zbox-card-stat">99.9% Spam Deflection • Unlimited Labels</span>
+                  <NavLink to="/zbox" className="btn btn-outline btn-sm" style={{ fontWeight: 700 }}>
+                    Open Webmail
+                  </NavLink>
+                </div>
+              </div>
+
+              <div className="zbox-showcase-card" style={{ '--card-accent': '#8B5CF6' } as React.CSSProperties}>
+                <div className="zbox-card-header">
+                  <div className="zbox-card-icon-box" style={{ background: 'linear-gradient(135deg, #8B5CF6 0%, #6D28D9 100%)' }}>
+                    <Share2 size={22} />
+                  </div>
+                  <span className="zbox-card-tag" style={{ background: '#F3E8FF', color: '#7C3AED' }}>1-Click Omnichannel</span>
+                </div>
+                <h3 className="zbox-card-title">MVP Platform Syndication</h3>
+                <p className="zbox-card-desc">
+                  Deliver content, media files, and updates into YouTube, TikTok, Instagram, and LinkedIn simultaneously with unified analytics.
+                </p>
+                <ul className="zbox-card-highlights">
+                  <li>
+                    <span className="ads-highlight-dot" style={{ background: '#8B5CF6' }} />
+                    <span>Multi-channel concurrent distribution pipeline</span>
+                  </li>
+                  <li>
+                    <span className="ads-highlight-dot" style={{ background: '#8B5CF6' }} />
+                    <span>Auto-adapted aspect ratios for Reels, Shorts &amp; Feeds</span>
+                  </li>
+                  <li>
+                    <span className="ads-highlight-dot" style={{ background: '#8B5CF6' }} />
+                    <span>Centralized comment &amp; engagement telemetry</span>
+                  </li>
+                </ul>
+                <div className="zbox-card-footer">
+                  <span className="zbox-card-stat">10 Global Networks • Instant Sync</span>
+                  <NavLink to="/user/mvp" className="btn btn-outline btn-sm" style={{ fontWeight: 700 }}>
+                    MVP Platforms
+                  </NavLink>
+                </div>
+              </div>
+
+              <div className="zbox-showcase-card" style={{ '--card-accent': '#10B981' } as React.CSSProperties}>
+                <div className="zbox-card-header">
+                  <div className="zbox-card-icon-box" style={{ background: 'linear-gradient(135deg, #10B981 0%, #047857 100%)' }}>
+                    <Lock size={22} />
+                  </div>
+                  <span className="zbox-card-tag" style={{ background: '#D1FAE5', color: '#047857' }}>Universal SSO Vault</span>
+                </div>
+                <h3 className="zbox-card-title">Secured Cloud Privacy Vault</h3>
+                <p className="zbox-card-desc">
+                  Store sensitive documents, contract templates, and enterprise prompt archives protected by your single Zunme Universal ID.
+                </p>
+                <ul className="zbox-card-highlights">
+                  <li>
+                    <span className="ads-highlight-dot" style={{ background: '#10B981' }} />
+                    <span>Universal SSO login with zero vendor lock-in</span>
+                  </li>
+                  <li>
+                    <span className="ads-highlight-dot" style={{ background: '#10B981' }} />
+                    <span>Password-protected shareable links with auto-expiry</span>
+                  </li>
+                  <li>
+                    <span className="ads-highlight-dot" style={{ background: '#10B981' }} />
+                    <span>End-to-end encrypted backup and file recovery</span>
+                  </li>
+                </ul>
+                <div className="zbox-card-footer">
+                  <span className="zbox-card-stat">Zero-Knowledge Storage • Instant Restore</span>
+                  <NavLink to="/zbox" className="btn btn-outline btn-sm" style={{ fontWeight: 700 }}>
+                    Enter Vault
+                  </NavLink>
+                </div>
+              </div>
+            </div>
+
+            {/* Bottom Callout Banner */}
+            <div className="store-showcase-bottom-strip" style={{ marginTop: '36px' }}>
+              <div className="store-bottom-info">
+                <div className="store-bottom-badge" style={{ background: '#EFF6FF', color: '#2563EB' }}>
+                  <Mail size={14} />
+                  <span>INCLUDED WITH EVERY ZUNME ACCOUNT</span>
+                </div>
+                <h3 className="store-bottom-title">Take Back Control of Your Inbox &amp; Digital Presence</h3>
+                <p className="store-bottom-desc">
+                  Every Zunme user gets instant access to their private @zunme.ai webmail address, secure cloud file locker, and multi-network syndication hub.
+                </p>
+              </div>
+              <div className="store-bottom-actions">
+                <NavLink to="/zbox" className="btn btn-primary btn-glow" style={{ padding: '12px 24px', fontWeight: 800 }}>
+                  <Mail size={16} />
+                  <span>Launch zBox Webmail</span>
+                  <ArrowRight size={15} />
+                </NavLink>
+                <NavLink to="/user/mvp" className="btn btn-outline" style={{ borderColor: '#CBD5E1', color: '#1E293B', fontWeight: 700, padding: '12px 20px', background: '#FFFFFF' }}>
+                  <span>View MVP Platform Suite</span>
+                </NavLink>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Core Capabilities Section */}
-      {activeSection === 'features' && (
+      {(activeSection === 'all' || activeSection === 'features') && (
       <section id="features" className="capabilities-section">
         <div className="landing-container">
           <div className="section-header">
@@ -1237,7 +1969,7 @@ export const LandingPage: React.FC = () => {
       )}
 
       {/* How It Works Section */}
-      {activeSection === 'how-it-works' && (
+      {(activeSection === 'all' || activeSection === 'how-it-works') && (
       <section id="how-it-works" className="how-it-works-section">
         <div className="landing-container">
           <div className="section-header">
@@ -1278,7 +2010,7 @@ export const LandingPage: React.FC = () => {
       )}
 
       {/* Product Preview / Platform Showcase Section */}
-      {activeSection === 'showcase' && (
+      {(activeSection === 'all' || activeSection === 'showcase') && (
       <section id="showcase" className="showcase-section">
         <div className="landing-container">
           <div className="section-header">
@@ -1680,7 +2412,7 @@ export const LandingPage: React.FC = () => {
       )}
 
       {/* Plans & Pricing Section */}
-      {activeSection === 'pricing' && (
+      {(activeSection === 'all' || activeSection === 'pricing') && (
       <section id="pricing" className="pricing-section">
         <div className="landing-container">
           <div className="section-header">
@@ -1994,10 +2726,17 @@ export const LandingPage: React.FC = () => {
                     <a href="#features" onClick={(e) => { e.preventDefault(); handleNavClick('features'); }}>SEO Workspace</a>
                   </li>
                   <li>
-                    <NavLink to="/ads" style={{ color: '#C084FC', fontWeight: '700', display: 'inline-flex', alignItems: 'center', gap: '5px' }}>
+                    <a
+                      href="#advertising-showcase"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleNavClick('advertising-showcase');
+                      }}
+                      style={{ color: '#C084FC', fontWeight: '700', display: 'inline-flex', alignItems: 'center', gap: '5px' }}
+                    >
                       <Megaphone size={12} color="#C084FC" />
                       <span>Zunme Ads Platform (PPC/PPV)</span>
-                    </NavLink>
+                    </a>
                   </li>
                 </ul>
               </div>
@@ -2013,7 +2752,7 @@ export const LandingPage: React.FC = () => {
                     <a href="#ecosystem" onClick={(e) => { e.preventDefault(); handleNavClick('ecosystem'); }}>Zunme Ecosystem (10 Platforms)</a>
                   </li>
                   <li>
-                    <NavLink to="/store">Zunme Shop &amp; Store</NavLink>
+                    <a href="#store-showcase" onClick={(e) => { e.preventDefault(); handleNavClick('store-showcase'); }}>Zunme Shop &amp; Store</a>
                   </li>
                   <li>
                     <a href="#how-it-works" onClick={(e) => { e.preventDefault(); handleNavClick('how-it-works'); }}>How It Works</a>
@@ -2022,23 +2761,7 @@ export const LandingPage: React.FC = () => {
                     <a href="#faq" onClick={(e) => { e.preventDefault(); handleNavClick('faq'); }}>FAQ</a>
                   </li>
                   <li>
-                    <button
-                      type="button"
-                      onClick={() => setShowLoginModal(true)}
-                      className="footer-modal-trigger-btn"
-                      style={{
-                        background: 'none',
-                        border: 'none',
-                        padding: 0,
-                        margin: 0,
-                        font: 'inherit',
-                        color: 'inherit',
-                        cursor: 'pointer',
-                        textAlign: 'left'
-                      }}
-                    >
-                      Sign In / Workspaces
-                    </button>
+                    <NavLink to="/login">Sign In</NavLink>
                   </li>
                   <li>
                     <NavLink to="/register">Create Account</NavLink>

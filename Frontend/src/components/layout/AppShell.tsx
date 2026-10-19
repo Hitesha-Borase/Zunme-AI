@@ -35,7 +35,13 @@ import {
   Store,
   Mail,
   ShieldCheck,
-  Layers
+  Layers,
+  Film,
+  Smile,
+  Image as ImageIcon,
+  Video,
+  Bot,
+  Globe
 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import { NotificationBell } from '../common/NotificationBell';
@@ -77,11 +83,12 @@ export const AppShell: React.FC = () => {
     navigate('/login', { replace: true });
   };
 
-  // Allow public access to store, shop, and ads platform
+  // Allow public access to store, shop, ads platform, and zbox
   const isPublicRoute =
     location.pathname.startsWith('/store') ||
     location.pathname.startsWith('/shop') ||
-    location.pathname.startsWith('/ads');
+    location.pathname.startsWith('/ads') ||
+    location.pathname.startsWith('/zbox');
 
   if (!user && !isPublicRoute) {
     return <Navigate to="/login" replace />;
@@ -102,7 +109,186 @@ export const AppShell: React.FC = () => {
 
       {/* Sidebar */}
       <aside className={`app-sidebar ${mobileMenuOpen ? 'open' : ''}`}>
-        {location.pathname.startsWith('/ads') ? (
+        {location.pathname.startsWith('/store') || location.pathname.startsWith('/shop') ? (
+          /* ============================================================ */
+          /* ZUNME STORE & SHOP DEDICATED PUBLIC SIDEBAR                   */
+          /* ============================================================ */
+          <>
+            <div className="sidebar-brand-section">
+              <NavLink to="/store" className="brand-link" onClick={() => setMobileMenuOpen(false)}>
+                <div className="brand-icon-box" style={{ background: 'linear-gradient(135deg, #6366F1 0%, #4338CA 100%)' }}>
+                  <Store size={16} color="#FFFFFF" />
+                </div>
+                <div>
+                  <div style={{ fontSize: '15px', fontWeight: '800', color: '#FFFFFF', lineHeight: '1.2' }}>Zunme Store</div>
+                  <div style={{ fontSize: '9px', fontWeight: '800', color: '#A5B4FC', letterSpacing: '0.06em' }}>DIGITAL SHOP</div>
+                </div>
+              </NavLink>
+              <button
+                className="btn-ghost hide-on-desktop"
+                onClick={() => setMobileMenuOpen(false)}
+                aria-label="Close menu"
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            <nav className="sidebar-nav-list" aria-label="Store Navigation">
+              <NavLink
+                to="/store"
+                end
+                className={({ isActive }) => `sidebar-nav-item ${isActive ? 'active' : ''}`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <ShoppingBag size={17} />
+                <span>All Assets</span>
+              </NavLink>
+
+              <div className="sidebar-nav-section-title">CATEGORIES</div>
+
+              <NavLink
+                to="/store/AI%20Content"
+                className={({ isActive }) => `sidebar-nav-item ${isActive ? 'active' : ''}`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <Sparkles size={17} />
+                <span>AI Content</span>
+              </NavLink>
+
+              <NavLink
+                to="/store/Animation"
+                className={({ isActive }) => `sidebar-nav-item ${isActive ? 'active' : ''}`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <Film size={17} />
+                <span>Animation</span>
+              </NavLink>
+
+              <NavLink
+                to="/store/Cartoon"
+                className={({ isActive }) => `sidebar-nav-item ${isActive ? 'active' : ''}`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <Smile size={17} />
+                <span>Cartoon</span>
+              </NavLink>
+
+              <NavLink
+                to="/store/Images%20%2F%20Photos"
+                className={({ isActive }) => `sidebar-nav-item ${isActive ? 'active' : ''}`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <ImageIcon size={17} />
+                <span>Images / Photos</span>
+              </NavLink>
+
+              <NavLink
+                to="/store/Videos%20%2F%20AI%20Videos"
+                className={({ isActive }) => `sidebar-nav-item ${isActive ? 'active' : ''}`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <Video size={17} />
+                <span>Videos / AI Videos</span>
+              </NavLink>
+
+              <NavLink
+                to="/store/AI%20Builder"
+                className={({ isActive }) => `sidebar-nav-item ${isActive ? 'active' : ''}`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <Bot size={17} />
+                <span>AI Builder</span>
+              </NavLink>
+
+              <div className="sidebar-nav-section-title">ECOSYSTEM</div>
+
+              <NavLink
+                to="/merchant-zone"
+                className="sidebar-nav-item"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <Layers size={17} />
+                <span>Merchant Zone</span>
+              </NavLink>
+
+              <NavLink
+                to="/"
+                className="sidebar-nav-item"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <Globe size={17} />
+                <span>Return to Home</span>
+              </NavLink>
+            </nav>
+          </>
+        ) : location.pathname.startsWith('/zbox') ? (
+          /* ============================================================ */
+          /* ZBOX COMMUNICATIONS & MVP DEDICATED SIDEBAR                  */
+          /* ============================================================ */
+          <>
+            <div className="sidebar-brand-section">
+              <NavLink to="/zbox" className="brand-link" onClick={() => setMobileMenuOpen(false)}>
+                <div className="brand-icon-box" style={{ background: 'linear-gradient(135deg, #0284C7 0%, #0369A1 100%)' }}>
+                  <Mail size={16} color="#FFFFFF" />
+                </div>
+                <div>
+                  <div style={{ fontSize: '15px', fontWeight: '800', color: '#FFFFFF', lineHeight: '1.2' }}>zBox Hub</div>
+                  <div style={{ fontSize: '9px', fontWeight: '800', color: '#7DD3FC', letterSpacing: '0.06em' }}>SECURED EMAIL &amp; MVP</div>
+                </div>
+              </NavLink>
+              <button
+                className="btn-ghost hide-on-desktop"
+                onClick={() => setMobileMenuOpen(false)}
+                aria-label="Close menu"
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            <nav className="sidebar-nav-list" aria-label="zBox Navigation">
+              <NavLink
+                to="/zbox"
+                end
+                className={({ isActive }) => `sidebar-nav-item ${isActive ? 'active' : ''}`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <Mail size={17} />
+                <span>Inbox &amp; Webmail</span>
+              </NavLink>
+
+              <div className="sidebar-nav-section-title">MVP SYNDICATION</div>
+
+              <NavLink
+                to="/zbox?tab=sharing"
+                className="sidebar-nav-item"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <Share2 size={17} />
+                <span>Most Visited Platforms</span>
+              </NavLink>
+
+              <NavLink
+                to="/zbox?tab=secured-plans"
+                className="sidebar-nav-item"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <ShieldCheck size={17} />
+                <span>Secured Privacy Vault</span>
+              </NavLink>
+
+              <div className="sidebar-nav-section-title">ECOSYSTEM</div>
+
+              <NavLink
+                to="/"
+                className="sidebar-nav-item"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <Globe size={17} />
+                <span>Return to Home</span>
+              </NavLink>
+            </nav>
+          </>
+        ) : location.pathname.startsWith('/ads') ? (
           /* ============================================================ */
           /* ZUNME ADS PLATFORM DEDICATED SIDEBAR                         */
           /* ============================================================ */
@@ -632,8 +818,8 @@ export const AppShell: React.FC = () => {
 
         {/* Sidebar Footer with Logout at the Very Bottom */}
         <div className="sidebar-footer">
-          {/* Dedicated Logout Button at the Very Bottom */}
-          {user ? (
+          {/* Dedicated Logout Button only for authenticated private dashboards */}
+          {!isPublicRoute && user ? (
             <button
               className="superadmin-logout-btn"
               onClick={handleLogout}
@@ -659,9 +845,11 @@ export const AppShell: React.FC = () => {
               <span>Logout</span>
             </button>
           ) : (
-            <NavLink to="/login" className="btn btn-primary btn-sm w-full">
-              Sign In
-            </NavLink>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <NavLink to="/login" className="btn btn-primary btn-sm w-full" style={{ textAlign: 'center', fontWeight: 700 }}>
+                Sign In to Zunme
+              </NavLink>
+            </div>
           )}
         </div>
       </aside>
@@ -683,8 +871,8 @@ export const AppShell: React.FC = () => {
 
           <div className="topbar-right">
             <EcosystemAppsLauncher variant="light" />
-            {user && <NotificationBell />}
-            {user ? (
+            {!isPublicRoute && user && <NotificationBell />}
+            {!isPublicRoute && user ? (
               <div className="superadmin-profile-menu-wrap" style={{ position: 'relative' }}>
                 <button
                   type="button"
@@ -737,9 +925,20 @@ export const AppShell: React.FC = () => {
                 )}
               </div>
             ) : (
-              <NavLink to="/login" className="btn btn-primary btn-sm">
-                Sign In
-              </NavLink>
+              <div className="topbar-auth-group">
+                <NavLink
+                  to="/login"
+                  className="btn btn-outline btn-sm topbar-auth-signin"
+                >
+                  Sign In
+                </NavLink>
+                <NavLink
+                  to="/register"
+                  className="btn btn-primary btn-sm btn-glow topbar-auth-signup"
+                >
+                  Create Account
+                </NavLink>
+              </div>
             )}
           </div>
         </header>

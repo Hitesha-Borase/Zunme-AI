@@ -319,8 +319,8 @@
 
 .zbox-comparison-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 18px;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 16px;
 }
 
 .zbox-plan-card {
@@ -462,4 +462,451 @@
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 14px;
+}
+
+/* Small Business Size Breakdown Infographic (Doc Lines 12-21) */
+.zbox-breakdown-card {
+  background: #FFFFFF;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: 24px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.zbox-breakdown-header {
+  border-bottom: 1px solid #F1F5F9;
+  padding-bottom: 14px;
+}
+
+.zbox-breakdown-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.zbox-breakdown-item {
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 14px;
+  transition: all 0.2s ease;
+}
+
+.zbox-breakdown-item:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+.zbox-breakdown-item.primary {
+  border-color: rgba(110, 86, 207, 0.4);
+  background: linear-gradient(180deg, #FAF8FF 0%, #FFFFFF 100%);
+}
+
+.zbox-breakdown-item.success {
+  border-color: rgba(16, 185, 129, 0.4);
+  background: linear-gradient(180deg, #F0FDF4 0%, #FFFFFF 100%);
+}
+
+.zbox-breakdown-item.muted {
+  border-color: #E2E8F0;
+  background: #FAFAFC;
+}
+
+.breakdown-stat-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.breakdown-tag-badge {
+  font-size: 11px;
+  font-weight: 800;
+  color: #6E56CF;
+  background: #F3E8FF;
+  padding: 3px 8px;
+  border-radius: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.breakdown-tag-badge.success {
+  color: #059669;
+  background: #D1FAE5;
+}
+
+.breakdown-tag-badge.muted {
+  color: #64748B;
+  background: #E2E8F0;
+}
+
+.breakdown-percentage {
+  font-size: 24px;
+  font-weight: 900;
+  color: #6E56CF;
+}
+
+.breakdown-percentage.success {
+  color: #059669;
+}
+
+.breakdown-percentage.muted {
+  color: #64748B;
+}
+
+.breakdown-progress-track {
+  width: 100%;
+  height: 8px;
+  background: #E2E8F0;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.breakdown-progress-fill {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.4s ease;
+}
+
+.breakdown-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.breakdown-title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 800;
+  color: #111625;
+}
+
+.breakdown-desc {
+  margin: 0;
+  font-size: 12.5px;
+  color: #5F6B85;
+  line-height: 1.5;
+}
+
+.breakdown-feature-pill {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #6E56CF;
+  background: #F5F3FF;
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid #DDD6FE;
+}
+
+.breakdown-feature-pill.success {
+  color: #059669;
+  background: #ECFDF5;
+  border-color: #A7F3D0;
+}
+
+.breakdown-feature-pill.muted {
+  color: #64748B;
+  background: #F1F5F9;
+  border-color: #E2E8F0;
+}
+
+.zbox-breakdown-insight {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 14px 18px;
+  background: #F8FAFD;
+  border: 1px solid #E8ECF5;
+  border-radius: var(--radius-md);
+}
+
+/* Custom Domain DNS Verification Table (Doc Lines 24, 34, 43) */
+.zbox-dns-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.zbox-dns-table th {
+  background: #F8FAFC;
+  padding: 10px 12px;
+  text-align: left;
+  font-weight: 700;
+  color: #475569;
+  border-bottom: 1px solid #E2E8F0;
+}
+
+.zbox-dns-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #F1F5F9;
+  color: #1E293B;
+  vertical-align: middle;
+}
+
+.zbox-dns-table tr:last-child td {
+  border-bottom: none;
+}
+
+.zbox-code-badge {
+  font-family: monospace;
+  background: #F1F5F9;
+  padding: 3px 6px;
+  border-radius: 4px;
+  border: 1px solid #E2E8F0;
+  font-size: 11.5px;
+  color: #0F172A;
+  word-break: break-all;
+}
+
+/* Free Starter Tier Claim Box (Doc Line 6) */
+.zbox-free-guarantee-card {
+  background: #F0FDF4;
+  border: 1px solid #BBF7D0;
+  border-radius: 12px;
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.zbox-employee-radio-group {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 10px;
+}
+
+.zbox-employee-radio-btn {
+  border: 1.5px solid #E2E8F0;
+  background: #F8FAFC;
+  padding: 12px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.15s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.zbox-employee-radio-btn:hover {
+  border-color: #A7F3D0;
+  background: #F0FDF4;
+}
+
+.zbox-employee-radio-btn.selected {
+  border-color: #10B981;
+  background: #ECFDF5;
+  box-shadow: 0 0 0 1px #10B981;
+}
+
+/* ==========================================================================
+   MOBILE RESPONSIVENESS OVERRIDES (ZBOX)
+   ========================================================================== */
+@media (max-width: 768px) {
+  .zbox-container {
+    padding: 12px;
+    gap: 14px;
+  }
+
+  .zbox-header {
+    padding: 16px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+  }
+
+  .zbox-header-left {
+    align-items: flex-start;
+  }
+
+  .zbox-header-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    flex-shrink: 0;
+  }
+
+  /* Mode Switcher: Smooth Touch Horizontal Scroll - No Word Squishing */
+  .zbox-mode-tabs {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    flex-wrap: nowrap;
+    gap: 6px;
+    padding: 4px;
+    border-radius: 10px;
+  }
+
+  .zbox-mode-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .zbox-mode-btn {
+    flex-shrink: 0;
+    white-space: nowrap;
+    padding: 9px 14px;
+    font-size: 13px;
+    gap: 6px;
+  }
+
+  /* Privacy Strip */
+  .zbox-privacy-strip {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    padding: 12px 14px;
+  }
+
+  .zbox-privacy-strip > div:last-child {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 100%;
+  }
+
+  .zbox-privacy-strip > div:last-child button {
+    width: 100%;
+    justify-content: center;
+    padding: 6px 12px;
+  }
+
+  /* Webmail Layout */
+  .zbox-mail-layout {
+    grid-template-columns: 1fr;
+    min-height: auto;
+    border-radius: var(--radius-lg);
+  }
+
+  .zbox-mail-sidebar {
+    padding: 14px;
+    border-right: none;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .zbox-folder-list {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 6px;
+    padding: 4px 0;
+  }
+
+  .zbox-folder-list::-webkit-scrollbar {
+    display: none;
+  }
+
+  .zbox-folder-item {
+    flex-shrink: 0;
+    white-space: nowrap;
+    padding: 7px 12px;
+  }
+
+  .zbox-mail-content {
+    grid-template-columns: 1fr;
+  }
+
+  .zbox-mail-list-pane {
+    max-height: 380px;
+    border-right: none;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .zbox-mail-detail-pane {
+    padding: 16px;
+  }
+
+  .zbox-mail-actions-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  .zbox-mail-actions-bar button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Comparison Grid & Breakdown */
+  .zbox-comparison-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .zbox-breakdown-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .zbox-breakdown-card {
+    padding: 16px;
+  }
+
+  .zbox-configurator-box {
+    padding: 16px;
+  }
+
+  .zbox-pills-row {
+    gap: 6px;
+  }
+
+  .zbox-pill-btn {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+
+  .zbox-b4b-banner {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .zbox-b4b-banner button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .zbox-dns-table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+  }
+
+  .zbox-free-guarantee-card {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .zbox-employee-radio-group {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .zbox-container {
+    padding: 10px;
+    gap: 12px;
+  }
+
+  .zbox-secure-hero {
+    padding: 20px 16px;
+  }
+
+  .zbox-plan-card {
+    padding: 18px 16px;
+  }
 }
